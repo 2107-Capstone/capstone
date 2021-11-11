@@ -1,5 +1,3 @@
-Hello, Andy was here
-
 # FS-App-Template
 
 ## Setup
