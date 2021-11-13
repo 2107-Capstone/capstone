@@ -1,7 +1,7 @@
 {
-  "name": "fs-app-template",
+  "name": "tripout",
   "version": "2.0.0",
-  "description": "Some boilerplate code to get you started - get shakin'!",
+  "description": "A website for organizing trips!",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
