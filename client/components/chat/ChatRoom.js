@@ -76,7 +76,7 @@ const ChatRoom = (props) => {
   return (
     <div style={styles.chatRoomContainer}>
       <h1 style={styles.roomName}>Chat: {trip.trip.name}</h1>
-      Participants
+      Trip Friends
       <ul>
         {
           participants.map(person => (
@@ -154,7 +154,7 @@ messageItemMyMessage: {
   wordBreak: 'break-word',
   borderRadius: '4px',
   color: 'black',
-  backgroundColor: '#01C121',
+  backgroundColor: '#F7C409',
   marginLeft: 'auto'
 },
 messageItemMyMessageOld: {
@@ -164,7 +164,7 @@ messageItemMyMessageOld: {
   wordBreak: 'break-word',
   borderRadius: '4px',
   color: 'white',
-  backgroundColor: 'rgb(1,193,33,.78)',
+  backgroundColor: '#F7C409',
   marginLeft: 'auto',
   fontStyle: 'italic'
 },
@@ -175,7 +175,7 @@ messageItemReceivedMessage: {
   wordBreak: 'break-word',
   borderRadius: '4px',
   color: 'black',
-  backgroundColor: '#DC4406',
+  backgroundColor: '#3BBB67',
   marginRight: 'auto'
 },
 messageItemReceivedMessageOld: {
@@ -185,7 +185,7 @@ messageItemReceivedMessageOld: {
   wordBreak: 'break-word',
   borderRadius: '4px',
   color: 'white',
-  backgroundColor: 'rgb(220,68,6,.78)',
+  backgroundColor: '#3BBB67',
   marginRight: 'auto',
   fontStyle: 'italic'
 },
@@ -193,7 +193,7 @@ sendMessageButton: {
   fontSize: 20,
   fontWeight: 200,
   color: 'white',
-  background: 'dodgerBlue',
+  background: 'red',
   padding: '10px 5px',
   border: 'none',
   borderColor: '#9a9a9a',
