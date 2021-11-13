@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const { models: { User, Trip, UserTrip, Message }} = require('../db')
+
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -34,7 +35,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', async (req, res, next) => {
+/*router.get('/:id', async (req, res, next) => {
   if(req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
@@ -54,4 +55,4 @@ router.get('/:id', async (req, res, next) => {
   } catch (err) {
     next(err)
   }
-})
+})*/
