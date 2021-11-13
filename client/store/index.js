@@ -5,9 +5,10 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import auth from './auth'
 import users from './users'
 import trips from './trips'
+import trip from './trip'
 import messages from './messages'
 
-const reducer = combineReducers({ auth, users, trips, messages })
+const reducer = combineReducers({ auth, users, trips, messages, trip })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
@@ -18,3 +19,4 @@ export * from './auth'
 export * from './users'
 export * from './trips'
 export * from './messages'
+export * from './trip'

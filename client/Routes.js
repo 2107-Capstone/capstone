@@ -5,14 +5,21 @@ import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
 import ChatRoom from './components/chat/ChatRoom';
 
-import {me} from './store'
+import {me, getUsers, getTrips, getMessages} from './store'
 
 /**
  * COMPONENT
  */
 class Routes extends Component {
-  componentDidMount() {
-    this.props.loadInitialData()
+  async componentDidMount() {
+    await this.props.loadInitialData();
+    await this.props.loadAppData();
+  }
+  
+  async componentDidUpdate(prevProps) {
+    if (!prevProps.isLoggedIn && this.props.isLoggedIn){
+      await this.props.loadAppData()
+    }
   }
 
   render() {
@@ -53,6 +60,11 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me())
+    },
+    loadAppData(){
+      dispatch(getUsers())
+      dispatch(getTrips())
+      dispatch(getMessages())
     }
   }
 }

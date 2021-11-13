@@ -19,6 +19,7 @@ const init = async () => {
     
     io.on('connection', function(socket){
       console.log('socket connection');
+      
       // Join a room/trip
       const { roomId } = socket.handshake.query;
       socket.join(roomId);

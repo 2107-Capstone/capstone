@@ -21,7 +21,7 @@ async function seed() {
   
   const trips = await Promise.all([
     Trip.create({ name: 'Trip to NYC', location: 'New York', description: 'A group trip to NYC!', startTime: '2021-11-11 12:00:00', endTime: '2021-11-18 23:59:59' }),
-    Trip.create({ name: 'Trip to Charlotte', location: 'Charlette', description: 'A group trip to Charlotte!', startTime: '2021-11-01 12:00:00', endTime: '2021-11-03 23:59:59'  }),
+    Trip.create({ name: 'Trip to Charlotte', location: 'Charlotte', description: 'A group trip to Charlotte!', startTime: '2021-11-01 12:00:00', endTime: '2021-11-03 23:59:59'  }),
     Trip.create({ name: 'Trip to Miami', location: 'Miami', description: 'A group trip to Miami!', startTime: '2021-11-02 12:00:00', endTime: '2021-11-04 23:59:59'  }),
     Trip.create({ name: 'Trip to Paris', location: 'Paris', description: 'A group trip to Paris!', startTime: '2021-12-11 12:00:00', endTime: '2021-12-18 23:59:59'  }),
   ])
@@ -83,7 +83,8 @@ async function seed() {
     UserFriend.create({ userId: jonathan.id, friendId: andy.id }),
     UserFriend.create({ userId: jonathan.id, friendId: corinne.id }),
   ])
-
+  const nycp = await nyc.findParticipants();
+  console.log(nycp)
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
   return {
