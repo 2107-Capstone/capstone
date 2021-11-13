@@ -193,7 +193,7 @@ sendMessageButton: {
   fontSize: 20,
   fontWeight: 200,
   color: 'white',
-  background: 'red',
+  background: 'dodgerBlue',
   padding: '10px 5px',
   border: 'none',
   borderColor: '#9a9a9a',
