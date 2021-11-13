@@ -1,10 +1,14 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const { TEXT } = Sequelize
+const { TEXT, DATE } = Sequelize
 
 const Message = db.define('message', {
   content: {
     type: TEXT,
+    allowNull: false
+  },
+  dateSent: {
+    type: DATE,
     allowNull: false
   }
 })
