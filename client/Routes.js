@@ -1,11 +1,11 @@
-import React, {Component, Fragment} from 'react'
-import {connect} from 'react-redux'
-import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
+import React, { Component, Fragment } from 'react'
+import { connect } from 'react-redux'
+import { withRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
 import ChatRoom from './components/chat/ChatRoom';
 
-import {me, getUsers, getTrips, getMessages} from './store'
+import { me, getUsers, getTrips, getMessages } from './store'
 
 /**
  * COMPONENT
@@ -15,27 +15,28 @@ class Routes extends Component {
     await this.props.loadInitialData();
     await this.props.loadAppData();
   }
-  
+
   async componentDidUpdate(prevProps) {
-    if (!prevProps.isLoggedIn && this.props.isLoggedIn){
+    if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
       await this.props.loadAppData()
     }
   }
 
   render() {
-    const {isLoggedIn} = this.props
+    const { isLoggedIn } = this.props
 
     return (
       <div>
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
-            <Route exact path="/chat/:roomId" component={ChatRoom}/>
+            <Route exact path="/chat/:roomId" component={ChatRoom} />
             <Redirect to="/home" />
           </Switch>
         ) : (
           <Switch>
-            <Route path='/' exact component={ Login } />
+            <Route path="/home" component={Home} />
+            {/* <Route path='/' exact component={Login} /> */}
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
           </Switch>
@@ -61,7 +62,7 @@ const mapDispatch = dispatch => {
     loadInitialData() {
       dispatch(me())
     },
-    loadAppData(){
+    loadAppData() {
       dispatch(getUsers())
       dispatch(getTrips())
       dispatch(getMessages())
