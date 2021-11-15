@@ -24,7 +24,7 @@ export const Home = ({ auth, users, trips, messages }) => {
     return messages.filter(message => message.tripId === id);
   }
 
-  if (users.length === 0 || trips.length === 0 || messages.length === 0) return '...loading'
+  // if (users.length === 0 || trips.length === 0 || messages.length === 0) return '...loading'
 
 
   return (

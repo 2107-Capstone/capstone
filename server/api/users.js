@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { models: { User, Trip, UserTrip, UserFriend }} = require('../db')
+const { models: { User, Trip, UserTrip, UserFriend } } = require('../db')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -8,7 +8,7 @@ router.get('/', async (req, res, next) => {
       // explicitly select only the id and username fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
-      attributes: ['id', 'username'],
+      attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName'],
       include: [
         {
           model: UserTrip,
@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
         },
         {
           model: UserFriend,
-          include: [{model: User, as: 'friend'}]
+          include: [{ model: User, as: 'friend' }]
         }
       ]
     })
@@ -39,7 +39,7 @@ router.get('/:userId', async (req, res, next) => {
         },
         {
           model: UserFriend,
-          include: [{model: User, as: 'friend'}]
+          include: [{ model: User, as: 'friend' }]
         }
       ]
     })
@@ -49,7 +49,7 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
-router.put('/:userId', async(req, res, next) => {
+router.put('/:userId', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId)
     res.send(await user.update(req.body))
