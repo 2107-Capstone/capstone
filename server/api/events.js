@@ -40,32 +40,32 @@ router.get('/', async (req, res, next) => {
       })
       
 //USED THIS TO UPDATE EXISTING EVENTS' PLACE_IDS      
-      // const findEventGeo = async(event) => {
-      //   const api_key = 'AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA'
-      //   console.log(event.location)
-      //   console.log((`${event.location}+${event.trip.location}`).split(' ').join('+'))
-      //   try {
-      //       const response = (await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json`, {
-      //           params: {
-      //               input: (`${event.location}+${event.trip.location}`).split(' ').join('+'),
-      //               radius:500,
-      //               key: api_key,
-      //           }
-      //       })).data;
-      //       const response2 = (await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
-      //           params: {
-      //               place_id: response.predictions[0].place_id,
-      //               key: api_key,
-      //           }
-      //       })).data;
-      //       const location = response2.results[0].geometry.location
-      //       await event.update({...event, place_id: response.predictions[0].place_id, lat: location.lat, lng: location.lng})
-      //   } catch (error) {
-      //       console.log(error)
-      //   }
-      // }
-      // await events.map(async event => findEventGeo(event));
-      
+      const findEventGeo = async(event) => {
+        const api_key = 'AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA'
+        console.log(event.location)
+        console.log((`${event.location}+${event.trip.location}`).split(' ').join('+'))
+        try {
+            const response = (await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json`, {
+                params: {
+                    input: (`${event.location}+${event.trip.location}`).split(' ').join('+'),
+                    radius:500,
+                    key: api_key,
+                }
+            })).data;
+            const response2 = (await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
+                params: {
+                    place_id: response.predictions[0].place_id,
+                    key: api_key,
+                }
+            })).data;
+            const location = response2.results[0].geometry.location
+            await event.update({...event, place_id: response.predictions[0].place_id, lat: location.lat, lng: location.lng})
+        } catch (error) {
+            console.log(error)
+        }
+      }
+      await events.map(async event => findEventGeo(event));
+//      
       res.send(events)
     } else {
       res.send('No current user found via token')
