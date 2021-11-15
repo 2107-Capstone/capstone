@@ -15,15 +15,17 @@ async function seed() {
     User.create({ username: 'andy', password: '123', firstName: 'Andy', lastName: 'Gao', email: 'andy@123.com', phoneNumber: '1234567890' }),
     User.create({ username: 'corinne', password: '123', firstName: 'Corinne', lastName: 'Tinacci', email: 'corinne@123.com', phoneNumber: '2345678901'  }),
     User.create({ username: 'jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012'  }),
+    User.create({ username: 'stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '4567890123'  }),
+    User.create({ username: 'jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234'  }),
   ])
   
   const [andy, corinne, jonathan] = users.map(user => user)
   
   const trips = await Promise.all([
-    Trip.create({ name: 'Trip to NYC', location: 'New York', description: 'A group trip to NYC!', startTime: '2021-11-11 12:00:00', endTime: '2021-11-18 23:59:59' }),
-    Trip.create({ name: 'Trip to Charlotte', location: 'Charlotte', description: 'A group trip to Charlotte!', startTime: '2021-11-01 12:00:00', endTime: '2021-11-03 23:59:59'  }),
-    Trip.create({ name: 'Trip to Miami', location: 'Miami', description: 'A group trip to Miami!', startTime: '2021-11-02 12:00:00', endTime: '2021-11-04 23:59:59'  }),
-    Trip.create({ name: 'Trip to Paris', location: 'Paris', description: 'A group trip to Paris!', startTime: '2021-12-11 12:00:00', endTime: '2021-12-18 23:59:59'  }),
+    Trip.create({ name: 'Trip to NYC', location: 'New York', description: 'A group trip to NYC!', startTime: '2021-11-11 12:00:00', endTime: '2021-11-18 23:59:59', isOpen: true }),
+    Trip.create({ name: 'Trip to Charlotte', location: 'Charlotte', description: 'A group trip to Charlotte!', startTime: '2021-11-01 12:00:00', endTime: '2021-11-03 23:59:59', isOpen: false  }),
+    Trip.create({ name: 'Trip to Miami', location: 'Miami', description: 'A group trip to Miami!', startTime: '2021-11-02 12:00:00', endTime: '2021-11-04 23:59:59', isOpen: false  }),
+    Trip.create({ name: 'Trip to Paris', location: 'Paris', description: 'A group trip to Paris!', startTime: '2021-12-11 12:00:00', endTime: '2021-12-18 23:59:59', isOpen: true  }),
   ])
 
   const [nyc, charlotte, miami, paris] = trips.map(trip => trip)

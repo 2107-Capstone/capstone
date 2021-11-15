@@ -1,5 +1,6 @@
 const router = require('express').Router()
-const { models: { User, UserFriend }} = require('../db')
+const { models: { User, Trip, UserTrip, Expense }} = require('../db')
+
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -7,21 +8,36 @@ router.get('/', async (req, res, next) => {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
-
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
-      const friends = await UserFriend.findAll({
+      const trips = await UserTrip.findAll({
         where: {
           userId: user.id
         },
         include: [
           {
-            model: User, as: 'friend'
+            model: Trip,
+            include: [Expense]
           }
         ]
       })
-      res.json(friends)
+      
+      const tripIds = trips.map(trip => trip.tripId)
+
+      let expenses = await Expense.findAll({
+        include: [
+          {
+            model: Trip
+          }
+        ]
+      })
+
+      expenses = expenses.filter(expense => {
+        return tripIds.includes(expense.tripId)
+      })
+
+      res.json(expenses)
     } else {
       res.send('No current user found via token')
     }
@@ -29,5 +45,4 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
-
 
