@@ -6,8 +6,12 @@ import auth from './auth'
 import users from './users'
 import trips from './trips'
 import messages from './messages'
+import friends from './friends'
+import events from './events'
+import expenses from './expenses'
 
-const reducer = combineReducers({ auth, users, trips, messages })
+
+const reducer = combineReducers({ auth, users, trips, messages, friends, events, expenses })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
@@ -18,3 +22,7 @@ export * from './auth'
 export * from './users'
 export * from './trips'
 export * from './messages'
+export * from './friends'
+export * from './events'
+export * from './expenses'
+

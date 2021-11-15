@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 /**
  * COMPONENT
  */
-export const Home = ({ auth, users, trips, messages }) => {
+export const Home = ({ auth, users, trips, messages, friends, events, expenses }) => {
 
   const user = users.find(user => user.id === auth.id);
   if (!user) {
@@ -24,6 +24,14 @@ export const Home = ({ auth, users, trips, messages }) => {
     return messages.filter(message => message.tripId === id);
   }
 
+  const findEvents = (id) => {
+    return events.filter(event => event.tripId === id);
+  }
+
+  const findExpenses = (id) => {
+    return expenses.filter(expense => expense.tripId === id);
+  }
+
   if (users.length === 0 || trips.length === 0 || messages.length === 0) return '...loading'
 
 
@@ -34,7 +42,7 @@ export const Home = ({ auth, users, trips, messages }) => {
       <h3>{user.username}'s Friends</h3>
       <ul key={Math.random().toString(16)}>
         {
-          user.userFriends.map(friend => (
+          friends.map(friend => (
             <li key={friend.id + Math.random().toString(16)}>
               {friend.friend.username}
             </li>
@@ -54,6 +62,22 @@ export const Home = ({ auth, users, trips, messages }) => {
                 {
                   findParticipants(trip.tripId).map(user => (
                     <li key={user.id + Math.random().toString(16)}>{user.username}</li>
+                  ))
+                }
+              </ul>
+              Events in Trip
+              <ul>
+                {
+                  findEvents(trip.tripId).map(event => (
+                    <li key={event.id + Math.random().toString(16)}>{event.name}</li>
+                  ))
+                }
+              </ul>
+              Expenses in Trip
+              <ul>
+                {
+                  findExpenses(trip.tripId).map(expense => (
+                    <li key={expense.id + Math.random().toString(16)}>{expense.name}</li>
                   ))
                 }
               </ul>
@@ -85,7 +109,9 @@ const mapState = state => {
     users: state.users,
     trips: state.trips,
     messages: state.messages,
-
+    friends: state.friends,
+    events: state.events,
+    expenses: state.expenses
   }
 }
 
