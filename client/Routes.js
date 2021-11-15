@@ -8,6 +8,7 @@ import Trip from './components/Trip/Trip';
 import TripMap from './components/Map/TripMap';
 import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses } from './store'
 import LoginForm from './components/User/LoginForm';
+import SignupForm from './components/User/SignupForm';
 
 /**
  * COMPONENT
@@ -42,7 +43,7 @@ class Routes extends Component {
             <Route path="/home" component={Home} />
             {/* <Route path='/' exact component={Login} /> */}
             <Route path="/login" component={LoginForm} />
-            <Route path="/signup" component={Signup} />
+            <Route path="/signup" component={SignupForm} />
           </Switch>
         )}
       </div>

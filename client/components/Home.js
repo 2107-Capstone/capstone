@@ -28,11 +28,12 @@ export const Home = ({ auth, users, trips, messages, friends, events, expenses }
   //   return events.filter(event => event.tripId === id);
   // }
 
+  // if (users.length === 0 || trips.length === 0 || messages.length === 0) return '...loading'
   // const findExpenses = (id) => {
   //   return expenses.filter(expense => expense.tripId === id);
   // }
 
-  if (users.length === 0 ) return '...loading'
+  //if (users.length === 0 ) return '...loading'
 
 
   return (
