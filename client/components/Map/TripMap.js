@@ -41,7 +41,7 @@ export default function TripMap ({tripId}) {
     const onMapLoad = React.useCallback((map) => {
         mapRef.current = map;
     }, []);
-    
+
     const panTo = React.useCallback(({ lat, lng }) => {
         mapRef.current.panTo({ lat, lng });
         mapRef.current.setZoom(8);
@@ -98,18 +98,18 @@ export default function TripMap ({tripId}) {
             onClick={() => {
               navigator.geolocation.getCurrentPosition(
                 (position) => {
+                    setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
+//TODO: UPDATE USER WITH NEW COORDINATES
                   panTo({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                 });
-                setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
-//TODO: UPDATE USER WITH NEW COORDINATES
                 },
                 () => null
               );
             }}
           >
-            <img src="/compass.svg" alt="compass" />
+            Where Am I?
           </button>
         );
       }
