@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-// import Map from '../Map/Map'
+
+import TripMap from '../Map/TripMap'
 import { Participants, Events, Expenses } from './tripInfo'
 
 const Trip = (props) => {
@@ -27,11 +28,10 @@ const Trip = (props) => {
             <Link key={trip.tripId + Math.random().toString(16)} to={`/trip/${trip.tripId}/chat`}>
                 Chat
             </Link>
-            <Link key={trip.id + Math.random().toString(16)} to={`/trip/${trip.tripId}/map`}>
+            {/* <Link key={trip.id + Math.random().toString(16)} to={`/trip/${trip.tripId}/map`}>
                 Map
-            </Link>
-            {/* <Map3 /> */}
-            {/* <Map tripId={id}/> */}
+            </Link> */}
+            <TripMap tripId={id} />
         </>
     )
 }

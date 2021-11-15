@@ -5,7 +5,7 @@ import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
 import ChatRoom from './components/Chat/ChatRoom';
 import Trip from './components/Trip/Trip';
-import TripMap from './components/Map/Map';
+import TripMap from './components/Map/TripMap';
 import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses } from './store'
 import LoginForm from './components/User/LoginForm';
 
@@ -34,7 +34,7 @@ class Routes extends Component {
             <Route path="/home" component={Home} />
             <Route exact path="/trip/:id" component={Trip} />
             <Route exact path="/trip/:id/chat" component={ChatRoom} />
-            <Route exact path="/trip/:id/map" component={TripMap} />
+            {/* <Route exact path="/trip/:id/map" component={TripMap} /> */}
             <Redirect to="/home" />
           </Switch>
         ) : (
