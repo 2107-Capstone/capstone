@@ -32,7 +32,8 @@ const LoginForm = () => {
     return (
         <Box
             sx={{
-                marginTop: 8,
+                mt: 8,
+                mx: 4,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
