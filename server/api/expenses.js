@@ -29,10 +29,15 @@ router.get('/', async (req, res, next) => {
         include: [
           {
             model: Trip
+          },
+//included this to have access to name of person who paid
+          {
+            model: User,
+            as: 'paidBy',
+            attributes: ['id', 'username']
           }
         ]
       })
-
       expenses = expenses.filter(expense => {
         return tripIds.includes(expense.tripId)
       })

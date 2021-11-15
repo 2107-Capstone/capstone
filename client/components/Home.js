@@ -14,23 +14,23 @@ export const Home = ({ auth, users, trips, messages, friends, events, expenses }
     )
   }
 
-  const findParticipants = (id) => {
-    return users.reduce((accum, user) => {
-      !!user.userTrips.find(trip => trip.tripId === id) ? accum.push(user) : '';
-      return accum;
-    }, [])
-  }
-  const findMessages = (id) => {
-    return messages.filter(message => message.tripId === id);
-  }
+  // const findParticipants = (id) => {
+  //   return users.reduce((accum, user) => {
+  //     !!user.userTrips.find(trip => trip.tripId === id) ? accum.push(user) : '';
+  //     return accum;
+  //   }, [])
+  // }
+  // const findMessages = (id) => {
+  //   return messages.filter(message => message.tripId === id);
+  // }
 
-  const findEvents = (id) => {
-    return events.filter(event => event.tripId === id);
-  }
+  // const findEvents = (id) => {
+  //   return events.filter(event => event.tripId === id);
+  // }
 
-  const findExpenses = (id) => {
-    return expenses.filter(expense => expense.tripId === id);
-  }
+  // const findExpenses = (id) => {
+  //   return expenses.filter(expense => expense.tripId === id);
+  // }
 
   if (users.length === 0 || trips.length === 0 || messages.length === 0) return '...loading'
 
@@ -55,45 +55,52 @@ export const Home = ({ auth, users, trips, messages, friends, events, expenses }
           trips.map(trip => (
             <div key={trip.id + Math.random().toString(16)}>
               <li>
-                {trip.trip.name}
+                <Link to={`/trip/${trip.tripId}`}>{trip.trip.name}</Link>
               </li>
-              Friends in Trip
-              <ul>
-                {
-                  findParticipants(trip.tripId).map(user => (
-                    <li key={user.id + Math.random().toString(16)}>{user.username}</li>
-                  ))
-                }
-              </ul>
-              Events in Trip
-              <ul>
-                {
-                  findEvents(trip.tripId).map(event => (
-                    <li key={event.id + Math.random().toString(16)}>{event.name}</li>
-                  ))
-                }
-              </ul>
-              Expenses in Trip
-              <ul>
-                {
-                  findExpenses(trip.tripId).map(expense => (
-                    <li key={expense.id + Math.random().toString(16)}>{expense.name}</li>
-                  ))
-                }
-              </ul>
-              Messages
-              <ul key={trip.id + Math.random().toString(16)}>
-                {
-                  findMessages(trip.tripId).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1).map(message => (
-                    <li key={message.id + Math.random().toString(16)}>
-                      {message.sentBy.username}: {message.content}
-                    </li>
-                  ))
-                }
-              </ul>
-              <Link key={trip.id + Math.random().toString(16)} to={`/chat/${trip.tripId}`}>Chat</Link>
             </div>
           ))
+          // trips.map(trip => (
+          //   <div key={trip.id + Math.random().toString(16)}>
+          //     <li>
+          //       {trip.trip.name}
+          //     </li>
+          //     Friends in Trip
+          //     <ul>
+          //       {
+          //         findParticipants(trip.tripId).map(user => (
+          //           <li key={user.id + Math.random().toString(16)}>{user.username}</li>
+          //         ))
+          //       }
+          //     </ul>
+          //     Events in Trip
+          //     <ul>
+          //       {
+          //         findEvents(trip.tripId).map(event => (
+          //           <li key={event.id + Math.random().toString(16)}>{event.name}</li>
+          //         ))
+          //       }
+          //     </ul>
+          //     Expenses in Trip
+          //     <ul>
+          //       {
+          //         findExpenses(trip.tripId).map(expense => (
+          //           <li key={expense.id + Math.random().toString(16)}>{expense.name}</li>
+          //         ))
+          //       }
+          //     </ul>
+          //     Messages
+          //     <ul key={trip.id + Math.random().toString(16)}>
+          //       {
+          //         findMessages(trip.tripId).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1).map(message => (
+          //           <li key={message.id + Math.random().toString(16)}>
+          //             {message.sentBy.username}: {message.content}
+          //           </li>
+          //         ))
+          //       }
+          //     </ul>
+          //     <Link key={trip.id + Math.random().toString(16)} to={`/chat/${trip.tripId}`}>Chat</Link>
+          //   </div>
+          // ))
         }
       </ul>
     </div>

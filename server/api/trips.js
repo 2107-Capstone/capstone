@@ -18,10 +18,24 @@ router.get('/', async (req, res, next) => {
         include: [
           {
             model: Trip,
-            include: [Message]
-          },
-          {
-            model: User
+            include: [
+              {
+                model: Message,
+                include: {
+                  model: User,
+                  as: 'sentBy',
+                  attributes: ['id', 'username']
+                }
+              },
+//included this to possibly simplify finding participants in a trip
+              {
+                model: UserTrip,
+                include: {
+                  model: User,
+                  attributes: ['id', 'username']
+                }
+              }
+            ]
           }
         ]
       })
