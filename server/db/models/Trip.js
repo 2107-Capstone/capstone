@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const { STRING, TEXT, DATE } = Sequelize
+const { STRING, TEXT, DATE, BOOLEAN } = Sequelize
 
 const Trip = db.define('trip', {
   name: {
@@ -17,6 +17,10 @@ const Trip = db.define('trip', {
   },
   endTime: {
       type: DATE
+  },
+  isOpen: {
+    type: BOOLEAN,
+    defaultValue: true
   }
 })
 

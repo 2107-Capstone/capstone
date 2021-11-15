@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import { withRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
-import ChatRoom from './components/chat/ChatRoom';
-
-import { me, getUsers, getTrips, getMessages } from './store'
+import ChatRoom from './components/Chat/ChatRoom';
+import Trip from './components/Trip/Trip';
+// import Map from './components/map/Map';
+import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses } from './store'
 import LoginForm from './components/User/LoginForm';
 import SignupForm from './components/User/SignupForm';
 
@@ -32,7 +33,9 @@ class Routes extends Component {
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
-            <Route exact path="/chat/:roomId" component={ChatRoom} />
+            <Route exact path="/trip/:id" component={Trip} />
+            <Route exact path="/trip/:id/chat" component={ChatRoom} />
+            {/* <Route exact path="/trip/:id/map" component={Map} /> */}
             <Redirect to="/home" />
           </Switch>
         ) : (
@@ -68,6 +71,9 @@ const mapDispatch = dispatch => {
       dispatch(getUsers())
       dispatch(getTrips())
       dispatch(getMessages())
+      dispatch(getFriends())
+      dispatch(getEvents())
+      dispatch(getExpenses())
     }
   }
 }

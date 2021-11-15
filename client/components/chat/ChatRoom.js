@@ -2,18 +2,19 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { format, formatISO, parseISO, isAfter } from "date-fns";
 
+import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import { createMessage } from "../../store";
-
+import { Link } from "react-router-dom";
 const ChatRoom = (props) => {
-  const { roomId } = props.match.params;
+  const { id } = props.match.params;
 
   const dispatch = useDispatch();
 
   const auth = useSelector(state => state.auth);
-  const trip = useSelector(state => state.trips.find(trip => trip.tripId === +roomId))
+  const trip = useSelector(state => state.trips.find(trip => trip.tripId === +id))
 
-  const { messages, sendMessage } = useChat(roomId);
+  const { messages, sendMessage } = useChat(id);
   const [newMessage, setNewMessage] = useState("");
 
   const [timeOpened, setTimeOpened] = useState(formatISO(Date.now()));
@@ -31,7 +32,7 @@ const ChatRoom = (props) => {
 
   useEffect(scrollToBottom, [messages])
 
-  let storeMessages = useSelector(state => state.messages.filter(message => message.tripId === +roomId).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1));
+  let storeMessages = useSelector(state => state.messages.filter(message => message.tripId === +id).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1));
   storeMessages.forEach(message => message.ownedByCurrentUser = (message.sentById === auth.id));
 
   const DisplayStoreMessages = () => {
@@ -56,10 +57,7 @@ const ChatRoom = (props) => {
     ))
   }
 
-  const participants = useSelector(state => state.users.reduce((accum, user) => {
-    !!user.userTrips.find(trip => trip.tripId === +roomId) ? accum.push(user) : '';
-    return accum;
-  }, []))
+  
 
   const handleNewMessageChange = (event) => {
     setNewMessage(event.target.value);
@@ -67,7 +65,7 @@ const ChatRoom = (props) => {
 
   const handleSendMessage = async () => {
     sendMessage(newMessage);
-    await dispatch(createMessage({ content: newMessage, sentById: auth.id, tripId: roomId, dateSent: Date.now() }))
+    await dispatch(createMessage({ content: newMessage, sentById: auth.id, tripId: id, dateSent: Date.now() }))
     setNewMessage("");
   };
 
@@ -75,15 +73,13 @@ const ChatRoom = (props) => {
 
   return (
     <div style={styles.chatRoomContainer}>
-      <h1 style={styles.roomName}>Chat: {trip.trip.name}</h1>
+      <h1 style={styles.roomName}>
+        <Link to={`/trip/${trip.tripId}`}>
+          Chat: {trip.trip.name}
+        </Link>
+      </h1>
       Trip Friends
-      <ul>
-        {
-          participants.map(person => (
-            <li key={person.id} style={person.username === auth.username ? styles.currentUser : null}>{person.username}</li>
-          ))
-        }
-      </ul>
+      <Participants trip={trip} auth={auth}/>
       <div style={styles.messagesContainer} >
         <ol key={Math.random().toString(16)} style={styles.messagesList}>
           <DisplayStoreMessages />

@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const { STRING, DECIMAL } = Sequelize
+const { STRING, DECIMAL, DATE } = Sequelize
 
 const Expense = db.define('expense', {
   name: {
@@ -8,6 +8,9 @@ const Expense = db.define('expense', {
   },
   amount: {
     type: DECIMAL(10, 2)
+  },
+  datePaid: {
+    type: DATE
   }
 })
 
