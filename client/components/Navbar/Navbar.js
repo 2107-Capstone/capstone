@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 import { logout } from '../../store'
 
 /////////// MATERIAL UI /////////////
-import { AppBar, Box, Button, Stack, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 
 const Navbar = () => {
   const dispatch = useDispatch()
@@ -30,16 +30,10 @@ const Navbar = () => {
             <Button variant='outlined' color="inherit" onClick={handleLogout}>
               Logout
             </Button>
-
           ) : (
-            <Stack direction="row" spacing={2}>
-              <Button variant='outlined' color="inherit" component={Link} to="/login">
-                Login
-              </Button>
-              <Button variant='outlined' color="inherit" component={Link} to="/signup">
-                Sign Up
-              </Button>
-            </Stack>
+            <Button variant='outlined' color="inherit" component={Link} to="/login">
+              Login
+            </Button>
           )}
         </Toolbar>
       </AppBar >
