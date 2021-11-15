@@ -65,7 +65,6 @@ export default function TripMap ({tripId}) {
                     position={{lat: marker.lat, lng: marker.lng}}
                     name={marker.name}
                     onClick={() => {setSelected(marker)}}
-                    style={{backgroundColor: 'dodgerBlue'}}
                 />
             )
         })
@@ -85,7 +84,6 @@ export default function TripMap ({tripId}) {
                         origin: new window.google.maps.Point(0, 0),
                         anchor: new window.google.maps.Point(10, 10),
                         scaledSize: new window.google.maps.Size(20, 20),
-                        backgroundColor: 'dodgerBlue'
                     }}
                 />
             )
