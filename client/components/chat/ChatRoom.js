@@ -57,10 +57,7 @@ const ChatRoom = (props) => {
     ))
   }
 
-  // const participants = useSelector(state => state.users.reduce((accum, user) => {
-  //   !!user.userTrips.find(trip => trip.tripId === +id) ? accum.push(user) : '';
-  //   return accum;
-  // }, []))
+  
 
   const handleNewMessageChange = (event) => {
     setNewMessage(event.target.value);

@@ -12,9 +12,9 @@ async function seed() {
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ username: 'andy', password: '123', firstName: 'Andy', lastName: 'Gao', email: 'andy@123.com', phoneNumber: '1234567890' }),
+    User.create({ username: 'andy', password: '123', firstName: 'Andy', lastName: 'Gao', email: 'andy@123.com', phoneNumber: '1234567890', lat: 40.699251, lng: -73.953755, time: new Date() }),
     User.create({ username: 'corinne', password: '123', firstName: 'Corinne', lastName: 'Tinacci', email: 'corinne@123.com', phoneNumber: '2345678901'  }),
-    User.create({ username: 'jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012'  }),
+    User.create({ username: 'jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012', lat: 40.717989, lng: -73.951693, time: new Date()  }),
     User.create({ username: 'stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '4567890123'  }),
     User.create({ username: 'jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234'  }),
   ])
@@ -84,6 +84,11 @@ async function seed() {
     UserFriend.create({ userId: jonathan.id, friendId: andy.id }),
     UserFriend.create({ userId: jonathan.id, friendId: corinne.id }),
     UserFriend.create({ userId: jason.id, friendId: andy.id }),
+    UserFriend.create({ userId: jason.id, friendId: corinne.id }),
+    UserFriend.create({ userId: jason.id, friendId: jonathan.id }),
+    UserFriend.create({ userId: andy.id, friendId: jason.id }),
+    UserFriend.create({ userId: jonathan.id, friendId: jason.id }),
+    UserFriend.create({ userId: corinne.id, friendId: jason.id }),
 
   ])
   
