@@ -22,12 +22,12 @@ async function seed() {
   const [andy, corinne, jonathan, stanley, jason] = users.map(user => user)
   
   const trips = await Promise.all([
-    Trip.create({ name: 'Trip to NYC', location: 'New York', description: 'A group trip to NYC!', startTime: '2021-11-11 12:00:00', endTime: '2021-11-18 23:59:59', isOpen: true }),
-    Trip.create({ name: 'Trip to Charlotte', location: 'Charlotte', description: 'A group trip to Charlotte!', startTime: '2021-11-01 12:00:00', endTime: '2021-11-03 23:59:59', isOpen: false  }),
-    Trip.create({ name: 'Trip to Miami', location: 'Miami', description: 'A group trip to Miami!', startTime: '2021-11-02 12:00:00', endTime: '2021-11-04 23:59:59', isOpen: false  }),
-    Trip.create({ name: 'Trip to Paris', location: 'Paris', description: 'A group trip to Paris!', startTime: '2021-12-11 12:00:00', endTime: '2021-12-18 23:59:59', isOpen: true  }),
+    Trip.create({ name: 'Trip to NYC', location: 'New York New York', description: 'A group trip to NYC!', startTime: '2021-11-11 12:00:00', endTime: '2021-11-18 23:59:59', isOpen: true, lat: 40.712776, lng :-74.005974 }),
+    Trip.create({ name: 'Trip to Charlotte', location: 'Charlotte North Carolina', description: 'A group trip to Charlotte!', startTime: '2021-11-01 12:00:00', endTime: '2021-11-03 23:59:59', isOpen: false, lat: 35.227085, lng:  -80.843124 }),
+    Trip.create({ name: 'Trip to Miami', location: 'Miami Florida', description: 'A group trip to Miami!', startTime: '2021-11-02 12:00:00', endTime: '2021-11-04 23:59:59', isOpen: false , lat: 25.761681, lng: -80.191788 }),
+    Trip.create({ name: 'Trip to Paris', location: 'Paris France', description: 'A group trip to Paris!', startTime: '2021-12-11 12:00:00', endTime: '2021-12-18 23:59:59', isOpen: true, lat: 48.87531999859082, lng: 2.3302103060471153  }),
   ])
-
+  
   const [nyc, charlotte, miami, paris] = trips.map(trip => trip)
   
   const categories = await Promise.all([
@@ -42,13 +42,13 @@ async function seed() {
   const events = await Promise.all([
     Event.create({ name: 'Movie', location: 'AMC Lincoln Square 13', description: 'Eternals', startTime: '2021-11-12 21:15:00', endTime: '2021-11-12 23:15:00', tripId: nyc.id }),
     Event.create({ name: 'Dinner', location: 'Lilia', description: "don't forget to bring ID", startTime: '2021-11-13 20:00:00', endTime: '2021-11-13 22:00:00', tripId: nyc.id }),
-    Event.create({ name: 'Museum', location: 'The Whitney', description: '', startTime: '2021-11-13 10:15:00', endTime: '2021-11-13 12:15:00', tripId: nyc.id }),
+    Event.create({ name: 'Museum', location: 'The Whitney Museum', description: '', startTime: '2021-11-13 10:15:00', endTime: '2021-11-13 12:15:00', tripId: nyc.id }),
     Event.create({ name: 'Hiking', location: 'Rocky Face Mountain', description: 'Group hiking', startTime: '2021-11-02 08:00:00', endTime: '2021-11-02 10:00:00', tripId: charlotte.id }),
-    Event.create({ name: 'Party', location: "Jonathan's house", description: 'byob', startTime: '2021-11-02 20:00:00', endTime: '2021-11-02 23:00:00', tripId: charlotte.id }),
-    Event.create({ name: 'Museum', location: 'Pérez Art Museum Miami', description: 'Museum visit', startTime: '2021-11-03 08:00:00', endTime: '2021-11-03 10:00:00', tripId: miami.id }),
-    Event.create({ name: 'Museum2', location: 'Pérez Art Museum Miami', description: 'Museum visit2', startTime: '2021-11-04 08:00:00', endTime: '2021-11-04 10:00:00', tripId: miami.id }),
+    Event.create({ name: 'Party', location: "Infused Bar", description: '', startTime: '2021-11-02 20:00:00', endTime: '2021-11-02 23:00:00', tripId: charlotte.id }),
+    Event.create({ name: 'Museum', location: 'Perez Art Museum Miami', description: 'Museum visit', startTime: '2021-11-03 08:00:00', endTime: '2021-11-03 10:00:00', tripId: miami.id }),
+    Event.create({ name: 'Museum', location: 'Miami Childrens Museum', description: 'Museum visit 2', startTime: '2021-11-04 08:00:00', endTime: '2021-11-04 10:00:00', tripId: miami.id }),
     Event.create({ name: 'Dinner', location: 'Comice', description: 'Dinner at Comice', startTime: '2021-12-12 20:00:00', endTime: '2021-12-12 22:59:59', tripId: paris.id }),
-    Event.create({ name: 'Movie', location: 'something', description: 'something', startTime: '2021-12-13 20:00:00', endTime: '2021-12-13 22:59:59', tripId: paris.id }),
+    Event.create({ name: 'Food', location: 'Tamara', description: '', startTime: '2021-12-13 20:00:00', endTime: '2021-12-13 22:59:59', tripId: paris.id }),
   ])
 
   const expenses = await Promise.all([
