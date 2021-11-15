@@ -6,6 +6,7 @@ import Home from './components/Home';
 import ChatRoom from './components/chat/ChatRoom';
 
 import { me, getUsers, getTrips, getMessages } from './store'
+import LoginForm from './components/User/LoginForm';
 
 /**
  * COMPONENT
@@ -37,7 +38,7 @@ class Routes extends Component {
           <Switch>
             <Route path="/home" component={Home} />
             {/* <Route path='/' exact component={Login} /> */}
-            <Route path="/login" component={Login} />
+            <Route path="/login" component={LoginForm} />
             <Route path="/signup" component={Signup} />
           </Switch>
         )}
