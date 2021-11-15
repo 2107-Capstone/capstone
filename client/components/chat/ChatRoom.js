@@ -5,7 +5,7 @@ import { format, formatISO, parseISO, isAfter } from "date-fns";
 import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import { createMessage } from "../../store";
-
+import { Link } from "react-router-dom";
 const ChatRoom = (props) => {
   const { id } = props.match.params;
 
@@ -76,7 +76,11 @@ const ChatRoom = (props) => {
 
   return (
     <div style={styles.chatRoomContainer}>
-      <h1 style={styles.roomName}>Chat: {trip.trip.name}</h1>
+      <h1 style={styles.roomName}>
+        <Link to={`/trip/${trip.tripId}`}>
+          Chat: {trip.trip.name}
+        </Link>
+      </h1>
       Trip Friends
       <Participants trip={trip} auth={auth}/>
       <div style={styles.messagesContainer} >

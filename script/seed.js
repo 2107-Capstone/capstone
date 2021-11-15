@@ -19,7 +19,7 @@ async function seed() {
     User.create({ username: 'jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234'  }),
   ])
   
-  const [andy, corinne, jonathan] = users.map(user => user)
+  const [andy, corinne, jonathan, stanley, jason] = users.map(user => user)
   
   const trips = await Promise.all([
     Trip.create({ name: 'Trip to NYC', location: 'New York', description: 'A group trip to NYC!', startTime: '2021-11-11 12:00:00', endTime: '2021-11-18 23:59:59', isOpen: true }),
@@ -41,16 +41,26 @@ async function seed() {
 
   const events = await Promise.all([
     Event.create({ name: 'Movie', location: 'AMC Lincoln Square 13', description: 'Eternals', startTime: '2021-11-12 21:15:00', endTime: '2021-11-12 23:15:00', tripId: nyc.id }),
+    Event.create({ name: 'Dinner', location: 'Lilia', description: "don't forget to bring ID", startTime: '2021-11-13 20:00:00', endTime: '2021-11-13 22:00:00', tripId: nyc.id }),
+    Event.create({ name: 'Museum', location: 'The Whitney', description: '', startTime: '2021-11-13 10:15:00', endTime: '2021-11-13 12:15:00', tripId: nyc.id }),
     Event.create({ name: 'Hiking', location: 'Rocky Face Mountain', description: 'Group hiking', startTime: '2021-11-02 08:00:00', endTime: '2021-11-02 10:00:00', tripId: charlotte.id }),
+    Event.create({ name: 'Party', location: "Jonathan's house", description: 'byob', startTime: '2021-11-02 20:00:00', endTime: '2021-11-02 23:00:00', tripId: charlotte.id }),
     Event.create({ name: 'Museum', location: 'Pérez Art Museum Miami', description: 'Museum visit', startTime: '2021-11-03 08:00:00', endTime: '2021-11-03 10:00:00', tripId: miami.id }),
+    Event.create({ name: 'Museum2', location: 'Pérez Art Museum Miami', description: 'Museum visit2', startTime: '2021-11-04 08:00:00', endTime: '2021-11-04 10:00:00', tripId: miami.id }),
     Event.create({ name: 'Dinner', location: 'Comice', description: 'Dinner at Comice', startTime: '2021-12-12 20:00:00', endTime: '2021-12-12 22:59:59', tripId: paris.id }),
+    Event.create({ name: 'Movie', location: 'something', description: 'something', startTime: '2021-12-13 20:00:00', endTime: '2021-12-13 22:59:59', tripId: paris.id }),
   ])
 
   const expenses = await Promise.all([
-    Expense.create({ name: 'Movie tickets', amount: 60, tripId: nyc.id, paidById: andy.id, categoryId: entertainment.id}),
-    Expense.create({ name: 'Uber to Rocky Face Mountain', amount: 35, tripId: charlotte.id, paidById: jonathan.id, categoryId: transportation.id}),
-    Expense.create({ name: 'Museum tickets', amount: 80, tripId: miami.id, paidById: corinne.id, categoryId: entertainment.id}),
-    Expense.create({ name: 'Dinner at Comice', amount: 150, tripId: paris.id, paidById: corinne.id, categoryId: food_and_drink.id}),
+    Expense.create({ name: 'Movie tickets', amount: 60, tripId: nyc.id, paidById: andy.id, categoryId: entertainment.id, datePaid: '2021-11-12'}),
+    Expense.create({ name: 'dinner', amount: 200, tripId: nyc.id, paidById: corinne.id, categoryId: food_and_drink.id, datePaid: '2021-11-13'}),
+    Expense.create({ name: 'whitney', amount: 80, tripId: nyc.id, paidById: andy.id, categoryId: entertainment.id, datePaid: '2021-11-13'}),
+    Expense.create({ name: 'Uber to Rocky Face Mountain', amount: 35, tripId: charlotte.id, paidById: jonathan.id, categoryId: transportation.id, datePaid: '2021-11-02'}),
+    Expense.create({ name: 'drinks', amount: 150, tripId: charlotte.id, paidById: andy.id, categoryId: food_and_drink.id, datePaid: '2021-11-03'}),
+    Expense.create({ name: 'Museum tickets', amount: 80, tripId: miami.id, paidById: corinne.id, categoryId: entertainment.id, datePaid: '2021-11-04'}),
+    Expense.create({ name: 'car', amount: 30, tripId: miami.id, paidById: andy.id, categoryId: transportation.id, datePaid: '2021-11-04'}),
+    Expense.create({ name: 'museum gift shop', amount: 65, tripId: miami.id, paidById: jonathan.id, categoryId: other.id, datePaid: '2021-11-05'}),
+    Expense.create({ name: 'Dinner at Comice', amount: 150, tripId: paris.id, paidById: corinne.id, categoryId: food_and_drink.id, datePaid: '2021-12-13'}),
   ])
 
   const userTrips = await Promise.all([
@@ -63,6 +73,7 @@ async function seed() {
     UserTrip.create({ userId: jonathan.id, tripId: charlotte.id }),
     UserTrip.create({ userId: jonathan.id, tripId: miami.id }),
     UserTrip.create({ userId: jonathan.id, tripId: paris.id }),
+    UserTrip.create({ userId: jason.id, tripId: paris.id }),
   ])
 
   const userFriends = await Promise.all([
@@ -72,6 +83,7 @@ async function seed() {
     UserFriend.create({ userId: corinne.id, friendId: jonathan.id }),
     UserFriend.create({ userId: jonathan.id, friendId: andy.id }),
     UserFriend.create({ userId: jonathan.id, friendId: corinne.id }),
+    UserFriend.create({ userId: jason.id, friendId: andy.id }),
 
   ])
   

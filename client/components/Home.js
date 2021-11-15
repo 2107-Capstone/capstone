@@ -32,7 +32,7 @@ export const Home = ({ auth, users, trips, messages, friends, events, expenses }
   //   return expenses.filter(expense => expense.tripId === id);
   // }
 
-  if (users.length === 0 || trips.length === 0 || messages.length === 0) return '...loading'
+  if (users.length === 0 ) return '...loading'
 
 
   return (
@@ -42,6 +42,7 @@ export const Home = ({ auth, users, trips, messages, friends, events, expenses }
       <h3>{user.username}'s Friends</h3>
       <ul key={Math.random().toString(16)}>
         {
+          friends.length === 0 ? <h5>No Friends :(</h5> :
           friends.map(friend => (
             <li key={friend.id + Math.random().toString(16)}>
               {friend.friend.username}
@@ -52,6 +53,7 @@ export const Home = ({ auth, users, trips, messages, friends, events, expenses }
       <h3>Trips for {user.username}</h3>
       <ul>
         {
+          trips.length === 0 ? <h5>No Trips :(</h5> :
           trips.map(trip => (
             <div key={trip.id + Math.random().toString(16)}>
               <li>
