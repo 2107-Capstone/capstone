@@ -51,3 +51,78 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/:expenseId', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  try {
+    const expense = await Expense.findOne({
+      where: {
+        id: req.params.expenseId
+      },
+      include: [
+        {
+          mode: Trip
+        }
+      ]
+    })
+    res.json(expense)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  try {
+    let expense = await Expense.create(req.body)
+    expense = await Expense.findByPk(expense.id, {
+      include: [
+        {
+          model: Trip
+        }
+      ]
+    })
+    res.json(expense)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:expenseId', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  try {
+    const { name, amount, datePaid, tripId, paidById, categoryId } = req.body
+    let expense = await Expense.findByPk(req.params.expenseId)
+    await expense.update({...expense, name, amount, datePaid, tripId, paidById, categoryId})
+    expense = await Expense.findByPk(expense.id, {
+      include: {
+        model: Trip
+      }
+    })
+    res.json(expense)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete('/:expenseId', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  try {
+    const expense = await Expense.findByPk(req.params.expenseId)
+    await expense.destroy()
+    res.sendStatus(201)
+  } catch (err) {
+    next(err)
+  }
+})

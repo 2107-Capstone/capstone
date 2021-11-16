@@ -30,4 +30,26 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/:friendId', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  try {
+    const friend = await User.findOne({
+      where: {
+        id: req.params.friendId
+      },
+      include: [
+        {
+          mode: User, as: 'friend'
+        }
+      ]
+    })
+    res.json(friend)
+  } catch (err) {
+    next(err)
+  }
+})
 
+//don't think it makes sense to have post, put and delete routes for a friend
