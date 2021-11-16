@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {parseISO, formatRelative, format } from 'date-fns';
+import { addEvent } from '../../store/events';
+import { useDispatch } from 'react-redux';
+
 import {
     GoogleMap,
     useLoadScript,
@@ -54,7 +57,17 @@ export default function TripMap ({tripId}) {
         });
 //TODO: set tracking markers for users in this trip
     } ,[tripId, update])
-     
+    
+    const [inputs, setInputs] = useState({
+        name: '',
+        location: '',
+        description: '',
+        startTime: '',
+        endTime: ''
+    });
+//TODO: Add form to add new event after clicking on map and getting lat/lng
+
+
     const displayMarkers = () => {
      console.log('markers', markers)
         return markers.map((marker) => {
