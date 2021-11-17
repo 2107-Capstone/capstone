@@ -36,7 +36,8 @@ const Trip = (props) => {
     const handleSubmit = async (ev) => {
         ev.preventDefault();
         try {
-            await dispatch(addEvent({name: eventName, location, description, trip }))
+            await dispatch(addEvent({name: eventName, location, description, trip }));
+            setInputs({ eventName: '', location: '', description: ''})
         }
         catch(err){
             console.log(err)
