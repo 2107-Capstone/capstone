@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { TextField } from '@mui/material'
+import { Box, Grid, Button, TextField } from '@mui/material'
 
 const AddEvent = ({trip}) => {      
 //ADD EVENT
@@ -56,37 +56,73 @@ const AddEvent = ({trip}) => {
     
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <label>
-                Event Name:
-                <input type="text" name='eventName' value={eventName} onChange={handleChange} />
-                </label>
-                <label>
-                Location:
-                <input type="text" name='location' value={location} onChange={handleChange} />
-                </label>
-                <label>
-                Description:
-                <input type="text" name='description' value={description} onChange={handleChange} />
-                </label>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                        label="Start Time"
-                        name='startTime'
-                        value={startTime}
-                        onChange={handleStartChange}
-                        renderInput={(params) => <TextField {...params} />}
-                    />
-                    <DateTimePicker
-                        label="End Time"
-                        name='endTime'
-                        value={endTime}
-                        onChange={handleEndChange}
-                        renderInput={(params) => <TextField {...params} />}
-                    />
-                </LocalizationProvider>
-                <input type="submit" value="Submit" />
-            </form>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ ml: 3, mr: 3 }} >
+                <Grid container spacing={1}>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            name="eventName"
+                            required
+                            fullWidth
+                            id="eventName"
+                            label="Event Name"
+                            value={eventName}
+                            autoFocus
+                            onChange={handleChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            name="location"
+                            required
+                            fullWidth
+                            id="location"
+                            label="Location"
+                            value={location}
+                            autoFocus
+                            onChange={handleChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            name="description"
+                            fullWidth
+                            id="description"
+                            label="Description"
+                            value={description}
+                            autoFocus
+                            onChange={handleChange}
+                        />
+                    </Grid>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <Grid item xs={12} sm={6}>
+                            <DateTimePicker
+                                label="Start Time"
+                                name='startTime'
+                                value={startTime}
+                                onChange={handleStartChange}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <DateTimePicker
+                                label="End Time"
+                                name='endTime'
+                                value={endTime}
+                                onChange={handleEndChange}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </Grid>
+                    </LocalizationProvider>
+                    <Button
+                        fullWidth
+                        type="submit"
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Add Event
+                    </Button>
+                </Grid>
+            </Box>
         </>
     )
 }
