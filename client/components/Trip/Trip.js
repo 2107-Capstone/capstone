@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import TripMap from '../Map/TripMap'
 import { Participants, Events } from './tripInfo'
-import { Expenses } from '../Expenses/Expenses'
+import Expenses from '../Expenses/Expenses'
 import { addEvent } from '../../store/events'
 import { useDispatch } from 'react-redux'
 import AddEvent from '../Map/AddEvent'
@@ -23,7 +23,7 @@ const Trip = (props) => {
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)           
 
-//ADD EVENT
+    //ADD EVENT
     // const dispatch = useDispatch()
     // const [inputs, setInputs] = useState({
     //     eventName: '',
@@ -31,13 +31,13 @@ const Trip = (props) => {
     //     description: '',
     //     startTime: new Date(),
     //     endTime: new Date()
-        
+
     // })
     // const [startTime, setStartTime] = useState(new Date());
     // const [endTime, setEndTime] = useState(startTime);
 
     // const { eventName, location, description  } = inputs;
-    
+
     // const handleStartChange = (newVal) => {
     //     setStartTime(newVal)
     // }
@@ -62,9 +62,9 @@ const Trip = (props) => {
     //         console.log(err)
     //     }
     // }
-//
+    //
     if (!trip) return '...loading'
-    
+
     return (
         <>
             <h2>{trip.trip.name}</h2>
