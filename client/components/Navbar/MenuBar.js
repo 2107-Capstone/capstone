@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 /////////// REDUX //////////////////////
 import { useDispatch } from 'react-redux';
@@ -39,7 +40,7 @@ const MenuBar = (props) => {
                 <Button variant='contained' startIcon={<CardTravelIcon />}>
                     Trips
                 </Button>
-                <Button variant='contained' startIcon={<PeopleIcon />}>
+                <Button component={Link} to='/friends' variant='contained' startIcon={<PeopleIcon />}>
                     Friends
                 </Button>
                 <Button variant='contained' startIcon={<LocationOnIcon />}>
