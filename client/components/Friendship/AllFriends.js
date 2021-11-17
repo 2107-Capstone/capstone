@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-export const Friends = ({auth, users, friends}) => {
+export const AllFriends = ({auth, users, friends}) => {
     return(
     <div>
         <div>
@@ -41,4 +41,4 @@ const mapState = state => {
     }
   }
 
-export default connect(mapState)(Friends)
+export default connect(mapState)(AllFriends)
