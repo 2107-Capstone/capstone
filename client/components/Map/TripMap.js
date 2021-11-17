@@ -42,7 +42,7 @@ export default function TripMap ({tripId}) {
         events = useSelector(state => state.events);
         tripIdsMap.forEach((id, idx) => {
             events.forEach(ev => {
-                ev.tripId === id ? ev.group = idx + 1: ''
+                ev.tripId === id ? ev.group = idx : ''
             })
         })
     }
@@ -65,7 +65,7 @@ export default function TripMap ({tripId}) {
     useEffect(() => {
         setMarkers(prevMarkers => []);
         events.forEach(event => {
-            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} at ${event.location}`, url: tripId ?urls[10] : urls[event.group]}])
+            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} at ${event.location}`, url: tripId ?urls[10] : event.group > 9 ? urls[event.group % 9] : urls[event.group]}])
         });
 //TODO: set tracking markers for users in this trip
     } ,[tripId, update])
@@ -74,16 +74,16 @@ export default function TripMap ({tripId}) {
 
     // const base = `http://labs.google.com/ridefinder/images/mm_20_${color[group]}.png`
     const urls = {
-        1: `http://labs.google.com/ridefinder/images/mm_20_green.png`,
-        2: `http://labs.google.com/ridefinder/images/mm_20_blue.png`,
-        3: `http://labs.google.com/ridefinder/images/mm_20_purple.png`,
-        4: `http://labs.google.com/ridefinder/images/mm_20_yellow.png`,
-        5: `http://labs.google.com/ridefinder/images/mm_20_orange.png`,
-        6: `http://labs.google.com/ridefinder/images/mm_20_white.png`,
-        7: `http://labs.google.com/ridefinder/images/mm_20_black.png`,
-        8: `http://labs.google.com/ridefinder/images/mm_20_gray.png`,
-        9: `http://labs.google.com/ridefinder/images/mm_20_brown.png`,
-        10: `http://labs.google.com/ridefinder/images/mm_20_red.png`,
+        0: `http://labs.google.com/ridefinder/images/mm_20_green.png`,
+        1: `http://labs.google.com/ridefinder/images/mm_20_blue.png`,
+        2: `http://labs.google.com/ridefinder/images/mm_20_purple.png`,
+        3: `http://labs.google.com/ridefinder/images/mm_20_yellow.png`,
+        4: `http://labs.google.com/ridefinder/images/mm_20_orange.png`,
+        5: `http://labs.google.com/ridefinder/images/mm_20_white.png`,
+        6: `http://labs.google.com/ridefinder/images/mm_20_black.png`,
+        7: `http://labs.google.com/ridefinder/images/mm_20_gray.png`,
+        8: `http://labs.google.com/ridefinder/images/mm_20_brown.png`,
+        9: `http://labs.google.com/ridefinder/images/mm_20_red.png`,
     }
 
     const displayMarkers = () => {
