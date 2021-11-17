@@ -107,6 +107,7 @@ export default function TripMap ({tripId}) {
           <button
             className="locate"
             onClick={() => {
+//TODO: USE WATCH POSITION AND SET TIMEOUT LATER TO CONTINUALLY UPDATE POSITION
               navigator.geolocation.getCurrentPosition(
                 (position) => {
                     setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
