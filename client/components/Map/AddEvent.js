@@ -8,7 +8,7 @@ import DateTimePicker from '@mui/lab/DateTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Box, Grid, Button, TextField } from '@mui/material'
 
-const AddEvent = ({trip}) => {      
+const AddEvent = ({trip, handleClose}) => {      
 //ADD EVENT
     const dispatch = useDispatch()
     const [inputs, setInputs] = useState({
@@ -42,9 +42,10 @@ const AddEvent = ({trip}) => {
         ev.preventDefault();
         try {
             await dispatch(addEvent({name: eventName, location, description, trip, startTime, endTime }));
-            setInputs({ eventName: '', location: '', description: '', trip: ''});
+            setInputs({ eventName: '', location: '', description: ''});
             setStartTime(new Date());
             setEndTime(new Date());
+            handleClose();
         }
         catch(err){
             console.log(err)
@@ -56,7 +57,7 @@ const AddEvent = ({trip}) => {
     
     return (
         <>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ ml: 3, mr: 3 }} >
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ m: 3 }} >
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <TextField
