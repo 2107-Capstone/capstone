@@ -22,6 +22,8 @@
   "author": "Fullstack Academy of Code",
   "license": "MIT",
   "dependencies": {
+    "@date-io/date-fns": "^2.11.0",
+    "@mui/lab": "^5.0.0-alpha.55",
     "@reach/combobox": "^0.16.3",
     "@react-google-maps/api": "^2.7.0",
     "axios": "^0.24.0",
