@@ -17,6 +17,7 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 import EventIcon from '@mui/icons-material/Event';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Link } from 'react-router-dom';
 
 
 const MenuBar = (props) => {
@@ -30,14 +31,13 @@ const MenuBar = (props) => {
     const menuBarButtons = (
         <Box sx={{ px: 1 }}>
             <Toolbar>
-
             </Toolbar>
             <Divider />
             <Stack spacing={2}>
-                <Button variant='contained' sx={{ mt: 2 }} startIcon={<DashboardIcon />}>
+                <Button component={Link} to='/dashboard' variant='contained' sx={{ mt: 2 }} startIcon={<DashboardIcon />}>
                     Dashboard
                 </Button>
-                <Button variant='contained' startIcon={<CardTravelIcon />}>
+                <Button component={Link} to='/trips' variant='contained' startIcon={<CardTravelIcon />}>
                     Trips
                 </Button>
                 <Button component={Link} to='/friends' variant='contained' startIcon={<PeopleIcon />}>
