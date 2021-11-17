@@ -42,7 +42,7 @@ class Routes extends Component {
             <Route exact path="/trip/:id" component={Trip} />
             <Route exact path="/friends" component={AllFriends} />
             <Route exact path="/trip/:id/chat" component={ChatRoom} />
-            {/* <Route exact path="/trip/:id/map" component={TripMap} /> */}
+            <Route exact path="/map" component={TripMap} />
             <Redirect to="/home" />
           </Switch>
         ) : (
