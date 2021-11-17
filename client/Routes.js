@@ -5,7 +5,7 @@ import { withRouter, Route, Switch, Redirect } from 'react-router-dom'
 import Home from './components/Home';
 import ChatRoom from './components/Chat/ChatRoom';
 import Trip from './components/Trip/Trip';
-// import Map from './components/map/Map';
+import TripMap from './components/Map/TripMap';
 import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses } from './store'
 import LoginForm from './components/User/LoginForm';
 import SignupForm from './components/User/SignupForm';
@@ -42,7 +42,7 @@ class Routes extends Component {
             <Route exact path="/trip/:id" component={Trip} />
             <Route exact path="/friends" component={AllFriends} />
             <Route exact path="/trip/:id/chat" component={ChatRoom} />
-            {/* <Route exact path="/trip/:id/map" component={Map} /> */}
+            {/* <Route exact path="/trip/:id/map" component={TripMap} /> */}
             <Redirect to="/home" />
           </Switch>
         ) : (

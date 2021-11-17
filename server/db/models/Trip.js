@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const { STRING, TEXT, DATE, BOOLEAN } = Sequelize
+const { STRING, TEXT, DATE, BOOLEAN, DECIMAL } = Sequelize
 
 const Trip = db.define('trip', {
   name: {
@@ -21,6 +21,12 @@ const Trip = db.define('trip', {
   isOpen: {
     type: BOOLEAN,
     defaultValue: true
+  }, 
+  lat: {
+    type: DECIMAL
+  },
+  lng: {
+    type: DECIMAL
   }
 })
 
