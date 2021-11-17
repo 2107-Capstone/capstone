@@ -10,7 +10,7 @@ export const Home = ({ auth, users, trips, messages, friends, events, expenses }
   const user = users.find(user => user.id === auth.id);
   if (!user) {
     return (
-      <h2>Home page with not one logged in</h2>
+      <h2>Home page for logged in and non-logged in users</h2>
     )
   }
 
@@ -38,30 +38,31 @@ export const Home = ({ auth, users, trips, messages, friends, events, expenses }
 
   return (
     <div>
-      <h3>Welcome, {user.username}</h3>
+      <h2>Home page for logged in and non-logged in users</h2>
 
+      <h3>Welcome, {user.username}</h3>
       <h3>{user.username}'s Friends</h3>
       <ul key={Math.random().toString(16)}>
         {
           friends.length === 0 ? <h5>No Friends :(</h5> :
-          friends.map(friend => (
-            <li key={friend.id + Math.random().toString(16)}>
-              {friend.friend.username}
-            </li>
-          ))
+            friends.map(friend => (
+              <li key={friend.id + Math.random().toString(16)}>
+                {friend.friend.username}
+              </li>
+            ))
         }
       </ul>
       <h3>Trips for {user.username}</h3>
       <ul>
         {
           trips.length === 0 ? <h5>No Trips :(</h5> :
-          trips.map(trip => (
-            <div key={trip.id + Math.random().toString(16)}>
-              <li>
-                <Link to={`/trip/${trip.tripId}`}>{trip.trip.name}</Link>
-              </li>
-            </div>
-          ))
+            trips.map(trip => (
+              <div key={trip.id + Math.random().toString(16)}>
+                <li>
+                  <Link to={`/trip/${trip.tripId}`}>{trip.trip.name}</Link>
+                </li>
+              </div>
+            ))
           // trips.map(trip => (
           //   <div key={trip.id + Math.random().toString(16)}>
           //     <li>

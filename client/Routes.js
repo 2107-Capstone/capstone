@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Route, Switch, Redirect } from 'react-router-dom'
-import { Login, Signup } from './components/AuthForm';
+// import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
 import ChatRoom from './components/Chat/ChatRoom';
 import Trip from './components/Trip/Trip';
@@ -9,6 +9,9 @@ import Trip from './components/Trip/Trip';
 import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses } from './store'
 import LoginForm from './components/User/LoginForm';
 import SignupForm from './components/User/SignupForm';
+import AllTrips from './components/Trips/AllTrips';
+import AllFriends from './components/Friends/AllFriends';
+import Dashboard from './components/Dashboard/Dashboard';
 
 /**
  * COMPONENT
@@ -33,7 +36,10 @@ class Routes extends Component {
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/trips" component={AllTrips} />
             <Route exact path="/trip/:id" component={Trip} />
+            <Route exact path="/friends" component={AllFriends} />
             <Route exact path="/trip/:id/chat" component={ChatRoom} />
             {/* <Route exact path="/trip/:id/map" component={Map} /> */}
             <Redirect to="/home" />
