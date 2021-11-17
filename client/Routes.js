@@ -9,9 +9,11 @@ import Trip from './components/Trip/Trip';
 import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses } from './store'
 import LoginForm from './components/User/LoginForm';
 import SignupForm from './components/User/SignupForm';
+
 import AllTrips from './components/Trips/AllTrips';
-import AllFriends from './components/Friends/AllFriends';
+//import AllFriends from './components/Friends/AllFriends';
 import Dashboard from './components/Dashboard/Dashboard';
+import Friends from './components/Friendship/Friends';
 
 /**
  * COMPONENT
@@ -39,8 +41,9 @@ class Routes extends Component {
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/trips" component={AllTrips} />
             <Route exact path="/trip/:id" component={Trip} />
-            <Route exact path="/friends" component={AllFriends} />
+            //<Route exact path="/friends" component={AllFriends} />
             <Route exact path="/trip/:id/chat" component={ChatRoom} />
+            <Route exact path="/friends" component={Friends} />
             {/* <Route exact path="/trip/:id/map" component={Map} /> */}
             <Redirect to="/home" />
           </Switch>
