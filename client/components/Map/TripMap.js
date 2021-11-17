@@ -65,7 +65,7 @@ export default function TripMap ({tripId}) {
     useEffect(() => {
         setMarkers(prevMarkers => []);
         events.forEach(event => {
-            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} at ${event.location}`, url: tripId ?urls[10] : event.group > 9 ? urls[event.group % 9] : urls[event.group]}])
+            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} at ${event.location}`, url: tripId ?urls[9] : event.group > 9 ? urls[event.group % 9] : urls[event.group]}])
         });
 //TODO: set tracking markers for users in this trip
     } ,[tripId, update])

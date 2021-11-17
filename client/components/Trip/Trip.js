@@ -3,8 +3,8 @@ import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import TripMap from '../Map/TripMap'
-import { Participants, Events, Expenses } from './tripInfo'
-
+import { Participants, Events } from './tripInfo'
+import { Expenses } from '../Expenses/Expenses'
 import { addEvent } from '../../store/events'
 import { useDispatch } from 'react-redux'
 import AddEvent from '../Map/AddEvent'
