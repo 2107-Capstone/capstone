@@ -6,7 +6,6 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Footer = () => {
-
     const Copyright = () => {
         return (
             <Typography variant="body2" color="text.secondary">
