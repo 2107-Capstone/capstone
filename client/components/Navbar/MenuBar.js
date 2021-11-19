@@ -42,7 +42,7 @@ const MenuBar = (props) => {
                 <Button component={Link} to='/friends' variant='contained' startIcon={<PeopleIcon />}>
                     Friends
                 </Button>
-                <Button variant='contained' startIcon={<LocationOnIcon />}>
+                <Button component={Link} to='/map' variant='contained' startIcon={<LocationOnIcon />}>
                     Map
                 </Button>
                 <Button variant='contained' startIcon={<EventIcon />}>

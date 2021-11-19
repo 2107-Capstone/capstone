@@ -8,6 +8,7 @@ router.use('/friends', require('./friends'))
 router.use('/events', require('./events'))
 router.use('/expenses', require('./expenses'))
 router.use('/userFriends', require('./userFriends'))
+router.use('/categories', require('./categories'))
 
 
 

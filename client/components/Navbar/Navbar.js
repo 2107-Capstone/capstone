@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 /////////// MATERIAL UI /////////////
-import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Divider, Toolbar, Typography } from '@mui/material';
 import MenuBar from './MenuBar';
 
 const Navbar = (props) => {
@@ -30,7 +30,7 @@ const Navbar = (props) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color='inherit'>
+      <AppBar position="static" color='inherit' sx={{ boxShadow: 0 }}>
         <Toolbar>
           {isLoggedIn ? (
             <IconButton
@@ -57,6 +57,7 @@ const Navbar = (props) => {
           )}
         </Toolbar>
       </AppBar >
+      <Divider />
       {isLoggedIn && (
         <MenuBar mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle}
           drawerWidth={drawerWidth} />

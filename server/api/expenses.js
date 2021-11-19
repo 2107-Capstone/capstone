@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { models: { User, Trip, UserTrip, Expense }} = require('../db')
+const { models: { User, Trip, UserTrip, Expense, Category }} = require('../db')
 
 module.exports = router
 
@@ -35,6 +35,9 @@ router.get('/', async (req, res, next) => {
             model: User,
             as: 'paidBy',
             attributes: ['id', 'username']
+          },
+          {
+            model: Category
           }
         ]
       })
@@ -84,6 +87,15 @@ router.post('/', async (req, res, next) => {
       include: [
         {
           model: Trip
+        },
+//included this to have access to name of person who paid
+        {
+          model: User,
+          as: 'paidBy',
+          attributes: ['id', 'username']
+        },
+        {
+          model: Category
         }
       ]
     })
@@ -92,6 +104,7 @@ router.post('/', async (req, res, next) => {
     next(err)
   }
 })
+
 
 router.put('/:expenseId', async (req, res, next) => {
   if(req.headers.authorization === 'null') {

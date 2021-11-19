@@ -40,15 +40,15 @@ async function seed() {
   const [food_and_drink, entertainment, transportation, other] = categories.map(category => category)
 
   const events = await Promise.all([
-    Event.create({ name: 'Movie', location: 'AMC Lincoln Square 13', description: 'Eternals', startTime: '2021-11-12 21:15:00', endTime: '2021-11-12 23:15:00', tripId: nyc.id }),
-    Event.create({ name: 'Dinner', location: 'Lilia', description: "don't forget to bring ID", startTime: '2021-11-13 20:00:00', endTime: '2021-11-13 22:00:00', tripId: nyc.id }),
-    Event.create({ name: 'Museum', location: 'The Whitney Museum', description: '', startTime: '2021-11-13 10:15:00', endTime: '2021-11-13 12:15:00', tripId: nyc.id }),
-    Event.create({ name: 'Hiking', location: 'Rocky Face Mountain', description: 'Group hiking', startTime: '2021-11-02 08:00:00', endTime: '2021-11-02 10:00:00', tripId: charlotte.id }),
-    Event.create({ name: 'Party', location: "Infused Bar", description: '', startTime: '2021-11-02 20:00:00', endTime: '2021-11-02 23:00:00', tripId: charlotte.id }),
-    Event.create({ name: 'Museum', location: 'Perez Art Museum Miami', description: 'Museum visit', startTime: '2021-11-03 08:00:00', endTime: '2021-11-03 10:00:00', tripId: miami.id }),
-    Event.create({ name: 'Museum', location: 'Miami Childrens Museum', description: 'Museum visit 2', startTime: '2021-11-04 08:00:00', endTime: '2021-11-04 10:00:00', tripId: miami.id }),
-    Event.create({ name: 'Dinner', location: 'Comice', description: 'Dinner at Comice', startTime: '2021-12-12 20:00:00', endTime: '2021-12-12 22:59:59', tripId: paris.id }),
-    Event.create({ name: 'Food', location: 'Tamara', description: '', startTime: '2021-12-13 20:00:00', endTime: '2021-12-13 22:59:59', tripId: paris.id }),
+    Event.create({ name: 'Movie', location: 'AMC Lincoln Square 13', description: 'Eternals', startTime: '2021-11-12 21:15:00', endTime: '2021-11-12 23:15:00', tripId: nyc.id, place_id: 'ChIJtcljhoZYwokRQZjDXiCA304', lat: 40.7751676, lng: -73.9819053 }),
+    Event.create({ name: 'Dinner', location: 'Lilia', description: "don't forget to bring ID", startTime: '2021-11-13 20:00:00', endTime: '2021-11-13 22:00:00', tripId: nyc.id, place_id: 'ChIJJXCD6ltZwokRJ_cwjKQH63c', lat: 40.7175365, lng: -73.9524225 }),
+    Event.create({ name: 'Museum', location: 'The Whitney Museum', description: '', startTime: '2021-11-13 10:15:00', endTime: '2021-11-13 12:15:00', tripId: nyc.id, place_id: 'ChIJN3MJ6pRYwokRiXg91flSP8Y', lat: 40.7395877, lng: -74.0088629 }),
+    Event.create({ name: 'Hiking', location: 'Rocky Face Mountain', description: 'Group hiking', startTime: '2021-11-02 08:00:00', endTime: '2021-11-02 10:00:00', tripId: charlotte.id, place_id: 'ChIJdenvAr6bWYgRLX-EhoXIm4s', lat: 35.4653854, lng: -82.7992976 }),
+    Event.create({ name: 'Party', location: "Infused Bar", description: '', startTime: '2021-11-02 20:00:00', endTime: '2021-11-02 23:00:00', tripId: charlotte.id, place_id: 'ChIJ_4Hm7SGgVogRNoZBXcKQn74', lat: 35.223096, lng: -80.8332363 }),
+    Event.create({ name: 'Museum', location: 'Perez Art Museum Miami', description: 'Museum visit', startTime: '2021-11-03 08:00:00', endTime: '2021-11-03 10:00:00', tripId: miami.id, place_id: 'ChIJAUUpLJq22YgRAU604E8-tsM', lat: 25.7859307, lng: -80.1861912  }),
+    Event.create({ name: 'Party', location: 'Mama Tried', description: 'cocktails and pool', startTime: '2021-11-04 20:00:00', endTime: '2021-11-05 03:00:00', tripId: miami.id, place_id: 'ChIJL7nwMRi32YgRPgB_p4PMTXk', lat: 25.7753682, lng: -80.1901163 }),
+    Event.create({ name: 'Dinner', location: 'Comice', description: 'Dinner at Comice', startTime: '2021-12-12 20:00:00', endTime: '2021-12-12 22:59:59', tripId: paris.id, place_id: 'ChIJAc56Jah65kcRPUvIVLIaIjI', lat: 48.8494621, lng: 2.2760438 }),
+    Event.create({ name: 'Food', location: 'Tamara', description: '', startTime: '2021-12-13 20:00:00', endTime: '2021-12-13 22:59:59', tripId: paris.id, place_id: 'ChIJlWVr9v9v5kcR2ecnPPpaWF8', lat: 48.8642796, lng: 2.336053 }),
   ])
 
   const expenses = await Promise.all([

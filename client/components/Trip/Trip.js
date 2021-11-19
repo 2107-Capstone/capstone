@@ -3,7 +3,8 @@ import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import TripMap from '../Map/TripMap'
-import { Participants, Events, Expenses } from './tripInfo'
+import { Participants, Events } from './tripInfo'
+import Expenses from '../Expenses/Expenses'
 
 const Trip = (props) => {
 
@@ -13,9 +14,11 @@ const Trip = (props) => {
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
 
     //TODO: why does    trip = trip.trip    not allow refresh?
-
     // console.log('TRIPPPPPPPPPPPPP', trip)           
+
+    
     if (!trip) return '...loading'
+
     return (
         <>
             <h2>{trip.trip.name}</h2>
@@ -24,13 +27,10 @@ const Trip = (props) => {
             <h3>Events in Trip</h3>
             <Events tripId={id} />
             <h3>Expenses in Trip</h3>
-            <Expenses tripId={id} />
+            <Expenses tripId={id} trip={trip} />
             <Link key={trip.tripId + Math.random().toString(16)} to={`/trip/${trip.tripId}/chat`}>
                 Chat
             </Link>
-            {/* <Link key={trip.id + Math.random().toString(16)} to={`/trip/${trip.tripId}/map`}>
-                Map
-            </Link> */}
             <TripMap tripId={id} />
         </>
     )
