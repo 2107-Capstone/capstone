@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
+import AddExpense from "./AddExpense";
+
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";
 
 ////////////////// MATERIAL UI /////////////////
-import { Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from "@mui/material";
+import { Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from "@mui/material";
 
-const Expenses = ({ tripId }) => {
+const Expenses = ({ tripId, trip }) => {
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId));
     const tableRowData = tripExpenses.map(expense => ({
         id: expense.id,
@@ -64,6 +66,11 @@ const Expenses = ({ tripId }) => {
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+    ///////////////// DIALOG BOX ///////////////////
+    const [open, setOpen] = useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    }
 
     ///////////////// LOADING ///////////////////
     if (!tripExpenses) {
@@ -72,8 +79,13 @@ const Expenses = ({ tripId }) => {
         if (tripExpenses.length === 0) return <h1>...Loading</h1>
     }
 
+
     return (
         <Container>
+            <Dialog open={open}>
+                <AddExpense trip={trip} handleClose={handleClose}/>
+            </Dialog>
+            <Button onClick={() => setOpen(true)}>Add Expense</Button>
             <TableContainer component={Paper}>
                 <Table aria-label="trip expenses table">
                     <TableHead>
