@@ -148,7 +148,7 @@ const Expenses = ({ tripId }) => {
                     <TableBody>
                         {tableRowData.sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((expense) => (
                             <TableRow key={expense.id}>
-                                <TableCell align="center"> {expense.description}</TableCell>
+                                <TableCell aligna="center"> {expense.description}</TableCell>
                                 <TableCell align="center">${expense.amount}</TableCell>
                                 <TableCell align="center">{expense.category}</TableCell>
                                 <TableCell align="center">{expense.paidby}</TableCell>
