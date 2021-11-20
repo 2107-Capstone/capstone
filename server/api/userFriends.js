@@ -11,17 +11,12 @@ router.get('/', async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
-      const friends = await UserFriend.findAll({
+      const userFriends = await UserFriend.findAll({
         where: {
           userId: user.id
-        },
-        include: [
-          {
-            model: User, as: 'friend'
-          }
-        ]
+        }
       })
-      res.json(friends)
+      res.json(userFriends)
     } else {
       res.send('No current user found via token')
     }
@@ -30,25 +25,32 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:friendId', async (req, res, next) => {
+router.get('/:userFriendId', async (req, res, next) => {
   if(req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
   try {
-    const friend = await User.findOne({
+    const userFriend = await UserFriend.findOne({
       where: {
         id: req.params.friendId
-      },
-      include: [
-        {
-          mode: User, as: 'friend'
-        }
-      ]
+      }
     })
-    res.json(friend)
+    res.json(userFriend)
   } catch (err) {
     next(err)
   }
 })
-//don't think it makes sense to have post, put and delete routes for a friend
+
+router.post('/', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  try {
+    const _userFriend = await UserFriend.create(req.body)
+    res.json(_userFriend)
+  } catch (err) {
+    next(err)
+  }
+})

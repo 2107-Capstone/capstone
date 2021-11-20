@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import AddFriend from './AddFriend'
+
 
 export const AllFriends = ({auth, users, friends}) => {
     return(
@@ -16,22 +18,10 @@ export const AllFriends = ({auth, users, friends}) => {
                 </li>
             ))}
         </ul>
-        <h3>Add a New Friend</h3>
-        <input placeholder='search by username'></input>
-        <ul>
-            {users.map(user => (
-                <li>
-                    {user.username}
-                    <button>+</button>
-                </li>
-            ))}
-        </ul>
+        <AddFriend />
     </div>
     )
 }
-
-
-
 
 const mapState = state => {
     return {
