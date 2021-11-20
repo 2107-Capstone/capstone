@@ -6,6 +6,7 @@ import { useState } from 'react'
 export const AddFriend = ({auth, users, friends}) => {
     const [query, setQuery] = useState('')
     const clickAddFriend = () => alert('Friend request has been sent!')
+    const friendIds = new Set(friends.map(friend => friend.friendId))
     return(
     <div>
         <h3>Add a New Friend!!!</h3>
@@ -23,7 +24,7 @@ export const AddFriend = ({auth, users, friends}) => {
             .map(user => (
                 <li key={user.id} >
                     {user.username}
-                    <button onClick={clickAddFriend}>Add Friend</button>
+                    {friendIds.has(user.id)? <button disabled onClick={clickAddFriend}>✓ Friend</button>:<button onClick={clickAddFriend}>+ Friend</button>}
                 </li>
             ))}
         </ul>
