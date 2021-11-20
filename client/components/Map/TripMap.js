@@ -152,7 +152,7 @@ export default function TripMap ({tripId}) {
     if (!isLoaded) return "Loading...";
     return (
         <>
-                <Dialog open={open}>
+                <Dialog open={open} onClose={handleClose}>
                     <AddEvent trip={trip} handleClose={handleClose}/>
                 </Dialog>
             {
