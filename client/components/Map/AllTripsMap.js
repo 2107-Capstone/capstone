@@ -12,7 +12,10 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+////////////////////////////////////////////////////////////
 //TODO: have  map center on trip that's selected in accordion?
+////////////////////////////////////////////////////////////
 const mapStyles = {
     width: '60%',
     height: '60%',
