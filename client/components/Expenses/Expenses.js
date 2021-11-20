@@ -82,7 +82,7 @@ const Expenses = ({ tripId, trip }) => {
 
     return (
         <Container>
-            <Dialog open={open}>
+            <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
             <Button onClick={() => setOpen(true)}>Add Expense</Button>
