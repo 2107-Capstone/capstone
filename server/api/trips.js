@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { models: { User, Trip, UserTrip, Message }} = require('../db')
+const { models: { User, Trip, UserTrip, Message, Event }} = require('../db')
 
 module.exports = router
 
@@ -35,6 +35,9 @@ router.get('/', async (req, res, next) => {
                   model: User,
                   attributes: ['id', 'username']
                 }
+              },
+              {
+                model: Event
               }
             ]
           }
