@@ -90,7 +90,6 @@ async function seed() {
   ])
 
   const userFriends = await Promise.all([
-<<<<<<< HEAD
     UserFriend.create({ userId: andy.id, friendId: corinne.id, status: 'accepted' }),
     UserFriend.create({ userId: andy.id, friendId: jonathan.id, status: 'accepted' }),
     UserFriend.create({ userId: corinne.id, friendId: andy.id, status: 'accepted' }),
@@ -103,29 +102,14 @@ async function seed() {
     UserFriend.create({ userId: andy.id, friendId: jason.id, status: 'accepted' }),
     UserFriend.create({ userId: jonathan.id, friendId: jason.id, status: 'accepted' }),
     UserFriend.create({ userId: corinne.id, friendId: jason.id, status: 'accepted' }),
-=======
-    UserFriend.create({ userId: andy.id, friendId: corinne.id }),
-    UserFriend.create({ userId: andy.id, friendId: jonathan.id }),
-    UserFriend.create({ userId: corinne.id, friendId: andy.id }),
-    UserFriend.create({ userId: corinne.id, friendId: jonathan.id }),
-    UserFriend.create({ userId: jonathan.id, friendId: andy.id }),
-    UserFriend.create({ userId: jonathan.id, friendId: corinne.id }),
-    UserFriend.create({ userId: jason.id, friendId: andy.id }),
-    UserFriend.create({ userId: jason.id, friendId: corinne.id }),
-    UserFriend.create({ userId: jason.id, friendId: jonathan.id }),
-    UserFriend.create({ userId: andy.id, friendId: jason.id }),
-    UserFriend.create({ userId: jonathan.id, friendId: jason.id }),
-    UserFriend.create({ userId: corinne.id, friendId: jason.id }),
-    UserFriend.create({ userId: corinne.id, friendId: stanley.id }),
-    UserFriend.create({ userId: jonathan.id, friendId: stanley.id }),
-    UserFriend.create({ userId: jason.id, friendId: stanley.id }),
-    UserFriend.create({ userId: andy.id, friendId: stanley.id }),
-    UserFriend.create({ userId: stanley.id, friendId: corinne.id }),
-    UserFriend.create({ userId: stanley.id, friendId: jonathan.id }),
-    UserFriend.create({ userId: stanley.id, friendId: jason.id }),
-    UserFriend.create({ userId: stanley.id, friendId: andy.id }),
->>>>>>> main
-
+    UserFriend.create({ userId: corinne.id, friendId: stanley.id, status: 'accepted' }),
+    UserFriend.create({ userId: jonathan.id, friendId: stanley.id, status: 'accepted' }),
+    UserFriend.create({ userId: jason.id, friendId: stanley.id, status: 'accepted' }),
+    UserFriend.create({ userId: andy.id, friendId: stanley.id, status: 'accepted' }),
+    UserFriend.create({ userId: stanley.id, friendId: corinne.id, status: 'accepted' }),
+    UserFriend.create({ userId: stanley.id, friendId: jonathan.id, status: 'accepted' }),
+    UserFriend.create({ userId: stanley.id, friendId: jason.id, status: 'accepted' }),
+    UserFriend.create({ userId: stanley.id, friendId: andy.id, status: 'accepted' }),
   ])
   
   const messages = await Promise.all([
