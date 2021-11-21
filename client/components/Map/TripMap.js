@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector, useDispatch } from 'react-redux'
 import {parseISO, format } from 'date-fns';
-import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog, CardActionArea } from '@mui/material'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
-import AddEvent from './AddEvent'
+import EventForm from './EventForm'
 import CircularLoading from '../Loading/CircularLoading'
-import { updateUser } from '../../store';
+import { updateUser, deleteEvent } from '../../store';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
-import { position } from 'dom-helpers';
+
 //TODO: switch to using markers instead of events in events list?
 const mapStyles = {
     width: '60%',
@@ -151,6 +153,7 @@ export default function TripMap ({tripId, users}) {
     const [open, setOpen] = useState(false);
     const handleClose = () => {
         setOpen(false);
+        setEventToEdit({})
         setUpdate(prevUpdate => prevUpdate + Math.random())
     }
 
@@ -160,6 +163,7 @@ export default function TripMap ({tripId, users}) {
         // ev.stopPropagation()
         setSelected(marker);
     }
+    const [eventToEdit, setEventToEdit] = useState({});
 
     if (!trip || !isLoaded) return <CircularLoading />
     if (loadError) return "Error";
@@ -178,7 +182,7 @@ export default function TripMap ({tripId, users}) {
     return (
         <>
                 <Dialog open={open} onClose={handleClose}>
-                    <AddEvent trip={trip} handleClose={handleClose}/>
+                    <EventForm trip={trip} event={eventToEdit} handleClose={handleClose}/>
                 </Dialog>
                 {/* <Tooltip title='Add Event'> */}
                     <Button startIcon={<AddAlarmIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
@@ -230,8 +234,8 @@ export default function TripMap ({tripId, users}) {
             <Box sx={{maxHeight: 500, overflow: 'auto'}}>
                 {
                     events.map(event => (
-                        <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1, height: '20%' }}
-                            style={{}}
+                        <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
+                            
                         >
                             <CardContent sx={{ mb: 0}} onClick={() => handleClick(event.id)}>
                                 <Typography  gutterBottom>
@@ -241,6 +245,23 @@ export default function TripMap ({tripId, users}) {
                                     {format(parseISO(event.startTime), 'Pp')}
                                 </Typography>
                             </CardContent>
+                            <CardActionArea>
+                                <Tooltip title='Edit Event'>
+                                    <Button startIcon={<ModeEditIcon />} color='info' onClick={() => {
+                                        setEventToEdit(event);
+                                        setOpen(true);
+                                    }}/>
+                                </Tooltip>
+                                <Tooltip title='Delete Event'>
+                                    <Button startIcon={<DeleteForeverIcon />} color='error' onClick={async() => {
+                                        try{
+                                            await dispatch(deleteEvent(event.id))
+                                        } catch (err){
+                                            console.log(err)
+                                        }
+                                    }}/>
+                                </Tooltip>
+                            </CardActionArea>
                         </Card>
                     ))
                 }

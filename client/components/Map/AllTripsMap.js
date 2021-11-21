@@ -189,8 +189,8 @@ export default function AllTripsMap () {
                                 <AccordionDetails sx={{maxHeight: 500, overflow: 'auto'}}>
                                     {
                                         trip.trip.events.map(event => (
-                                            <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1, height: '15%' }}
-                                                style={{}}
+                                            <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
+                                                
                                             >
                                                 <CardContent sx={{ mb: 0}} onClick={() => handleClick(event.id)}>
                                                     <Typography  gutterBottom>
