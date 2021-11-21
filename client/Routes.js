@@ -6,7 +6,7 @@ import Home from './components/Home';
 import ChatRoom from './components/Chat/ChatRoom';
 import Trip from './components/Trip/Trip';
 import AllTripsMap from './components/Map/AllTripsMap';
-import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses, getCategories } from './store'
+import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses, getCategories, getUserFriends, getFriendsPending } from './store'
 import LoginForm from './components/User/LoginForm';
 import SignupForm from './components/User/SignupForm';
 
@@ -82,6 +82,8 @@ const mapDispatch = dispatch => {
       dispatch(getEvents())
       dispatch(getExpenses())
       dispatch(getCategories())
+      dispatch(getUserFriends())
+      dispatch(getFriendsPending())
     }
   }
 }

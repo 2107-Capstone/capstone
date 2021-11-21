@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
       const friends = await UserFriend.findAll({
         where: {
           userId: user.id,
-          status: 'accepted'
+          status: 'pending'
         },
         include: [
           {
@@ -40,7 +40,7 @@ router.get('/:friendId', async (req, res, next) => {
     const friend = await User.findOne({
       where: {
         id: req.params.friendId,
-        status: 'accepted'
+        status: 'pending'
       },
       include: [
         {

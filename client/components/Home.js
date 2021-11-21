@@ -41,7 +41,7 @@ export const Home = ({ auth, users, trips, messages, friends, events, expenses }
       <h2>Home page for logged in and non-logged in users</h2>
 
       <h3>Welcome, {user.username}</h3>
-      <h3>{user.username}'s Friends</h3>
+      <h3>Your Friends:</h3>
       <ul key={Math.random().toString(16)}>
         {
           friends.length === 0 ? <h5>No Friends :(</h5> :

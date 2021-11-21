@@ -17,6 +17,7 @@ async function seed() {
     User.create({ username: 'jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012', lat: 40.717989, lng: -73.951693, time: new Date()  }),
     User.create({ username: 'stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '4567890123'  }),
     User.create({ username: 'jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234'  }),
+    User.create({ username: 'prof', password: '123', firstName: 'Eric', lastName: 'Katz', email: 'eric@123.com', phoneNumber: '6789012345'  }),
   ])
   
   const [andy, corinne, jonathan, stanley, jason] = users.map(user => user)
@@ -77,18 +78,18 @@ async function seed() {
   ])
 
   const userFriends = await Promise.all([
-    UserFriend.create({ userId: andy.id, friendId: corinne.id }),
-    UserFriend.create({ userId: andy.id, friendId: jonathan.id }),
-    UserFriend.create({ userId: corinne.id, friendId: andy.id }),
-    UserFriend.create({ userId: corinne.id, friendId: jonathan.id }),
-    UserFriend.create({ userId: jonathan.id, friendId: andy.id }),
-    UserFriend.create({ userId: jonathan.id, friendId: corinne.id }),
-    UserFriend.create({ userId: jason.id, friendId: andy.id }),
-    UserFriend.create({ userId: jason.id, friendId: corinne.id }),
-    UserFriend.create({ userId: jason.id, friendId: jonathan.id }),
-    UserFriend.create({ userId: andy.id, friendId: jason.id }),
-    UserFriend.create({ userId: jonathan.id, friendId: jason.id }),
-    UserFriend.create({ userId: corinne.id, friendId: jason.id }),
+    UserFriend.create({ userId: andy.id, friendId: corinne.id, status: 'accepted' }),
+    UserFriend.create({ userId: andy.id, friendId: jonathan.id, status: 'accepted' }),
+    UserFriend.create({ userId: corinne.id, friendId: andy.id, status: 'accepted' }),
+    UserFriend.create({ userId: corinne.id, friendId: jonathan.id, status: 'accepted' }),
+    UserFriend.create({ userId: jonathan.id, friendId: andy.id, status: 'accepted' }),
+    UserFriend.create({ userId: jonathan.id, friendId: corinne.id, status: 'accepted' }),
+    UserFriend.create({ userId: jason.id, friendId: andy.id, status: 'accepted' }),
+    UserFriend.create({ userId: jason.id, friendId: corinne.id, status: 'accepted' }),
+    UserFriend.create({ userId: jason.id, friendId: jonathan.id, status: 'accepted' }),
+    UserFriend.create({ userId: andy.id, friendId: jason.id, status: 'accepted' }),
+    UserFriend.create({ userId: jonathan.id, friendId: jason.id, status: 'accepted' }),
+    UserFriend.create({ userId: corinne.id, friendId: jason.id, status: 'accepted' }),
 
   ])
   

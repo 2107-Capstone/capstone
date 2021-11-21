@@ -6,26 +6,26 @@ const TOKEN = 'token'
 /**
  * ACTION TYPES
  */
-const GET_FRIENDS = 'GET_FRIENDS'
+const GET_FRIENDSPENDING = 'GET_FRIENDSPENDING'
 
 /**
  * ACTION CREATORS
  */
-const _getFriends = friends => ({type: GET_FRIENDS, friends})
+const _getFriendsPending = friendsPending => ({type: GET_FRIENDSPENDING, friendsPending})
 
 /**
  * THUNK CREATORS
  */
-export const getFriends = () => {
+export const getFriendsPending = () => {
   const token = window.localStorage.getItem(TOKEN)
   
   return async (dispatch) => {
-    const { data: friends } = await axios.get(`/api/friends`, {
+    const { data: friendsPending } = await axios.get(`/api/friendsPending`, {
      headers: {
        authorization: token
      }
    });
-    dispatch(_getFriends(friends));
+    dispatch(_getFriendsPending(friendsPending));
   };
 }
 
@@ -34,8 +34,8 @@ export const getFriends = () => {
  */
 export default function(state = [], action) {
   switch (action.type) {
-    case GET_FRIENDS:
-      return action.friends
+    case GET_FRIENDSPENDING:
+      return action.friendsPending
     default:
       return state
   }
