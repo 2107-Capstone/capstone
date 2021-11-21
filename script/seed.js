@@ -98,6 +98,14 @@ async function seed() {
     UserFriend.create({ userId: andy.id, friendId: jason.id }),
     UserFriend.create({ userId: jonathan.id, friendId: jason.id }),
     UserFriend.create({ userId: corinne.id, friendId: jason.id }),
+    UserFriend.create({ userId: corinne.id, friendId: stanley.id }),
+    UserFriend.create({ userId: jonathan.id, friendId: stanley.id }),
+    UserFriend.create({ userId: jason.id, friendId: stanley.id }),
+    UserFriend.create({ userId: andy.id, friendId: stanley.id }),
+    UserFriend.create({ userId: stanley.id, friendId: corinne.id }),
+    UserFriend.create({ userId: stanley.id, friendId: jonathan.id }),
+    UserFriend.create({ userId: stanley.id, friendId: jason.id }),
+    UserFriend.create({ userId: stanley.id, friendId: andy.id }),
 
   ])
   
@@ -119,7 +127,9 @@ async function seed() {
     users: {
       andy,
       corinne,
-      jonathan
+      jonathan,
+      jason,
+      stanley
     },
     categories: {
       food_and_drink, 

@@ -73,16 +73,23 @@ const Expenses = ({ tripId, trip }) => {
     }
 
     ///////////////// LOADING ///////////////////
-    if (!tripExpenses) {
-        if (tripExpenses.length === 0) return <h1>No expenses</h1>
+    if (!tripId) {
+        return <h1>...Loading</h1>
     } else {
-        if (tripExpenses.length === 0) return <h1>...Loading</h1>
+        if (tripExpenses.length === 0) return (
+            <Container>
+                <Dialog open={open} onClose={handleClose}>
+                    <AddExpense trip={trip} handleClose={handleClose}/>
+                </Dialog>
+                <Button onClick={() => setOpen(true)}>Add Expense</Button>
+            </Container>
+        )
     }
 
 
     return (
         <Container>
-            <SettleUp expenses={tripExpenses} />
+            <SettleUp expenses={tripExpenses} users={trip.trip.userTrips} />
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
