@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
+import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
-
+import SettleUp from './SettleUp';
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";
 
@@ -73,16 +74,24 @@ const Expenses = ({ tripId, trip }) => {
     }
 
     ///////////////// LOADING ///////////////////
-    if (!tripExpenses) {
-        if (tripExpenses.length === 0) return <h1>No expenses</h1>
+    if (!tripId) {
+        return <CircularLoading />
     } else {
-        if (tripExpenses.length === 0) return <h1>...Loading</h1>
+        if (tripExpenses.length === 0) return (
+            <Container>
+                <Dialog open={open} onClose={handleClose}>
+                    <AddExpense trip={trip} handleClose={handleClose}/>
+                </Dialog>
+                <Button onClick={() => setOpen(true)}>Add Expense</Button>
+            </Container>
+        )
     }
 
 
     return (
         <Container>
-            <Dialog open={open}>
+            <SettleUp expenses={tripExpenses} users={trip.trip.userTrips} />
+            <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
             <Button onClick={() => setOpen(true)}>Add Expense</Button>

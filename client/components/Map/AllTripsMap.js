@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { connect, useSelector } from 'react-redux'
 import {parseISO, format } from 'date-fns';
+
+import CircularLoading from '../Loading/CircularLoading'
+
 import { Box, Grid, Button } from '@mui/material'
 
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
@@ -13,9 +16,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-////////////////////////////////////////////////////////////
-//TODO: have  map center on trip that's selected in accordion?
-////////////////////////////////////////////////////////////
+
 const mapStyles = {
     width: '60%',
     height: '60%',
@@ -31,6 +32,8 @@ const options = {
     zoomControl: true,
 };
 
+const tripZoom = 12;
+
 export default function AllTripsMap () {
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA'
@@ -39,29 +42,21 @@ export default function AllTripsMap () {
     const auth = useSelector(state => state.auth);
     
     let trips = useSelector(state => state.trips);
-    // tripIdsMap = trips.map(trip => trip.tripId);
-    // let events = useSelector(state => state.events);
-    
-    // tripIdsMap.forEach((id, idx) => {
-    //     events.forEach(ev => {
-    //         ev.tripId === id ? ev.group = idx : ''
-    //         })
-    //     })
-    // }
-    // console.log('EVENTS AFTER IDS', events)
 
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
     const [selected, setSelected] = useState(null);
     const [update, setUpdate] = useState(0);
-    const mapRef = React.useRef();
-    const onMapLoad = React.useCallback((map) => {
+    
+
+    const mapRef = useRef();
+    const onMapLoad = useCallback((map) => {
         mapRef.current = map;
     }, []);
 
     const panTo = React.useCallback(({ lat, lng }) => {
         mapRef.current.panTo({ lat, lng });
-        mapRef.current.setZoom(12);
+        mapRef.current.setZoom(tripZoom);
     }, []);
 
     useEffect(() => {
@@ -156,9 +151,11 @@ export default function AllTripsMap () {
         // ev.stopPropagation()
         setSelected(marker);
     }
-    // if (!trip) return '...loading'
+    console.log(trips)
+    const [selectedTrip, setSelectedTrip] = useState({id: 0, lat: 34.456748, lng: -75.462405});
+
     if (loadError) return "Error";
-    if (!isLoaded) return "Loading...";
+    if (!isLoaded || !trips) return <CircularLoading />
     return (
         <div>
             <Button variant='outlined' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}>Refresh Event Markers</Button>
@@ -169,11 +166,11 @@ export default function AllTripsMap () {
                         id='map'
                         options={options}
                         onLoad={onMapLoad}
-                        zoom={10}
+                        zoom={selectedTrip.id === 0 ? 2 : tripZoom}
                         // zoom={tripId ? 8 : 3}
                         mapContainerStyle={mapContainerStyle}
                         style={mapStyles}
-                        center={{ lat: +trips[0].trip.lat, lng: +trips[0].trip.lng }}
+                        center={{ lat: +selectedTrip.lat, lng: +selectedTrip.lng }}
                     >
                         {displayMarkers()}
                         {displayTrackingMarkers()}
@@ -205,8 +202,9 @@ export default function AllTripsMap () {
                         trips.map(trip => (
                             <Accordion sx={{minWidth: '100%'}} key={trip.id + Math.random().toFixed(2)}>
                                 <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                id="trip-header"
+                                    expandIcon={<ExpandMoreIcon />}
+                                    id="trip-header"
+                                    onClick={() => setSelectedTrip(trip.trip)}
                                 >
                                 <Typography>{trip.trip.name}</Typography>
                                 </AccordionSummary>

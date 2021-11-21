@@ -5,7 +5,9 @@ import { Box, Grid, Button, TextField, Typography, Dialog } from '@mui/material'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+
 import AddEvent from './AddEvent'
+import CircularLoading from '../Loading/CircularLoading'
 
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 //TODO: switch to using markers instead of events in events list?
@@ -23,6 +25,7 @@ const options = {
     disableDefaultUI: true,
     zoomControl: true,
 };
+const tripZoom = 12;
 
 export default function TripMap ({tripId}) {
     const { isLoaded, loadError } = useLoadScript({
@@ -34,7 +37,6 @@ export default function TripMap ({tripId}) {
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
     let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
     
-    console.log('EVENTS AFTER IDS', events)
 
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
@@ -47,7 +49,7 @@ export default function TripMap ({tripId}) {
 
     const panTo = React.useCallback(({ lat, lng }) => {
         mapRef.current.panTo({ lat, lng });
-        mapRef.current.setZoom(12);
+        mapRef.current.setZoom(tripZoom);
     }, []);
 
     useEffect(() => {
@@ -132,7 +134,6 @@ export default function TripMap ({tripId}) {
           </Button>
         );
       }
-  console.log(selected)
 
     const [open, setOpen] = useState(false);
     const handleClose = () => {
@@ -147,21 +148,30 @@ export default function TripMap ({tripId}) {
         setSelected(marker);
     }
 
-    if (!trip) return '...loading'
+    if (!trip || !isLoaded) return <CircularLoading />
     if (loadError) return "Error";
-    if (!isLoaded) return "Loading...";
+    
+    if (trip && events.length === 0) return (
+        <>
+            <Dialog open={open} onClose={handleClose}>
+                <AddEvent trip={trip} handleClose={handleClose}/>
+            </Dialog>
+            <Button variant='contained' onClick={() => setOpen(true)}>
+                Add Event
+            </Button>
+        </>
+    )
+    
     return (
         <>
-                <Dialog open={open}>
+                <Dialog open={open} onClose={handleClose}>
                     <AddEvent trip={trip} handleClose={handleClose}/>
                 </Dialog>
-            {
-                tripId ? 
+            
                 <Button variant='contained' onClick={() => setOpen(true)}>
-                        Add Event
-                    </Button>
-                : ''
-            }
+                    Add Event
+                </Button>
+             
                 <Button variant='outlined' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}>Refresh Event Markers</Button>
                 <Locate panTo={panTo} />
         <div style={{display: 'flex'}}>
@@ -170,7 +180,7 @@ export default function TripMap ({tripId}) {
                     id='map'
                     options={options}
                     onLoad={onMapLoad}
-                    zoom={10}
+                    zoom={tripZoom}
                     // zoom={tripId ? 8 : 3}
                     mapContainerStyle={mapContainerStyle}
                     style={mapStyles}
