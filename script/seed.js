@@ -26,9 +26,10 @@ async function seed() {
     Trip.create({ name: 'Trip to Charlotte', location: 'Charlotte North Carolina', description: 'A group trip to Charlotte!', startTime: '2021-11-01 12:00:00', endTime: '2021-11-03 23:59:59', isOpen: false, lat: 35.227085, lng:  -80.843124 }),
     Trip.create({ name: 'Trip to Miami', location: 'Miami Florida', description: 'A group trip to Miami!', startTime: '2021-11-02 12:00:00', endTime: '2021-11-04 23:59:59', isOpen: false , lat: 25.761681, lng: -80.191788 }),
     Trip.create({ name: 'Trip to Paris', location: 'Paris France', description: 'A group trip to Paris!', startTime: '2021-12-11 12:00:00', endTime: '2021-12-18 23:59:59', isOpen: true, lat: 48.87531999859082, lng: 2.3302103060471153  }),
+    Trip.create({ name: 'Friday night!', location: 'New York New York', description: 'Weekend hangout with the gang in the new year', startTime: '2022-01-07 20:00:00', endTime: '2021-01-08 05:00:00', isOpen: true, lat: 40.712776, lng :-74.005974 }),
   ])
   
-  const [nyc, charlotte, miami, paris] = trips.map(trip => trip)
+  const [nyc, charlotte, miami, paris, friday] = trips.map(trip => trip)
   
   const categories = await Promise.all([
     Category.create({ name: 'food and drink' }),
@@ -49,6 +50,9 @@ async function seed() {
     Event.create({ name: 'Party', location: 'Mama Tried', description: 'cocktails and pool', startTime: '2021-11-04 20:00:00', endTime: '2021-11-05 03:00:00', tripId: miami.id, place_id: 'ChIJL7nwMRi32YgRPgB_p4PMTXk', lat: 25.7753682, lng: -80.1901163 }),
     Event.create({ name: 'Dinner', location: 'Comice', description: 'Dinner at Comice', startTime: '2021-12-12 20:00:00', endTime: '2021-12-12 22:59:59', tripId: paris.id, place_id: 'ChIJAc56Jah65kcRPUvIVLIaIjI', lat: 48.8494621, lng: 2.2760438 }),
     Event.create({ name: 'Food', location: 'Tamara', description: '', startTime: '2021-12-13 20:00:00', endTime: '2021-12-13 22:59:59', tripId: paris.id, place_id: 'ChIJlWVr9v9v5kcR2ecnPPpaWF8', lat: 48.8642796, lng: 2.336053 }),
+    Event.create({ name: 'Dinner', location: 'Francie', description: "start the evening with dinner", startTime: '2022-01-07 20:00:00', endTime: '2022-01-07 22:30:00', tripId: friday.id, place_id: 'ChIJ35V_tZlbwokRzolpCln-mG4', lat: 40.710268, lng: -73.9639045 }),
+    Event.create({ name: 'Drinks', location: 'Pokito', description: 'cocktails', startTime: '2022-01-07 23:00:00', endTime: '2022-01-08 01:00:00', tripId: friday.id, place_id: 'ChIJ3xcwmt9bwokRegnPhKtAL7U', lat: 40.71161300000001, lng: -73.9618029 }),
+    Event.create({ name: 'Dancing', location: 'Moodring', description: 'cool dj and dancing yay', startTime: '2022-01-08 01:30:00', endTime: '2022-01-08 04:00:00', tripId: friday.id, place_id: 'ChIJp5MjfgVcwokREwMdmFvtrQ8', lat: 40.6978453, lng: -73.92699999999999 }),
   ])
 
   const expenses = await Promise.all([
@@ -74,6 +78,11 @@ async function seed() {
     UserTrip.create({ userId: jonathan.id, tripId: miami.id }),
     UserTrip.create({ userId: jonathan.id, tripId: paris.id }),
     UserTrip.create({ userId: jason.id, tripId: paris.id }),
+    UserTrip.create({ userId: jason.id, tripId: friday.id }),
+    UserTrip.create({ userId: jonathan.id, tripId: friday.id }),
+    UserTrip.create({ userId: corinne.id, tripId: friday.id }),
+    UserTrip.create({ userId: andy.id, tripId: friday.id }),
+    UserTrip.create({ userId: stanley.id, tripId: friday.id }),
   ])
 
   const userFriends = await Promise.all([
@@ -125,7 +134,8 @@ async function seed() {
       nyc,
       charlotte,
       miami,
-      paris
+      paris,
+      friday
     },
     userTrips,
     userFriends
