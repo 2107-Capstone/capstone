@@ -8,8 +8,11 @@ import SettleUp from './SettleUp';
 import { format, parseISO } from "date-fns";
 
 ////////////////// MATERIAL UI /////////////////
-import { Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from "@mui/material";
-import expenses from "../../store/expenses";
+import { Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tooltip } from "@mui/material";
+
+import { FaFileInvoiceDollar } from 'react-icons/fa'
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 
 const Expenses = ({ tripId, trip }) => {
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId));
@@ -95,10 +98,13 @@ const Expenses = ({ tripId, trip }) => {
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
-            <Button onClick={() => setOpen(true)}>Add Expense</Button>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{border: '1px solid darkgrey'}}>
                 <Table aria-label="trip expenses table">
                     <TableHead>
+                        <Tooltip title='Add Expense'>
+                            {/* <AddBoxIcon onClick={() => setOpen(true)} sx={{color: 'green'}}/> */}
+                            <Button sx={{ml: 1, mt: 1, color: 'green'}}  fontSize='large' startIcon={<FaFileInvoiceDollar />}  onClick={() => setOpen(true)} />
+                        </Tooltip>
                         <TableRow>
                             <TableCell
                                 align="center"

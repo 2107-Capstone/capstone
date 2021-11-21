@@ -27,7 +27,7 @@ async function seed() {
     Trip.create({ name: 'Trip to Miami', location: 'Miami Florida', description: 'A group trip to Miami!', startTime: '2021-11-02 12:00:00', endTime: '2021-11-04 23:59:59', isOpen: false , lat: 25.761681, lng: -80.191788 }),
     Trip.create({ name: 'Trip to Paris', location: 'Paris France', description: 'A group trip to Paris!', startTime: '2021-12-11 12:00:00', endTime: '2021-12-18 23:59:59', isOpen: true, lat: 48.87531999859082, lng: 2.3302103060471153  }),
     Trip.create({ name: 'Friday night!', location: 'New York New York', description: 'Weekend hangout with the gang in the new year', startTime: '2022-01-07 20:00:00', endTime: '2021-01-08 05:00:00', isOpen: true, lat: 40.712776, lng :-74.005974 }),
-    Trip.create({ name: 'NYE', location: 'New York New York', description: 'New Years Eve', startTime: '2021-12-31 20:00:00', endTime: '2022-01-01 03:00:00', isOpen: true, lat: 40.712776, lng :-74.005974 }),
+    Trip.create({ name: 'NYE', location: 'New York New York', description: 'New Years Eve', startTime: '2021-12-31 20:00:00', endTime: '2022-01-01 03:00:00', isOpen: true, lat: 40.712776, lng :-74.005974 })
   ])
   
   const [nyc, charlotte, miami, paris, friday, nye] = trips.map(trip => trip)

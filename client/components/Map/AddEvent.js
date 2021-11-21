@@ -7,6 +7,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Box, Grid, Button, TextField } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
 
 const AddEvent = ({trip, handleClose}) => {      
 //ADD EVENT
@@ -58,6 +59,7 @@ const AddEvent = ({trip, handleClose}) => {
     
     return (
         <>
+            <CloseIcon onClick={handleClose}/>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ m: 3 }} >
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>

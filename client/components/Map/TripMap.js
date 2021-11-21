@@ -10,7 +10,7 @@ import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 import AddEvent from './AddEvent'
 import CircularLoading from '../Loading/CircularLoading'
 import { updateUser } from '../../store';
-
+import PersonPinIcon from '@mui/icons-material/PersonPin';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import { position } from 'dom-helpers';
 //TODO: switch to using markers instead of events in events list?
@@ -70,7 +70,7 @@ export default function TripMap ({tripId, users}) {
         //   () => null
         // );
         events.forEach(event => {
-            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}` , location: event.location, url: `http://labs.google.com/ridefinder/images/mm_20_red.png` }])
+            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}` , location: event.location, url: `/pin-10.svg` }])
         });
         users.forEach(user => {
             setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: user.user.time, key: user.userId + Math.random().toString(16), id: user.userId, lat: +user.user.lat, lng: +user.user.lng }])
@@ -108,12 +108,17 @@ export default function TripMap ({tripId, users}) {
                     name={marker.name}
                     onClick={() => {setSelected(marker)}}
                     icon={{
-                        // url: `http://google.com/mapfiles/ms/micons/man.png`
-                        url: `http://labs.google.com/mapfiles/kml/pal4/icon20.png`,
-                        // origin: new window.google.maps.Point(0, 0),
-                        // anchor: new window.google.maps.Point(10, 10),
-                        // scaledSize: new window.google.maps.Size(20, 20),
+                        url: '/search-people.svg',
+                        color: 'green'
                     }}
+                    
+                    // icon={{
+                    //     // url: `http://google.com/mapfiles/ms/micons/man.png`
+                    //     url: `http://labs.google.com/mapfiles/kml/pal4/icon20.png`,
+                    //     // origin: new window.google.maps.Point(0, 0),
+                    //     // anchor: new window.google.maps.Point(10, 10),
+                    //     // scaledSize: new window.google.maps.Size(20, 20),
+                    // }}
                 />
             )
         })

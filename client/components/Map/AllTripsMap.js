@@ -4,7 +4,7 @@ import {parseISO, format } from 'date-fns';
 
 import CircularLoading from '../Loading/CircularLoading'
 
-import { Box, Grid, Button, Tooltip } from '@mui/material'
+import { Box, Grid, Button, Tooltip, Divider } from '@mui/material'
 
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import Accordion from '@mui/material/Accordion';
@@ -16,6 +16,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RefreshIcon from '@mui/icons-material/Refresh';
+
+import FaMapMarkerAlt from 'react-icons/fa'
 import { getTrips } from '../../store';
 
 const mapStyles = {
@@ -64,7 +66,6 @@ export default function AllTripsMap () {
         // dispatch(getTrips());
         setMarkers(prevMarkers => []);
         trips.forEach((trip, idx) => {
-            console.log(trip.trip.name, 'idx: ', idx)
             trip.trip.events.map(event => {
                 setMarkers(prevMarkers => [...prevMarkers, 
                     { 
@@ -74,41 +75,32 @@ export default function AllTripsMap () {
                         lat: +event.lat, 
                         lng: +event.lng, 
                         name: `${event.name} - ${event.location}`, 
+                        trip: trip.trip.name,
                         location: event.location, 
-                        url: idx > 9 ? `http://labs.google.com/ridefinder/images/mm_20_${urls[idx % 9]}.png` : `http://labs.google.com/ridefinder/images/mm_20_${urls[idx]}.png` 
+                        // url: idx > 9 ? `http://labs.google.com/ridefinder/images/mm_20_${urls[idx % 9]}.png` : `http://labs.google.com/ridefinder/images/mm_20_${urls[idx]}.png` 
+                        url: idx > 10 ? `/pin-${idx % 10}.svg` : `/pin-${idx}.svg`
                     }]);
-                trip.color = idx > 9 ? urls[idx % 9] : urls[idx]
+                trip.color = idx > 10 ? colors[idx % 10] : colors[idx]
             })
         });
     } ,[update])
     
 //TODO: Add form to add new event after clicking on map and getting lat/lng
 
-    // const urls = {
-    //     0: `http://labs.google.com/ridefinder/images/mm_20_green.png`,
-    //     1: `http://labs.google.com/ridefinder/images/mm_20_blue.png`,
-    //     2: `http://labs.google.com/ridefinder/images/mm_20_purple.png`,
-    //     3: `http://labs.google.com/ridefinder/images/mm_20_yellow.png`,
-    //     4: `http://labs.google.com/ridefinder/images/mm_20_orange.png`,
-    //     5: `http://labs.google.com/ridefinder/images/mm_20_white.png`,
-    //     6: `http://labs.google.com/ridefinder/images/mm_20_black.png`,
-    //     7: `http://labs.google.com/ridefinder/images/mm_20_gray.png`,
-    //     8: `http://labs.google.com/ridefinder/images/mm_20_brown.png`,
-    //     9: `http://labs.google.com/ridefinder/images/mm_20_red.png`,
-    // }
-    const urls = {
-        0: 'green',
-        1: `blue`,
-        2: 'purple',
-        3: `yellow`,
-        4: `orange`,
-        5: `white`,
-        6: `black`,
-        7: `gray`,
-        8: `brown`,
-        9: `red`,
+    const colors = {
+        0: '#F70909',
+        1: `#3470E7`,
+        2: '#F78E09',
+        3: `#077D2C`,
+        4: `#6C3AFC`,
+        5: `#EC5B02`,
+        6: `#0DEDFF`,
+        7: `#04B93D`,
+        8: `#C4BB00`,
+        9: `#363B3D`,
+        10: `#180195`,
     }
-
+    
     const displayMarkers = () => {
      console.log('markers', markers)
         return markers.map((marker) => {
@@ -118,7 +110,7 @@ export default function AllTripsMap () {
                     id={marker.id} 
                     position={{lat: marker.lat, lng: marker.lng}}
                     name={marker.name}
-                    icon={{ url: marker.url }}
+                    icon={{ url: marker.url}}
                     onClick={() => {setSelected(marker)}}
                 />
             )
@@ -165,6 +157,10 @@ export default function AllTripsMap () {
                         >
                             <div style={{margin: '0 1rem .5rem 1rem'}}>
                                 <Typography  variant={'subtitle1'}>
+                                    {selected.trip}
+                                </Typography>
+                                <Divider />
+                                <Typography  variant={'subtitle2'}>
                                     {selected.name}
                                 </Typography>
                                 <Typography  variant={'caption'}>
@@ -184,7 +180,7 @@ export default function AllTripsMap () {
                                     expandIcon={<ExpandMoreIcon sx={{color: trip.color}}/>}
                                     id="trip-header"
                                     onClick={() => setSelectedTrip(trip.trip)}
-                                    // sx={{border: `3px solid ${trip.color}`}}
+                                    sx={{borderRight: `4px solid ${trip.color}`}}
                                 >
                                     <Typography>
                                         {trip.trip.name}

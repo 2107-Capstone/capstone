@@ -9,7 +9,7 @@ import DateTimePicker from '@mui/lab/DateTimePicker';
 import DatePicker from '@mui/lab/DatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Box, Grid, Button, TextField, FormControl, InputLabel, Select, Menu, MenuItem } from '@mui/material'
-
+import CloseIcon from '@mui/icons-material/Close';
 const AddExpense = ({trip, handleClose}) => {      
     const dispatch = useDispatch()
     const categories = useSelector(state => state.categories)
@@ -51,6 +51,7 @@ const AddExpense = ({trip, handleClose}) => {
     
     return (
         <>
+            <CloseIcon onClick={handleClose}/>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ m: 3 }} >
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
