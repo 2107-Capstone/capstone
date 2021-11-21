@@ -181,10 +181,10 @@ export default function AllTripsMap () {
                         trips.map(trip => (
                             <Accordion sx={{minWidth: '100%'}} key={trip.id + Math.random().toFixed(2)}>
                                 <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
+                                    expandIcon={<ExpandMoreIcon sx={{color: trip.color}}/>}
                                     id="trip-header"
                                     onClick={() => setSelectedTrip(trip.trip)}
-                                    sx={{border: `3px solid ${trip.color}`}}
+                                    // sx={{border: `3px solid ${trip.color}`}}
                                 >
                                     <Typography>
                                         {trip.trip.name}
