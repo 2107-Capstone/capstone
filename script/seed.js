@@ -12,11 +12,11 @@ async function seed() {
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ username: 'andy', password: '123', firstName: 'Andy', lastName: 'Gao', email: 'andy@123.com', phoneNumber: '1234567890', lat: 40.699251, lng: -73.953755, time: new Date() }),
-    User.create({ username: 'corinne', password: '123', firstName: 'Corinne', lastName: 'Tinacci', email: 'corinne@123.com', phoneNumber: '2345678901'  }),
-    User.create({ username: 'jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012', lat: 40.717989, lng: -73.951693, time: new Date()  }),
-    User.create({ username: 'stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '4567890123'  }),
-    User.create({ username: 'jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234'  }),
+    User.create({ username: 'Andy', password: '123', firstName: 'Andy', lastName: 'Gao', email: 'andy@123.com', phoneNumber: '1234567890', lat: 40.699251, lng: -73.953755, time: new Date() }),
+    User.create({ username: 'Corinne', password: '123', firstName: 'Corinne', lastName: 'Tinacci', email: 'corinne@123.com', phoneNumber: '2345678901'  }),
+    User.create({ username: 'Jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012', lat: 40.717989, lng: -73.951693, time: new Date()  }),
+    User.create({ username: 'Stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '4567890123'  }),
+    User.create({ username: 'Jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234'  }),
   ])
   
   const [andy, corinne, jonathan, stanley, jason] = users.map(user => user)
@@ -33,10 +33,10 @@ async function seed() {
   const [nyc, charlotte, miami, paris, friday, nye] = trips.map(trip => trip)
   
   const categories = await Promise.all([
-    Category.create({ name: 'food and drink' }),
-    Category.create({ name: 'entertainment' }),
-    Category.create({ name: 'transportation' }),
-    Category.create({ name: 'other' }),
+    Category.create({ name: 'Food and Drink' }),
+    Category.create({ name: 'Entertainment' }),
+    Category.create({ name: 'Transportation' }),
+    Category.create({ name: 'Other' }),
   ])
 
   const [food_and_drink, entertainment, transportation, other] = categories.map(category => category)

@@ -6,6 +6,7 @@ import { addExpense } from '../../store';
 ////////////////// MATERIAL UI /////////////////
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
+import DatePicker from '@mui/lab/DatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Box, Grid, Button, TextField, FormControl, InputLabel, Select, Menu, MenuItem } from '@mui/material'
 
@@ -114,7 +115,7 @@ const AddExpense = ({trip, handleClose}) => {
                     </Grid>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Grid item xs={12} sm={6} sx={{mt: 2, mb: 2}}>
-                            <DateTimePicker
+                            <DatePicker
                                 label="Date Paid"
                                 name='datePaid'
                                 value={datePaid}
