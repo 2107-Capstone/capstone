@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import AddExpense from "./AddExpense";
-
+import SettleUp from './SettleUp';
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";
 
@@ -82,6 +82,7 @@ const Expenses = ({ tripId, trip }) => {
 
     return (
         <Container>
+            <SettleUp expenses={tripExpenses} />
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>

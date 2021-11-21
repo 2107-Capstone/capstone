@@ -169,7 +169,7 @@ export default function AllTripsMap () {
                         id='map'
                         options={options}
                         onLoad={onMapLoad}
-                        zoom={10}
+                        zoom={2}
                         // zoom={tripId ? 8 : 3}
                         mapContainerStyle={mapContainerStyle}
                         style={mapStyles}
