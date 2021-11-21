@@ -11,6 +11,7 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
             userId: auth.id,
             friendId: friendId
         })
+        alert('Friend request has been sent!')
     }
     const friendIds = new Set(friends.map(friend => friend.friendId))
     const friendPendingIds = new Set(friendsPending.map(friendPending => friendPending.friendId))
