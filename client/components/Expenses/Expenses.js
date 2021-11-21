@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
+import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
 import SettleUp from './SettleUp';
 /////////////// DATE FORMATTER  ////////////////
@@ -74,7 +75,7 @@ const Expenses = ({ tripId, trip }) => {
 
     ///////////////// LOADING ///////////////////
     if (!tripId) {
-        return <h1>...Loading</h1>
+        return <CircularLoading />
     } else {
         if (tripExpenses.length === 0) return (
             <Container>

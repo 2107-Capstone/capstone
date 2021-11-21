@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+import CircularLoading from '../Loading/CircularLoading'
 import TripMap from '../Map/TripMap'
 import { Participants, Events } from './tripInfo'
 import Expenses from '../Expenses/Expenses'
@@ -17,7 +17,7 @@ const Trip = (props) => {
     // console.log('TRIPPPPPPPPPPPPP', trip)           
 
     
-    if (!trip) return '...loading'
+    if (!trip) return <CircularLoading />
 
     return (
         <>

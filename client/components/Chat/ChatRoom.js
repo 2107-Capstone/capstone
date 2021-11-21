@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { format, formatISO, parseISO, isAfter } from "date-fns";
+import { Link } from "react-router-dom";
 
+import { createMessage } from "../../store";
 import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
-import { createMessage } from "../../store";
-import { Link } from "react-router-dom";
+import CircularLoading from '../Loading/CircularLoading'
+
 const ChatRoom = (props) => {
   const { id } = props.match.params;
 
@@ -57,8 +59,6 @@ const ChatRoom = (props) => {
     ))
   }
 
-  
-
   const handleNewMessageChange = (event) => {
     setNewMessage(event.target.value);
   };
@@ -69,7 +69,7 @@ const ChatRoom = (props) => {
     setNewMessage("");
   };
 
-  if (storeMessages.length === 0 || !trip) return '...loading'
+  if (!trip) return <CircularLoading />
 
   return (
     <div style={styles.chatRoomContainer}>

@@ -45,7 +45,7 @@ const SettleUp = ({expenses, users}) => {
             </Typography>
             {
                 returnString.map(string => (
-                    <Typography>
+                    <Typography key={Math.random().toString(16)}>
                         {string}
                     </Typography>
                 ))
