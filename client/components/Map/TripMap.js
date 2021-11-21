@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import {parseISO, format } from 'date-fns';
-import { Box, Grid, Button, TextField, Typography, Dialog } from '@mui/material'
+import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-
+import RefreshIcon from '@mui/icons-material/Refresh';
+import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 import AddEvent from './AddEvent'
 import CircularLoading from '../Loading/CircularLoading'
 
@@ -156,7 +157,7 @@ export default function TripMap ({tripId}) {
             <Dialog open={open} onClose={handleClose}>
                 <AddEvent trip={trip} handleClose={handleClose}/>
             </Dialog>
-            <Button variant='contained' onClick={() => setOpen(true)}>
+            <Button startIcon={<AddAlarmIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
                 Add Event
             </Button>
         </>
@@ -167,12 +168,15 @@ export default function TripMap ({tripId}) {
                 <Dialog open={open} onClose={handleClose}>
                     <AddEvent trip={trip} handleClose={handleClose}/>
                 </Dialog>
-            
-                <Button variant='contained' onClick={() => setOpen(true)}>
-                    Add Event
-                </Button>
-             
-                <Button variant='outlined' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}>Refresh Event Markers</Button>
+                {/* <Tooltip title='Add Event'> */}
+                    <Button startIcon={<AddAlarmIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
+                        Add Event
+                    </Button>
+                {/* </Tooltip> */}
+                <Tooltip title='Refresh Event Markers'>
+                    <Button startIcon={<RefreshIcon />} variant='contained' color='info' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}/>
+                </Tooltip>
+                
                 <Locate panTo={panTo} />
         <div style={{display: 'flex'}}>
             <div>
