@@ -37,7 +37,7 @@ const Trip = (props) => {
             {/* <Link key={trip.tripId + Math.random().toString(16)} to={`/trip/${trip.tripId}/chat`}>
                 Chat
             </Link> */}
-            <TripMap tripId={id} />
+            <TripMap tripId={id} users={trip.trip.userTrips}/>
         </>
     )
 }

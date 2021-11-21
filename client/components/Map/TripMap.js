@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { connect, useSelector } from 'react-redux'
+import { connect, useSelector, useDispatch } from 'react-redux'
 import {parseISO, format } from 'date-fns';
 import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
 import Card from '@mui/material/Card';
@@ -9,8 +9,10 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 import AddEvent from './AddEvent'
 import CircularLoading from '../Loading/CircularLoading'
+import { updateUser } from '../../store';
 
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
+import { position } from 'dom-helpers';
 //TODO: switch to using markers instead of events in events list?
 const mapStyles = {
     width: '60%',
@@ -28,11 +30,11 @@ const options = {
 };
 const tripZoom = 12;
 
-export default function TripMap ({tripId}) {
+export default function TripMap ({tripId, users}) {
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA'
     });
-
+    const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
     
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
@@ -55,26 +57,30 @@ export default function TripMap ({tripId}) {
 
     useEffect(() => {
         setMarkers(prevMarkers => []);
+        setTrackingMarkers(prevTrackingMarkers => []);
+        // navigator.geolocation.getCurrentPosition(
+        //     async (position) => {
+        //       dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
+        //       setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
+        //     panTo({
+        //       lat: position.coords.latitude,
+        //       lng: position.coords.longitude,
+        //   });
+        //   },
+        //   () => null
+        // );
         events.forEach(event => {
-            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}` , location: event.location, url: urls[9] }])
+            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}` , location: event.location, url: `http://labs.google.com/ridefinder/images/mm_20_red.png` }])
         });
+        users.forEach(user => {
+            setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: user.user.time, key: user.userId + Math.random().toString(16), id: user.userId, lat: +user.user.lat, lng: +user.user.lng }])
+        })
 //TODO: set tracking markers for users in this trip
     } ,[tripId, update])
     
 //TODO: Add form to add new event after clicking on map and getting lat/lng
 
-    const urls = {
-        0: `http://labs.google.com/ridefinder/images/mm_20_green.png`,
-        1: `http://labs.google.com/ridefinder/images/mm_20_blue.png`,
-        2: `http://labs.google.com/ridefinder/images/mm_20_purple.png`,
-        3: `http://labs.google.com/ridefinder/images/mm_20_yellow.png`,
-        4: `http://labs.google.com/ridefinder/images/mm_20_orange.png`,
-        5: `http://labs.google.com/ridefinder/images/mm_20_white.png`,
-        6: `http://labs.google.com/ridefinder/images/mm_20_black.png`,
-        7: `http://labs.google.com/ridefinder/images/mm_20_gray.png`,
-        8: `http://labs.google.com/ridefinder/images/mm_20_brown.png`,
-        9: `http://labs.google.com/ridefinder/images/mm_20_red.png`,
-    }
+
 
     const displayMarkers = () => {
      console.log('markers', markers)
@@ -102,7 +108,8 @@ export default function TripMap ({tripId}) {
                     name={marker.name}
                     onClick={() => {setSelected(marker)}}
                     icon={{
-                        url: `http://labs.google.com/mapfiles/kml/pal3/icon32.png`,
+                        // url: `http://google.com/mapfiles/ms/micons/man.png`
+                        url: `http://labs.google.com/mapfiles/kml/pal4/icon20.png`,
                         // origin: new window.google.maps.Point(0, 0),
                         // anchor: new window.google.maps.Point(10, 10),
                         // scaledSize: new window.google.maps.Size(20, 20),
@@ -116,12 +123,12 @@ export default function TripMap ({tripId}) {
           <Button
             variant='outlined'
             className="locate"
+            //TODO: USE WATCH POSITION AND SET TIMEOUT LATER TO CONTINUALLY UPDATE POSITION
             onClick={() => {
-//TODO: USE WATCH POSITION AND SET TIMEOUT LATER TO CONTINUALLY UPDATE POSITION
               navigator.geolocation.getCurrentPosition(
-                (position) => {
+                  async (position) => {
+                    await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
                     setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
-//TODO: UPDATE USER WITH NEW COORDINATES
                   panTo({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -131,7 +138,7 @@ export default function TripMap ({tripId}) {
               );
             }}
           >
-            Where Am I?
+            Set My Location
           </Button>
         );
       }
