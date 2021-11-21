@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
-import { connect, useSelector } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import {parseISO, format } from 'date-fns';
 
 import CircularLoading from '../Loading/CircularLoading'
 
-import { Box, Grid, Button } from '@mui/material'
+import { Box, Grid, Button, Tooltip } from '@mui/material'
 
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import Accordion from '@mui/material/Accordion';
@@ -15,7 +15,8 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { getTrips } from '../../store';
 
 const mapStyles = {
     width: '60%',
@@ -38,7 +39,7 @@ export default function AllTripsMap () {
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA'
     });
-
+    const dispatch = useDispatch()
     const auth = useSelector(state => state.auth);
     
     let trips = useSelector(state => state.trips);
@@ -60,28 +61,52 @@ export default function AllTripsMap () {
     }, []);
 
     useEffect(() => {
+        // dispatch(getTrips());
         setMarkers(prevMarkers => []);
         trips.forEach((trip, idx) => {
+            console.log(trip.trip.name, 'idx: ', idx)
             trip.trip.events.map(event => {
-                setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}` , location: event.location, url: idx > 9 ? urls[idx % 9] : urls[idx]}])
+                setMarkers(prevMarkers => [...prevMarkers, 
+                    { 
+                        time: format(parseISO(event.startTime), 'Pp'), 
+                        key: event.id + Math.random().toString(16), 
+                        id: event.id, 
+                        lat: +event.lat, 
+                        lng: +event.lng, 
+                        name: `${event.name} - ${event.location}`, 
+                        location: event.location, 
+                        url: idx > 9 ? `http://labs.google.com/ridefinder/images/mm_20_${urls[idx % 9]}.png` : `http://labs.google.com/ridefinder/images/mm_20_${urls[idx]}.png` 
+                    }]);
+                trip.color = idx > 9 ? urls[idx % 9] : urls[idx]
             })
         });
-//TODO: set tracking markers for users in this trip
     } ,[update])
     
 //TODO: Add form to add new event after clicking on map and getting lat/lng
 
+    // const urls = {
+    //     0: `http://labs.google.com/ridefinder/images/mm_20_green.png`,
+    //     1: `http://labs.google.com/ridefinder/images/mm_20_blue.png`,
+    //     2: `http://labs.google.com/ridefinder/images/mm_20_purple.png`,
+    //     3: `http://labs.google.com/ridefinder/images/mm_20_yellow.png`,
+    //     4: `http://labs.google.com/ridefinder/images/mm_20_orange.png`,
+    //     5: `http://labs.google.com/ridefinder/images/mm_20_white.png`,
+    //     6: `http://labs.google.com/ridefinder/images/mm_20_black.png`,
+    //     7: `http://labs.google.com/ridefinder/images/mm_20_gray.png`,
+    //     8: `http://labs.google.com/ridefinder/images/mm_20_brown.png`,
+    //     9: `http://labs.google.com/ridefinder/images/mm_20_red.png`,
+    // }
     const urls = {
-        0: `http://labs.google.com/ridefinder/images/mm_20_green.png`,
-        1: `http://labs.google.com/ridefinder/images/mm_20_blue.png`,
-        2: `http://labs.google.com/ridefinder/images/mm_20_purple.png`,
-        3: `http://labs.google.com/ridefinder/images/mm_20_yellow.png`,
-        4: `http://labs.google.com/ridefinder/images/mm_20_orange.png`,
-        5: `http://labs.google.com/ridefinder/images/mm_20_white.png`,
-        6: `http://labs.google.com/ridefinder/images/mm_20_black.png`,
-        7: `http://labs.google.com/ridefinder/images/mm_20_gray.png`,
-        8: `http://labs.google.com/ridefinder/images/mm_20_brown.png`,
-        9: `http://labs.google.com/ridefinder/images/mm_20_red.png`,
+        0: 'green',
+        1: `blue`,
+        2: 'purple',
+        3: `yellow`,
+        4: `orange`,
+        5: `white`,
+        6: `black`,
+        7: `gray`,
+        8: `brown`,
+        9: `red`,
     }
 
     const displayMarkers = () => {
@@ -99,51 +124,6 @@ export default function AllTripsMap () {
             )
         })
     }
-    const displayTrackingMarkers = () => {
-     console.log('trackingmarkers', trackingMarkers)
-        return trackingMarkers.map((marker) => {
-            return (
-                <Marker 
-                    key={marker.key} 
-                    id={marker.id} 
-                    position={{lat: marker.lat, lng: marker.lng}}
-                    name={marker.name}
-                    onClick={() => {setSelected(marker)}}
-                    icon={{
-                        url: `http://labs.google.com/mapfiles/kml/pal3/icon32.png`,
-                        // origin: new window.google.maps.Point(0, 0),
-                        // anchor: new window.google.maps.Point(10, 10),
-                        scaledSize: new window.google.maps.Size(20, 20),
-                    }}
-                />
-            )
-        })
-    }
-    function Locate({ panTo }) {
-        return (
-          <Button
-            variant='outlined'
-            className="locate"
-            onClick={() => {
-//TODO: USE WATCH POSITION AND SET TIMEOUT LATER TO CONTINUALLY UPDATE POSITION
-              navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
-//TODO: UPDATE USER WITH NEW COORDINATES
-                  panTo({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                });
-                },
-                () => null
-              );
-            }}
-          >
-            Where Am I?
-          </Button>
-        );
-      }
-  console.log(selected)
 
     const handleClick = (id) => {
         setUpdate(prevUpdate => prevUpdate + Math.random())
@@ -151,15 +131,16 @@ export default function AllTripsMap () {
         // ev.stopPropagation()
         setSelected(marker);
     }
-    console.log(trips)
+
     const [selectedTrip, setSelectedTrip] = useState({id: 0, lat: 34.456748, lng: -75.462405});
 
     if (loadError) return "Error";
     if (!isLoaded || !trips) return <CircularLoading />
     return (
         <div>
-            <Button variant='outlined' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}>Refresh Event Markers</Button>
-            <Locate panTo={panTo} />
+            <Tooltip title='Refresh Event Markers'>
+                <Button startIcon={<RefreshIcon />} variant='contained' color='info' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}/>
+            </Tooltip>
             <div style={{display: 'flex'}}>
                 <div>
                     <GoogleMap
@@ -173,8 +154,6 @@ export default function AllTripsMap () {
                         center={{ lat: +selectedTrip.lat, lng: +selectedTrip.lng }}
                     >
                         {displayMarkers()}
-                        {displayTrackingMarkers()}
-
                         {
                         selected ? (
                         <InfoWindow 
@@ -205,8 +184,11 @@ export default function AllTripsMap () {
                                     expandIcon={<ExpandMoreIcon />}
                                     id="trip-header"
                                     onClick={() => setSelectedTrip(trip.trip)}
+                                    sx={{border: `3px solid ${trip.color}`}}
                                 >
-                                <Typography>{trip.trip.name}</Typography>
+                                    <Typography>
+                                        {trip.trip.name}
+                                    </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails sx={{maxHeight: 500, overflow: 'auto'}}>
                                     {

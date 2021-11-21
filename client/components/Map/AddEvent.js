@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { addEvent } from '../../store/events'
+import { addEvent, getTrips } from '../../store'
 import { useDispatch } from 'react-redux'
 // import DateAdapter from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -46,6 +46,7 @@ const AddEvent = ({trip, handleClose}) => {
             setStartTime(new Date());
             setEndTime(new Date());
             handleClose();
+            await dispatch(getTrips())
         }
         catch(err){
             console.log(err)
