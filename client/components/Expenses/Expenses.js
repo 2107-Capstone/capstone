@@ -9,6 +9,7 @@ import { format, parseISO } from "date-fns";
 
 ////////////////// MATERIAL UI /////////////////
 import { Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from "@mui/material";
+import expenses from "../../store/expenses";
 
 const Expenses = ({ tripId, trip }) => {
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId));
@@ -185,6 +186,10 @@ const Expenses = ({ tripId, trip }) => {
                                 <TableCell colSpan={5} />
                             </TableRow>
                         )}
+                        <TableRow>
+                            <TableCell align='right' sx={{fontWeight: 'bold'}}>Total:</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 'bold'}}>${tripExpenses.reduce((total, expense) => (total + +expense.amount), 0).toFixed(2)}</TableCell>
+                        </TableRow>
                     </TableBody>
                 </Table>
             </TableContainer>
