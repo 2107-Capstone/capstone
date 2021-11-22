@@ -3,7 +3,7 @@ const { models: { User, Trip, UserTrip, Event }} = require('../db')
 
 const axios = require('axios')
 //TODO: move api key
-// const api_key = process.env.api_key;
+const api_key = process.env.api_key;
 
 module.exports = router
 
