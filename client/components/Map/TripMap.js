@@ -16,7 +16,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
 import config from '../../../config'
-
+import mapStyles from './mapStyles';
 
 
 //////////https://trekinbami.medium.com/using-environment-variables-in-react-6b0a99d83cf5
@@ -24,10 +24,10 @@ import config from '../../../config'
 
 
 //TODO: switch to using markers instead of events in events list?
-const mapStyles = {
-    width: '60%',
-    height: '60%',
-}
+// const mapStyles = {
+//     width: '60%',
+//     height: '60%',
+// }
 const mapContainerStyle = {
     height: "50vh",
     width: "50vw",
