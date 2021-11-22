@@ -3,7 +3,7 @@ const { models: { User, Trip, UserTrip, Event }} = require('../db')
 
 const axios = require('axios')
 //TODO: move api key
-// const api_key = process.env.api_key;
+const API_KEY = process.env.API_KEY;
 
 module.exports = router
 
@@ -62,13 +62,13 @@ router.post('/', async (req, res, next) => {
                 params: {
                     input: (`${location}+${trip.trip.location}`).split(' ').join('+'),
                     radius:500,
-                    key: process.env.API_KEY,
+                    key: API_KEY,
                 }
       })).data;
             const responseLatLng = (await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
                 params: {
                     place_id: responsePlace.predictions[0].place_id,
-                    key: process.env.API_KEY,
+                    key: API_KEY,
                 }
             })).data;
             const googleLocation = responseLatLng.results[0].geometry.location
