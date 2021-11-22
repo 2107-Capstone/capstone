@@ -37,7 +37,7 @@ const tripZoom = 12;
 
 export default function AllTripsMap () {
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: API_KEY
+        googleMapsApiKey: process.env.API_KEY
     });
 
     const auth = useSelector(state => state.auth);
