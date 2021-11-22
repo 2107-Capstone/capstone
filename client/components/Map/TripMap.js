@@ -14,7 +14,14 @@ import PersonPinIcon from '@mui/icons-material/PersonPin';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
+
 import config from '../../../config'
+
+
+
+//////////https://trekinbami.medium.com/using-environment-variables-in-react-6b0a99d83cf5
+
+
 
 //TODO: switch to using markers instead of events in events list?
 const mapStyles = {
@@ -35,7 +42,7 @@ const tripZoom = 12;
 
 export default function TripMap ({tripId, users}) {
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: config.api_key
+        googleMapsApiKey: config.API_KEY
     });
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
