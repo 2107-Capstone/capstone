@@ -101,10 +101,12 @@ const Expenses = ({ tripId, trip }) => {
             <TableContainer component={Paper} sx={{border: '1px solid darkgrey'}}>
                 <Table aria-label="trip expenses table">
                     <TableHead>
-                        <Tooltip title='Add Expense'>
+                        {/* <Tooltip title='Add Expense'> */}
                             {/* <AddBoxIcon onClick={() => setOpen(true)} sx={{color: 'green'}}/> */}
-                            <Button sx={{ml: 1, mt: 1, color: 'green'}}  fontSize='large' startIcon={<FaFileInvoiceDollar />}  onClick={() => setOpen(true)} />
-                        </Tooltip>
+                            <Button sx={{ml: 1, mt: 1, color: 'green'}}  fontSize='large' startIcon={<FaFileInvoiceDollar />}  onClick={() => setOpen(true)} >
+                                Add Expense
+                            </Button>
+                        {/* </Tooltip> */}
                         <TableRow>
                             <TableCell
                                 align="center"

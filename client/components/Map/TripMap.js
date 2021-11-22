@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { connect, useSelector, useDispatch } from 'react-redux'
-import {parseISO, format } from 'date-fns';
+import { parseISO, format } from 'date-fns';
 import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog, CardActionArea } from '@mui/material'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -75,8 +75,9 @@ export default function TripMap ({tripId, users}) {
         events.forEach(event => {
             setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}` , location: event.location, url: `/pin-10.svg` }])
         });
+//TODO: WHY DOESN'T FORMAT?PARSEISO WORK FOR THE USER TIME???
         users.forEach(user => {
-            setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: user.user.time, key: user.userId + Math.random().toString(16), id: user.userId, lat: +user.user.lat, lng: +user.user.lng }])
+            setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId + Math.random().toString(16), id: user.userId, lat: +user.user.lat, lng: +user.user.lng }])
         })
 //TODO: set tracking markers for users in this trip
     } ,[tripId, update])
@@ -127,6 +128,8 @@ export default function TripMap ({tripId, users}) {
         })
     }
     function Locate({ panTo }) {
+        const userLocation = useRef(null);
+        const [status, setStatus] = useState('initial')
         return (
           <Button
             variant='outlined'
@@ -136,21 +139,34 @@ export default function TripMap ({tripId, users}) {
               navigator.geolocation.getCurrentPosition(
                   async (position) => {
                     await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
+                    userLocation.current = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    }
                     setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
                   panTo({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                 });
-                },
+            },
                 () => null
-              );
+            );
+            setStatus('watching');
+            navigator.geolocation.watchPosition(async position => {
+                userLocation.current = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                }
+                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
+                setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
+            })
             }}
           >
             Set My Location
           </Button>
         );
       }
-
+console.log('users', users)
     const [open, setOpen] = useState(false);
     const handleClose = () => {
         setOpen(false);
@@ -164,6 +180,12 @@ export default function TripMap ({tripId, users}) {
         // ev.stopPropagation()
         setSelected(marker);
     }
+    const handleClick2 = (id) => {
+        setUpdate(prevUpdate => prevUpdate + Math.random())
+        const trackingMarker = trackingMarkers.find(marker => marker.id === id);
+        // ev.stopPropagation()
+        setSelected(trackingMarker);
+    }
     const [eventToEdit, setEventToEdit] = useState({});
 
     if (!trip || !isLoaded) return <CircularLoading />
@@ -172,7 +194,7 @@ export default function TripMap ({tripId, users}) {
     if (trip && events.length === 0) return (
         <>
             <Dialog open={open} onClose={handleClose}>
-                <AddEvent trip={trip} handleClose={handleClose}/>
+                <EventForm trip={trip} handleClose={handleClose}/>
             </Dialog>
             <Button startIcon={<AddAlarmIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
                 Add Event
@@ -247,22 +269,45 @@ export default function TripMap ({tripId, users}) {
                                 </Typography>
                             </CardContent>
                             <CardActionArea>
-                                <Tooltip title='Edit Event'>
+                                
                                     <Button startIcon={<ModeEditIcon />} color='info' onClick={() => {
                                         setEventToEdit(event);
                                         setOpen(true);
-                                    }}/>
-                                </Tooltip>
-                                <Tooltip title='Delete Event'>
+                                    }}>
+                                        Edit
+                                    </Button>
+                                
+                                
                                     <Button startIcon={<DeleteForeverIcon />} color='error' onClick={async() => {
                                         try{
                                             await dispatch(deleteEvent(event.id))
                                         } catch (err){
                                             console.log(err)
                                         }
-                                    }}/>
-                                </Tooltip>
+                                    }}>
+                                            Delete
+                                    </Button>
+                                
                             </CardActionArea>
+                        </Card>
+                    ))
+                }
+            </Box>
+            <Box sx={{maxHeight: 500, overflow: 'auto'}}>
+                {
+                    users.map(user => (
+                        <Card className='card' key={user.userId + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
+                            
+                        >
+                            <CardContent sx={{ mb: 0}} onClick={() => handleClick2(user.userId)}>
+                            {/* <CardContent sx={{ mb: 0}} > */}
+                                <Typography  gutterBottom>
+                                {user.user.username} 
+                                </Typography>
+                                <Typography  color="text.secondary" variant="subtitle2" sx={{ mb: 0}}>
+                                {format(parseISO(user.user.time), 'Pp')}
+                                </Typography>
+                            </CardContent>
                         </Card>
                     ))
                 }
