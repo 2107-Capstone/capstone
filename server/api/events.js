@@ -62,13 +62,13 @@ router.post('/', async (req, res, next) => {
                 params: {
                     input: (`${location}+${trip.trip.location}`).split(' ').join('+'),
                     radius:500,
-                    key: ENV['api_key'],
+                    key: process.env.API_KEY,
                 }
       })).data;
             const responseLatLng = (await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
                 params: {
                     place_id: responsePlace.predictions[0].place_id,
-                    key: ENV['api_key'],
+                    key: process.env.API_KEY,
                 }
             })).data;
             const googleLocation = responseLatLng.results[0].geometry.location
