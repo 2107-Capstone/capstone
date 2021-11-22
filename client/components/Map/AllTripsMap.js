@@ -16,7 +16,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import config from '../../../config'
+// import config from '../../../config'
 
 const mapStyles = {
     width: '60%',
