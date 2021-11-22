@@ -16,7 +16,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import config from '../../../config'
+// import config from '../../../config'
 
 const mapStyles = {
     width: '60%',
@@ -37,7 +37,7 @@ const tripZoom = 12;
 
 export default function AllTripsMap () {
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: config.api_key
+        googleMapsApiKey: ENV['api_key']
     });
 
     const auth = useSelector(state => state.auth);
