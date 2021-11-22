@@ -2,8 +2,8 @@ const router = require('express').Router()
 const { models: { User, Trip, UserTrip, Event }} = require('../db')
 
 const axios = require('axios')
-//TODO: move api key
-const api_key = 'AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA'
+
+const api_key = process.env.api_key;
 
 module.exports = router
 

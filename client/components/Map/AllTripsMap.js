@@ -19,6 +19,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 import FaMapMarkerAlt from 'react-icons/fa'
 import { getTrips } from '../../store';
+import config from '../../../config';
 
 const mapStyles = {
     width: '60%',
@@ -39,7 +40,7 @@ const tripZoom = 12;
 
 export default function AllTripsMap () {
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: 'AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA'
+        googleMapsApiKey: config.api_key 
     });
     const dispatch = useDispatch()
     const auth = useSelector(state => state.auth);
