@@ -11,9 +11,10 @@ import events from './events'
 import expenses from './expenses'
 import categories from './categories'
 import userFriends from './userFriends'
-import friendsPending from './friendsPending'
+import friendsPendingSent from './friendsPendingSent'
+import friendsPendingReceived from './friendsPendingReceived'
 
-const reducer = combineReducers({ auth, users, trips, messages, friends, events, expenses, categories, userFriends, friendsPending })
+const reducer = combineReducers({ auth, users, trips, messages, friends, events, expenses, categories, userFriends, friendsPendingSent, friendsPendingReceived })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
@@ -29,5 +30,7 @@ export * from './events'
 export * from './expenses'
 export * from './categories'
 export * from './userFriends'
-export * from './friendsPending'
+export * from './friendsPendingSent'
+export * from './friendsPendingReceived'
+
 

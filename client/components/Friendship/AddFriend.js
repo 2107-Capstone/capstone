@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { createUserFriend } from '../../store'
 
-export const AddFriend = ({auth, users, friends, createUserFriend, friendsPending}) => {
+export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendingSent}) => {
     const [query, setQuery] = useState('')
     const clickAddFriend = async (friendId) => {
         await createUserFriend({
@@ -14,7 +14,7 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
         alert('Friend request has been sent!')
     }
     const friendIds = new Set(friends.map(friend => friend.friendId))
-    const friendPendingIds = new Set(friendsPending.map(friendPending => friendPending.friendId))
+    const friendPendingIds = new Set(friendsPendingSent.map(friendPendingSent => friendPendingSent.friendId))
     return(
     <div>
         <h3>Add a New Friend!!!</h3>
@@ -48,7 +48,7 @@ const mapState = state => {
       auth: state.auth,
       users: state.users,
       friends: state.friends,
-      friendsPending: state.friendsPending
+      friendsPendingSent: state.friendsPendingSent
     }
 }
 

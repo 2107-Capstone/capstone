@@ -8,12 +8,15 @@ const TOKEN = 'token'
  */
 const GET_USERFRIENDS = 'GET_USERFRIENDS'
 const CREATE_USERFRIEND = 'CREATE_USERFRIEND' 
+const DELETE_USERFRIEND = 'DELETE_USERFRIEND' 
 
 /**
  * ACTION CREATORS
  */
 const _getUserFriends = userFriends => ({type: GET_USERFRIENDS, userFriends})
 const _createUserFriend = userFriend => ({type: CREATE_USERFRIEND, userFriend})
+const _deleteUserFriend = id => ({type: DELETE_USERFRIEND, id})
+
 
 /**
  * THUNK CREATORS
@@ -44,6 +47,19 @@ export const createUserFriend = (userFriend) => {
   }
 }
 
+export const deleteUserFriend = (id) => {
+  const token  = window.localStorage.getItem(TOKEN)
+
+  return async (dispatch) => {
+    await axios.delete(`/api/userFriends/${id}`, {
+      headers: {
+        authorization: token
+      }
+    })
+    dispatch(_deleteUserFriend(id))
+  }
+}
+
 /**
  * REDUCER
  */
@@ -53,6 +69,8 @@ export default function(state = [], action) {
         return action.userFriends
     case CREATE_USERFRIEND:
       return [...state, action.userFriend]  
+    case DELETE_USERFRIEND:
+      return state.filter(userFriend => userFriend.id !== action.id ) 
     default:
       return state
   }

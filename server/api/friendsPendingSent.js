@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
-      const friends = await UserFriend.findAll({
+      const sents = await UserFriend.findAll({
         where: {
           userId: user.id,
           status: 'pending'
@@ -22,7 +22,7 @@ router.get('/', async (req, res, next) => {
           }
         ]
       })
-      res.json(friends)
+      res.json(sents)
     } else {
       res.send('No current user found via token')
     }
@@ -31,15 +31,15 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:friendId', async (req, res, next) => {
+router.get('/:sentId', async (req, res, next) => {
   if(req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
   try {
-    const friend = await User.findOne({
+    const sent = await UserFriend.findOne({
       where: {
-        id: req.params.friendId,
+        userId: req.params.sentId,
         status: 'pending'
       },
       include: [
@@ -48,7 +48,7 @@ router.get('/:friendId', async (req, res, next) => {
         }
       ]
     })
-    res.json(friend)
+    res.json(sent)
   } catch (err) {
     next(err)
   }
