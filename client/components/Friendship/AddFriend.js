@@ -25,7 +25,7 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
             .filter(user => {
                 if (query === '') {
                     return ''
-                } else if (user.username.toLowerCase().includes(query.toLowerCase()) || user.email.toLowerCase().includes(query.toLowerCase())) {
+                } else if (user.username.toLowerCase().includes(query.toLowerCase()) || user.email.toLowerCase() === query.toLowerCase()) {
                     return user
                 }
             })
