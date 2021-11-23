@@ -51,6 +51,21 @@ router.post('/', async (req, res, next) => {
   }
 })
 
+router.put('/:userFriendId', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  const { status } = req.body
+  try {
+    const userFriend = await UserFriend.findByPk(req.params.userFriendId)
+    await userFriend.update(req.body)
+    res.json(userFriend)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.delete('/:userFriendId', async (req, res, next) => {
   if(req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')

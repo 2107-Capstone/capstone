@@ -1,10 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { deleteUserFriend } from '../../store'
+import { deleteUserFriend, approveUserFriend } from '../../store'
+import auth from '../../store/auth'
 
 
-export const PendingFriendRequest = ({friendsPendingSent, friendsPendingReceived, deleteUserFriend }) => {
+export const PendingFriendRequest = ({auth, friendsPendingSent, friendsPendingReceived, deleteUserFriend, approveUserFriend }) => {
+    const clickApproveFriend = async (userFriend) => {
+        await approveUserFriend({
+            ...userFriend,
+            status: 'accepted'
+        })
+        alert(`${userFriend.user.username} is your friend now!`)
+    }
+    
     return(
     <div>
         <div>
@@ -25,7 +34,7 @@ export const PendingFriendRequest = ({friendsPendingSent, friendsPendingReceived
             {friendsPendingReceived.map(friendPendingReceived => (
                 <li key={friendPendingReceived.id}>
                     {friendPendingReceived.user.username}
-                    <button>Approve</button>
+                    <button onClick={() => clickApproveFriend(friendPendingReceived)}>Approve</button>
                     <button onClick={() => deleteUserFriend(friendPendingReceived.id)}>Reject</button>
                 </li>
             ))}
@@ -36,6 +45,7 @@ export const PendingFriendRequest = ({friendsPendingSent, friendsPendingReceived
 
 const mapState = state => {
     return {
+      auth: state.auth,
       friendsPendingSent: state.friendsPendingSent,
       friendsPendingReceived: state.friendsPendingReceived
     }
@@ -45,6 +55,9 @@ const mapProps = (dispatch) => {
     return {
         deleteUserFriend: (id) => {
             dispatch(deleteUserFriend(id))
+        },
+        approveUserFriend: (userFriend) => {
+            dispatch(approveUserFriend(userFriend))
         }
     }
 }

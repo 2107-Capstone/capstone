@@ -4,7 +4,7 @@ const { ENUM } = Sequelize
 
 const UserFriend= db.define('userFriend', {
     status: {
-        type: ENUM('pending', 'accepted', 'rejected'),
+        type: ENUM('pending', 'accepted'),
         defaultValue: 'pending'
     }
 })
