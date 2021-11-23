@@ -18,7 +18,7 @@ import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps
 import config from '../../../config'
 import mapStyles from './mapStyles';
 
-
+const API_KEY = config.GOOGLE_MAPS_API_KEY
 //////////https://trekinbami.medium.com/using-environment-variables-in-react-6b0a99d83cf5
 
 
@@ -40,7 +40,7 @@ const tripZoom = 12;
 
 export default function TripMap ({tripId, users}) {
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: config.API_KEY
+        googleMapsApiKey: API_KEY
     });
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);

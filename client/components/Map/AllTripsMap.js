@@ -22,6 +22,7 @@ import { getTrips } from '../../store';
 import config from '../../../config';
 import mapStyles from './mapStyles';
 
+const API_KEY = config.GOOGLE_MAPS_API_KEY
 // const mapStyles = {
 //     width: '60%',
 //     height: '60%',
@@ -41,7 +42,7 @@ const tripZoom = 12;
 
 export default function AllTripsMap () {
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: config.API_KEY
+        googleMapsApiKey: API_KEY
     });
     const dispatch = useDispatch()
     const auth = useSelector(state => state.auth);

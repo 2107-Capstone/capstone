@@ -3,7 +3,7 @@ const { models: { User, Trip, UserTrip, Event }} = require('../db')
 
 const axios = require('axios')
 
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
 module.exports = router
 
