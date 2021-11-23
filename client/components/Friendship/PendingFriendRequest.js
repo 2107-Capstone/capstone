@@ -26,7 +26,7 @@ export const PendingFriendRequest = ({friendsPendingSent, friendsPendingReceived
                 <li key={friendPendingReceived.id}>
                     {friendPendingReceived.user.username}
                     <button>Approve</button>
-                    <button>Reject</button>
+                    <button onClick={() => deleteUserFriend(friendPendingReceived.id)}>Reject</button>
                 </li>
             ))}
         </ul>
