@@ -1,17 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { deleteUserFriend, approveUserFriend } from '../../store'
+import { deleteUserFriend, approveUserFriend, createUserFriend } from '../../store'
 import auth from '../../store/auth'
 
 
-export const PendingFriendRequest = ({auth, friendsPendingSent, friendsPendingReceived, deleteUserFriend, approveUserFriend }) => {
+export const PendingFriendRequest = ({auth, friendsPendingSent, friendsPendingReceived, deleteUserFriend, approveUserFriend, createUserFriend }) => {
     const clickApproveFriend = async (userFriend) => {
         await approveUserFriend({
             ...userFriend,
             status: 'accepted'
         })
-        alert(`${userFriend.user.username} is your friend now!`)
+        await createUserFriend({
+            userId: userFriend.friendId,
+            friendId: userFriend.userId,
+            status: 'accepted'
+        })
+        alert(`${userFriend.user.username} is now your friend!`)
     }
     
     return(
@@ -58,6 +63,9 @@ const mapProps = (dispatch) => {
         },
         approveUserFriend: (userFriend) => {
             dispatch(approveUserFriend(userFriend))
+        },
+        createUserFriend: (userFriend) => {
+            dispatch(createUserFriend(userFriend))
         }
     }
 }
