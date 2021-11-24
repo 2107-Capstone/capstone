@@ -1,3 +1,4 @@
+
 import React from 'react'
 
 //////////// MATERIAL UI ////////////////
@@ -12,6 +13,7 @@ import { useSelector } from 'react-redux'
 
 
 const App = () => {
+  
   const isLoggedIn = useSelector(state => state.auth.id)
   let menuBarWidth;
 

@@ -35,7 +35,7 @@ router.get('/', async (req, res, next) => {
                 model: UserTrip,
                 include: {
                   model: User,
-                  attributes: ['id', 'username']
+                  attributes: ['id', 'username', 'lat', 'lng', 'time']
                 }
               },
               {

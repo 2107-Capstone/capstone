@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from 'react'
 
-import { addEvent } from '../../store/events'
+import { addEvent, getTrips, editEvent } from '../../store'
 import { useDispatch } from 'react-redux'
 // import DateAdapter from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Box, Grid, Button, TextField } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
 
-const AddEvent = ({trip, handleClose}) => {      
+const EventForm = ({trip, handleClose, event}) => {      
 //ADD EVENT
     const dispatch = useDispatch()
     const [inputs, setInputs] = useState({
         eventName: '',
         location: '',
-        description: '',
-        startTime: new Date(),
-        endTime: new Date()
-        
+        description: ''
     })
     const { eventName, location, description  } = inputs;
     
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(startTime);
     
+    useEffect(() => {
+        if (event.id){
+            setInputs({
+                eventName: event.name,
+                location: event.location,
+                description: event.description,
+            });
+            setStartTime(event.startTime);
+            setEndTime(event.endTime);
+        }
+    }, [])
+
     const handleStartChange = (newVal) => {
         setStartTime(newVal)
     }
@@ -41,11 +51,12 @@ const AddEvent = ({trip, handleClose}) => {
     const handleSubmit = async (ev) => {
         ev.preventDefault();
         try {
-            await dispatch(addEvent({name: eventName, location, description, trip, startTime, endTime }));
+            event.id ? await dispatch(editEvent({...event, name: eventName, location, description, trip, startTime, endTime })) : await dispatch(addEvent({name: eventName, location, description, trip, startTime, endTime }));
             setInputs({ eventName: '', location: '', description: ''});
             setStartTime(new Date());
             setEndTime(new Date());
             handleClose();
+            await dispatch(getTrips())
         }
         catch(err){
             console.log(err)
@@ -57,6 +68,7 @@ const AddEvent = ({trip, handleClose}) => {
     
     return (
         <>
+            <CloseIcon onClick={handleClose}/>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ m: 3 }} >
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
@@ -66,7 +78,7 @@ const AddEvent = ({trip, handleClose}) => {
                             fullWidth
                             id="eventName"
                             label="Event Name"
-                            value={eventName}
+                            value={eventName || ''}
                             autoFocus
                             onChange={handleChange}
                         />
@@ -78,7 +90,7 @@ const AddEvent = ({trip, handleClose}) => {
                             fullWidth
                             id="location"
                             label="Location"
-                            value={location}
+                            value={location || ''}
                             autoFocus
                             onChange={handleChange}
                         />
@@ -89,7 +101,7 @@ const AddEvent = ({trip, handleClose}) => {
                             fullWidth
                             id="description"
                             label="Description"
-                            value={description}
+                            value={description || ''}
                             autoFocus
                             onChange={handleChange}
                         />
@@ -99,7 +111,7 @@ const AddEvent = ({trip, handleClose}) => {
                             <DateTimePicker
                                 label="Start Time"
                                 name='startTime'
-                                value={startTime}
+                                value={startTime || new Date()}
                                 onChange={handleStartChange}
                                 renderInput={(params) => <TextField {...params} />}
                             />
@@ -108,7 +120,7 @@ const AddEvent = ({trip, handleClose}) => {
                             <DateTimePicker
                                 label="End Time"
                                 name='endTime'
-                                value={endTime}
+                                value={endTime || startTime}
                                 onChange={handleEndChange}
                                 renderInput={(params) => <TextField {...params} />}
                             />
@@ -120,11 +132,11 @@ const AddEvent = ({trip, handleClose}) => {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Add Event
+                        {event.id ? 'Edit Event' : 'Add Event'}
                     </Button>
                 </Grid>
             </Box>
         </>
     )
 }
-export default AddEvent;
+export default EventForm;

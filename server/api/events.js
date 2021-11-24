@@ -2,8 +2,9 @@ const router = require('express').Router()
 const { models: { User, Trip, UserTrip, Event }} = require('../db')
 
 const axios = require('axios')
-//TODO: move api key
-const API_KEY = process.env.API_KEY;
+
+
+const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 module.exports = router
 
@@ -68,11 +69,13 @@ router.post('/', async (req, res, next) => {
             const responseLatLng = (await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
                 params: {
                     place_id: responsePlace.predictions[0].place_id,
-                    key: API_KEY,
+                    key: API_KEY
                 }
             })).data;
             const googleLocation = responseLatLng.results[0].geometry.location
-            let event = await Event.create({name, location, description, startTime, endTime, tripId: trip.tripId, place_id: responsePlace.predictions[0].place_id, lat: googleLocation.lat, lng: googleLocation.lng})
+            let event = await Event.create({name, location, description, startTime, endTime, tripId: trip.tripId, place_id: responsePlace.predictions[0].place_id, lat: googleLocation.lat, lng: googleLocation.lng}, {
+              include: Trip
+            })
     
       res.send(event)
     } else {
@@ -83,6 +86,51 @@ router.post('/', async (req, res, next) => {
     next(err)
   }
 })
+
+router.put('/:eventId', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  try {
+    const { name, description, location, startTime, endTime, trip } = req.body;
+    const responsePlace = (await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json`, {
+                params: {
+                    input: (`${location}+${trip.trip.location}`).split(' ').join('+'),
+                    radius:500,
+                    key: API_KEY,
+                }
+      })).data;
+    const responseLatLng = (await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
+        params: {
+            place_id: responsePlace.predictions[0].place_id,
+            key: API_KEY,
+        }
+    })).data;
+    const googleLocation = responseLatLng.results[0].geometry.location
+    let event = await Event.findByPk(req.params.eventId)
+    await event.update({...event, name, description, location, startTime, endTime, tripId: trip.tripId, place_id: responsePlace.predictions[0].place_id, lat: googleLocation.lat, lng: googleLocation.lng})
+    event = await Event.findByPk(event.id, {
+      include: Trip
+    })
+    res.json(event)
+  } catch (err) {
+    next(err)
+  }
+})
+router.delete('/:eventId', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  try {
+    const event = await Event.findByPk(req.params.eventId)
+    await event.destroy()
+    res.sendStatus(201)
+  } catch (err) {
+    next(err)
+  }
+}) 
 /*
 router.get('/:eventId', async (req, res, next) => {
   if(req.headers.authorization === 'null') {
@@ -146,16 +194,4 @@ router.put('/:eventId', async (req, res, next) => {
   }
 })
 
-router.delete('/:eventId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
-  try {
-    const event = await Event.findByPk(req.params.eventId)
-    await event.destroy()
-    res.sendStatus(201)
-  } catch (err) {
-    next(err)
-  }
-}) */
+*/
