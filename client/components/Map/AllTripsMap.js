@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { connect, useSelector } from 'react-redux'
 import {parseISO, format } from 'date-fns';
-import { Box, Grid, Button, TextField, Typography, Dialog } from '@mui/material'
+
+import CircularLoading from '../Loading/CircularLoading'
+
+import { Box, Grid, Button } from '@mui/material'
+
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-
-import AddEvent from './AddEvent'
-import CircularLoading from '../Loading/CircularLoading'
-
-import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import config from '../../../config'
 
-//TODO: switch to using markers instead of events in events list?
 const mapStyles = {
     width: '60%',
     height: '60%',
@@ -28,25 +32,26 @@ const options = {
     disableDefaultUI: true,
     zoomControl: true,
 };
+
 const tripZoom = 12;
 
-export default function TripMap ({tripId}) {
+export default function AllTripsMap () {
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: config.API_KEY
     });
 
     const auth = useSelector(state => state.auth);
     
-    let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
-    let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
-    
+    let trips = useSelector(state => state.trips);
 
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
     const [selected, setSelected] = useState(null);
     const [update, setUpdate] = useState(0);
-    const mapRef = React.useRef();
-    const onMapLoad = React.useCallback((map) => {
+    
+
+    const mapRef = useRef();
+    const onMapLoad = useCallback((map) => {
         mapRef.current = map;
     }, []);
 
@@ -57,11 +62,13 @@ export default function TripMap ({tripId}) {
 
     useEffect(() => {
         setMarkers(prevMarkers => []);
-        events.forEach(event => {
-            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}` , location: event.location, url: urls[9] }])
+        trips.forEach((trip, idx) => {
+            trip.trip.events.map(event => {
+                setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}` , location: event.location, url: idx > 9 ? urls[idx % 9] : urls[idx]}])
+            })
         });
 //TODO: set tracking markers for users in this trip
-    } ,[tripId, update])
+    } ,[update])
     
 //TODO: Add form to add new event after clicking on map and getting lat/lng
 
@@ -107,7 +114,7 @@ export default function TripMap ({tripId}) {
                         url: `http://labs.google.com/mapfiles/kml/pal3/icon32.png`,
                         // origin: new window.google.maps.Point(0, 0),
                         // anchor: new window.google.maps.Point(10, 10),
-                        // scaledSize: new window.google.maps.Size(20, 20),
+                        scaledSize: new window.google.maps.Size(20, 20),
                     }}
                 />
             )
@@ -137,12 +144,7 @@ export default function TripMap ({tripId}) {
           </Button>
         );
       }
-
-    const [open, setOpen] = useState(false);
-    const handleClose = () => {
-        setOpen(false);
-        setUpdate(prevUpdate => prevUpdate + Math.random())
-    }
+  console.log(selected)
 
     const handleClick = (id) => {
         setUpdate(prevUpdate => prevUpdate + Math.random())
@@ -150,90 +152,86 @@ export default function TripMap ({tripId}) {
         // ev.stopPropagation()
         setSelected(marker);
     }
+    console.log(trips)
+    const [selectedTrip, setSelectedTrip] = useState({id: 0, lat: 34.456748, lng: -75.462405});
 
-    if (!trip || !isLoaded) return <CircularLoading />
     if (loadError) return "Error";
-    
-    if (trip && events.length === 0) return (
-        <>
-            <Dialog open={open} onClose={handleClose}>
-                <AddEvent trip={trip} handleClose={handleClose}/>
-            </Dialog>
-            <Button variant='contained' onClick={() => setOpen(true)}>
-                Add Event
-            </Button>
-        </>
-    )
-    
+    if (!isLoaded || !trips) return <CircularLoading />
     return (
-        <>
-                <Dialog open={open} onClose={handleClose}>
-                    <AddEvent trip={trip} handleClose={handleClose}/>
-                </Dialog>
-            
-                <Button variant='contained' onClick={() => setOpen(true)}>
-                    Add Event
-                </Button>
-             
-                <Button variant='outlined' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}>Refresh Event Markers</Button>
-                <Locate panTo={panTo} />
-        <div style={{display: 'flex'}}>
-            <div>
-                <GoogleMap
-                    id='map'
-                    options={options}
-                    onLoad={onMapLoad}
-                    zoom={tripZoom}
-                    // zoom={tripId ? 8 : 3}
-                    mapContainerStyle={mapContainerStyle}
-                    style={mapStyles}
-                    center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
+        <div>
+            <Button variant='outlined' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}>Refresh Event Markers</Button>
+            <Locate panTo={panTo} />
+            <div style={{display: 'flex'}}>
+                <div>
+                    <GoogleMap
+                        id='map'
+                        options={options}
+                        onLoad={onMapLoad}
+                        zoom={selectedTrip.id === 0 ? 2 : tripZoom}
+                        // zoom={tripId ? 8 : 3}
+                        mapContainerStyle={mapContainerStyle}
+                        style={mapStyles}
+                        center={{ lat: +selectedTrip.lat, lng: +selectedTrip.lng }}
                     >
-                    {displayMarkers()}
-                    {displayTrackingMarkers()}
+                        {displayMarkers()}
+                        {displayTrackingMarkers()}
 
-                    {
+                        {
                         selected ? (
-                            <InfoWindow 
+                        <InfoWindow 
                             open={open}
                             position={{lat: +selected.lat, lng: +selected.lng}}
                             onCloseClick={() => {
                                 setSelected(null);
                             }}
-                            >
-                        <div style={{margin: '0 1rem .5rem 1rem'}}>
-                            <Typography  variant={'subtitle1'}>
-                                {selected.name}
-                            </Typography>
-                            <Typography  variant={'caption'}>
-                                {selected.time}
-                            </Typography>
-                        </div>
-                    </InfoWindow>)
-                    : null
-                }
-                </GoogleMap>
-            </div>
-            <Box sx={{maxHeight: 500, overflow: 'auto'}}>
-                {
-                    events.map(event => (
-                        <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1, height: '20%' }}
-                            style={{}}
                         >
-                            <CardContent sx={{ mb: 0}} onClick={() => handleClick(event.id)}>
-                                <Typography  gutterBottom>
-                                {event.name} - {event.location}
+                            <div style={{margin: '0 1rem .5rem 1rem'}}>
+                                <Typography  variant={'subtitle1'}>
+                                    {selected.name}
                                 </Typography>
-                                <Typography color="text.secondary" variant="subtitle2" sx={{ mb: 0}}>
-                                    {format(parseISO(event.startTime), 'Pp')}
+                                <Typography  variant={'caption'}>
+                                    {selected.time}
                                 </Typography>
-                            </CardContent>
-                        </Card>
-                    ))
-                }
-            </Box>
+                            </div>
+                        </InfoWindow>)
+                        : null
+                        }
+                    </GoogleMap>
+                </div>
+                <div>
+                    {
+                        trips.map(trip => (
+                            <Accordion sx={{minWidth: '100%'}} key={trip.id + Math.random().toFixed(2)}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    id="trip-header"
+                                    onClick={() => setSelectedTrip(trip.trip)}
+                                >
+                                <Typography>{trip.trip.name}</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails sx={{maxHeight: 500, overflow: 'auto'}}>
+                                    {
+                                        trip.trip.events.map(event => (
+                                            <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1, height: '15%' }}
+                                                style={{}}
+                                            >
+                                                <CardContent sx={{ mb: 0}} onClick={() => handleClick(event.id)}>
+                                                    <Typography  gutterBottom>
+                                                    {event.name} - {event.location}
+                                                    </Typography>
+                                                    <Typography color="text.secondary" variant="subtitle2">
+                                                        {format(parseISO(event.startTime), 'Pp')}
+                                                    </Typography>
+                                                </CardContent>
+                                            </Card>
+                                        ))
+                                    }
+                                </AccordionDetails>
+                            </Accordion>
+                        ))
+                    }
+                </div>
+            </div>
         </div>
-        </>
     );
 }
-

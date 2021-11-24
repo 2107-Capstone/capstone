@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+import CircularLoading from '../Loading/CircularLoading'
 import TripMap from '../Map/TripMap'
 import { Participants, Events } from './tripInfo'
 import Expenses from '../Expenses/Expenses'
@@ -16,11 +16,13 @@ const Trip = (props) => {
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
 
     // console.log(trip)
-    if (!trip) return '...loading'
+//     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)           
 
 
+    
+    if (!trip) return <CircularLoading />
 
     return (
         <>

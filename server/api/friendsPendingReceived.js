@@ -11,18 +11,18 @@ router.get('/', async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
-      const friends = await UserFriend.findAll({
+      const receiveds = await UserFriend.findAll({
         where: {
-          userId: user.id,
-          status: 'accepted'
+          friendId: user.id,
+          status: 'pending'
         },
         include: [
           {
-            model: User, as: 'friend'
+            model: User, as: 'user'
           }
         ]
       })
-      res.json(friends)
+      res.json(receiveds)
     } else {
       res.send('No current user found via token')
     }
@@ -31,24 +31,24 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:friendId', async (req, res, next) => {
+router.get('/:receivedId', async (req, res, next) => {
   if(req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
   try {
-    const friend = await User.findOne({
+    const received = await UserFriend.findOne({
       where: {
-        id: req.params.friendId,
-        status: 'accepted'
+        id: req.params.receivedId,
+        status: 'pending'
       },
       include: [
         {
-          mode: User, as: 'friend'
+          mode: User, as: 'user'
         }
       ]
     })
-    res.json(friend)
+    res.json(received)
   } catch (err) {
     next(err)
   }
