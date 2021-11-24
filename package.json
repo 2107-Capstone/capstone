@@ -4,7 +4,7 @@
   "description": "A website for organizing trips!",
   "main": "index.js",
   "scripts": {
-    "build": "env-cmd webpack",
+    "build": "webpack",
     "build:dev": "npm run build -- --watch --mode=development",
     "seed": "node script/seed.js",
     "start": "npm run seed && node server",
