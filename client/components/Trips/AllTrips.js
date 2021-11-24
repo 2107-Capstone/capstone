@@ -13,6 +13,8 @@ import CircularLoading from '../Loading/CircularLoading'
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";
 
+const handleLeaveTrip = () => { }
+
 
 const AllTrips = () => {
     const dispatch = useDispatch();
@@ -44,16 +46,15 @@ const AllTrips = () => {
         )
     }
 
-    console.log(trips)
     return (
-        <Container maxWidth='lg'>
+        <>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                 <CardTravelIcon fontSize='medium' />
                 <Typography variant='h5'>
                     &nbsp;ALL TRIPS
                 </Typography>
             </Box>
-            <Button variant='outlined'>
+            <Button component={Link} to="/trips/add" variant='outlined'>
                 Add New Trip
             </Button>
             {/* <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 1 }}>
@@ -72,39 +73,42 @@ const AllTrips = () => {
             </Box> */}
             <Grid container spacing={2} sx={{ mt: 1 }}>
                 {trips.map(trip => (
-                    <Grid item xs={12} sm={6} key={trip.id} component={Link} to={`/trip/${trip.tripId}`} >
+                    <Grid item xs={12} sm={6} key={trip.id} >
                         <Paper sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
-                            <Typography variant='h6' align='center'>
-                                {trip.trip.name}
-                            </Typography>
-                            <Typography align='center'>
-                                {trip.trip.description}
-                            </Typography>
-                            <Box sx={{ m: 2 }}>
-                                <Typography sx={{ textDecoration: 'underline' }}>
-                                    SUMMARY:
+                            <Box sx={{ color: 'inherit' }} component={Link} to={`/trip/${trip.tripId}`}>
+                                <img src={trip.trip.imageUrl} width='100%' height='240' />
+                                <Typography variant='h6' align='center'>
+                                    {trip.trip.name}
                                 </Typography>
-                                <Typography >
-                                    Location: {trip.trip.location}
+                                <Typography align='center'>
+                                    {trip.trip.description}
                                 </Typography>
-                                <Typography >
-                                    Start Date: {format(parseISO(trip.trip.startTime), 'P')}
-                                </Typography>
-                                <Typography>
-                                    End Date: {format(parseISO(trip.trip.endTime), 'P')}
-                                </Typography>
-                                <Typography>
-                                    Friends: {trip.trip.userTrips.length}
-                                </Typography>
+                                <Box sx={{ m: 2 }}>
+                                    <Typography sx={{ textDecoration: 'underline' }}>
+                                        SUMMARY:
+                                    </Typography>
+                                    <Typography >
+                                        Location: {trip.trip.location}
+                                    </Typography>
+                                    <Typography >
+                                        Start Date: {format(parseISO(trip.trip.startTime), 'P')}
+                                    </Typography>
+                                    <Typography>
+                                        End Date: {format(parseISO(trip.trip.endTime), 'P')}
+                                    </Typography>
+                                    <Typography>
+                                        Friends: {trip.trip.userTrips.length}
+                                    </Typography>
+                                </Box>
                             </Box>
                             <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                <Chip label="leave trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
+                                <Chip onClick={handleLeaveTrip} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
                             </Box>
                         </Paper>
                     </Grid>
                 ))}
             </Grid>
-        </Container >
+        </>
     )
 }
 

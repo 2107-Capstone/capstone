@@ -1,10 +1,12 @@
 import React, { useState } from "react"
-import { Box, Container, Avatar, Typography, Grid, TextField, Button, Link } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import { authenticate } from "../../store";
 import { useDispatch } from "react-redux";
 
-// import PhoneInput from 'react-phone-number-input/input'
+
+///////////////// MATERIAL UI ////////////////////////
+import { Box, Container, Avatar, Typography, Grid, TextField, Button, Link } from '@mui/material';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 
 const SignupForm = () => {
     const dispatch = useDispatch()
@@ -47,8 +49,8 @@ const SignupForm = () => {
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockIcon />
+                <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main' }}>
+                    <FlightTakeoffIcon fontSize='large' />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign up
