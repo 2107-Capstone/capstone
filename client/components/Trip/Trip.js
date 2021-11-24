@@ -8,13 +8,18 @@ import Expenses from '../Expenses/Expenses'
 
 const Trip = (props) => {
 
-    const id = +props.match.params.id
+    const id = + props.match.params.id
 
     const auth = useSelector(state => state.auth);
+
+
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
 
+    // console.log(trip)
+//     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)           
+
 
     
     if (!trip) return <CircularLoading />
