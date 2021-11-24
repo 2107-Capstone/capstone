@@ -1,12 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { deleteUserFriend, approveUserFriend, createUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
-import auth from '../../store/auth'
 
 
-export const PendingFriendRequest = ({auth, friendsPendingSent, friendsPendingReceived, deleteUserFriend, approveUserFriend, createUserFriend, loadFriendshipData }) => {
-    const clickApproveFriend = async (userFriend) => {
+export const PendingFriendRequest = ({friendsPendingSent, friendsPendingReceived, deleteUserFriend, approveUserFriend, createUserFriend, loadFriendshipData }) => {
+    const clickApproveRequest = async (userFriend) => {
         await approveUserFriend({
             ...userFriend,
             status: 'accepted'
@@ -20,7 +18,7 @@ export const PendingFriendRequest = ({auth, friendsPendingSent, friendsPendingRe
         await loadFriendshipData()
     }
     
-    const clickRejectFriend = async (userFriend) => {
+    const clickRejectRequest = async (userFriend) => {
         await deleteUserFriend(userFriend.id)
         await loadFriendshipData()
     }
@@ -34,7 +32,7 @@ export const PendingFriendRequest = ({auth, friendsPendingSent, friendsPendingRe
             {friendsPendingSent.map(friendPendingSent => (
                 <li key={friendPendingSent.id}>
                     {friendPendingSent.friend.username}
-                    <button onClick={() => clickRejectFriend(friendPendingSent)}>Cancel Request</button>
+                    <button onClick={() => clickRejectRequest(friendPendingSent)}>Cancel Request</button>
                 </li>
             ))}
         </ul>
@@ -45,8 +43,8 @@ export const PendingFriendRequest = ({auth, friendsPendingSent, friendsPendingRe
             {friendsPendingReceived.map(friendPendingReceived => (
                 <li key={friendPendingReceived.id}>
                     {friendPendingReceived.user.username}
-                    <button onClick={() => clickApproveFriend(friendPendingReceived)}>Approve</button>
-                    <button onClick={() => clickRejectFriend(friendPendingReceived)}>Reject</button>
+                    <button onClick={() => clickApproveRequest(friendPendingReceived)}>Approve</button>
+                    <button onClick={() => clickRejectRequest(friendPendingReceived)}>Reject</button>
                 </li>
             ))}
         </ul>

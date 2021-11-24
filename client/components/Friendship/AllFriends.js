@@ -1,11 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import AddFriend from './AddFriend'
 import PendingFriendRequest from './PendingFriendRequest'
+import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 
-export const AllFriends = ({friends}) => {
+export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendshipData }) => {
+    const clickDeleteFriend = async (friend) => {
+        const _userFriend = userFriends.find(userFriend => userFriend.userId === friend.friendId)
+        await deleteUserFriend(friend.id)
+        await deleteUserFriend(_userFriend.id)
+        await loadFriendshipData()
+    }
     return(
     <div>
         <div>
@@ -16,6 +22,8 @@ export const AllFriends = ({friends}) => {
             {friends.map(friend => (
                 <li key={friend.id}>
                     {friend.friend.username}
+                    <button onClick={() => clickDeleteFriend(friend)}>Delete Friend</button>
+
                 </li>
             ))}
         </ul>
@@ -28,7 +36,21 @@ export const AllFriends = ({friends}) => {
 const mapState = state => {
     return {
       friends: state.friends,
+      userFriends: state.userFriends
     }
-  }
+}
 
-export default connect(mapState)(AllFriends)
+const mapDispatch = (dispatch) => {
+    return {
+        deleteUserFriend: (id) => {
+            dispatch(deleteUserFriend(id))
+        },
+        loadFriendshipData () {
+            dispatch(getFriends())
+            dispatch(getFriendsPendingReceived())
+            dispatch(getFriendsPendingSent())
+        }
+    }
+}
+
+export default connect(mapState, mapDispatch)(AllFriends)
