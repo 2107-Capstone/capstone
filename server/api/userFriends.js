@@ -31,11 +31,7 @@ router.get('/:userFriendId', async (req, res, next) => {
     return res.json([])
   }
   try {
-    const userFriend = await UserFriend.findOne({
-      where: {
-        id: req.params.friendId
-      }
-    })
+    const userFriend = await UserFriend.findByPk(req.params.userFriendId)
     res.json(userFriend)
   } catch (err) {
     next(err)
@@ -48,8 +44,37 @@ router.post('/', async (req, res, next) => {
     return res.json([])
   }
   try {
-    const _userFriend = await UserFriend.create(req.body)
-    res.json(_userFriend)
+    const userFriend = await UserFriend.create(req.body)
+    res.json(userFriend)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:userFriendId', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  const { status } = req.body
+  try {
+    const userFriend = await UserFriend.findByPk(req.params.userFriendId)
+    await userFriend.update(req.body)
+    res.json(userFriend)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete('/:userFriendId', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  try {
+    const userFriend = await UserFriend.findByPk(req.params.userFriendId)
+    await userFriend.destroy()
+    res.send(201)
   } catch (err) {
     next(err)
   }

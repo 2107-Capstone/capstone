@@ -9,6 +9,9 @@ router.use('/events', require('./events'))
 router.use('/expenses', require('./expenses'))
 router.use('/userFriends', require('./userFriends'))
 router.use('/categories', require('./categories'))
+router.use('/friendsPendingSent', require('./friendsPendingSent'))
+router.use('/friendsPendingReceived', require('./friendsPendingReceived'))
+
 
 
 
