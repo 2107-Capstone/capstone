@@ -11,8 +11,8 @@ import CircularLoading from '../Loading/CircularLoading'
 
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
-import config from '../../../config'
-
+// import config from '../../../config'
+console.log(process.env)
 //TODO: switch to using markers instead of events in events list?
 const mapStyles = {
     width: '60%',
@@ -32,7 +32,7 @@ const tripZoom = 12;
 
 export default function TripMap ({tripId}) {
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: config.API_KEY
+        googleMapsApiKey: API_KEY
     });
 
     const auth = useSelector(state => state.auth);
