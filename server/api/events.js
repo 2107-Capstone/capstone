@@ -4,6 +4,7 @@ const { models: { User, Trip, UserTrip, Event }} = require('../db')
 const axios = require('axios')
 
 const API_KEY = process.env.MAP_API || process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+
 module.exports = router
 
 router.get('/', async (req, res, next) => {
