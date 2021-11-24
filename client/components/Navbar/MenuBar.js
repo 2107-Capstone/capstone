@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../../store';
 
 ///////////// MATERIAL UI ///////////////
-import { Button, Box, Divider, Drawer, Stack, Toolbar } from '@mui/material'
+import { Button, Box, Divider, Drawer, Stack, Toolbar, IconButton, Typography } from '@mui/material'
 
 //////////// ICONS //////////////////
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -17,6 +17,7 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 import EventIcon from '@mui/icons-material/Event';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 
 
 const MenuBar = (props) => {
@@ -29,30 +30,33 @@ const MenuBar = (props) => {
 
     const menuBarButtons = (
         <Box sx={{ px: 1 }}>
-            <Toolbar>
+            <Toolbar sx={{ display: 'flex', justifyContent: 'center' }}>
+                <IconButton component={Link} to='/home' color='primary'>
+                    <FlightTakeoffIcon sx={{ fontSize: 45 }} />
+                </IconButton>
             </Toolbar>
             <Divider />
             <Stack spacing={2}>
-                <Button component={Link} to='/dashboard' variant='contained' sx={{ mt: 2 }} startIcon={<DashboardIcon />}>
+                <Button component={Link} onClick={handleDrawerToggle} to='/dashboard' variant='contained' sx={{ mt: 2 }} startIcon={<DashboardIcon />}>
                     Dashboard
                 </Button>
-                <Button component={Link} to='/trips' variant='contained' startIcon={<CardTravelIcon />}>
+                <Button component={Link} onClick={handleDrawerToggle} to='/trips' variant='contained' startIcon={<CardTravelIcon />}>
                     Trips
                 </Button>
-                <Button component={Link} to='/friends' variant='contained' startIcon={<PeopleIcon />}>
+                <Button component={Link} onClick={handleDrawerToggle} to='/friends' variant='contained' startIcon={<PeopleIcon />}>
                     Friends
                 </Button>
-                <Button component={Link} to='/map' variant='contained' startIcon={<LocationOnIcon />}>
+                <Button component={Link} onClick={handleDrawerToggle} to='/map' variant='contained' startIcon={<LocationOnIcon />}>
                     Map
                 </Button>
-                <Button variant='contained' startIcon={<EventIcon />}>
+                <Button onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
                     Calendar
                 </Button>
                 <Divider />
-                <Button variant='outlined' color='info' startIcon={<SettingsIcon />}>
+                <Button onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
                     Settings
                 </Button>
-                <Button variant='outlined' onClick={handleLogout}>
+                <Button onClick={handleDrawerToggle} variant='outlined' onClick={handleLogout}>
                     Logout
                 </Button>
             </Stack>
