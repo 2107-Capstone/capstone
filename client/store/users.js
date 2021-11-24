@@ -30,16 +30,16 @@ export const getUsers = () => {
     dispatch(_getUsers(users));
   };
 }
-export const updateUser = (_user) => {
+export const updateUser = (user) => {
   const token = window.localStorage.getItem(TOKEN)
   
   return async (dispatch) => {
-    const { data: user } = await axios.put(`/api/users/${_user.id}`, _user,{
+    const { data: updated } = await axios.put(`/api/users/${user.id}`, user, {
      headers: {
        authorization: token
      }
    });
-    dispatch(_updateUser(user));
+    dispatch(_updateUser(updated));
   };
 }
 /**

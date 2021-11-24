@@ -8,7 +8,11 @@ import SettleUp from './SettleUp';
 import { format, parseISO } from "date-fns";
 
 ////////////////// MATERIAL UI /////////////////
-import { Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from "@mui/material";
+import { Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tooltip } from "@mui/material";
+
+import { FaFileInvoiceDollar } from 'react-icons/fa'
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 
 const Expenses = ({ tripId, trip }) => {
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId));
@@ -94,10 +98,15 @@ const Expenses = ({ tripId, trip }) => {
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
-            <Button onClick={() => setOpen(true)}>Add Expense</Button>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{border: '1px solid darkgrey'}}>
                 <Table aria-label="trip expenses table">
                     <TableHead>
+                        {/* <Tooltip title='Add Expense'> */}
+                            {/* <AddBoxIcon onClick={() => setOpen(true)} sx={{color: 'green'}}/> */}
+                            <Button sx={{ml: 1, mt: 1, color: 'green'}}  fontSize='large' startIcon={<FaFileInvoiceDollar />}  onClick={() => setOpen(true)} >
+                                Add Expense
+                            </Button>
+                        {/* </Tooltip> */}
                         <TableRow>
                             <TableCell
                                 align="center"
@@ -185,6 +194,10 @@ const Expenses = ({ tripId, trip }) => {
                                 <TableCell colSpan={5} />
                             </TableRow>
                         )}
+                        <TableRow>
+                            <TableCell align='right' sx={{fontWeight: 'bold'}}>Total:</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 'bold'}}>${tripExpenses.reduce((total, expense) => (total + +expense.amount), 0).toFixed(2)}</TableCell>
+                        </TableRow>
                     </TableBody>
                 </Table>
             </TableContainer>
