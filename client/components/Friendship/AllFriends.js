@@ -2,13 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AddFriend from './AddFriend'
+import PendingFriendRequest from './PendingFriendRequest'
 
 
-export const AllFriends = ({auth, users, friends}) => {
+export const AllFriends = ({friends}) => {
     return(
     <div>
         <div>
-        <h3>{auth.username}'s Friends</h3>
+        <h3>Your Friends:</h3>
         </div>
 
         <ul>
@@ -18,6 +19,7 @@ export const AllFriends = ({auth, users, friends}) => {
                 </li>
             ))}
         </ul>
+        <PendingFriendRequest />
         <AddFriend />
     </div>
     )
@@ -25,8 +27,6 @@ export const AllFriends = ({auth, users, friends}) => {
 
 const mapState = state => {
     return {
-      auth: state.auth,
-      users: state.users,
       friends: state.friends,
     }
   }

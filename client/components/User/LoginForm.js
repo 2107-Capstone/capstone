@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 /////////// Material UI /////////////////
 import { Box, Avatar, TextField, Typography, Button, Link, Container, } from '@mui/material';
-import LockIcon from '@mui/icons-material/Lock';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 
 ///////////// REDUX STORE ///////////////
 import { authenticate } from "../../store";
@@ -39,8 +39,8 @@ const LoginForm = () => {
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockIcon />
+                <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main' }}>
+                    <FlightTakeoffIcon fontSize='large' />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign in

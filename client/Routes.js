@@ -6,13 +6,15 @@ import Home from './components/Home';
 import ChatRoom from './components/Chat/ChatRoom';
 import Trip from './components/Trip/Trip';
 import AllTripsMap from './components/Map/AllTripsMap';
-import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses, getCategories } from './store'
+import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses, getCategories, getUserFriends, getFriendsPendingSent, getFriendsPendingReceived } from './store'
 import LoginForm from './components/User/LoginForm';
 import SignupForm from './components/User/SignupForm';
 
 import AllTrips from './components/Trips/AllTrips';
 import AllFriends from './components/Friendship/AllFriends';
 import Dashboard from './components/Dashboard/Dashboard';
+import { Container } from '@mui/material';
+import AddTripFrom from './components/Trips/Form/AddTripFrom';
 
 /**
  * COMPONENT
@@ -33,12 +35,13 @@ class Routes extends Component {
     const { isLoggedIn } = this.props
 
     return (
-      <div>
+      <Container maxWidth='lg'>
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/trips" component={AllTrips} />
+            <Route exact path="/trips/add" component={AddTripFrom} />
             <Route exact path="/trip/:id" component={Trip} />
             <Route exact path="/friends" component={AllFriends} />
             <Route exact path="/trip/:id/chat" component={ChatRoom} />
@@ -51,9 +54,10 @@ class Routes extends Component {
             {/* <Route path='/' exact component={Login} /> */}
             <Route path="/login" component={LoginForm} />
             <Route path="/signup" component={SignupForm} />
+            <Redirect to="/home" />
           </Switch>
         )}
-      </div>
+      </Container>
     )
   }
 }
@@ -82,6 +86,9 @@ const mapDispatch = dispatch => {
       dispatch(getEvents())
       dispatch(getExpenses())
       dispatch(getCategories())
+      dispatch(getUserFriends())
+      dispatch(getFriendsPendingSent())
+      dispatch(getFriendsPendingReceived())
     }
   }
 }

@@ -9,13 +9,18 @@ import TextsmsIcon from '@mui/icons-material/Textsms';
 import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
 const Trip = (props) => {
 
-    const id = +props.match.params.id
+    const id = + props.match.params.id
 
     const auth = useSelector(state => state.auth);
+
+
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
 
+    // console.log(trip)
+//     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)           
+
 
     
     if (!trip) return <CircularLoading />

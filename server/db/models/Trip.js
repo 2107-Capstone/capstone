@@ -10,18 +10,21 @@ const Trip = db.define('trip', {
     type: STRING,
   },
   description: {
-      type: TEXT
+    type: TEXT
+  },
+  imageUrl: {
+    type: TEXT
   },
   startTime: {
-      type: DATE
+    type: DATE
   },
   endTime: {
-      type: DATE
+    type: DATE
   },
   isOpen: {
     type: BOOLEAN,
     defaultValue: true
-  }, 
+  },
   lat: {
     type: DECIMAL
   },
