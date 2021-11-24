@@ -54,7 +54,7 @@ class Routes extends Component {
             {/* <Route path='/' exact component={Login} /> */}
             <Route path="/login" component={LoginForm} />
             <Route path="/signup" component={SignupForm} />
-            <Redirect to="/home" />
+            {/* <Redirect to="/home" /> */}
           </Switch>
         )}
       </Container>

@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { createUserFriend } from '../../store'
+import { createUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
-export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendingSent}) => {
+export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendingSent, loadFriendshipData}) => {
     const [query, setQuery] = useState('')
     const clickAddFriend = async (friendId) => {
         await createUserFriend({
@@ -12,6 +12,7 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
             friendId: friendId
         })
         alert('Friend request has been sent!')
+        await loadFriendshipData()
     }
     const friendIds = new Set(friends.map(friend => friend.friendId))
     const friendPendingIds = new Set(friendsPendingSent.map(friendPendingSent => friendPendingSent.friendId))
@@ -52,12 +53,17 @@ const mapState = state => {
     }
 }
 
-const mapProps = (dispatch) => {
+const mapDispatch = (dispatch) => {
     return {
         createUserFriend: (userFriend) => {
             dispatch(createUserFriend(userFriend))
+        },
+        loadFriendshipData () {
+            dispatch(getFriends())
+            dispatch(getFriendsPendingReceived())
+            dispatch(getFriendsPendingSent())
         }
     }
 }
 
-export default connect(mapState, mapProps)(AddFriend)
+export default connect(mapState, mapDispatch)(AddFriend)
