@@ -15,10 +15,9 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
-import config from '../../../config'
+
 import mapStyles from './mapStyles';
 
-const API_KEY = config.GOOGLE_MAPS_API_KEY
 //////////https://trekinbami.medium.com/using-environment-variables-in-react-6b0a99d83cf5
 
 
@@ -40,7 +39,7 @@ const tripZoom = 12;
 
 export default function TripMap ({tripId, users}) {
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: API_KEY
+        googleMapsApiKey: process.env.MAP_API
     });
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
