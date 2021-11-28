@@ -22,8 +22,7 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
             {friends.map(friend => (
                 <li key={friend.id}>
                     {friend.friend.username}
-                    <button onClick={() => clickDeleteFriend(friend)}>Delete Friend</button>
-
+                    <button onClick={() => window.confirm(`Are you sure you wish to delete ${friend.friend.username} as a Friend?`) && clickDeleteFriend(friend)}>Delete Friend</button>
                 </li>
             ))}
         </ul>
