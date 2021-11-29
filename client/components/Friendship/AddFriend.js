@@ -4,7 +4,13 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { createUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
-export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendingSent, loadFriendshipData}) => {
+////////////// MATERIAL UI ///////////
+import { Box, Button, Grid, Paper, Typography, TextField } from "@mui/material"
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import PendingIcon from '@mui/icons-material/Pending';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
+export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendingSent, friendsPendingReceived, loadFriendshipData}) => {
     const [query, setQuery] = useState('')
     const clickAddFriend = async (friendId) => {
         await createUserFriend({
@@ -15,12 +21,18 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
         await loadFriendshipData()
     }
     const friendIds = new Set(friends.map(friend => friend.friendId))
-    const friendPendingIds = new Set(friendsPendingSent.map(friendPendingSent => friendPendingSent.friendId))
+    const friendPendingSentIds = new Set(friendsPendingSent.map(friendPendingSent => friendPendingSent.friendId))
+    const friendPendingReceivedIds = new Set(friendsPendingReceived.map(friendPendingReceived => friendPendingReceived.userId))
+
     return(
-    <div>
-        <h3>Add a New Friend!!!</h3>
-        <input placeholder='Search by username or email' onChange={ev => setQuery(ev.target.value)}/>
-        <ul>
+    <>
+        <h3>Search below to add a new friend!!!</h3>
+        <TextField 
+            style={{width: 500}}
+            label='Search by username or email'
+            onChange={ev => setQuery(ev.target.value)}
+        />
+        <Grid container spacing={2} sx={{ mt: 1 }}>
             {users
             .filter(user => user.id != auth.id)
             .filter(user => {
@@ -31,13 +43,19 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
                 }
             })
             .map(user => (
-                <li key={user.id} >
-                    {user.username}
-                    {friendIds.has(user.id)? <button disabled >Already Friend</button>:(friendPendingIds.has(user.id)? <button disabled >Request Pending</button>:<button onClick={() => clickAddFriend(user.id)}>Add Friend</button>)}
-                </li>
+                <Grid item xs={12} sm={3} key={user.id}>
+                    <Paper style={{width: 225, height: 100}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
+                        <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                            <Typography variant='h6'>
+                                {user.username}
+                            </Typography>
+                            {friendIds.has(user.id)? <Button disabled startIcon={<CheckCircleIcon />} size="small" variant='contained' >Already Friend</Button>:(friendPendingSentIds.has(user.id) || friendPendingReceivedIds.has(user.id)? <Button disabled startIcon={<PendingIcon />} size="small" variant='contained' >Request Pending</Button>:<Button startIcon={<AddCircleIcon />} size="small" variant='contained' onClick={() => clickAddFriend(user.id)}>Add Friend</Button>)}
+                        </Box>
+                    </Paper>
+                </Grid>
             ))}
-        </ul>
-    </div>
+        </Grid>
+    </>
     )
 }
 
@@ -49,7 +67,8 @@ const mapState = state => {
       auth: state.auth,
       users: state.users,
       friends: state.friends,
-      friendsPendingSent: state.friendsPendingSent
+      friendsPendingSent: state.friendsPendingSent,
+      friendsPendingReceived: state.friendsPendingReceived,
     }
 }
 
