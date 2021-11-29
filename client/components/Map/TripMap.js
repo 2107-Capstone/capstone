@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { connect, useSelector, useDispatch } from 'react-redux'
 import { parseISO, format } from 'date-fns';
-import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog, CardActionArea } from '@mui/material'
+import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import MuiAlert from '@mui/material/Alert';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 import EventForm from './EventForm'
@@ -26,7 +27,7 @@ const MAP_API = process.env.MAP_API
 // }
 const mapContainerStyle = {
     height: "50vh",
-    width: "50vw",
+    width: "25vw",
   };
 
 const options = {
@@ -36,9 +37,12 @@ const options = {
 };
 const tripZoom = 12;
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
+});
+
 export default function TripMap ({tripId, users}) {
     const { isLoaded, loadError } = useLoadScript({
-        // googleMapsApiKey: process.env.MAP_API
         googleMapsApiKey: MAP_API
     });
     const dispatch = useDispatch();
@@ -64,7 +68,8 @@ export default function TripMap ({tripId, users}) {
 
     useEffect(() => {
         setMarkers(prevMarkers => []);
-        setTrackingMarkers(prevTrackingMarkers => []);
+        // setTrackingMarkers(prevTrackingMarkers => []);
+        
         // navigator.geolocation.getCurrentPosition(
         //     async (position) => {
         //       dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
@@ -131,15 +136,19 @@ export default function TripMap ({tripId, users}) {
             )
         })
     }
-    const handleLocate = () => {
-        navigator.geolocation.getCurrentPosition(
+//TODO: tracking markers are repeating
+    const userLocation = useRef(null);
+    const [status, setStatus] = useState('initial')
+    const handleLocate = async() => {
+        await navigator.geolocation.getCurrentPosition(
             async (position) => {
                 await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
                 userLocation.current = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 }
-                setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
+                // await setTrackingMarkers(trackingMarkers.filter(marker => marker.id !== auth.id), { key: auth.id + Math.random().toString(16), id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') });
+                await setTrackingMarkers([...trackingMarkers, { id: auth.id, key: auth.id + Math.random().toString(16), lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
             panTo({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
@@ -156,10 +165,9 @@ export default function TripMap ({tripId, users}) {
             await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
             setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
         })
+        setOpenAlert(true);
     }
     function Locate({ panTo }) {
-        const userLocation = useRef(null);
-        const [status, setStatus] = useState('initial')
         return (
           <Button
           startIcon={<MyLocationIcon />}
@@ -174,9 +182,11 @@ export default function TripMap ({tripId, users}) {
       }
 
     const [open, setOpen] = useState(false);
+    const [openAlert, setOpenAlert] = useState(false);
     const handleClose = () => {
         setOpen(false);
         setEventToEdit({})
+        setOpenAlert(false);
         setUpdate(prevUpdate => prevUpdate + Math.random())
     }
 //TODO: rename these
@@ -210,6 +220,11 @@ export default function TripMap ({tripId, users}) {
     
     return (
         <>
+                <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity='success' sx={{ width: '100%'}}>
+                        Location Pinned!
+                    </Alert>
+                </Snackbar>
                 <Dialog open={open} onClose={handleClose}>
                     <EventForm trip={trip} event={eventToEdit} handleClose={handleClose}/>
                 </Dialog>
