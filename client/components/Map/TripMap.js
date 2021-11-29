@@ -12,7 +12,9 @@ import CircularLoading from '../Loading/CircularLoading'
 import { updateUser, deleteEvent } from '../../store';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
 
@@ -129,53 +131,55 @@ export default function TripMap ({tripId, users}) {
             )
         })
     }
+    const handleLocate = () => {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
+                userLocation.current = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                }
+                setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
+            panTo({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            });
+        },
+            () => null
+        );
+        setStatus('watching');
+        navigator.geolocation.watchPosition(async position => {
+            userLocation.current = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            }
+            await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
+            setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
+        })
+    }
     function Locate({ panTo }) {
         const userLocation = useRef(null);
         const [status, setStatus] = useState('initial')
         return (
           <Button
+          startIcon={<MyLocationIcon />}
             variant='outlined'
             className="locate"
             //TODO: USE WATCH POSITION AND SET TIMEOUT LATER TO CONTINUALLY UPDATE POSITION
-            onClick={() => {
-              navigator.geolocation.getCurrentPosition(
-                  async (position) => {
-                    await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
-                    userLocation.current = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    }
-                    setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
-                  panTo({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                });
-            },
-                () => null
-            );
-            setStatus('watching');
-            navigator.geolocation.watchPosition(async position => {
-                userLocation.current = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                }
-                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
-                setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
-            })
-            }}
+            onClick={handleLocate}
           >
-            Set My Location
+            Pin My Location
           </Button>
         );
       }
-console.log('users', users)
+
     const [open, setOpen] = useState(false);
     const handleClose = () => {
         setOpen(false);
         setEventToEdit({})
         setUpdate(prevUpdate => prevUpdate + Math.random())
     }
-
+//TODO: rename these
     const handleClick = (id) => {
         setUpdate(prevUpdate => prevUpdate + Math.random())
         const marker = markers.find(marker => marker.id === id);
@@ -198,7 +202,7 @@ console.log('users', users)
             <Dialog open={open} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose}/>
             </Dialog>
-            <Button startIcon={<AddAlarmIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
+            <Button startIcon={<AddIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
                 Add Event
             </Button>
         </>
@@ -210,7 +214,7 @@ console.log('users', users)
                     <EventForm trip={trip} event={eventToEdit} handleClose={handleClose}/>
                 </Dialog>
                 {/* <Tooltip title='Add Event'> */}
-                    <Button startIcon={<AddAlarmIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
+                    <Button startIcon={<AddIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
                         Add Event
                     </Button>
                 {/* </Tooltip> */}
