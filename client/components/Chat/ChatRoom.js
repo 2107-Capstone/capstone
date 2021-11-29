@@ -8,15 +8,18 @@ import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import CircularLoading from '../Loading/CircularLoading'
 
-const ChatRoom = (props) => {
-  const { id } = props.match.params;
-
+// const ChatRoom = (props) => {
+//   const { id } = props.match.params;
+const ChatRoom = ({trip}) => {
+  // const { id } = props.match.params;
+  const id = trip.tripId;
   const dispatch = useDispatch();
 
   const auth = useSelector(state => state.auth);
-  const trip = useSelector(state => state.trips.find(trip => trip.tripId === +id))
+  // const trip = useSelector(state => state.trips.find(trip => trip.tripId === +id))
 
   const { messages, sendMessage } = useChat(id);
+  
   const [newMessage, setNewMessage] = useState("");
 
   const [timeOpened, setTimeOpened] = useState(formatISO(Date.now()));

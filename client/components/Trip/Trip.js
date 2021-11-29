@@ -7,6 +7,8 @@ import { Participants, Events } from './tripInfo'
 import Expenses from '../Expenses/Expenses'
 import TextsmsIcon from '@mui/icons-material/Textsms';
 import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import ChatRoom from '../Chat/ChatRoom'
+import CardTravelIcon from '@mui/icons-material/CardTravel';
 const Trip = (props) => {
 
     const id = + props.match.params.id
@@ -27,22 +29,42 @@ const Trip = (props) => {
 
     return (
         <>
-            <h2>{trip.trip.name}</h2>
-            {/* <Tooltip title='Go to Trip Chat'> */}
-                <Button component={Link} to={`/trip/${trip.tripId}/chat`} variant='contained' color='error' startIcon={<TextsmsIcon />}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+                <CardTravelIcon fontSize='medium' />
+                <Typography variant='h5'>
+                    &nbsp;{trip.trip.name}
+                </Typography>
+            </Box>
+            <Grid container spacing={2} sx={{ mt: 1 }}>     
+                <Grid item xs={12} sm={6} >
+                    <Participants trip={trip} auth={auth} />
+                </Grid>
+                <Grid item xs={12} sm={6} >
+                    <ChatRoom trip={trip}/>
+                </Grid>
+                <Grid item xs={12} sm={6} >
+                    <Expenses tripId={id} trip={trip} />
+                </Grid>
+                <Grid item xs={12} sm={6} >
+                    <TripMap tripId={id} users={trip.trip.userTrips}/>
+                </Grid>
+                {/* <Grid item xs={12} sm={6} key={trip.id} >
+                    <Paper sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
+                        
+                    </Paper>
+                </Grid> */}
+            </Grid>
+                {/* <Button component={Link} to={`/trip/${trip.tripId}/chat`} variant='contained' color='error' startIcon={<TextsmsIcon />}>
                     Trip Chat
-                </Button>
+                </Button> */}
             {/* </Tooltip> */}
-            <h3>Friends in Trip</h3>
+            {/* <h3>Friends in Trip</h3>
             <Participants trip={trip} auth={auth} />
             <h3>Events in Trip</h3>
             <Events tripId={id} />
             <h3>Expenses in Trip</h3>
             <Expenses tripId={id} trip={trip} />
-            {/* <Link key={trip.tripId + Math.random().toString(16)} to={`/trip/${trip.tripId}/chat`}>
-                Chat
-            </Link> */}
-            <TripMap tripId={id} users={trip.trip.userTrips}/>
+            <TripMap tripId={id} users={trip.trip.userTrips}/> */}
         </>
     )
 }
