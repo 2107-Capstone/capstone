@@ -13,6 +13,7 @@ import { Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableCon
 import { FaFileInvoiceDollar } from 'react-icons/fa'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import AddIcon from '@mui/icons-material/Add';
 
 const Expenses = ({ tripId, trip }) => {
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId));
@@ -103,7 +104,7 @@ const Expenses = ({ tripId, trip }) => {
                     <TableHead>
                         {/* <Tooltip title='Add Expense'> */}
                             {/* <AddBoxIcon onClick={() => setOpen(true)} sx={{color: 'green'}}/> */}
-                            <Button sx={{ml: 1, mt: 1, color: 'green'}}  fontSize='large' startIcon={<FaFileInvoiceDollar />}  onClick={() => setOpen(true)} >
+                            <Button sx={{ml: 1, mt: 1, color: 'green'}}  variant='outlined' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
                                 Add Expense
                             </Button>
                         {/* </Tooltip> */}

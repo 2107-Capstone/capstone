@@ -29,6 +29,16 @@ const Trip = (props) => {
 
     return (
         <>
+        {/* <Button
+  variant="contained"
+  component="label"
+>
+  Upload File
+  <input
+    type="file"
+    hidden
+  />
+</Button> */}
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                 <CardTravelIcon fontSize='medium' />
                 <Typography variant='h5'>
