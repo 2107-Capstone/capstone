@@ -7,16 +7,17 @@ import { createMessage } from "../../store";
 import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import CircularLoading from '../Loading/CircularLoading'
-
+import CardTravelIcon from '@mui/icons-material/CardTravel';
+import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
 // const ChatRoom = (props) => {
 //   const { id } = props.match.params;
-const ChatRoom = ({trip}) => {
-  // const { id } = props.match.params;
-  const id = trip.tripId;
+const ChatRoom = ({trip, match}) => {
+  
+  const id = trip ? trip.tripId : match.params.id;
   const dispatch = useDispatch();
 
   const auth = useSelector(state => state.auth);
-  // const trip = useSelector(state => state.trips.find(trip => trip.tripId === +id))
+  const thisTrip = trip ? trip : useSelector(state => state.trips.find(trip => trip.tripId === +id))
 
   const { messages, sendMessage } = useChat(id);
   
@@ -72,17 +73,28 @@ const ChatRoom = ({trip}) => {
     setNewMessage("");
   };
 
-  if (!trip) return <CircularLoading />
+  if (!thisTrip) return <CircularLoading />
 
   return (
     <div style={styles.chatRoomContainer}>
-      <h1 style={styles.roomName}>
-        <Link to={`/trip/${trip.tripId}`}>
-          Chat: {trip.trip.name}
+      {
+        !trip ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+                    <CardTravelIcon fontSize='medium' />
+                    <Box sx={{ color: 'inherit' }} component={Link} to={`/trip/${id}`}>
+                        <Typography variant='h5'>
+                            &nbsp;{thisTrip.trip.name}
+                        </Typography>
+                    </Box>
+                </Box>
+        : ''
+      }
+      {/* <h1 style={styles.roomName}>
+        <Link to={`/trip/${id}`}>
+          Chat: {thisTrip.trip.name}
         </Link>
-      </h1>
-      Trip Friends
-      <Participants trip={trip} auth={auth}/>
+      </h1> */}
+      {/* Trip Friends */}
+      {/* <Participants trip={thisTrip} auth={auth}/> */}
       <div style={styles.messagesContainer} >
         <ol key={Math.random().toString(16)} style={styles.messagesList}>
           <DisplayStoreMessages />

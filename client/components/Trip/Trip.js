@@ -17,16 +17,26 @@ const Trip = (props) => {
 
 
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
-
     // console.log(trip)
-//     if (!trip) return '...loading'
+    //     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)           
+    const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
+    const totalExpenses = tripExpenses.reduce((total, expense) => {
+        return total + +expense.amount
+    }, 0);
+    const userTotal = tripExpenses.reduce((total, expense) => {
+        if (expense.paidById === auth.id) {
+            console.log(expense.amount + total)
+            total += +expense.amount
+        }
+        return total;
+    }, 0);
 
-
-    
     if (!trip) return <CircularLoading />
-
+    
+    const users = trip.trip.userTrips;
+    
     return (
         <>
         {/* <Button
@@ -46,16 +56,35 @@ const Trip = (props) => {
                 </Typography>
             </Box>
             <Grid container spacing={2} sx={{ mt: 1 }}>     
-                <Grid item xs={12} sm={6} >
+                <Grid item xs={12} sm={6} sx={{border: '1px solid grey', borderRadius: '10px'}}>
+                    <Link to={`${trip.tripId}/expenses`} >
+                        <Button variant='contained'>
+                            Expenses Details
+                        </Button>
+                    </Link>
+                    <Typography>
+                        Total Expenses: ${totalExpenses.toFixed(2)}
+                    </Typography>
+                    <Typography>
+                        Each Person Owes: ${(totalExpenses/users.length).toFixed(2)}
+                    </Typography>
+                    <Typography>
+                        You've Paid: ${userTotal.toFixed(2)}
+                    </Typography>
+                    {/* <Expenses tripId={id} trip={trip} /> */}
+                </Grid>
+                <Grid item xs={12} sm={6} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                     <Participants trip={trip} auth={auth} />
                 </Grid>
-                <Grid item xs={12} sm={6} >
+                <Grid item xs={12} sm={6} sx={{border: '1px solid grey', borderRadius: '10px'}}>
+                    <Link to={`${trip.tripId}/chat`} >
+                        <Button variant='contained'>
+                            Full Screen
+                        </Button>
+                    </Link>
                     <ChatRoom trip={trip}/>
                 </Grid>
-                <Grid item xs={12} sm={6} >
-                    <Expenses tripId={id} trip={trip} />
-                </Grid>
-                <Grid item xs={12} sm={6} >
+                <Grid item xs={12} sm={6} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                     <TripMap tripId={id} users={trip.trip.userTrips}/>
                 </Grid>
                 {/* <Grid item xs={12} sm={6} key={trip.id} >

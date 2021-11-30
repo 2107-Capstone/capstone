@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
-import { rgbToHex } from '@mui/system';
+
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 const PieChart = ({expenses, users, categories}) => {
    
@@ -32,45 +32,48 @@ const datasets2 = [
             borderWidth: 1
         }
     ]
-   
+    if (users.length === 0 || expenses.length === 0) return '...loading'
     return (
-        <>
-        <Pie
-            options={{
-                width: "400",
-                height: "400",
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Expenses by Category'
-                    }
-                },
-                responsive: true,
-            }}
-            data={{
-                labels: categoriesLabels,
-                datasets: datasets
-            }}
-        />
-        <Pie
-            options={{
-                width: "400",
-                height: "400",
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Expenses by Friend'
-                    }
-                },
-                responsive: true,
-            }}
-            data={{
-                labels: usersLabels,
-                datasets: datasets2
-            }}
-        />
-       
-        </>
+    <div style={{display: 'flex', justifyContent: 'space-around'}}>
+        <div>
+            <Pie
+                options={{
+                    width: "400",
+                    height: "400",
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Expenses by Category'
+                        }
+                    },
+                    responsive: true,
+                }}
+                data={{
+                    labels: categoriesLabels,
+                    datasets: datasets
+                }}
+            />
+        </div>
+        <div>
+            <Pie
+                options={{
+                    width: "400",
+                    height: "400",
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Expenses by Friend'
+                        }
+                    },
+                    responsive: true,
+                }}
+                data={{
+                    labels: usersLabels,
+                    datasets: datasets2
+                }}
+            />
+        </div>
+    </div>
     )
 }
 

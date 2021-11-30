@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import PieChart from "./PieChart";
 import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
@@ -8,14 +9,17 @@ import SettleUp from './SettleUp';
 import { format, parseISO } from "date-fns";
 
 ////////////////// MATERIAL UI /////////////////
-import { Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tooltip } from "@mui/material";
+import { Box, Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Typography, Tooltip } from "@mui/material";
 
 import { FaFileInvoiceDollar } from 'react-icons/fa'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import AddIcon from '@mui/icons-material/Add';
-
-const Expenses = ({ tripId, trip }) => {
+import CardTravelIcon from '@mui/icons-material/CardTravel';
+// const Expenses = ({ tripId, trip }) => {
+const Expenses = ({match}) => {
+    const tripId = +match.params.id;
+    const trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
     const categories = useSelector(state => state.categories);
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId));
     const tableRowData = tripExpenses.map(expense => ({
@@ -80,7 +84,7 @@ const Expenses = ({ tripId, trip }) => {
     }
 
     ///////////////// LOADING ///////////////////
-    if (!tripId) {
+    if (!trip) {
         return <CircularLoading />
     } else {
         if (tripExpenses.length === 0) return (
@@ -98,7 +102,14 @@ const Expenses = ({ tripId, trip }) => {
 
     return (
         <Container>
-            <PieChart expenses={tripExpenses} users={trip.trip.userTrips} categories={categories}/>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+                <CardTravelIcon fontSize='medium' />
+                <Box sx={{ color: 'inherit' }} component={Link} to={`/trip/${trip.tripId}`}>
+                    <Typography variant='h5'>
+                        &nbsp;{trip.trip.name}
+                    </Typography>
+                </Box>
+            </Box>
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
@@ -226,6 +237,7 @@ const Expenses = ({ tripId, trip }) => {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
+            <PieChart expenses={tripExpenses} users={trip.trip.userTrips} categories={categories}/>
         </Container>
     )
 }
