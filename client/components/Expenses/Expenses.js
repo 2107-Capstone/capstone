@@ -87,7 +87,9 @@ const Expenses = ({ tripId, trip }) => {
                 <Dialog open={open} onClose={handleClose}>
                     <AddExpense trip={trip} handleClose={handleClose}/>
                 </Dialog>
-                <Button onClick={() => setOpen(true)}>Add Expense</Button>
+                <Button sx={{ml: 1, mt: 1, color: 'green'}}  variant='outlined' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+                    Add Expense
+                </Button>
             </Container>
         )
     }
@@ -95,18 +97,18 @@ const Expenses = ({ tripId, trip }) => {
 
     return (
         <Container>
-            <SettleUp expenses={tripExpenses} users={trip.trip.userTrips} />
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
+            <Button sx={{mb: 1, mt: 1, color: 'green'}}  variant='outlined' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+                Add Expense
+            </Button>
             <TableContainer component={Paper} sx={{border: '1px solid darkgrey'}}>
                 <Table aria-label="trip expenses table">
                     <TableHead>
                         {/* <Tooltip title='Add Expense'> */}
                             {/* <AddBoxIcon onClick={() => setOpen(true)} sx={{color: 'green'}}/> */}
-                            <Button sx={{ml: 1, mt: 1, color: 'green'}}  variant='outlined' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
-                                Add Expense
-                            </Button>
+                            
                         {/* </Tooltip> */}
                         <TableRow>
                             <TableCell
@@ -198,7 +200,18 @@ const Expenses = ({ tripId, trip }) => {
                         <TableRow>
                             <TableCell align='right' sx={{fontWeight: 'bold'}}>Total:</TableCell>
                             <TableCell align='center' sx={{fontWeight: 'bold'}}>${tripExpenses.reduce((total, expense) => (total + +expense.amount), 0).toFixed(2)}</TableCell>
+                            <TableCell/>
+                            <TableCell/>
+                            <TableCell/>
                         </TableRow>
+                        <TableRow>
+                            <TableCell align='right' sx={{fontWeight: 'bold'}}>Each Person Owes:</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 'bold'}}>${(tripExpenses.reduce((total, expense) => (total + +expense.amount), 0)/trip.trip.userTrips.length).toFixed(2)}</TableCell>
+                            <TableCell/>
+                            <TableCell/>
+                            <TableCell/>
+                        </TableRow>
+                        <SettleUp expenses={tripExpenses} users={trip.trip.userTrips} />
                     </TableBody>
                 </Table>
             </TableContainer>
