@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-
+import PieChart from "./PieChart";
 import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
 import SettleUp from './SettleUp';
@@ -16,6 +16,7 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import AddIcon from '@mui/icons-material/Add';
 
 const Expenses = ({ tripId, trip }) => {
+    const categories = useSelector(state => state.categories);
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId));
     const tableRowData = tripExpenses.map(expense => ({
         id: expense.id,
@@ -97,6 +98,7 @@ const Expenses = ({ tripId, trip }) => {
 
     return (
         <Container>
+            <PieChart expenses={tripExpenses} users={trip.trip.userTrips} categories={categories}/>
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
