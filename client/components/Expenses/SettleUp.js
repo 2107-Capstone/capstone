@@ -41,7 +41,7 @@ const SettleUp = ({expenses, users}) => {
         // <Container>
             
                 returnString.map(string => (
-                    <TableRow key={Math.random().toFixed(3)}>
+                    <TableRow key={Math.random().toString(16)}>
                         <TableCell colSpan={5} align='left' style={{fontWeight: 'bold', fontStyle: 'italic'}}>
                             {string[0]} owes {string[1]} ${string[2]}
                         </TableCell>

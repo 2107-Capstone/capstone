@@ -6,7 +6,7 @@ import TripMap from '../Map/TripMap'
 import { Participants, Events } from './tripInfo'
 import Expenses from '../Expenses/Expenses'
 import TextsmsIcon from '@mui/icons-material/Textsms';
-import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import { Box, Grid, Button, Paper, TextField, Tooltip, Typography, Dialog } from '@mui/material'
 import ChatRoom from '../Chat/ChatRoom'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 const Trip = (props) => {
@@ -27,7 +27,6 @@ const Trip = (props) => {
     }, 0);
     const userTotal = tripExpenses.reduce((total, expense) => {
         if (expense.paidById === auth.id) {
-            console.log(expense.amount + total)
             total += +expense.amount
         }
         return total;
@@ -55,6 +54,23 @@ const Trip = (props) => {
                     &nbsp;{trip.trip.name}
                 </Typography>
             </Box>
+            <Grid container spacing={2} sx={{ mt: 1 }}>
+                {trip.trip.userTrips.map(user => (
+                    <Grid item xs={12} sm={6} md={4} lg={2} key={user.id}>
+                        <Paper style={{width: 150, height: 80}} sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}>
+                            <Box>
+                                insert photo?
+                            </Box>
+                            <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                                <Typography variant='h6'>
+                                    {user.user.username}
+                                </Typography>
+                            </Box>
+                        </Paper>
+                    </Grid>
+
+                ))}
+            </Grid>
             <Grid container spacing={2} sx={{ mt: 1 }}>     
                 <Grid item xs={12} sm={6} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                     <Link to={`${trip.tripId}/expenses`} >
@@ -62,6 +78,7 @@ const Trip = (props) => {
                             Expenses Details
                         </Button>
                     </Link>
+                    ADD 'ADD EXPENSE' BUTTON?
                     <Typography>
                         Total Expenses: ${totalExpenses.toFixed(2)}
                     </Typography>
@@ -74,7 +91,8 @@ const Trip = (props) => {
                     {/* <Expenses tripId={id} trip={trip} /> */}
                 </Grid>
                 <Grid item xs={12} sm={6} sx={{border: '1px solid grey', borderRadius: '10px'}}>
-                    <Participants trip={trip} auth={auth} />
+                    insert calendar?
+                    {/* <Participants trip={trip} auth={auth} /> */}
                 </Grid>
                 <Grid item xs={12} sm={6} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                     <Link to={`${trip.tripId}/chat`} >
@@ -85,6 +103,7 @@ const Trip = (props) => {
                     <ChatRoom trip={trip}/>
                 </Grid>
                 <Grid item xs={12} sm={6} sx={{border: '1px solid grey', borderRadius: '10px'}}>
+                    REDESIGN THIS
                     <TripMap tripId={id} users={trip.trip.userTrips}/>
                 </Grid>
                 {/* <Grid item xs={12} sm={6} key={trip.id} >
