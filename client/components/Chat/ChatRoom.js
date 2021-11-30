@@ -78,7 +78,7 @@ const ChatRoom = ({trip, match}) => {
   return (
     <div style={styles.chatRoomContainer}>
       {
-        !trip ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+        !trip ? <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                     <CardTravelIcon fontSize='medium' />
                     <Box sx={{ color: 'inherit' }} component={Link} to={`/trip/${id}`}>
                         <Typography variant='h5'>
