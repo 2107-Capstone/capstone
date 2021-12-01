@@ -33,6 +33,15 @@ const EventForm = ({trip, handleClose, event}) => {
             setStartTime(event.startTime);
             setEndTime(event.endTime);
         }
+        return () => {
+            setInputs({
+                eventName: '',
+                location: '',
+                description: ''
+            });
+            setStartTime(new Date());
+            setEndTime(new Date());
+        }
     }, [])
 
     const handleStartChange = (newVal) => {
@@ -53,9 +62,9 @@ const EventForm = ({trip, handleClose, event}) => {
         ev.preventDefault();
         try {
             !addNew ? await dispatch(editEvent({...event, name: eventName, location, description, trip, startTime, endTime })) : await dispatch(addEvent({name: eventName, location, description, trip, startTime, endTime }));
-            setInputs({ eventName: '', location: '', description: ''});
-            setStartTime(new Date());
-            setEndTime(new Date());
+            // setInputs({ eventName: '', location: '', description: ''});
+            // setStartTime(new Date());
+            // setEndTime(new Date());
             handleClose();
             await dispatch(getTrips())
         }
