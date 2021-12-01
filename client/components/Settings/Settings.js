@@ -20,6 +20,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import MuiPhoneNumber from 'material-ui-phone-number';
 
 import { updateUser, me } from '../../store'
 
@@ -37,8 +38,10 @@ const Settings = () => {
         email: '',
         phoneNumber: '',
         showPassword: false,
-        disabled: false
+        disabled: false,
+        error: '',
     })
+
     const handleClickShowPassword = () => {
       setinput({
         ...input,
@@ -62,12 +65,18 @@ const Settings = () => {
     }, [])
 
     const handleChange = (evt) => {
-        const name = evt.target.name
-        const value = evt.target.value
-        setinput({ ...input, [name]: value, disabled: value === '' ? true : false })
+      console.log(evt)
+        if (!evt.target) {
+          setinput({ ...input, phoneNumber: evt, disabled: evt.length < 3 ? true : false })
+        } else {
+          const name = evt.target.name
+          const value = evt.target.value
+          setinput({ ...input, [name]: value, disabled: value === '' ? true : false })
+        }
     }
 
     const handleSubmit = async (evt) => {
+      console.log(input)
         evt.preventDefault()
         try {
            await dispatch(updateUser({id: auth.id, ...input}));
@@ -103,6 +112,7 @@ const Settings = () => {
                     alignItems: 'center',
                 }}
             >
+                <Button>Location Settings</Button>
                 <Button>Upload Avatar</Button>
                 <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main' }}>
                     <FlightTakeoffIcon fontSize='large' />
@@ -162,18 +172,19 @@ const Settings = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                name="phoneNumber"
-                                label="Phone Number"
-                                value={input.phoneNumber || ''}
-                                id="phoneNumber"
-                                onChange={handleChange}
-                            />
+                          <MuiPhoneNumber 
+                            countryCodeEditable='false'
+                            defaultCountry={'us'} 
+                            value={input.phoneNumber || ''}
+                            id="phoneNumber" 
+                            onChange={handleChange} 
+                            variant='outlined' 
+                            fullWidth 
+                            label='Phone Number'
+                          />  
                         </Grid>
                         <Grid item xs={12} >
-                            <FormControl variant="outlined">
+                            <FormControl variant="outlined" fullWidth>
                               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                               <OutlinedInput
                                 id="outlined-adornment-password"
