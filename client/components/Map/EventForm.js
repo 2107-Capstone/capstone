@@ -10,7 +10,6 @@ import { Box, Grid, Button, TextField } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 
 const EventForm = ({trip, handleClose, event}) => {      
-//ADD EVENT
     const dispatch = useDispatch()
     const [inputs, setInputs] = useState({
         eventName: '',
@@ -22,8 +21,10 @@ const EventForm = ({trip, handleClose, event}) => {
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(startTime);
     
+    const addNew = !!!event;
+
     useEffect(() => {
-        if (event.id){
+        if (!addNew){
             setInputs({
                 eventName: event.name,
                 location: event.location,
@@ -31,6 +32,15 @@ const EventForm = ({trip, handleClose, event}) => {
             });
             setStartTime(event.startTime);
             setEndTime(event.endTime);
+        }
+        return () => {
+            setInputs({
+                eventName: '',
+                location: '',
+                description: ''
+            });
+            setStartTime(new Date());
+            setEndTime(new Date());
         }
     }, [])
 
@@ -51,10 +61,10 @@ const EventForm = ({trip, handleClose, event}) => {
     const handleSubmit = async (ev) => {
         ev.preventDefault();
         try {
-            event.id ? await dispatch(editEvent({...event, name: eventName, location, description, trip, startTime, endTime })) : await dispatch(addEvent({name: eventName, location, description, trip, startTime, endTime }));
-            setInputs({ eventName: '', location: '', description: ''});
-            setStartTime(new Date());
-            setEndTime(new Date());
+            !addNew ? await dispatch(editEvent({...event, name: eventName, location, description, trip, startTime, endTime })) : await dispatch(addEvent({name: eventName, location, description, trip, startTime, endTime }));
+            // setInputs({ eventName: '', location: '', description: ''});
+            // setStartTime(new Date());
+            // setEndTime(new Date());
             handleClose();
             await dispatch(getTrips())
         }
@@ -132,7 +142,7 @@ const EventForm = ({trip, handleClose, event}) => {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        {event.id ? 'Edit Event' : 'Add Event'}
+                        {addNew ? 'Add Event' : 'Edit Event'}
                     </Button>
                 </Grid>
             </Box>
