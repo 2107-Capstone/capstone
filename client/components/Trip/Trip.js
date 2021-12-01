@@ -20,8 +20,6 @@ const Trip = (props) => {
 //     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)           
-
-
     
     if (!trip) return <CircularLoading />
 

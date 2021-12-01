@@ -4,7 +4,11 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
+const ejs = require('ejs')
+require('dotenv').config()
 
+/////// use ejs to render google api key for client side ////////////
+app.engine('html', ejs.renderFile)
 module.exports = app
 
 // logging middleware
@@ -21,7 +25,7 @@ app.use(express.json())
 app.use('/auth', require('./auth'))
 app.use('/api', require('./api'))
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public/index.html')));
+app.get('/', (req, res) => res.render(path.join(__dirname, '..', 'public/index.html'), { GOOGLE_KEY: process.env.GOOGLE_KEY }));
 
 // static file-serving middleware
 app.use(express.static(path.join(__dirname, '..', 'public')))
@@ -40,7 +44,7 @@ app.use((req, res, next) => {
 
 // sends index.html
 app.use('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public/index.html'));
+  res.render(path.join(__dirname, '..', 'public/index.html'), { GOOGLE_KEY: process.env.GOOGLE_KEY });
 })
 
 // error handling endware

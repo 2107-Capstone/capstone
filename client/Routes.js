@@ -15,6 +15,7 @@ import AllFriends from './components/Friendship/AllFriends';
 import Dashboard from './components/Dashboard/Dashboard';
 import { Container } from '@mui/material';
 import AddTripFrom from './components/Trips/Form/AddTripFrom';
+import TripCalendar from './components/Calendar/TripCalendar';
 
 /**
  * COMPONENT
@@ -46,6 +47,7 @@ class Routes extends Component {
             <Route exact path="/friends" component={AllFriends} />
             <Route exact path="/trip/:id/chat" component={ChatRoom} />
             <Route exact path="/map" component={AllTripsMap} />
+            <Route exact path="/calendar" component={TripCalendar} />
             <Redirect to="/home" />
           </Switch>
         ) : (
@@ -54,7 +56,7 @@ class Routes extends Component {
             {/* <Route path='/' exact component={Login} /> */}
             <Route path="/login" component={LoginForm} />
             <Route path="/signup" component={SignupForm} />
-            <Redirect to="/home" />
+            {/* <Redirect to="/home" /> */}
           </Switch>
         )}
       </Container>
@@ -80,7 +82,7 @@ const mapDispatch = dispatch => {
     },
     loadAppData() {
       dispatch(getUsers())
-      dispatch(getTrips())
+      // dispatch(getTrips())
       dispatch(getMessages())
       dispatch(getFriends())
       dispatch(getEvents())

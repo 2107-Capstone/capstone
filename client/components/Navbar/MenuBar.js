@@ -31,7 +31,7 @@ const MenuBar = (props) => {
     const menuBarButtons = (
         <Box sx={{ px: 1 }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'center' }}>
-                <IconButton component={Link} to='/home' color='primary'>
+                <IconButton component={Link} to='/home' color='primary' onClick={handleDrawerToggle}>
                     <FlightTakeoffIcon sx={{ fontSize: 45 }} />
                 </IconButton>
             </Toolbar>
@@ -49,7 +49,7 @@ const MenuBar = (props) => {
                 <Button component={Link} onClick={handleDrawerToggle} to='/map' variant='contained' startIcon={<LocationOnIcon />}>
                     Map
                 </Button>
-                <Button onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
+                <Button component={Link} to='/calendar' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
                     Calendar
                 </Button>
                 <Divider />
