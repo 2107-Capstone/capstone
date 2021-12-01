@@ -19,12 +19,14 @@ const AddTripFrom = () => {
         description: '',
         startTime: new Date(),
         endTime: new Date(),
-        // lat: '',
-        // lng: ''
+        lat: '',
+        lng: ''
     })
 
     const [location, setlocation] = useState('')
-    const [imageUrl, setimageUrl] = useState('')
+    const [imageUrl, setimageUrl] = useState(airplane)
+    const [lat, setlat] = useState(40.7127753)
+    const [lng, setlng] = useState(-74.0059728)
 
     let googlePlace;
     useEffect(() => {
@@ -43,8 +45,10 @@ const AddTripFrom = () => {
                 const photo = place.photos[0].getUrl()
                 setimageUrl(photo)
             }
-            else {
-                setimageUrl(airplane)
+
+            if (place.geometry.location) {
+                setlat(place.geometry.location.lat())
+                setlng(place.geometry.location.lng())
             }
         })
     }, [])
@@ -84,18 +88,21 @@ const AddTripFrom = () => {
     const handleSubmit = async () => {
         try {
 
-            const newTrip = { ...input, imageUrl, location }
+            const newTrip = { ...input, imageUrl, location, lat, lng }
+            // console.log(newTrip)
             dispatch(addTrip(newTrip))
             setinput({
                 name: '',
                 description: '',
                 startTime: new Date(),
                 endTime: new Date(),
-                // lat: '',
-                // lng: ''
+                // lat: lat,
+                // lng: lng
             })
             setimageUrl('')
             setlocation('')
+            setlat('')
+            setlng('')
             googlePlace.value = ''
         }
         catch (err) {

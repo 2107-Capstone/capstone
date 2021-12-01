@@ -27,7 +27,7 @@ export const getTrips = () => {
 }
 export const addTrip = (tripToAdd) => {
   const token = window.localStorage.getItem(TOKEN)
-  console.log(tripToAdd)
+  // console.log(tripToAdd)
 
   return async (dispatch) => {
     const { data: trip } = await axios.post(`/api/trips`, tripToAdd, {
