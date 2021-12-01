@@ -75,7 +75,7 @@ const Expenses = ({match}) => {
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableRowData.length) : 0;
 
     ///////////////// DIALOG BOX ///////////////////
     const [open, setOpen] = useState(false);
