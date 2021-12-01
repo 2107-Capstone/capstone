@@ -52,6 +52,10 @@ const MenuBar = (props) => {
                 <Button component={Link} to='/calendar' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
                     Calendar
                 </Button>
+                <Button component={Link} to='/home' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
+                    Notifications
+                </Button>
+                <Divider />
                 <Divider />
                 <Button onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
                     Settings
