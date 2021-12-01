@@ -16,20 +16,20 @@ const Trip = (props) => {
 
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
 
-    // console.log(trip)
-//     if (!trip) return '...loading'
+    console.log(trip)
+    //     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)           
-    
+
     if (!trip) return <CircularLoading />
 
     return (
         <>
             <h2>{trip.trip.name}</h2>
             {/* <Tooltip title='Go to Trip Chat'> */}
-                <Button component={Link} to={`/trip/${trip.tripId}/chat`} variant='contained' color='error' startIcon={<TextsmsIcon />}>
-                    Trip Chat
-                </Button>
+            <Button component={Link} to={`/trip/${trip.tripId}/chat`} variant='contained' color='error' startIcon={<TextsmsIcon />}>
+                Trip Chat
+            </Button>
             {/* </Tooltip> */}
             <h3>Friends in Trip</h3>
             <Participants trip={trip} auth={auth} />
@@ -40,7 +40,7 @@ const Trip = (props) => {
             {/* <Link key={trip.tripId + Math.random().toString(16)} to={`/trip/${trip.tripId}/chat`}>
                 Chat
             </Link> */}
-            <TripMap tripId={id} users={trip.trip.userTrips}/>
+            <TripMap tripId={id} users={trip.trip.userTrips} />
         </>
     )
 }

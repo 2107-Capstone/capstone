@@ -82,7 +82,7 @@ const mapDispatch = dispatch => {
     },
     loadAppData() {
       dispatch(getUsers())
-      // dispatch(getTrips())
+      dispatch(getTrips())
       dispatch(getMessages())
       dispatch(getFriends())
       dispatch(getEvents())
