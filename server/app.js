@@ -1,10 +1,10 @@
+require('dotenv').config();
 const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
 const ejs = require('ejs')
-
 
 /////// use ejs to render google api key for client side ////////////
 app.engine('html', ejs.renderFile)
