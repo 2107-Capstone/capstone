@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux"
 /////// import image //////////////////
 const airplane = '/images/airplane.png'
 
+const googleKey = process.env.MAP_API;
+
 const AddTripFrom = () => {
     const dispatch = useDispatch()
 
@@ -26,7 +28,7 @@ const AddTripFrom = () => {
 
     let googlePlace;
     useEffect(() => {
-        const autocomplete = new google.maps.places.Autocomplete(googlePlace)
+        const autocomplete = new google.maps.places.Autocomplete(googlePlace, { key: googleKey })
         autocomplete.addListener("place_changed", (evt) => {
 
             const place = autocomplete.getPlace()

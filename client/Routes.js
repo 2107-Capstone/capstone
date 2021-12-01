@@ -15,6 +15,7 @@ import AllFriends from './components/Friendship/AllFriends';
 import Dashboard from './components/Dashboard/Dashboard';
 import { Container } from '@mui/material';
 import AddTripFrom from './components/Trips/Form/AddTripFrom';
+import TripCalendar from './components/Calendar/TripCalendar';
 import Expenses from './components/Expenses/Expenses';
 import TripMap from './components/Map/TripMap';
 /**
@@ -49,6 +50,7 @@ class Routes extends Component {
             <Route exact path="/trip/:id/expenses" component={Expenses} />
             <Route exact path="/trip/:id/map" component={TripMap} />
             <Route exact path="/map" component={AllTripsMap} />
+            <Route exact path="/calendar" component={TripCalendar} />
             <Redirect to="/home" />
           </Switch>
         ) : (

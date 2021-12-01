@@ -11,8 +11,9 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 /////////// MATERIAL UI /////////////
-import { AppBar, Box, Button, Divider, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Divider, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import MenuBar from './MenuBar';
+import theme from '../../theme'
 
 const Navbar = (props) => {
 
@@ -22,11 +23,16 @@ const Navbar = (props) => {
   const { drawerWidth } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  ///////// Check screen size for mobile //////////////////
+  const notMobileSize = useMediaQuery(theme.breakpoints.up('sm'));
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    if (notMobileSize) {
+      setMobileOpen(false)
+    }
+    else {
+      setMobileOpen(!mobileOpen);
+    }
   };
-
-  // const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -48,7 +54,7 @@ const Navbar = (props) => {
             </Button>
           )}
           <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}>
-            TRIP OUT
+            TRIP OUT!
           </Typography>
           {!isLoggedIn && (
             <Button variant='outlined' color="inherit" component={Link} to="/login">

@@ -26,7 +26,8 @@ const Trip = (props) => {
 
 
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
-    // console.log(trip)
+
+
     //     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)           
@@ -46,6 +47,7 @@ const Trip = (props) => {
     const users = trip.trip.userTrips;
     
     return (
+
         <div>
         {/* <Button
   variant="contained"
