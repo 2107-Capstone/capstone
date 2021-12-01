@@ -5,7 +5,7 @@ import PendingFriendRequest from './PendingFriendRequest'
 import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography, Snackbar } from "@mui/material"
 import PeopleIcon from '@mui/icons-material/People'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CircularLoading from '../Loading/CircularLoading'
@@ -53,9 +53,14 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
                             <Typography variant='h6'>
                                 {friend.friend.username}
                             </Typography>
-                            <Button startIcon={<DeleteIcon />} size="small" variant='contained' onClick={() => window.confirm(`Are you sure you wish to delete ${friend.friend.username} as a friend?`) && clickDeleteFriend(friend)}>
+                            <Button startIcon={<DeleteIcon />} size="small" variant='contained' onClick={()=>clickDeleteFriend(friend)}>
                                 Delete Friend
                             </Button>
+                            {/* <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                                    This is a success message!
+                                </Alert>
+                            </Snackbar> */}
                         </Box>
                     </Paper>
                 </Grid>
