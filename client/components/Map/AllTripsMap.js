@@ -22,6 +22,7 @@ import { getTrips } from '../../store';
 
 import mapStyles from './mapStyles';
 
+const MAP_API = process.env.MAP_API
 
 // const mapStyles = {
 //     width: '60%',

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-
+import { Link } from "react-router-dom";
+import PieChart from "./PieChart";
 import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
 import SettleUp from './SettleUp';
@@ -8,13 +9,18 @@ import SettleUp from './SettleUp';
 import { format, parseISO } from "date-fns";
 
 ////////////////// MATERIAL UI /////////////////
-import { Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tooltip } from "@mui/material";
+import { Box, Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Typography, Tooltip } from "@mui/material";
 
 import { FaFileInvoiceDollar } from 'react-icons/fa'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
-
-const Expenses = ({ tripId, trip }) => {
+import AddIcon from '@mui/icons-material/Add';
+import CardTravelIcon from '@mui/icons-material/CardTravel';
+// const Expenses = ({ tripId, trip }) => {
+const Expenses = ({match}) => {
+    const tripId = +match.params.id;
+    const trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
+    const categories = useSelector(state => state.categories);
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId));
     const tableRowData = tripExpenses.map(expense => ({
         id: expense.id,
@@ -78,7 +84,7 @@ const Expenses = ({ tripId, trip }) => {
     }
 
     ///////////////// LOADING ///////////////////
-    if (!tripId) {
+    if (!trip) {
         return <CircularLoading />
     } else {
         if (tripExpenses.length === 0) return (
@@ -86,7 +92,9 @@ const Expenses = ({ tripId, trip }) => {
                 <Dialog open={open} onClose={handleClose}>
                     <AddExpense trip={trip} handleClose={handleClose}/>
                 </Dialog>
-                <Button onClick={() => setOpen(true)}>Add Expense</Button>
+                <Button sx={{ml: 1, mt: 1, color: 'green'}}  variant='outlined' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+                    Add Expense
+                </Button>
             </Container>
         )
     }
@@ -94,18 +102,26 @@ const Expenses = ({ tripId, trip }) => {
 
     return (
         <Container>
-            <SettleUp expenses={tripExpenses} users={trip.trip.userTrips} />
+            <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+                <CardTravelIcon fontSize='medium' />
+                <Box sx={{ color: 'inherit' }} component={Link} to={`/trip/${trip.tripId}`}>
+                    <Typography variant='h5'>
+                        &nbsp;{trip.trip.name}
+                    </Typography>
+                </Box>
+            </Box>
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
+            <Button sx={{mb: 1, mt: 1, color: 'green'}}  variant='outlined' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+                Add Expense
+            </Button>
             <TableContainer component={Paper} sx={{border: '1px solid darkgrey'}}>
                 <Table aria-label="trip expenses table">
                     <TableHead>
                         {/* <Tooltip title='Add Expense'> */}
                             {/* <AddBoxIcon onClick={() => setOpen(true)} sx={{color: 'green'}}/> */}
-                            <Button sx={{ml: 1, mt: 1, color: 'green'}}  fontSize='large' startIcon={<FaFileInvoiceDollar />}  onClick={() => setOpen(true)} >
-                                Add Expense
-                            </Button>
+                            
                         {/* </Tooltip> */}
                         <TableRow>
                             <TableCell
@@ -197,7 +213,18 @@ const Expenses = ({ tripId, trip }) => {
                         <TableRow>
                             <TableCell align='right' sx={{fontWeight: 'bold'}}>Total:</TableCell>
                             <TableCell align='center' sx={{fontWeight: 'bold'}}>${tripExpenses.reduce((total, expense) => (total + +expense.amount), 0).toFixed(2)}</TableCell>
+                            <TableCell/>
+                            <TableCell/>
+                            <TableCell/>
                         </TableRow>
+                        <TableRow>
+                            <TableCell align='right' sx={{fontWeight: 'bold'}}>Each Person Owes:</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 'bold'}}>${(tripExpenses.reduce((total, expense) => (total + +expense.amount), 0)/trip.trip.userTrips.length).toFixed(2)}</TableCell>
+                            <TableCell/>
+                            <TableCell/>
+                            <TableCell/>
+                        </TableRow>
+                        <SettleUp expenses={tripExpenses} users={trip.trip.userTrips} />
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -210,108 +237,10 @@ const Expenses = ({ tripId, trip }) => {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
+            <PieChart expenses={tripExpenses} users={trip.trip.userTrips} categories={categories}/>
         </Container>
     )
 }
 
 export default Expenses
 
-
-// import MaterialTable from 'material-table';
-// import AddBox from '@mui/icons-material/AddBox';
-// import ArrowDownward from '@mui/icons-material/ArrowDownward';
-// import Check from '@mui/icons-material/Check';
-// import ChevronLeft from '@mui/icons-material/ChevronLeft';
-// import ChevronRight from '@mui/icons-material/ChevronRight';
-// import Edit from '@mui/icons-material/Edit';
-// import FilterList from '@mui/icons-material/FilterList';
-// import FirstPage from '@mui/icons-material/FirstPage';
-// import LastPage from '@mui/icons-material/LastPage';
-// import Remove from '@mui/icons-material/Remove';
-// import SaveAlt from '@mui/icons-material/SaveAlt';
-// import Search from '@mui/icons-material/Search';
-// import Delete from '@mui/icons-material/Delete';
-// import ViewColumn from '@mui/icons-material/ViewColumn';
-// const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId).sort((a, b) => a.datePaid < b.datePaid ? -1 : 1));
-
-
-// const tableIcons = {
-//     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-//     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-//     DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-//     Delete: forwardRef((props, ref) => <Delete {...props} ref={ref} /> ),
-//     Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-//     Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-//     Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-//     FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-//     LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-//     NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-//     PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-//     ResetSearch: forwardRef((props, ref) => ''),
-//     Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-//     SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-//     ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-//     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-// };
-
-// const columns = [
-//     { title: 'Description', field: 'name',
-//         cellStyle: {
-//             width: 20,
-//             maxWidth: 20,
-//         },
-//         headerStyle: {
-//             width: 20,
-//             maxWidth: 20
-//         }
-//     },
-//     { title: 'Amount', field: 'amount', type: 'currency' },
-//     { title: 'Category', field: 'category' },
-//     { title: 'Paid By', field: 'paidBy' },
-//     { title: 'Date Paid', field: 'datePaid', type: 'date' }
-// ];
-// const data = expenses.map( expense => (
-//     {
-//         name: expense.name,
-//         amount: expense.amount,
-//         category: expense.category.name,
-//         paidBy: expense.paidBy.username,
-//         datePaid: expense.datePaid,
-//         id: expense.id
-//     }
-// ));
-
-// <h1>Testing</h1>
-//     <MaterialTable
-//     title='Expenses'
-//     icons={tableIcons}
-//     columns={columns}
-//     data={data}
-//     options={{
-    //         filtering: true,
-//         grouping: true,
-//         search: true,
-//         toolbarButtonAlignment: 'left',
-//         pageSize: 10,
-//         pageSizeOptions: [10, 20, 30],
-//         headerStyle: {
-//             color: 'darkslate',
-//             background: '#D7EBF8',
-//         }
-//     }}
-//     style={{
-//         margin: '1rem',
-//     }}
-
-// />
-// <ol>
-//     {
-//         expenses.map(expense => (
-//             <li key={expense.id + Math.random().toString(16)}>
-//                 ({format(parseISO(expense.datePaid), 'P')}): {expense.name}: ${(+expense.amount).toFixed(2)}
-//                 <br></br>
-//                 Paid By: {expense.paidBy.username}
-//             </li>
-//         ))
-//     }
-// </ol>

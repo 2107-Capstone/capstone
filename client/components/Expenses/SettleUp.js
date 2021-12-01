@@ -1,5 +1,7 @@
 import React from "react"
-import { Container, Typography } from "@mui/material";
+import { Container, Typography, TableRow, TableCell } from "@mui/material";
+import DoubleArrowRoundedIcon from '@mui/icons-material/DoubleArrowRounded';
+
 const SettleUp = ({expenses, users}) => {
 //TODO: rounding error
     const payments = {};
@@ -28,29 +30,25 @@ const SettleUp = ({expenses, users}) => {
         diff = Math.min(-(sortedPaid[i]), sortedPaid[j]);
         sortedPaid[i] += diff;
         sortedPaid[j] -= diff;
-
-        returnString.push(`${sortedPayors[i]} owes ${sortedPayors[j]} $${diff.toFixed(2)}`)
+        
+        returnString.push([sortedPayors[i], sortedPayors[j], diff.toFixed(2)])
 
         sortedPaid[i] === 0 ? i++ : '';
         sortedPaid[j] === 0 ? j-- : '';
     }
 
     return (
-        <Container>
-            <Typography variant='h6'>
-                Total Expenses: ${totalExpenses}
-            </Typography>
-            <Typography variant='h6'>
-                Each Person Owes: ${eachPersonOwes.toFixed(2)}
-            </Typography>
-            {
+        // <Container>
+            
                 returnString.map(string => (
-                    <Typography key={Math.random().toString(16)}>
-                        {string}
-                    </Typography>
+                    <TableRow key={Math.random().toString(16)}>
+                        <TableCell colSpan={5} align='left' style={{fontWeight: 'bold', fontStyle: 'italic'}}>
+                            {string[0]} owes {string[1]} ${string[2]}
+                        </TableCell>
+                    </TableRow>
                 ))
-            }
-        </Container>
+            
+        // </Container>
     )
 }
 
