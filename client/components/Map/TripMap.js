@@ -28,7 +28,7 @@ import mapStyles from './mapStyles';
 const mapContainerStyle = {
     height: "50vh",
     width: "25vw",
-  };
+};
 
 const options = {
     styles: mapStyles,
@@ -41,9 +41,9 @@ export default function TripMap({ tripId, users }) {
     // const { isLoaded, loadError } = useLoadScript({
     //     googleMapsApiKey: process.env.MAP_API
     // });
-// const Alert = React.forwardRef(function Alert(props, ref) {
-//     return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
-// });
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
+    });
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
 
@@ -68,7 +68,7 @@ export default function TripMap({ tripId, users }) {
     useEffect(() => {
         setMarkers(prevMarkers => []);
         // setTrackingMarkers(prevTrackingMarkers => []);
-        
+
         // navigator.geolocation.getCurrentPosition(
         //     async (position) => {
         //       dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
@@ -135,24 +135,24 @@ export default function TripMap({ tripId, users }) {
             )
         })
     }
-//TODO: tracking markers are repeating
+    //TODO: tracking markers are repeating
     const userLocation = useRef(null);
     const [status, setStatus] = useState('initial')
-    const handleLocate = async() => {
+    const handleLocate = async () => {
         await navigator.geolocation.getCurrentPosition(
             async (position) => {
-                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
+                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
                 userLocation.current = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 }
                 // await setTrackingMarkers(trackingMarkers.filter(marker => marker.id !== auth.id), { key: auth.id + Math.random().toString(16), id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') });
                 await setTrackingMarkers([...trackingMarkers, { id: auth.id, key: auth.id + Math.random().toString(16), lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
-            panTo({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-            });
-        },
+                panTo({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                });
+            },
             () => null
         );
         setStatus('watching');
@@ -161,7 +161,7 @@ export default function TripMap({ tripId, users }) {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             }
-            await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
+            await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
             setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
         })
         setOpenAlert(true);
@@ -169,17 +169,17 @@ export default function TripMap({ tripId, users }) {
     function Locate({ panTo }) {
         return (
 
-          <Button
-          startIcon={<MyLocationIcon />}
-            variant='outlined'
-            className="locate"
-            //TODO: USE WATCH POSITION AND SET TIMEOUT LATER TO CONTINUALLY UPDATE POSITION
-            onClick={handleLocate}
-          >
-            Pin My Location
-          </Button>
+            <Button
+                startIcon={<MyLocationIcon />}
+                variant='outlined'
+                className="locate"
+                //TODO: USE WATCH POSITION AND SET TIMEOUT LATER TO CONTINUALLY UPDATE POSITION
+                onClick={handleLocate}
+            >
+                Pin My Location
+            </Button>
         );
-      }
+    }
 
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
@@ -189,7 +189,7 @@ export default function TripMap({ tripId, users }) {
         setOpenAlert(false);
         setUpdate(prevUpdate => prevUpdate + Math.random())
     }
-//TODO: rename these
+    //TODO: rename these
     const handleClick = (id) => {
         setUpdate(prevUpdate => prevUpdate + Math.random())
         const marker = markers.find(marker => marker.id === id);
@@ -222,35 +222,35 @@ export default function TripMap({ tripId, users }) {
     return (
         <>
 
-                <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity='success' sx={{ width: '100%'}}>
-                        Location Pinned!
-                    </Alert>
-                </Snackbar>
-                <Dialog open={open} onClose={handleClose}>
-                    <EventForm trip={trip} event={eventToEdit} handleClose={handleClose}/>
-                </Dialog>
-                {/* <Tooltip title='Add Event'> */}
-                    <Button startIcon={<AddIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
-                        Add Event
-                    </Button>
-                {/* </Tooltip> */}
-                <Tooltip title='Refresh Event Markers'>
-                    <Button startIcon={<RefreshIcon />} variant='contained' color='info' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}/>
-                </Tooltip>
-                
-                <Locate panTo={panTo} />
-        <div style={{display: 'flex'}}>
-            <div>
-                <GoogleMap
-                    id='map'
-                    options={options}
-                    onLoad={onMapLoad}
-                    zoom={tripZoom}
-                    // zoom={tripId ? 8 : 3}
-                    mapContainerStyle={mapContainerStyle}
-                    style={mapStyles}
-                    center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
+            <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
+                    Location Pinned!
+                </Alert>
+            </Snackbar>
+            <Dialog open={open} onClose={handleClose}>
+                <EventForm trip={trip} event={eventToEdit} handleClose={handleClose} />
+            </Dialog>
+            {/* <Tooltip title='Add Event'> */}
+            <Button startIcon={<AddIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
+                Add Event
+            </Button>
+            {/* </Tooltip> */}
+            <Tooltip title='Refresh Event Markers'>
+                <Button startIcon={<RefreshIcon />} variant='contained' color='info' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} />
+            </Tooltip>
+
+            <Locate panTo={panTo} />
+            <div style={{ display: 'flex' }}>
+                <div>
+                    <GoogleMap
+                        id='map'
+                        options={options}
+                        onLoad={onMapLoad}
+                        zoom={tripZoom}
+                        // zoom={tripId ? 8 : 3}
+                        mapContainerStyle={mapContainerStyle}
+                        style={mapStyles}
+                        center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
                     >
                         {displayMarkers()}
                         {displayTrackingMarkers()}
@@ -291,27 +291,23 @@ export default function TripMap({ tripId, users }) {
                                         {format(parseISO(event.startTime), 'Pp')}
                                     </Typography>
                                 </CardContent>
-                                <CardActionArea>
-
-                                    <Button startIcon={<ModeEditIcon />} color='info' onClick={() => {
-                                        setEventToEdit(event);
-                                        setOpen(true);
-                                    }}>
-                                        Edit
-                                    </Button>
-
-
-                                    <Button startIcon={<DeleteForeverIcon />} color='error' onClick={async () => {
-                                        try {
-                                            await dispatch(deleteEvent(event.id))
-                                        } catch (err) {
-                                            console.log(err)
-                                        }
-                                    }}>
-                                        Delete
-                                    </Button>
-
-                                </CardActionArea>
+                                {/* <CardActionArea> */}
+                                <Button startIcon={<ModeEditIcon />} color='info' onClick={() => {
+                                    setEventToEdit(event);
+                                    setOpen(true);
+                                }}>
+                                    Edit
+                                </Button>
+                                <Button startIcon={<DeleteForeverIcon />} color='error' onClick={async () => {
+                                    try {
+                                        await dispatch(deleteEvent(event.id))
+                                    } catch (err) {
+                                        console.log(err)
+                                    }
+                                }}>
+                                    Delete
+                                </Button>
+                                {/* </CardActionArea> */}
                             </Card>
                         ))
                     }
