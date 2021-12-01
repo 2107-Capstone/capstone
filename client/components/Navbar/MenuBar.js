@@ -57,7 +57,7 @@ const MenuBar = (props) => {
                 </Button>
                 <Divider />
                 <Divider />
-                <Button onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
+                <Button component={Link} to='/settings' onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
                     Settings
                 </Button>
                 <Button onClick={handleDrawerToggle} variant='outlined' onClick={handleLogout}>
