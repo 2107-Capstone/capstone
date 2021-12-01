@@ -9,7 +9,7 @@ const localizer = momentLocalizer(moment)
 import history from '../../history'
 
 ////////// CSS Style for the calendar //////////
-import './TripCalendar.module.css'
+import './TripCalendar.css'
 import { useSelector } from 'react-redux'
 import CircularLoading from '../Loading/CircularLoading'
 
