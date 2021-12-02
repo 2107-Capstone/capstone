@@ -17,6 +17,7 @@ import MapIcon from '@mui/icons-material/Map';
 import Avatar from '@mui/material/Avatar';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { FaBlackberry } from 'react-icons/fa'
+import SingleTripCalendar from '../Calendar/SingleTripCalendar'
 
 const Trip = (props) => {
 
@@ -136,7 +137,7 @@ const Trip = (props) => {
                                     </Typography>
                                 </Box>
                             </Box>
-                            insert calendar?insert calendar?insert calendar?insert calendar?
+                            <SingleTripCalendar trip={trip.trip}/>
                             {/* <Participants trip={trip} auth={auth} /> */}
                         </Grid>
                     </Grid>
