@@ -55,9 +55,9 @@ router.put('/:userId', async (req, res, next) => {
       return res.send([])
     }
     try {
-      const { lat, lng, time } = req.body;
+      const { lat, lng, time, username, firstName, lastName, email, phoneNumber, password } = req.body;
       let user = await User.findByPk(req.params.userId)
-      await user.update({...user, lat, lng, time});
+      await user.update({...user, lat, lng, time, username, firstName, lastName, email, phoneNumber, password });
       user = await User.findByPk(user.id, {
         include: [
           {
