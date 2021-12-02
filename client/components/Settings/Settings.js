@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+//////////// MUI //////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
-import Input from '@mui/material/Input';
-import FilledInput from '@mui/material/FilledInput';
 import Grid from '@mui/material/Grid';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -25,11 +24,9 @@ import MuiPhoneNumber from 'material-ui-phone-number';
 import { updateUser, me } from '../../store'
 
 const Settings = () => {
-    
+    const dispatch = useDispatch()
     const auth = useSelector((state) => state.auth);
     
-    const dispatch = useDispatch()
-
     const [input, setinput] = useState({
         username: '',
         password: '',
@@ -64,14 +61,23 @@ const Settings = () => {
       })
     }, [])
 
+    useEffect(() => {
+      if (input.phoneNumber.length === 17 && input.username && input.password && input.firstName && input.lastName && input.email){
+        setinput({
+          ...input,
+          disabled: false
+        })
+      }
+    }, [input.phoneNumber])
+
     const handleChange = (evt) => {
-      console.log(evt)
         if (!evt.target) {
-          setinput({ ...input, phoneNumber: evt, disabled: evt.length < 3 ? true : false })
+          const err = evt.length < 17 ? 'Phone number must have 10 digits.' : '';
+          setinput({ ...input, phoneNumber: evt, disabled: evt.length < 17 ? true : false, error: err })
         } else {
           const name = evt.target.name
           const value = evt.target.value
-          setinput({ ...input, [name]: value, disabled: value === '' ? true : false })
+          setinput({ ...input, [name]: value, disabled: value === '' || input.phoneNumber.length < 17 ? true : false })
         }
     }
 
@@ -87,7 +93,7 @@ const Settings = () => {
           console.log(error)
         }
     }
-    
+    //////////// SNACKBAR ALERT //////////////////
     const Alert = React.forwardRef(function Alert(props, ref) {
       return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
     });
@@ -112,8 +118,8 @@ const Settings = () => {
                     alignItems: 'center',
                 }}
             >
-                <Button>Location Settings</Button>
-                <Button>Upload Avatar</Button>
+                <Button>TODO: Location Settings</Button>
+                <Button>TODO: Upload Avatar</Button>
                 <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main' }}>
                     <FlightTakeoffIcon fontSize='large' />
                 </Avatar>
@@ -164,6 +170,7 @@ const Settings = () => {
                                 required
                                 fullWidth
                                 id="email"
+                                type='email'
                                 label="Email Address"
                                 name="email"
                                 value={input.email || ''}
@@ -173,16 +180,26 @@ const Settings = () => {
                         </Grid>
                         <Grid item xs={12}>
                           <MuiPhoneNumber 
-                            countryCodeEditable='false'
+                            onlyCountries={['us']}
                             defaultCountry={'us'} 
                             value={input.phoneNumber || ''}
                             id="phoneNumber" 
                             onChange={handleChange} 
                             variant='outlined' 
                             fullWidth 
+                            disableAreaCodes
                             label='Phone Number'
                           />  
                         </Grid>
+                        {
+                          input.error ?
+                          <Grid item xs={12}>
+                            <Typography variant='caption' sx={{color: 'red'}}>
+                              {input.error}
+                            </Typography>  
+                          </Grid>
+                          : ''
+                        }
                         <Grid item xs={12} >
                             <FormControl variant="outlined" fullWidth>
                               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -217,7 +234,7 @@ const Settings = () => {
                         disabled={input.disabled}
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Submit
+                        Update Information
                     </Button>
                 </Box>
             </Box>
