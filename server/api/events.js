@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const { models: { User, Trip, UserTrip, Event } } = require('../db')
 const axios = require('axios')
-// require('dotenv').config()
+require('dotenv').config()
 
 
 const API_KEY = process.env.MAP_API
