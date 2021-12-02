@@ -1,97 +1,85 @@
 import React, { useEffect, useState } from 'react'
-
-import { addEvent, getTrips, editEvent } from '../../store'
 import { useDispatch } from 'react-redux'
-// import DateAdapter from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
+
+//////////////// REDUX STORE ///////////////////////
+import { addEvent, getTrips, editEvent } from '../../store'
+
+////////////// MATERIAL UI ///////////////////////////////
+import { LocalizationProvider, DateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Box, Grid, Button, TextField } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
+import CircularLoading from '../Loading/CircularLoading'
 
-const EventForm = ({trip, handleClose, event}) => {      
+const EventForm = (props) => {
+    const { trip, handleClose } = props
+    const event = props.event || {}
+
     const dispatch = useDispatch()
+
     const [inputs, setInputs] = useState({
-        eventName: '',
-        location: '',
-        description: ''
+        id: event.id || '',
+        name: event.name || '',
+        location: event.location || '',
+        description: event.description || '',
+        place_id: event.place_id || ''
     })
-    const { eventName, location, description  } = inputs;
     
-    const [startTime, setStartTime] = useState(new Date());
-    const [endTime, setEndTime] = useState(startTime);
+    const [startTime, setStartTime] = useState(event.startTime || new Date());
+    const [endTime, setEndTime] = useState(event.endTime || startTime);
     
-    const addNew = !!!event;
-
-    useEffect(() => {
-        if (!addNew){
-            setInputs({
-                eventName: event.name,
-                location: event.location,
-                description: event.description,
-            });
-            setStartTime(event.startTime);
-            setEndTime(event.endTime);
-        }
-        return () => {
-            setInputs({
-                eventName: '',
-                location: '',
-                description: ''
-            });
-            setStartTime(new Date());
-            setEndTime(new Date());
-        }
-    }, [])
-
-    const handleStartChange = (newVal) => {
-        setStartTime(newVal)
+    const handleStartChange = (start) => {
+        setStartTime(start)
     }
     
-    const handleEndChange = (newVal) => {
-        setEndTime(newVal)
+    const handleEndChange = (end) => {
+        setEndTime(end)
     }
     
     const handleChange = (ev) => {
-        const change = {};
-        change[ev.target.name] = ev.target.value;
-        setInputs({eventName, location, description, ...change })
+        const name = ev.target.name;
+        const value = ev.target.value
+        
+        setInputs({ ...inputs, [name]: value })
     }
     
     const handleSubmit = async (ev) => {
         ev.preventDefault();
         try {
-            !addNew ? await dispatch(editEvent({...event, name: eventName, location, description, trip, startTime, endTime })) : await dispatch(addEvent({name: eventName, location, description, trip, startTime, endTime }));
-            // setInputs({ eventName: '', location: '', description: ''});
-            // setStartTime(new Date());
-            // setEndTime(new Date());
+            if (event.id) {
+                await dispatch(editEvent({ ...inputs, trip, startTime, endTime }))
+            }
+            else {
+                await dispatch(addEvent({ ...inputs, trip, startTime, endTime }))
+            }
             handleClose();
-            await dispatch(getTrips())
         }
-        catch(err){
+        catch (err) {
             console.log(err)
         }
     }
-//
-
-    if (!trip) return '...loading'
     
-    return (
-        <>
-            <CloseIcon onClick={handleClose}/>
+    if (!trip) {
+        return (
+            <CircularLoading />
+            )
+        }
+        
+        return (
+            <>
+            <CloseIcon onClick={handleClose} />
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ m: 3 }} >
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            name="eventName"
+                            name="name"
                             required
                             fullWidth
-                            id="eventName"
+                            id="name"
                             label="Event Name"
-                            value={eventName || ''}
-                            autoFocus
+                            value={inputs.name}
                             onChange={handleChange}
-                        />
+                            />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -100,10 +88,9 @@ const EventForm = ({trip, handleClose, event}) => {
                             fullWidth
                             id="location"
                             label="Location"
-                            value={location || ''}
-                            autoFocus
+                            value={inputs.location}
                             onChange={handleChange}
-                        />
+                            />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -111,29 +98,28 @@ const EventForm = ({trip, handleClose, event}) => {
                             fullWidth
                             id="description"
                             label="Description"
-                            value={description || ''}
-                            autoFocus
+                            value={inputs.description}
                             onChange={handleChange}
-                        />
+                            />
                     </Grid>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Grid item xs={12} sm={6}>
                             <DateTimePicker
                                 label="Start Time"
                                 name='startTime'
-                                value={startTime || new Date()}
+                                value={startTime}
                                 onChange={handleStartChange}
                                 renderInput={(params) => <TextField {...params} />}
-                            />
+                                />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <DateTimePicker
                                 label="End Time"
                                 name='endTime'
-                                value={endTime || startTime}
+                                value={endTime}
                                 onChange={handleEndChange}
                                 renderInput={(params) => <TextField {...params} />}
-                            />
+                                />
                         </Grid>
                     </LocalizationProvider>
                     <Button
@@ -141,8 +127,8 @@ const EventForm = ({trip, handleClose, event}) => {
                         type="submit"
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
-                    >
-                        {addNew ? 'Add Event' : 'Edit Event'}
+                        >
+                        {!event.id ? ("Add Event") : ("Edit Event")}
                     </Button>
                 </Grid>
             </Box>
@@ -150,3 +136,34 @@ const EventForm = ({trip, handleClose, event}) => {
     )
 }
 export default EventForm;
+
+// await dispatch(getTrips())
+// const addNew = !!!event;
+
+// const { name, location, description } = inputs;
+
+// useEffect(() => {
+    //     if (!addNew){
+        //         setInputs({
+            //             name: event.name,
+            //             location: event.location,
+            //             description: event.description,
+            //         });
+            //         setStartTime(event.startTime);
+            //         setEndTime(event.endTime);
+            //     }
+            //     return () => {
+                //         setInputs({
+                    //             name: '',
+                    //             location: '',
+                    //             description: ''
+                    //         });
+                    //         setStartTime(new Date());
+                    //         setEndTime(new Date());
+                    //     }
+                    // }, [])
+
+// !addNew ? await dispatch(editEvent({ ...event, name: name, location, description, trip, startTime, endTime })) : await dispatch(addEvent({ name: name, location, description, trip, startTime, endTime }));
+// setInputs({ name: '', location: '', description: ''});
+// setStartTime(new Date());
+// setEndTime(new Date());
