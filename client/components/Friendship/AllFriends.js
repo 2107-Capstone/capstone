@@ -2,7 +2,6 @@ import React, { useState, Fragment } from 'react'
 import { connect } from 'react-redux'
 import AddFriend from './AddFriend'
 import PendingFriendRequestSent from './PendingFriendRequestSent'
-import PendingFriendRequestReceived from './PendingFriendRequestReceived'
 import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
@@ -123,7 +122,6 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
             ))}
         </Grid>
         <PendingFriendRequestSent />
-        <PendingFriendRequestReceived />
         <AddFriend />
     </>
     )
