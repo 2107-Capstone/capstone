@@ -18,6 +18,7 @@ import AddTripFrom from './components/Trips/Form/AddTripFrom';
 import TripCalendar from './components/Calendar/TripCalendar';
 import Expenses from './components/Expenses/Expenses';
 import TripMap from './components/Map/TripMap';
+import Notifications from './components/Notifications/Notifications'
 /**
  * COMPONENT
  */
@@ -51,6 +52,7 @@ class Routes extends Component {
             <Route exact path="/trip/:id/map" component={TripMap} />
             <Route exact path="/map" component={AllTripsMap} />
             <Route exact path="/calendar" component={TripCalendar} />
+            <Route exact path="/notifications" component={Notifications} />
             <Redirect to="/home" />
           </Switch>
         ) : (

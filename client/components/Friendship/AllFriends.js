@@ -1,16 +1,16 @@
-import React from 'react'
+import React, { useState, Fragment } from 'react'
 import { connect } from 'react-redux'
 import AddFriend from './AddFriend'
-import PendingFriendRequest from './PendingFriendRequest'
+import PendingFriendRequestSent from './PendingFriendRequestSent'
+import PendingFriendRequestReceived from './PendingFriendRequestReceived'
 import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography, Snackbar } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton } from "@mui/material"
 import PeopleIcon from '@mui/icons-material/People'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CircularLoading from '../Loading/CircularLoading'
-
-
+import CloseIcon from '@mui/icons-material/Close'
 
 
 export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendshipData }) => {
@@ -18,8 +18,43 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
         const _userFriend = userFriends.find(userFriend => userFriend.userId === friend.friendId)
         await deleteUserFriend(friend.id)
         await deleteUserFriend(_userFriend.id)
+        handleClick()
         await loadFriendshipData()
     }
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+
+        setOpen(false);
+    };
+
+    // const action = (
+    //     <Fragment>
+    //     <Button color="secondary" size="small" onClick={clickDeleteFriend}>
+    //     YES
+    //     </Button>
+    //     <Button color="secondary" size="small" onClick={handleClose}>
+    //     NO
+    //     </Button>
+    //     <IconButton
+    //         size="small"
+    //         aria-label="close"
+    //         color="inherit"
+    //         onClick={handleClose}
+    //     >
+    //         <CloseIcon fontSize="small" />
+    //     </IconButton>
+    //     </Fragment>
+    // );
+
 
     if (!friends) {
         return (
@@ -53,21 +88,42 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
                             <Typography variant='h6'>
                                 {friend.friend.username}
                             </Typography>
-                            <Button startIcon={<DeleteIcon />} size="small" variant='contained' onClick={()=>clickDeleteFriend(friend)}>
+                            <Button startIcon={<DeleteIcon />} size="small" variant='contained' onClick={handleClick}>
                                 Delete Friend
                             </Button>
-                            {/* <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                                    This is a success message!
-                                </Alert>
-                            </Snackbar> */}
+                            <Snackbar 
+                                friend={friend}
+                                open={open}
+                                autoHideDuration={6000}
+                                onClose={handleClose}
+                                message={`Are you sure you wish to delete ${friend.friend.username} as a friend?`}
+                                action={
+                                    <Fragment>
+                                    <Button color="secondary" size="small" onClick={() => clickDeleteFriend(friend)}>
+                                    YES
+                                    </Button>
+                                    <Button color="secondary" size="small" onClick={handleClose}>
+                                    NO
+                                    </Button>
+                                    <IconButton
+                                        size="small"
+                                        aria-label="close"
+                                        color="inherit"
+                                        onClick={handleClose}
+                                    >
+                                    <CloseIcon fontSize="small" />
+                                    </IconButton>
+                                    </Fragment>
+                                }
+                            />
                         </Box>
                     </Paper>
                 </Grid>
 
             ))}
         </Grid>
-        <PendingFriendRequest />
+        <PendingFriendRequestSent />
+        <PendingFriendRequestReceived />
         <AddFriend />
     </>
     )
