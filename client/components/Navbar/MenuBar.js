@@ -56,7 +56,6 @@ const MenuBar = (props) => {
                     Notifications
                 </Button>
                 <Divider />
-                <Divider />
                 <Button component={Link} to='/settings' onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
                     Settings
                 </Button>
