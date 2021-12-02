@@ -27,6 +27,7 @@ const SingleTripCalendar = ({ match }) => {
             )
         }
 //TODO: have event info refresh on edit
+//TODO: not be able to edit Trip from here
     ///////////// TRIP ////////////////
     // trip = trip.trip;
     // const calendarTrip = { isTrip: true, id: trip.id, tripId: trip.id, name: trip.name, description: trip.description, location: trip.location, title: `${trip.name} - ${trip.location}`, start: new Date(trip.startTime), end: new Date(trip.endTime) } 
