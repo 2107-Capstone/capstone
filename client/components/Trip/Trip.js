@@ -137,8 +137,7 @@ const Trip = (props) => {
                                     </Typography>
                                 </Box>
                             </Box>
-                            <SingleTripCalendar trip={trip.trip}/>
-                            {/* <Participants trip={trip} auth={auth} /> */}
+                            {/* <SingleTripCalendar trip={trip.trip}/> */}
                         </Grid>
                     </Grid>
                 </Box>
