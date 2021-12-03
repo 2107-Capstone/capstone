@@ -22,7 +22,8 @@ const AllTrips = () => {
         await dispatch(getTrips())
     }, [])
 
-    const { trips } = useSelector(state => state)
+    // const { trips } = useSelector(state => state)
+    const trips = useSelector(state => state.trips.filter(trip => trip.isOpen))
     const user = useSelector(state => state.auth)
 
     ///////////  Trip View Selection //////////

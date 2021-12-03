@@ -32,6 +32,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AddExpense from '../Expenses/AddExpense'
 import { format, formatISO, parseISO, isAfter } from "date-fns";
 import MessagesTable from '../Chat/MessagesTable'
+import LockClockIcon from '@mui/icons-material/LockClock';
 
 const Trip = (props) => {
 
@@ -135,6 +136,9 @@ const Trip = (props) => {
                             </Button>
                             <Button variant='contained'  startIcon={<AddIcon />}>
                                 Add Friend to Trip
+                            </Button>
+                            <Button variant='contained'  startIcon={<LockClockIcon />}>
+                                Mark Trip Complete
                             </Button>
                         </Box>
                     </Box>
