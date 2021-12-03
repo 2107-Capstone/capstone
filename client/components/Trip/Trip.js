@@ -18,13 +18,15 @@ import Avatar from '@mui/material/Avatar';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { FaBlackberry } from 'react-icons/fa'
 import SingleTripCalendar from '../Calendar/SingleTripCalendar'
+import PieChart from '../Expenses/PieChart'
+import EventForm from '../Map/EventForm'
 
 import { format, formatISO, parseISO, isAfter } from "date-fns";
 const Trip = (props) => {
 
     const id = + props.match.params.id
 
-    const auth = useSelector(state => state.auth);
+    const { auth, categories } = useSelector(state => state);
 
 
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
@@ -50,6 +52,13 @@ const Trip = (props) => {
     let events = trip.trip.events.sort((a,b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
     events.length > 3 ? events.length = 3 : ''
     
+    const [open, setOpen] = useState(false);
+    
+    const handleClose = () => {
+        setOpen(false);
+    }
+
+
     return (
 
         <div>
@@ -69,6 +78,9 @@ const Trip = (props) => {
                     &nbsp;{trip.trip.name}
                 </Typography>
             </Box>
+            <Dialog open={open} onClose={handleClose}>
+                <EventForm trip={trip} handleClose={handleClose} />
+            </Dialog>
             <Box id='singleTrip' sx={{display: 'flex', justifyContent: 'space-around', alignContent: 'space-between'}}>
                 <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginTop: 1, alignContent: 'center', marginRight: '1rem', border: '1px solid grey', borderRadius: '10px',}}>
                     <Grid container spacing={2} >
@@ -117,12 +129,13 @@ const Trip = (props) => {
                             <Typography>
                                 Total Expenses: ${totalExpenses.toFixed(2)}
                             </Typography>
-                            <Typography>
+                            <PieChart expenses={tripExpenses} users={trip.trip.userTrips} categories={categories}/>
+                            {/* <Typography>
                                 Each Person Owes: ${(totalExpenses/users.length).toFixed(2)}
                             </Typography>
                             <Typography>
                                 You've Paid: ${userTotal.toFixed(2)}
-                            </Typography>
+                            </Typography> */}
                             {/* <Expenses tripId={id} trip={trip} /> */}
                         </Grid>
                     </Grid>
@@ -138,6 +151,9 @@ const Trip = (props) => {
                                     <Typography variant='h6'>
                                         &nbsp;Events Snapshot
                                     </Typography>
+                                    <Button startIcon={<OpenInNewIcon />} className='headingButton' style={styles.headingButton} onClick={() => setOpen(true)}>
+                                        Add Event
+                                    </Button>
                                 </Box>
                             </Box>
                             <Box sx={{display: 'flex'}}>

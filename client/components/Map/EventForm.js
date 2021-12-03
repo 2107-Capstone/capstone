@@ -17,7 +17,7 @@ import CircularLoading from '../Loading/CircularLoading'
 const EventForm = (props) => {
     const { trip, handleClose } = props
     const event = props.event || {}
-
+console.log(trip)
     const dispatch = useDispatch()
 
     const [inputs, setInputs] = useState({
@@ -31,6 +31,8 @@ const EventForm = (props) => {
     const [endTime, setEndTime] = useState(event.endTime || startTime);
 
     let googlePlace;
+//TODO: Add trip location with search??
+    // let googlePlace = inputs.location + trip.trip.location;
     useEffect(async () => {
         const autocomplete = await new google.maps.places.Autocomplete(googlePlace)
         googlePlace.value = inputs.location
