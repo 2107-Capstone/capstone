@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 ///////////// MATERIAL UI /////////////////////////
-import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/lab"
+import { DateTimePicker, LocalizationProvider } from "@mui/lab"
 import { Container, Box, TextField, Typography, Grid, Button } from "@mui/material"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import { addTrip } from "../../../store/trips"
@@ -147,20 +147,24 @@ const AddTripFrom = () => {
                         </Grid>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <Grid item xs={12} sm={6}>
-                                <DatePicker
+                                <DateTimePicker
                                     label="Start Time"
                                     name='startTime'
                                     value={input.startTime}
                                     onChange={handleStartChange}
+                                    minDate={new Date()}
+                                    minutesStep={5}
                                     renderInput={(params) => <TextField helperText={error.startTimeErr} fullWidth {...params} />}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <DatePicker
+                                <DateTimePicker
                                     label="End Time"
                                     name='endTime'
                                     value={input.endTime}
                                     onChange={handleEndChange}
+                                    minDate={new Date(input.startTime)}
+                                    minutesStep={5}
                                     renderInput={(params) => <TextField fullWidth helperText={error.endTimeErr} {...params} />}
                                 />
                             </Grid>

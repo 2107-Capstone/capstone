@@ -128,6 +128,9 @@ console.log(trip)
                                 name='startTime'
                                 value={startTime}
                                 onChange={handleStartChange}
+                                minDate={new Date(trip.trip.startTime)}
+                                maxDate={new Date(trip.trip.endTime)}
+                                minutesStep={5}
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </Grid>
@@ -137,6 +140,9 @@ console.log(trip)
                                 name='endTime'
                                 value={endTime}
                                 onChange={handleEndChange}
+                                minDate={new Date(startTime)}
+                                maxDate={new Date(trip.trip.endTime)}
+                                minutesStep={5}
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </Grid>
