@@ -26,8 +26,6 @@ const EventsTable = ({events}) => {
                 <TableRow>
                     <TableCell>Time</TableCell>
                     <TableCell>Event</TableCell>
-                    <TableCell>Location</TableCell>
-                    <TableCell>Description</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -40,8 +38,6 @@ const EventsTable = ({events}) => {
                         {format(parseISO(row.startTime), 'Pp')}
                     </TableCell>
                     <TableCell >{row.name}</TableCell>
-                    <TableCell >{row.location}</TableCell>
-                    <TableCell >{row.description}</TableCell>
                 </TableRow>
             ))}
             </TableBody>

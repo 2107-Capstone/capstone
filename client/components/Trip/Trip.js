@@ -48,7 +48,7 @@ const Trip = (props) => {
     if (!trip || !events || !messages) return <CircularLoading />
     //     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
-    // console.log('TRIPPPPPPPPPPPPP', trip)           
+    // console.log('TRIPPPPPPPPPPPPP', trip)
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
     const totalExpenses = tripExpenses.reduce((total, expense) => {
         return total + +expense.amount
@@ -59,12 +59,12 @@ const Trip = (props) => {
         }
         return total;
     }, 0);
-    
+
     // if (!trip) return <CircularLoading />
-    
-   
+
+
     const users = trip.trip.userTrips;
-    
+
     // let events = trip.trip.events.sort((a,b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
     events = events.sort((a,b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
     events.length > 5 ? events.length = 5 : ''
@@ -74,8 +74,8 @@ const Trip = (props) => {
     // messages = trip.trip.messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     messages = messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     messages.length > 5 ? messages.length = 5 : ''
-    
-    
+
+
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
 
@@ -98,19 +98,126 @@ const Trip = (props) => {
     hidden
   />
 </Button> */}
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
-                <CardTravelIcon fontSize='medium' />
-                <Typography variant='h5'>
-                    &nbsp;{trip.trip.name}
-                </Typography>
-            </Box>
             <Dialog open={form === 'expense' && open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
             <Dialog open={form === 'event' && open} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} />
             </Dialog>
-            <Box id='singleTrip' sx={{display: 'flex', justifyContent: 'space-around', alignContent: 'space-between'}}>
+            <Grid container rowSpacing={2} columnSpacing={2} >
+                <Grid item xs={12}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2}}>
+                        <CardTravelIcon fontSize='medium' />
+                        <Typography variant='h5'>
+                            &nbsp;{trip.trip.name}
+                        </Typography>
+                    </Box>
+                    <Box sx={{display: 'flex'}}>
+                        <Box >
+                            <Button component={Link} to={`${trip.tripId}/calendar`}  variant='contained' color='secondary' startIcon={<DateRangeIcon />} >
+                                Calendar
+                            </Button>
+                            <Button component={Link} to={`${trip.tripId}/map`}  variant='contained' color='secondary' startIcon={<MapIcon />} >
+                                Map
+                            </Button>
+                            <Button />
+                            <Button startIcon={<AddIcon />} variant='contained'  onClick={() => {
+                                setOpen(true);
+                                setForm('event')
+                            }}>
+                                Add Event
+                            </Button>
+                            <Button startIcon={<AddIcon />} variant='contained'  onClick={() => {
+                                setOpen(true);
+                                setForm('expense')
+                            }}>
+                                Add Expense
+                            </Button>
+                            <Button variant='contained'  startIcon={<AddIcon />}>
+                                Add Friend to Trip
+                            </Button>
+                        </Box>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={6} >
+                    <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
+                        <PeopleIcon fontSize='medium' />
+                        <Typography variant='h6'>
+                            &nbsp;Trip Friends
+                        </Typography>
+                    </Box>
+                    
+                    {trip.trip.userTrips.map(user => (
+                    <Paper  sx={{ margin: '1rem', height: 'fit-content', ':hover': { boxShadow: (theme) => theme.shadows[5] } }}>
+                        <Box sx={{alignItems: 'center'}}>
+                            <Avatar alt={user.user.username} src="https://cdn3.iconfinder.com/data/icons/avatars-flat/33/man_5-512.png" />
+                        </Box>
+                        <Box sx={{ color: 'inherit', alignItems: 'center'}}>
+                            <Typography variant='h6'>
+                                {user.user.username}
+                            </Typography>
+                        </Box>
+                    </Paper>
+                    ))}
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={6} >
+                    <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
+                        <Box >
+                            <Button component={Link} to={`${trip.tripId}/chat`} size='large' color='info' startIcon={<OpenInNewIcon />} className='headingButton' style={styles.headingButton}>
+                            </Button>
+                        </Box>
+                        <Box style={styles.headingIcon}>
+                            <ChatIcon fontSize='medium' />
+                            <Typography variant='h6'>
+                                &nbsp;Messages Snapshot
+                            </Typography>
+                        </Box>
+                    </Box>
+                    <Button component={Link} to={`${trip.tripId}/chat`} size='large' color='info' startIcon={<ChatIcon />} className='headingButton' style={styles.headingButton}>
+                    </Button>
+                    <MessagesTable messages={messages} />
+                </Grid>    
+                <Grid item xs={12} sm={12} md={12} lg={6} >
+                    <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
+                        <Box >
+                            <Button component={Link} to={`${trip.tripId}/expenses`} size='large' color='info' startIcon={<OpenInNewIcon />} className='headingButton' style={styles.headingButton}>
+                            </Button>
+                        </Box>
+                        <Box style={styles.headingIcon}>
+                            <PaidIcon fontSize='medium' />
+                            <Typography variant='h6'>
+                                &nbsp;Expenses Snapshot
+                            </Typography>
+                        </Box>
+                    </Box>
+                    <Box sx={{display: 'flex', flexDirection: 'column', mx: 1, mb: 2}}>
+                       
+                        <Typography>
+                            Total Expenses: ${totalExpenses.toFixed(2)}
+                        </Typography>
+                        <PieChart expenses={tripExpenses} users={users} categories={categories}/>
+                    </Box>
+                </Grid>
+                
+                <Grid item xs={12} sm={12} md={12} lg={6} >
+                    <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
+                        <Box >
+                            <Button component={Link} to={`${trip.tripId}/calendar`} size='large' color='info' startIcon={<OpenInNewIcon />} className='headingButton'  style={styles.headingButton}>
+                            </Button>
+                        </Box>
+                        <Box style={styles.headingIcon}>
+                            <DateRangeIcon fontSize='medium' />
+                            <Typography variant='h6'>
+                                &nbsp;Events Snapshot
+                            </Typography>
+                        </Box>
+                    </Box>
+                    
+                    
+                    <EventsTable events={events}/>
+                </Grid>
+            </Grid>
+            {/* <Box id='singleTrip' sx={{display: 'flex', justifyContent: 'space-around', alignContent: 'space-between'}}>
                 <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginTop: 1, alignContent: 'center', marginRight: '1rem', border: '1px solid grey', borderRadius: '10px',}}>
                     <Grid container spacing={2} >
                         <Grid item xs={12}>
@@ -140,7 +247,7 @@ const Trip = (props) => {
                     </Grid>
                 </Box>
                 <Box display='flex' flexDirection='column' width='100%' sx={{mr: 1}}>
-                    <Grid container sx={{ mt: 1 }}>     
+                    <Grid container sx={{ mt: 1 }}>
                         <Grid item xs={12}  sx={{border: '1px solid grey', borderRadius: '10px'}}>
                             <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
                                 <Box >
@@ -166,17 +273,10 @@ const Trip = (props) => {
                                 </Typography>
                                 <PieChart expenses={tripExpenses} users={users} categories={categories}/>
                             </Box>
-                            {/* <Typography>
-                                Each Person Owes: ${(totalExpenses/users.length).toFixed(2)}
-                            </Typography>
-                            <Typography>
-                                You've Paid: ${userTotal.toFixed(2)}
-                            </Typography> */}
-                            {/* <Expenses tripId={id} trip={trip} /> */}
                         </Grid>
                     </Grid>
-                    
-                    <Grid container  sx={{ margin: 1}}>    
+
+                    <Grid container  sx={{ margin: 1}}>
                         <Grid item xs={12} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                             <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
                                 <Box >
@@ -193,12 +293,12 @@ const Trip = (props) => {
                             <Button component={Link} to={`${trip.tripId}/chat`} size='large' color='info' startIcon={<ChatIcon />} className='headingButton' style={styles.headingButton}>
                             </Button>
                             <MessagesTable messages={messages} />
-                            {/* <ChatRoom trip={trip}/> */}
+
                         </Grid>
                     </Grid>
                 </Box>
                 <Box display='flex' flexDirection='column' sx={{width: '500px'}}>
-                    <Grid container sx={{ mt: 1 }}>  
+                    <Grid container sx={{ mt: 1 }}>
                         <Grid item xs={12} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                             <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
                                 <Box >
@@ -229,44 +329,10 @@ const Trip = (props) => {
                                 </Box>
                             </Box>
                             <EventsTable events={events}/>
-                            {/* <Typography sx={{margin: 1}}>
-                                Upcoming Events:
-                            </Typography>
-                            {
-                                events.map(event => (
-                                    <Box sx={{margin: 1}}>
-                                        <Typography key={event.id + Math.random().toString(16)}>
-                                            {format(parseISO(event.startTime), 'Pp')}
-                                        </Typography>
-                                        <Typography>
-                                            {event.name}
-                                        </Typography>
-                                    </Box>
-                                ))
-                            } */}
                         </Grid>
                     </Grid>
-                    {/* <Grid container sx={{ margin: 1 }}>  
-                        <Grid item xs={12} sx={{border: '1px solid grey', borderRadius: '10px'}}>
-                            <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
-                                <Box >
-                                    <Button component={Link} to={`${trip.tripId}/map`} size='large' color='info' startIcon={<OpenInNewIcon />} className='headingButton' style={styles.headingButton}>
-                                    </Button>
-                                </Box>
-                                <Box style={styles.headingIcon}>
-                                    <MapIcon fontSize='medium' />
-                                    <Typography variant='h6'>
-                                        &nbsp;Map
-                                    </Typography>
-                                </Box>
-                            </Box>
-                            
-                            REDESIGN THIS
-                            <TripMap tripId={id} users={trip.trip.userTrips}/>
-                        </Grid>
-                    </Grid> */}
                 </Box>
-            </Box>
+            </Box> */}
         </div>
     )
 }
@@ -284,5 +350,5 @@ const styles = {
         backgroundColor: 'cornsilk',
         flexGrow: 1,
     },
-  
+
   }

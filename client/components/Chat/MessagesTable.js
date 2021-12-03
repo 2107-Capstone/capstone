@@ -17,9 +17,6 @@ const MessagesTable = ({messages}) => {
         <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} aria-label="events table">
             <TableHead>
                 <TableRow>
-                    Recent Messages
-                </TableRow>
-                <TableRow>
                     <TableCell>Time</TableCell>
                     <TableCell>Sent By</TableCell>
                     <TableCell>Message</TableCell>
