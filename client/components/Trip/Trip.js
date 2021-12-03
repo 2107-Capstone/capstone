@@ -7,6 +7,13 @@ import { Participants, Events } from './tripInfo'
 import Expenses from '../Expenses/Expenses'
 import TextsmsIcon from '@mui/icons-material/Textsms';
 import { Box, Divider, Grid, Button, Paper, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
 import ChatRoom from '../Chat/ChatRoom'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import PeopleIcon from '@mui/icons-material/People'
@@ -20,7 +27,8 @@ import { FaBlackberry } from 'react-icons/fa'
 import SingleTripCalendar from '../Calendar/SingleTripCalendar'
 import PieChart from '../Expenses/PieChart'
 import EventForm from '../Map/EventForm'
-
+import AddIcon from '@mui/icons-material/Add';
+import AddExpense from '../Expenses/AddExpense'
 import { format, formatISO, parseISO, isAfter } from "date-fns";
 const Trip = (props) => {
 
@@ -31,7 +39,7 @@ const Trip = (props) => {
 
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
 
-
+    if (!trip) return <CircularLoading />
     //     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)           
@@ -45,17 +53,93 @@ const Trip = (props) => {
         }
         return total;
     }, 0);
-
-    if (!trip) return <CircularLoading />
+    
+    // if (!trip) return <CircularLoading />
     
     const users = trip.trip.userTrips;
+
+    let messages = trip.trip.messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    messages.length > 5 ? messages.length = 5 : ''
+    
+    const MessagesTable = () => {
+        const rows = messages
+        return (
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} aria-label="events table">
+                <TableHead>
+                    <TableRow>
+                        Recent Messages
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Time</TableCell>
+                        <TableCell>Sent By</TableCell>
+                        <TableCell>Message</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                {rows.map((row) => (
+                    <TableRow
+                        key={row.id + Math.random().toString(16)}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                        <TableCell component="th" scope="row">
+                            {format(parseISO(row.dateSent), 'Pp')}
+                        </TableCell>
+                        <TableCell >{row.sentBy.username}</TableCell>
+                        <TableCell >{row.content}</TableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+        )
+    }
     let events = trip.trip.events.sort((a,b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
-    events.length > 3 ? events.length = 3 : ''
+    events.length > 5 ? events.length = 5 : ''
+
+    const EventsTable = () => {
+        const rows = events
+        return (
+
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} aria-label="events table">
+                <TableHead>
+                    <TableRow>
+                        Next Five Events
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Time</TableCell>
+                        <TableCell>Event</TableCell>
+                        <TableCell>Location</TableCell>
+                        <TableCell>Description</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                {rows.map((row) => (
+                    <TableRow
+                        key={row.id + Math.random().toString(16)}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                        <TableCell component="th" scope="row">
+                            {format(parseISO(row.startTime), 'Pp')}
+                        </TableCell>
+                        <TableCell >{row.name}</TableCell>
+                        <TableCell >{row.location}</TableCell>
+                        <TableCell >{row.description}</TableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+        )
+    }
     
     const [open, setOpen] = useState(false);
-    
+    const [form, setForm] = useState('');
+
     const handleClose = () => {
         setOpen(false);
+        setForm('')
     }
 
 
@@ -78,7 +162,10 @@ const Trip = (props) => {
                     &nbsp;{trip.trip.name}
                 </Typography>
             </Box>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={form === 'expense' && open} onClose={handleClose}>
+                <AddExpense trip={trip} handleClose={handleClose}/>
+            </Dialog>
+            <Dialog open={form === 'event' && open} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} />
             </Dialog>
             <Box id='singleTrip' sx={{display: 'flex', justifyContent: 'space-around', alignContent: 'space-between'}}>
@@ -125,11 +212,18 @@ const Trip = (props) => {
                                     </Typography>
                                 </Box>
                             </Box>
-                            ADD 'ADD EXPENSE' BUTTON?
-                            <Typography>
-                                Total Expenses: ${totalExpenses.toFixed(2)}
-                            </Typography>
-                            <PieChart expenses={tripExpenses} users={trip.trip.userTrips} categories={categories}/>
+                            <Box sx={{display: 'flex', flexDirection: 'column', mx: 1, mb: 2}}>
+                                <Button startIcon={<AddIcon />} variant='outlined' className='headingButton' style={styles.headingButton} onClick={() => {
+                                    setOpen(true);
+                                    setForm('expense')
+                                }}>
+                                    Add Expense
+                                </Button>
+                                <Typography>
+                                    Total Expenses: ${totalExpenses.toFixed(2)}
+                                </Typography>
+                                <PieChart expenses={tripExpenses} users={users} categories={categories}/>
+                            </Box>
                             {/* <Typography>
                                 Each Person Owes: ${(totalExpenses/users.length).toFixed(2)}
                             </Typography>
@@ -139,6 +233,29 @@ const Trip = (props) => {
                             {/* <Expenses tripId={id} trip={trip} /> */}
                         </Grid>
                     </Grid>
+                    
+                    <Grid container  sx={{ margin: 1}}>    
+                        <Grid item xs={12} sx={{border: '1px solid grey', borderRadius: '10px'}}>
+                            <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
+                                <Box >
+                                    <Button component={Link} to={`${trip.tripId}/chat`} size='large' color='info' startIcon={<OpenInNewIcon />} className='headingButton' style={styles.headingButton}>
+                                    </Button>
+                                </Box>
+                                <Box style={styles.headingIcon}>
+                                    <ChatIcon fontSize='medium' />
+                                    <Typography variant='h6'>
+                                        &nbsp;Messages Snapshot
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Button component={Link} to={`${trip.tripId}/chat`} size='large' color='info' startIcon={<ChatIcon />} className='headingButton' style={styles.headingButton}>
+                            </Button>
+                            <MessagesTable />
+                            {/* <ChatRoom trip={trip}/> */}
+                        </Grid>
+                    </Grid>
+                </Box>
+                <Box display='flex' flexDirection='column' sx={{width: '500px'}}>
                     <Grid container sx={{ mt: 1 }}>  
                         <Grid item xs={12} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                             <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
@@ -151,11 +268,14 @@ const Trip = (props) => {
                                     <Typography variant='h6'>
                                         &nbsp;Events Snapshot
                                     </Typography>
-                                    <Button startIcon={<OpenInNewIcon />} className='headingButton' style={styles.headingButton} onClick={() => setOpen(true)}>
-                                        Add Event
-                                    </Button>
                                 </Box>
                             </Box>
+                            <Button startIcon={<AddIcon />} variant='outlined' className='headingButton' style={styles.headingButton} onClick={() => {
+                                setOpen(true);
+                                setForm('event')
+                            }}>
+                                Add Event
+                            </Button>
                             <Box sx={{display: 'flex'}}>
                                 <Box >
                                     <Button component={Link} to={`${trip.tripId}/calendar`} size='large' color='info' startIcon={<DateRangeIcon />} >
@@ -166,37 +286,24 @@ const Trip = (props) => {
                                     </Button>
                                 </Box>
                             </Box>
-                            <Typography>
+                            <EventsTable />
+                            {/* <Typography sx={{margin: 1}}>
                                 Upcoming Events:
                             </Typography>
                             {
                                 events.map(event => (
-                                    <li key={event.id + Math.random().toString(16)}>
-                                        {format(parseISO(event.startTime), 'Pp')} - {event.name} at {event.location}
-                                    </li>
+                                    <Box sx={{margin: 1}}>
+                                        <Typography key={event.id + Math.random().toString(16)}>
+                                            {format(parseISO(event.startTime), 'Pp')}
+                                        </Typography>
+                                        <Typography>
+                                            {event.name}
+                                        </Typography>
+                                    </Box>
                                 ))
-                            }
+                            } */}
                         </Grid>
                     </Grid>
-                    <Grid container  sx={{ margin: 1}}>    
-                        <Grid item xs={12} sx={{border: '1px solid grey', borderRadius: '10px'}}>
-                            <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
-                                <Box >
-                                    <Button component={Link} to={`${trip.tripId}/chat`} size='large' color='info' startIcon={<OpenInNewIcon />} className='headingButton' style={styles.headingButton}>
-                                    </Button>
-                                </Box>
-                                <Box style={styles.headingIcon}>
-                                    <ChatIcon fontSize='medium' />
-                                    <Typography variant='h6'>
-                                        &nbsp;Chat
-                                    </Typography>
-                                </Box>
-                            </Box>
-                            <ChatRoom trip={trip}/>
-                        </Grid>
-                    </Grid>
-                </Box>
-                <Box display='flex' flexDirection='column' sx={{width: '500px'}}>
                     {/* <Grid container sx={{ margin: 1 }}>  
                         <Grid item xs={12} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                             <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
@@ -225,7 +332,7 @@ export default Trip;
 
 const styles = {
     headingButton: {
-      margin: 0,
+      margin: 1,
       color: 'black',
     },
     headingIcon: {

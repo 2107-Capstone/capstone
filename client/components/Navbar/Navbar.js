@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 /////////// MATERIAL UI /////////////
-import { AppBar, Box, Button, Divider, Toolbar, Typography, useMediaQuery } from '@mui/material';
+import { AppBar, Box, Button, Divider, Toolbar, Paper, Typography, useMediaQuery } from '@mui/material';
 import MenuBar from './MenuBar';
 import theme from '../../theme'
 
@@ -53,9 +53,12 @@ const Navbar = (props) => {
               Home
             </Button>
           )}
-          <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, alignSelf: 'center' }}>
+            <img src="/images/logo.png" />
+          </Box>
+          {/* <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}>
             TRIP OUT!
-          </Typography>
+          </Typography> */}
           {!isLoggedIn && (
             <Button variant='outlined' color="inherit" component={Link} to="/login">
               Login
