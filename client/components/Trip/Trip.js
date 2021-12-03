@@ -27,9 +27,12 @@ import { FaBlackberry } from 'react-icons/fa'
 import SingleTripCalendar from '../Calendar/SingleTripCalendar'
 import PieChart from '../Expenses/PieChart'
 import EventForm from '../Map/EventForm'
+import EventsTable from '../Events/EventsTable'
 import AddIcon from '@mui/icons-material/Add';
 import AddExpense from '../Expenses/AddExpense'
 import { format, formatISO, parseISO, isAfter } from "date-fns";
+import MessagesTable from '../Chat/MessagesTable'
+
 const Trip = (props) => {
 
     const id = + props.match.params.id
@@ -38,8 +41,11 @@ const Trip = (props) => {
 
 
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
+    let events = useSelector(state => state.events.filter(event => event.tripId === id));
+    let messages = useSelector(state => state.messages.filter(message => message.tripId === id));
 
-    if (!trip) return <CircularLoading />
+    // if (!trip) return <CircularLoading />
+    if (!trip || !events || !messages) return <CircularLoading />
     //     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)           
@@ -56,83 +62,19 @@ const Trip = (props) => {
     
     // if (!trip) return <CircularLoading />
     
+   
     const users = trip.trip.userTrips;
-
-    let messages = trip.trip.messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
-    messages.length > 5 ? messages.length = 5 : ''
     
-    const MessagesTable = () => {
-        const rows = messages
-        return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} aria-label="events table">
-                <TableHead>
-                    <TableRow>
-                        Recent Messages
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>Time</TableCell>
-                        <TableCell>Sent By</TableCell>
-                        <TableCell>Message</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                {rows.map((row) => (
-                    <TableRow
-                        key={row.id + Math.random().toString(16)}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                        <TableCell component="th" scope="row">
-                            {format(parseISO(row.dateSent), 'Pp')}
-                        </TableCell>
-                        <TableCell >{row.sentBy.username}</TableCell>
-                        <TableCell >{row.content}</TableCell>
-                    </TableRow>
-                ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-        )
-    }
-    let events = trip.trip.events.sort((a,b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
+    // let events = trip.trip.events.sort((a,b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
+    events = events.sort((a,b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
     events.length > 5 ? events.length = 5 : ''
 
-    const EventsTable = () => {
-        const rows = events
-        return (
 
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} aria-label="events table">
-                <TableHead>
-                    <TableRow>
-                        Next Five Events
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>Time</TableCell>
-                        <TableCell>Event</TableCell>
-                        <TableCell>Location</TableCell>
-                        <TableCell>Description</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                {rows.map((row) => (
-                    <TableRow
-                        key={row.id + Math.random().toString(16)}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                        <TableCell component="th" scope="row">
-                            {format(parseISO(row.startTime), 'Pp')}
-                        </TableCell>
-                        <TableCell >{row.name}</TableCell>
-                        <TableCell >{row.location}</TableCell>
-                        <TableCell >{row.description}</TableCell>
-                    </TableRow>
-                ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-        )
-    }
+    // let messages = trip.trip.messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    // messages = trip.trip.messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    messages = messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    messages.length > 5 ? messages.length = 5 : ''
+    
     
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
@@ -250,7 +192,7 @@ const Trip = (props) => {
                             </Box>
                             <Button component={Link} to={`${trip.tripId}/chat`} size='large' color='info' startIcon={<ChatIcon />} className='headingButton' style={styles.headingButton}>
                             </Button>
-                            <MessagesTable />
+                            <MessagesTable messages={messages} />
                             {/* <ChatRoom trip={trip}/> */}
                         </Grid>
                     </Grid>
@@ -286,7 +228,7 @@ const Trip = (props) => {
                                     </Button>
                                 </Box>
                             </Box>
-                            <EventsTable />
+                            <EventsTable events={events}/>
                             {/* <Typography sx={{margin: 1}}>
                                 Upcoming Events:
                             </Typography>
