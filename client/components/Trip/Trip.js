@@ -178,8 +178,6 @@ const Trip = (props) => {
                             }
                         </Grid>
                     </Grid>
-                </Box>
-                <Box display='flex' flexDirection='column' sx={{width: '500px'}}>
                     <Grid container  sx={{ margin: 1}}>    
                         <Grid item xs={12} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                             <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
@@ -197,6 +195,8 @@ const Trip = (props) => {
                             <ChatRoom trip={trip}/>
                         </Grid>
                     </Grid>
+                </Box>
+                <Box display='flex' flexDirection='column' sx={{width: '500px'}}>
                     {/* <Grid container sx={{ margin: 1 }}>  
                         <Grid item xs={12} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                             <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
