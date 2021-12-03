@@ -29,8 +29,8 @@ import mapStyles from './mapStyles';
 //     height: '60%',
 // }
 const mapContainerStyle = {
-    height: "50vh",
-    width: "50vw",
+    height: "70vh",
+    width: "70vw",
 };
 
 const options = {
@@ -139,6 +139,42 @@ export default function AllTripsMap() {
                 <Button startIcon={<RefreshIcon />} variant='contained' color='info' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} />
             </Tooltip>
             <div style={{ display: 'flex' }}>
+            <div>
+                    {
+                        trips.map(trip => (
+                            <Accordion sx={{ minWidth: '100%' }} key={trip.id + Math.random().toFixed(2)}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
+                                    id="trip-header"
+                                    onClick={() => setSelectedTrip(trip.trip)}
+                                    sx={{ borderRight: `4px solid ${trip.color}` }}
+                                >
+                                    <Typography>
+                                        {trip.trip.name}
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
+                                    {
+                                        trip.trip.events.map(event => (
+                                            <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
+
+                                            >
+                                                <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>
+                                                    <Typography gutterBottom>
+                                                        {event.name} - {event.location}
+                                                    </Typography>
+                                                    <Typography color="text.secondary" variant="subtitle2">
+                                                        {format(parseISO(event.startTime), 'Pp')}
+                                                    </Typography>
+                                                </CardContent>
+                                            </Card>
+                                        ))
+                                    }
+                                </AccordionDetails>
+                            </Accordion>
+                        ))
+                    }
+                </div>
                 <div>
                     <GoogleMap
                         id='map'
@@ -177,42 +213,7 @@ export default function AllTripsMap() {
                         }
                     </GoogleMap>
                 </div>
-                <div>
-                    {
-                        trips.map(trip => (
-                            <Accordion sx={{ minWidth: '100%' }} key={trip.id + Math.random().toFixed(2)}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
-                                    id="trip-header"
-                                    onClick={() => setSelectedTrip(trip.trip)}
-                                    sx={{ borderRight: `4px solid ${trip.color}` }}
-                                >
-                                    <Typography>
-                                        {trip.trip.name}
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
-                                    {
-                                        trip.trip.events.map(event => (
-                                            <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
-
-                                            >
-                                                <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>
-                                                    <Typography gutterBottom>
-                                                        {event.name} - {event.location}
-                                                    </Typography>
-                                                    <Typography color="text.secondary" variant="subtitle2">
-                                                        {format(parseISO(event.startTime), 'Pp')}
-                                                    </Typography>
-                                                </CardContent>
-                                            </Card>
-                                        ))
-                                    }
-                                </AccordionDetails>
-                            </Accordion>
-                        ))
-                    }
-                </div>
+                
             </div>
         </div>
     );
