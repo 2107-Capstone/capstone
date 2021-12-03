@@ -26,8 +26,8 @@ import mapStyles from './mapStyles';
 //     height: '60%',
 // }
 const mapContainerStyle = {
-    height: "50vh",
-    width: "25vw",
+    height: "70vh",
+    width: "50vw",
 };
 
 const options = {
@@ -37,7 +37,11 @@ const options = {
 };
 const tripZoom = 12;
 
-export default function TripMap({ tripId, users }) {
+// export default function TripMap({ tripId, users }) {
+export default function TripMap({ match }) {
+    
+    const tripId = +match.params.id;
+    
     // const { isLoaded, loadError } = useLoadScript({
     //     googleMapsApiKey: process.env.MAP_API
     // });
@@ -49,7 +53,10 @@ export default function TripMap({ tripId, users }) {
 
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
     let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
-
+    
+    
+    
+    const users = trip.trip.userTrips;
 
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
@@ -64,8 +71,9 @@ export default function TripMap({ tripId, users }) {
         mapRef.current.panTo({ lat, lng });
         mapRef.current.setZoom(tripZoom);
     }, []);
-
+    
     useEffect(() => {
+        
         setMarkers(prevMarkers => []);
         // setTrackingMarkers(prevTrackingMarkers => []);
 
@@ -206,7 +214,10 @@ export default function TripMap({ tripId, users }) {
 
     // if (!trip || !isLoaded) return <CircularLoading />
     // if (loadError) return "Error";
-    if (!trip) return <CircularLoading />
+    // if (!trip) return <CircularLoading />
+    if (!trip || !events || !users) {
+        return <CircularLoading />
+    } 
 
     if (trip && events.length === 0) return (
         <>

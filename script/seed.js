@@ -20,18 +20,22 @@ async function seed() {
     User.create({ username: 'Jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012', lat: 40.717989, lng: -73.951693, time: new Date() }),
     User.create({ username: 'Stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '4567890123', lat: 40.717989, lng: -73.951693, time: new Date() }),
     User.create({ username: 'Jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234', lat: 40.717989, lng: -73.951693, time: new Date() }),
-    User.create({ username: 'Prof', password: '123', firstName: 'Eric', lastName: 'Katz', email: 'eric@123.com', phoneNumber: '6789012345', lat: 40.717989, lng: -73.951693, time: new Date() }),
+    User.create({ username: 'Moe', password: '123', firstName: 'Moe', lastName: 'Moeman', email: 'moe@123.com', phoneNumber: '6789012341', lat: 40.717989, lng: -73.951693, time: new Date() }),
+    User.create({ username: 'Poe', password: '123', firstName: 'Poe', lastName: 'Poet', email: 'Poe@123.com', phoneNumber: '6789012342', lat: 40.717989, lng: -73.951693, time: new Date() }),
+    User.create({ username: 'Lucy', password: '123', firstName: 'Lucy', lastName: 'Luck', email: 'Lucy@123.com', phoneNumber: '6789012343', lat: 40.717989, lng: -73.951693, time: new Date() }),
+    User.create({ username: 'JJ', password: '123', firstName: 'JJ', lastName: 'Jay', email: 'jj@123.com', phoneNumber: '6789012340', lat: 40.717989, lng: -73.951693, time: new Date() }),
+    User.create({ username: 'Marge', password: '123', firstName: 'Marge', lastName: 'Bouvier', email: 'marge@123.com', phoneNumber: '6789012349', lat: 40.717989, lng: -73.951693, time: new Date() }),
   ])
 
   const [andy, corinne, jonathan, stanley, jason] = users.map(user => user)
 
   const trips = await Promise.all([
-    Trip.create({ name: 'Trip to NYC', location: 'New York New York', description: 'A group trip to NYC!', imageUrl: airplane, startTime: '2021-11-11 12:00:00', endTime: '2021-11-18 23:59:59', isOpen: true, lat: 40.712776, lng: -74.005974 }),
-    Trip.create({ name: 'Trip to Charlotte', location: 'Charlotte North Carolina', description: 'A group trip to Charlotte!', imageUrl: airplane, startTime: '2021-11-01 12:00:00', endTime: '2021-11-03 23:59:59', isOpen: false, lat: 35.227085, lng: -80.843124 }),
-    Trip.create({ name: 'Trip to Miami', location: 'Miami Florida', description: 'A group trip to Miami!', imageUrl: airplane, startTime: '2021-11-02 12:00:00', endTime: '2021-11-04 23:59:59', isOpen: false, lat: 25.761681, lng: -80.191788 }),
-    Trip.create({ name: 'Trip to Paris', location: 'Paris France', description: 'A group trip to Paris!', imageUrl: airplane, startTime: '2021-12-11 12:00:00', endTime: '2021-12-18 23:59:59', isOpen: true, lat: 48.87531999859082, lng: 2.3302103060471153 }),
-    Trip.create({ name: 'Friday night!', location: 'New York New York', description: 'Weekend hangout with the gang in the new year', imageUrl: airplane, startTime: '2022-01-07 20:00:00', endTime: '2021-01-08 05:00:00', isOpen: true, lat: 40.712776, lng: -74.005974 }),
-    Trip.create({ name: 'NYE', location: 'New York New York', description: 'New Years Eve', imageUrl: airplane, startTime: '2021-12-31 20:00:00', endTime: '2022-01-01 03:00:00', isOpen: true, lat: 40.712776, lng: -74.005974 })
+    Trip.create({ name: 'Trip to NYC', location: 'New York, NY', description: 'A group trip to NYC!', imageUrl: 'https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAap_uEBSSsfsShRZ-1GCi6ZQC_vSemEl5MOZF1LbFEvCn-b9PEDZB8G9KHx7XoHOYs-KgEzrGfAJTU60PrZ3LYm1g07gvd581Itti3sEyFp2XEsU3nZ5wMMrtHGSfS8ELyBFBiuq6Z15Y6_yJNI4S21FBXrFQXYri74ET80PRDDEJmSaIpPQ&3u550&5m1&2e1&callback=none&key=AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA&token=69238', startTime: '2022-01-07 12:00:00', endTime: '2022-01-14 23:59:59', isOpen: true, lat: 40.712776, lng: -74.005974 }),
+    Trip.create({ name: 'Trip to Charlotte', location: 'Charlotte, NC', description: 'A group trip to Charlotte!', imageUrl: 'https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAap_uECWNM1RkPJZ_jYSUQ1HfeKwdpwUmrXMYCThJ6knYoxwbJgShOF2DtC_7ENQ34ORmCEzDEJA_EXYjpSlh_0Lpa-LfTqJ7kW1imG5dPf2aAdB_oRMDGphXT_Nk3BSpHFx12IpFWN6S4c4HW2YUtmcKxOo6k4RvTYz0gBD-V91OcoAK0hS&3u1080&5m1&2e1&callback=none&key=AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA&token=1572', startTime: '2021-12-01 12:00:00', endTime: '2021-12-03 23:59:59', isOpen: false, lat: 35.227085, lng: -80.843124 }),
+    Trip.create({ name: 'Trip to Miami', location: 'Miami, FL', description: 'A group trip to Miami!', imageUrl: 'https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAap_uECnyBZkQs8qH8tQWvuWgX-tdVn1Vl8cmkjD138HH2aI_DDhBkiei45g76PiGFlkAW50iNq2S9TIIk20xCvYAvQwUgCP3yirh6gVyrEyx38EYr49bCLHATN3aYwxHuZDq2SDDlIfVo1_GbaVAHd5pLmPa1ScxCdZ6B6s7jPm1WgP3V0R&3u2560&5m1&2e1&callback=none&key=AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA&token=55758', startTime: '2021-12-12 12:00:00', endTime: '2021-12-15 23:59:59', isOpen: false, lat: 25.761681, lng: -80.191788 }),
+    Trip.create({ name: 'Trip to Paris', location: 'Paris, France', description: 'A group trip to Paris!', imageUrl: 'https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAap_uEBcXqmxBbqlCHrdzctqn3SzpjRGZDvTHhfxZewFnp3LpeKGUGAh_z5Gd3tzUZ-k_nbsitP7YOgN2nk_F1b0z87F0pMy50lEQUPuWE41sseC4PNDKTAYI4MLmyIvr1Z6cZOQOEc-GzZ4Ycy5RHbhvwpW1mPYBEV1bjG9HHTNCBHsYtoY&3u720&5m1&2e1&callback=none&key=AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA&token=13195', startTime: '2021-12-20 12:00:00', endTime: '2021-12-30 23:59:59', isOpen: true, lat: 48.87531999859082, lng: 2.3302103060471153 }),
+    Trip.create({ name: 'Friday night!', location: 'New York, NY', description: 'Weekend hangout with the gang in the new year', imageUrl: 'https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAap_uEBSSsfsShRZ-1GCi6ZQC_vSemEl5MOZF1LbFEvCn-b9PEDZB8G9KHx7XoHOYs-KgEzrGfAJTU60PrZ3LYm1g07gvd581Itti3sEyFp2XEsU3nZ5wMMrtHGSfS8ELyBFBiuq6Z15Y6_yJNI4S21FBXrFQXYri74ET80PRDDEJmSaIpPQ&3u550&5m1&2e1&callback=none&key=AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA&token=69238', startTime: '2022-01-07 20:00:00', endTime: '2022-01-08 05:00:00', isOpen: true, lat: 40.712776, lng: -74.005974 }),
+    Trip.create({ name: 'NYE', location: 'New York, New York', description: 'New Years Eve', imageUrl: 'https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAap_uEBSSsfsShRZ-1GCi6ZQC_vSemEl5MOZF1LbFEvCn-b9PEDZB8G9KHx7XoHOYs-KgEzrGfAJTU60PrZ3LYm1g07gvd581Itti3sEyFp2XEsU3nZ5wMMrtHGSfS8ELyBFBiuq6Z15Y6_yJNI4S21FBXrFQXYri74ET80PRDDEJmSaIpPQ&3u550&5m1&2e1&callback=none&key=AIzaSyDTDZbcrs5acxP8RwgsZjK2CMelScdM4BA&token=69238', startTime: '2021-12-31 20:00:00', endTime: '2022-01-01 03:00:00', isOpen: true, lat: 40.712776, lng: -74.005974 })
   ])
 
   const [nyc, charlotte, miami, paris, friday, nye] = trips.map(trip => trip)
@@ -46,30 +50,30 @@ async function seed() {
   const [food_and_drink, entertainment, transportation, other] = categories.map(category => category)
 
   const events = await Promise.all([
-    Event.create({ name: 'Movie', location: 'AMC Lincoln Square 13', description: 'Eternals', startTime: '2021-11-12 21:15:00', endTime: '2021-11-12 23:15:00', tripId: nyc.id, place_id: 'ChIJtcljhoZYwokRQZjDXiCA304', lat: 40.7751676, lng: -73.9819053 }),
-    Event.create({ name: 'Dinner', location: 'Lilia', description: "don't forget to bring ID", startTime: '2021-11-13 20:00:00', endTime: '2021-11-13 22:00:00', tripId: nyc.id, place_id: 'ChIJJXCD6ltZwokRJ_cwjKQH63c', lat: 40.7175365, lng: -73.9524225 }),
-    Event.create({ name: 'Museum', location: 'The Whitney Museum', description: '', startTime: '2021-11-13 10:15:00', endTime: '2021-11-13 12:15:00', tripId: nyc.id, place_id: 'ChIJN3MJ6pRYwokRiXg91flSP8Y', lat: 40.7395877, lng: -74.0088629 }),
-    Event.create({ name: 'Hiking', location: 'Rocky Face Mountain', description: 'Group hiking', startTime: '2021-11-02 08:00:00', endTime: '2021-11-02 10:00:00', tripId: charlotte.id, place_id: 'ChIJdenvAr6bWYgRLX-EhoXIm4s', lat: 35.4653854, lng: -82.7992976 }),
-    Event.create({ name: 'Party', location: "Infused Bar", description: '', startTime: '2021-11-02 20:00:00', endTime: '2021-11-02 23:00:00', tripId: charlotte.id, place_id: 'ChIJ_4Hm7SGgVogRNoZBXcKQn74', lat: 35.223096, lng: -80.8332363 }),
-    Event.create({ name: 'Museum', location: 'Perez Art Museum Miami', description: 'Museum visit', startTime: '2021-11-03 08:00:00', endTime: '2021-11-03 10:00:00', tripId: miami.id, place_id: 'ChIJAUUpLJq22YgRAU604E8-tsM', lat: 25.7859307, lng: -80.1861912 }),
-    Event.create({ name: 'Party', location: 'Mama Tried', description: 'cocktails and pool', startTime: '2021-11-04 20:00:00', endTime: '2021-11-05 03:00:00', tripId: miami.id, place_id: 'ChIJL7nwMRi32YgRPgB_p4PMTXk', lat: 25.7753682, lng: -80.1901163 }),
-    Event.create({ name: 'Dinner', location: 'Comice', description: 'Dinner at Comice', startTime: '2021-12-12 20:00:00', endTime: '2021-12-12 22:59:59', tripId: paris.id, place_id: 'ChIJAc56Jah65kcRPUvIVLIaIjI', lat: 48.8494621, lng: 2.2760438 }),
-    Event.create({ name: 'Food', location: 'Tamara', description: '', startTime: '2021-12-13 20:00:00', endTime: '2021-12-13 22:59:59', tripId: paris.id, place_id: 'ChIJlWVr9v9v5kcR2ecnPPpaWF8', lat: 48.8642796, lng: 2.336053 }),
-    Event.create({ name: 'Dinner', location: 'Francie', description: "start the evening with dinner", startTime: '2022-01-07 20:00:00', endTime: '2022-01-07 22:30:00', tripId: friday.id, place_id: 'ChIJ35V_tZlbwokRzolpCln-mG4', lat: 40.710268, lng: -73.9639045 }),
+    Event.create({ name: 'Movie', location: 'AMC Lincoln Square 13', description: 'Eternals', startTime: '2022-01-08 21:15:00', endTime: '2022-01-08 23:15:00', tripId: nyc.id, place_id: 'ChIJtcljhoZYwokRQZjDXiCA304', lat: 40.7751676, lng: -73.9819053 }),
+    Event.create({ name: 'Dinner', location: 'Lilia', description: "pasta pasta pasta", startTime: '2022-01-09 20:00:00', endTime: '2022-01-09 22:00:00', tripId: nyc.id, place_id: 'ChIJJXCD6ltZwokRJ_cwjKQH63c', lat: 40.7175365, lng: -73.9524225 }),
+    Event.create({ name: 'Museum', location: 'The Whitney Museum', description: 'culture time', startTime: '2022-01-11 10:15:00', endTime: '2022-01-11 12:15:00', tripId: nyc.id, place_id: 'ChIJN3MJ6pRYwokRiXg91flSP8Y', lat: 40.7395877, lng: -74.0088629 }),
+    Event.create({ name: 'Hiking', location: 'Rocky Face Mountain', description: 'Group hiking', startTime: '2021-12-02 08:00:00', endTime: '2021-12-02 10:00:00', tripId: charlotte.id, place_id: 'ChIJdenvAr6bWYgRLX-EhoXIm4s', lat: 35.4653854, lng: -82.7992976 }),
+    Event.create({ name: 'Party', location: "Infused Bar", description: '', startTime: '2021-12-02 20:00:00', endTime: '2021-12-02 23:00:00', tripId: charlotte.id, place_id: 'ChIJ_4Hm7SGgVogRNoZBXcKQn74', lat: 35.223096, lng: -80.8332363 }),
+    Event.create({ name: 'Museum', location: 'Perez Art Museum Miami', description: 'Museum visit', startTime: '2021-12-13 08:00:00', endTime: '2021-12-13 10:00:00', tripId: miami.id, place_id: 'ChIJAUUpLJq22YgRAU604E8-tsM', lat: 25.7859307, lng: -80.1861912 }),
+    Event.create({ name: 'Party', location: 'Mama Tried', description: 'cocktails and pool', startTime: '2021-12-14 20:00:00', endTime: '2021-12-14 03:00:00', tripId: miami.id, place_id: 'ChIJL7nwMRi32YgRPgB_p4PMTXk', lat: 25.7753682, lng: -80.1901163 }),
+    Event.create({ name: 'Dinner', location: 'Comice', description: 'Dinner at Comice', startTime: '2021-12-21 20:00:00', endTime: '2021-12-21 22:59:59', tripId: paris.id, place_id: 'ChIJAc56Jah65kcRPUvIVLIaIjI', lat: 48.8494621, lng: 2.2760438 }),
+    Event.create({ name: 'Museum', location: 'Louvre', description: 'art!!', startTime: '2021-12-23 10:00:00', endTime: '2021-12-23 13:00:00', tripId: paris.id, place_id: 'ChIJPStI0CVu5kcRUBqUaMOCCwU', lat: 48.8640396, lng: 2.3311563 }),
+    Event.create({ name: 'Dinner', location: 'Francie', description: "start the evening with some duck", startTime: '2022-01-07 20:00:00', endTime: '2022-01-07 22:30:00', tripId: friday.id, place_id: 'ChIJ35V_tZlbwokRzolpCln-mG4', lat: 40.710268, lng: -73.9639045 }),
     Event.create({ name: 'Drinks', location: 'Pokito', description: 'cocktails', startTime: '2022-01-07 23:00:00', endTime: '2022-01-08 01:00:00', tripId: friday.id, place_id: 'ChIJ3xcwmt9bwokRegnPhKtAL7U', lat: 40.71161300000001, lng: -73.9618029 }),
     Event.create({ name: 'Dancing', location: 'Moodring', description: 'cool dj and dancing yay', startTime: '2022-01-08 01:30:00', endTime: '2022-01-08 04:00:00', tripId: friday.id, place_id: 'ChIJp5MjfgVcwokREwMdmFvtrQ8', lat: 40.6978453, lng: -73.92699999999999 }),
   ])
 
   const expenses = await Promise.all([
-    Expense.create({ name: 'Movie tickets', amount: 60, tripId: nyc.id, paidById: andy.id, categoryId: entertainment.id, datePaid: '2021-11-12' }),
-    Expense.create({ name: 'dinner', amount: 200, tripId: nyc.id, paidById: corinne.id, categoryId: food_and_drink.id, datePaid: '2021-11-13' }),
-    Expense.create({ name: 'whitney', amount: 80, tripId: nyc.id, paidById: andy.id, categoryId: entertainment.id, datePaid: '2021-11-13' }),
-    Expense.create({ name: 'Uber to Rocky Face Mountain', amount: 35, tripId: charlotte.id, paidById: jonathan.id, categoryId: transportation.id, datePaid: '2021-11-02' }),
-    Expense.create({ name: 'drinks', amount: 150, tripId: charlotte.id, paidById: andy.id, categoryId: food_and_drink.id, datePaid: '2021-11-03' }),
-    Expense.create({ name: 'Museum tickets', amount: 80, tripId: miami.id, paidById: corinne.id, categoryId: entertainment.id, datePaid: '2021-11-04' }),
-    Expense.create({ name: 'car', amount: 30, tripId: miami.id, paidById: andy.id, categoryId: transportation.id, datePaid: '2021-11-04' }),
-    Expense.create({ name: 'museum gift shop', amount: 65, tripId: miami.id, paidById: jonathan.id, categoryId: other.id, datePaid: '2021-11-05' }),
-    Expense.create({ name: 'Dinner at Comice', amount: 150, tripId: paris.id, paidById: corinne.id, categoryId: food_and_drink.id, datePaid: '2021-12-13' }),
+    Expense.create({ name: 'Movie tickets', amount: 60, tripId: nyc.id, paidById: andy.id, categoryId: entertainment.id, datePaid: '2022-01-08' }),
+    Expense.create({ name: 'dinner', amount: 200, tripId: nyc.id, paidById: corinne.id, categoryId: food_and_drink.id, datePaid: '2022-01-09' }),
+    Expense.create({ name: 'whitney', amount: 80, tripId: nyc.id, paidById: andy.id, categoryId: entertainment.id, datePaid: '2022-01-11' }),
+    Expense.create({ name: 'Uber to Rocky Face Mountain', amount: 35, tripId: charlotte.id, paidById: jonathan.id, categoryId: transportation.id, datePaid: '2021-12-02' }),
+    Expense.create({ name: 'drinks', amount: 150, tripId: charlotte.id, paidById: andy.id, categoryId: food_and_drink.id, datePaid: '2021-12-03' }),
+    Expense.create({ name: 'Museum tickets', amount: 80, tripId: miami.id, paidById: corinne.id, categoryId: entertainment.id, datePaid: '2021-12-13' }),
+    Expense.create({ name: 'car', amount: 30, tripId: miami.id, paidById: andy.id, categoryId: transportation.id, datePaid: '2021-12-14' }),
+    Expense.create({ name: 'museum gift shop', amount: 65, tripId: miami.id, paidById: jonathan.id, categoryId: other.id, datePaid: '2021-12-13' }),
+    Expense.create({ name: 'Dinner at Comice', amount: 150, tripId: paris.id, paidById: corinne.id, categoryId: food_and_drink.id, datePaid: '2021-12-21' }),
   ])
 
   const userTrips = await Promise.all([

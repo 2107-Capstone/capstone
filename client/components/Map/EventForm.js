@@ -25,7 +25,6 @@ const EventForm = (props) => {
         name: event.name || '',
         location: event.location || '',
         description: event.description || '',
-        // place_id: event.place_id || ''
     })
 
     const [startTime, setStartTime] = useState(event.startTime || new Date());
