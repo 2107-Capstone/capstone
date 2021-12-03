@@ -105,6 +105,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
   }
 })
 
+//this is for closing a trip only at the moment
 router.put('/:tripId', async (req, res, next) => {
   console.log(req.params.tripId)
   if (req.headers.authorization === 'null') {
@@ -112,37 +113,67 @@ router.put('/:tripId', async (req, res, next) => {
     return res.json([])
   }
   try {
-    const { name, location, startTime, endTime, isOpen } = req.body
-    let trip = await Trip.findByPk(req.params.tripId)
-    await trip.update({ ...trip, name, location, startTime, endTime, isOpen })
-    trip = await UserTrip.findOne({
-      where: {tripId: trip.id}, 
+    
+    // const { name, location, startTime, endTime, isOpen } = req.body
+    const userTrip = await UserTrip.findByPk(req.params.tripId)
+    let trip = await Trip.findByPk(userTrip.tripId);
+    await trip.update({ ...trip, isOpen: false })
+    trip = await UserTrip.findByPk(userTrip.id, {
       include: [
-      {
-        model: Trip,
-        include: [
-          {
-            model: Message,
-            include: {
-              model: User,
-              as: 'sentBy',
-              attributes: ['id', 'username']
+        {
+          model: Trip,
+          include: [
+            {
+              model: Message,
+              include: {
+                model: User,
+                as: 'sentBy',
+                attributes: ['id', 'username']
+              }
+            },
+            //included this to possibly simplify finding participants in a trip
+            {
+              model: UserTrip,
+              include: {
+                model: User,
+                attributes: ['id', 'username', 'lat', 'lng', 'time']
+              }
+            },
+            {
+              model: Event
             }
-          },
-          //included this to possibly simplify finding participants in a trip
-          {
-            model: UserTrip,
-            include: {
-              model: User,
-              attributes: ['id', 'username', 'lat', 'lng', 'time']
-            }
-          },
-          {
-            model: Event
-          }
-        ]
-      }
-    ]})
+          ]
+        }
+      ]
+    })
+    // trip = await UserTrip.findOne({
+    //   where: {tripId: trip.id}, 
+    //   include: [
+    //   {
+    //     model: Trip,
+    //     include: [
+    //       {
+    //         model: Message,
+    //         include: {
+    //           model: User,
+    //           as: 'sentBy',
+    //           attributes: ['id', 'username']
+    //         }
+    //       },
+    //       //included this to possibly simplify finding participants in a trip
+    //       {
+    //         model: UserTrip,
+    //         include: {
+    //           model: User,
+    //           attributes: ['id', 'username', 'lat', 'lng', 'time']
+    //         }
+    //       },
+    //       {
+    //         model: Event
+    //       }
+    //     ]
+    //   }
+    // ]})
     res.json(trip)
   } catch (err) {
     next(err)

@@ -76,7 +76,7 @@ const AllTrips = () => {
                 {trips.map(trip => (
                     <Grid item xs={12} sm={6} key={trip.id} >
                         <Paper sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
-                            <Box sx={{ color: 'inherit' }} component={Link} to={`/trip/${trip.tripId}`}>
+                            <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
                                 <img src={trip.trip.imageUrl} width='100%' height='240rem' />
                                 <Typography variant='h6' align='center'>
                                     {trip.trip.name}

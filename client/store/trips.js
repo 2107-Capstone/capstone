@@ -47,7 +47,9 @@ export const closeTrip = (trip) => {
   const token = window.localStorage.getItem(TOKEN)
 
   return async (dispatch) => {
-    const { data: closed } = await axios.put(`/api/trips/${trip.tripId}`, {
+    console.log(trip)
+    
+    const { data: closed } = await axios.put(`/api/trips/${trip.id}`, {
       headers: {
         authorization: token
       }

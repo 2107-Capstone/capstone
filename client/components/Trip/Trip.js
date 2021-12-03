@@ -66,8 +66,10 @@ const Trip = (props) => {
     // if (!trip) return <CircularLoading />
     const dispatch = useDispatch();
     const handleCloseTrip = async() => {
+
         try {
-            await dispatch(closeTrip(trip.tripId))
+            console.log(trip)
+            await dispatch(closeTrip({...trip}))
         } catch (error) {
             console.log(error)
         }
