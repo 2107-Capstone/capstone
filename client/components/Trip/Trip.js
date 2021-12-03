@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { connect, useSelector } from 'react-redux'
+
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import CircularLoading from '../Loading/CircularLoading'
 import TripMap from '../Map/TripMap'
@@ -7,6 +8,7 @@ import { Participants, Events } from './tripInfo'
 import Expenses from '../Expenses/Expenses'
 import TextsmsIcon from '@mui/icons-material/Textsms';
 import { Box, Divider, Grid, Button, Paper, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import { closeTrip } from '../../store'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -62,7 +64,14 @@ const Trip = (props) => {
     }, 0);
 
     // if (!trip) return <CircularLoading />
-
+    const dispatch = useDispatch();
+    const handleCloseTrip = async() => {
+        try {
+            await dispatch(closeTrip(trip.tripId))
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const users = trip.trip.userTrips;
 
@@ -137,7 +146,7 @@ const Trip = (props) => {
                             <Button variant='contained'  startIcon={<AddIcon />}>
                                 Add Friend to Trip
                             </Button>
-                            <Button variant='contained'  startIcon={<LockClockIcon />}>
+                            <Button variant='contained'  startIcon={<LockClockIcon />} onClick={handleCloseTrip}>
                                 Mark Trip Complete
                             </Button>
                         </Box>

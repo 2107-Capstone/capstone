@@ -23,7 +23,7 @@ const AllTrips = () => {
     }, [])
 
     // const { trips } = useSelector(state => state)
-    const trips = useSelector(state => state.trips.filter(trip => trip.isOpen))
+    const trips = useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
     const user = useSelector(state => state.auth)
 
     ///////////  Trip View Selection //////////
