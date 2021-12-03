@@ -37,6 +37,7 @@
     "express": "^4.17.1",
     "history": "^4.10.1",
     "jsonwebtoken": "^8.5.1",
+    "material-ui-phone-number": "^3.0.0",
     "morgan": "^1.10.0",
     "pg": "^8.7.1",
     "react-big-calendar": "^0.38.1",
