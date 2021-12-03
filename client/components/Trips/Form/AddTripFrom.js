@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 
+///////////// MATERIAL UI /////////////////////////
 import { DateTimePicker, LocalizationProvider } from "@mui/lab"
 import { Container, Box, TextField, Typography, Grid, Button } from "@mui/material"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import { addTrip } from "../../../store/trips"
-import { useDispatch } from "react-redux"
 
-/////// import image //////////////////
+/////// IMPORT LOGO IMAGE //////////////////
 const airplane = '/images/airplane.png'
 
 // const googleKey = process.env.MAP_API;
@@ -17,42 +18,40 @@ const AddTripFrom = () => {
     const [input, setinput] = useState({
         name: '',
         description: '',
+        imageUrl: airplane,
+        location: '',
         startTime: new Date(),
         endTime: new Date(),
-        lat: '',
-        lng: ''
+        lat: 40.7127753,
+        lng: -74.0059728
     })
-
-    const [location, setlocation] = useState('')
-    const [imageUrl, setimageUrl] = useState(airplane)
-    const [lat, setlat] = useState(40.7127753)
-    const [lng, setlng] = useState(-74.0059728)
 
     let googlePlace;
     useEffect(() => {
-        // const autocomplete = new google.maps.places.Autocomplete(googlePlace, { key: googleKey })
         const autocomplete = new google.maps.places.Autocomplete(googlePlace)
-        autocomplete.addListener("place_changed", (evt) => {
+        googlePlace.value = input.location
 
+        autocomplete.addListener("place_changed", function (evt) {
             const place = autocomplete.getPlace()
             if (place.formatted_address) {
-                setlocation(place.formatted_address)
+                setinput(input => ({ ...input, location: place.formatted_address }))
             }
             else {
-                setlocation(place.name)
+                setinput(input => ({ ...input, location: place.name }))
             }
 
             if (place.photos) {
                 const photo = place.photos[0].getUrl()
-                setimageUrl(photo)
+                setinput(input => ({ ...input, imageUrl: photo }))
             }
 
             if (place.geometry.location) {
-                setlat(place.geometry.location.lat())
-                setlng(place.geometry.location.lng())
+                setinput(input => ({ ...input, lat: place.geometry.location.lat() }))
+                setinput(input => ({ ...input, lng: place.geometry.location.lng() }))
             }
         })
     }, [])
+
 
     const [error, seterror] = useState({
         endTimeErr: '',
@@ -88,22 +87,17 @@ const AddTripFrom = () => {
 
     const handleSubmit = async () => {
         try {
-
-            const newTrip = { ...input, imageUrl, location, lat, lng }
-            // console.log(newTrip)
-            dispatch(addTrip(newTrip))
+            dispatch(addTrip(input))
             setinput({
                 name: '',
+                imageUrl: '',
+                location: '',
                 description: '',
                 startTime: new Date(),
                 endTime: new Date(),
-                // lat: lat,
-                // lng: lng
+                lat: 40.7127753,
+                lng: -74.0059728
             })
-            setimageUrl('')
-            setlocation('')
-            setlat('')
-            setlng('')
             googlePlace.value = ''
         }
         catch (err) {
