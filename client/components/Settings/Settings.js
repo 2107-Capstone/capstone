@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 //////////// MUI //////////////////
 import Avatar from '@mui/material/Avatar';
@@ -20,7 +21,7 @@ import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import MuiPhoneNumber from 'material-ui-phone-number';
-
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { updateUser, me } from '../../store'
 
 const Settings = () => {
@@ -29,31 +30,17 @@ const Settings = () => {
     
     const [input, setinput] = useState({
         username: '',
-        password: '',
         firstName: '',
         lastName: '',
         email: '',
         phoneNumber: '',
-        showPassword: false,
         disabled: false,
         error: '',
     })
 
-    const handleClickShowPassword = () => {
-      setinput({
-        ...input,
-        showPassword: !input.showPassword,
-      });
-    };
-  
-    const handleMouseDownPassword = (event) => {
-      event.preventDefault();
-    };
-
     useEffect(() => {
       setinput({
         username: auth.username,
-        password: auth.password,
         firstName: auth.firstName,
         lastName: auth.lastName,
         email: auth.email,
@@ -62,7 +49,7 @@ const Settings = () => {
     }, [])
 
     useEffect(() => {
-      if (input.phoneNumber.length === 17 && input.username && input.password && input.firstName && input.lastName && input.email){
+      if (input.phoneNumber.length === 17){
         setinput({
           ...input,
           disabled: false
@@ -77,7 +64,7 @@ const Settings = () => {
         } else {
           const name = evt.target.name
           const value = evt.target.value
-          setinput({ ...input, [name]: value, disabled: value === '' || input.phoneNumber.length < 17 ? true : false })
+          setinput({ ...input, [name]: value, disabled: input.phoneNumber.length < 17 ? true : false })
         }
     }
 
@@ -119,14 +106,17 @@ const Settings = () => {
                 }}
             >
                 <Button>TODO: Location Settings</Button>
-                <Button>TODO: Upload Avatar</Button>
+                <Button>TODO: Location Settings</Button>
+                <Button component={Link} to='/settings/password' variant='outlined' color='info' startIcon={<VpnKeyIcon />}>
+                    Change Password
+                </Button>
                 <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main' }}>
                     <FlightTakeoffIcon fontSize='large' />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     {auth.username}'s Profile
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Box component="form"  onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={1}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -200,7 +190,7 @@ const Settings = () => {
                           </Grid>
                           : ''
                         }
-                        <Grid item xs={12} >
+                        {/* <Grid item xs={12} >
                             <FormControl variant="outlined" fullWidth>
                               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                               <OutlinedInput
@@ -225,7 +215,7 @@ const Settings = () => {
                                 label="Password"
                               />
                             </FormControl>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                     <Button
                         type="submit"
