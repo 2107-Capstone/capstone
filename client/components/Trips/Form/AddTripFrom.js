@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 ///////////// MATERIAL UI /////////////////////////
-import { DateTimePicker, LocalizationProvider } from "@mui/lab"
+import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/lab"
 import { Container, Box, TextField, Typography, Grid, Button } from "@mui/material"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import { addTrip } from "../../../store/trips"
@@ -147,7 +147,7 @@ const AddTripFrom = () => {
                         </Grid>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <Grid item xs={12} sm={6}>
-                                <DateTimePicker
+                                <DatePicker
                                     label="Start Time"
                                     name='startTime'
                                     value={input.startTime}
@@ -156,7 +156,7 @@ const AddTripFrom = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <DateTimePicker
+                                <DatePicker
                                     label="End Time"
                                     name='endTime'
                                     value={input.endTime}
