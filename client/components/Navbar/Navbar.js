@@ -53,7 +53,7 @@ const Navbar = (props) => {
               Home
             </Button>
           )}
-          <Box sx={{ flexGrow: 1, alignSelf: 'center' }}>
+          <Box sx={{ flexGrow: 1,  }}>
             <img src="/images/logo.png" />
           </Box>
           {/* <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}>
