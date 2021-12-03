@@ -124,35 +124,39 @@ const Trip = (props) => {
                             &nbsp;{trip.trip.name}
                         </Typography>
                     </Box>
-                    <Box sx={{display: 'flex'}}>
-                        <Box >
-                            <Button component={Link} to={`${trip.tripId}/calendar`}  variant='contained' color='secondary' startIcon={<DateRangeIcon />} >
-                                Calendar
-                            </Button>
-                            <Button component={Link} to={`${trip.tripId}/map`}  variant='contained' color='secondary' startIcon={<MapIcon />} >
-                                Map
-                            </Button>
-                            <Button />
-                            <Button startIcon={<AddIcon />} variant='contained'  onClick={() => {
-                                setOpen(true);
-                                setForm('event')
-                            }}>
-                                Add Event
-                            </Button>
-                            <Button startIcon={<AddIcon />} variant='contained'  onClick={() => {
-                                setOpen(true);
-                                setForm('expense')
-                            }}>
-                                Add Expense
-                            </Button>
-                            <Button variant='contained'  startIcon={<AddIcon />}>
-                                Add Friend to Trip
-                            </Button>
-                            <Button variant='contained'  startIcon={<LockClockIcon />} onClick={handleCloseTrip}>
-                                Mark Trip Complete
-                            </Button>
-                        </Box>
-                    </Box>
+                    {
+                        trip.trip.isOpen ?
+                            <Box sx={{display: 'flex'}}>
+                                <Box >
+                                    <Button component={Link} to={`${trip.tripId}/calendar`}  variant='contained' color='secondary' startIcon={<DateRangeIcon />} >
+                                        Calendar
+                                    </Button>
+                                    <Button component={Link} to={`${trip.tripId}/map`}  variant='contained' color='secondary' startIcon={<MapIcon />} >
+                                        Map
+                                    </Button>
+                                    <Button />
+                                    <Button startIcon={<AddIcon />} variant='contained'  onClick={() => {
+                                        setOpen(true);
+                                        setForm('event')
+                                    }}>
+                                        Add Event
+                                    </Button>
+                                    <Button startIcon={<AddIcon />} variant='contained'  onClick={() => {
+                                        setOpen(true);
+                                        setForm('expense')
+                                    }}>
+                                        Add Expense
+                                    </Button>
+                                    <Button variant='contained'  startIcon={<AddIcon />}>
+                                        Add Friend to Trip
+                                    </Button>
+                                    <Button variant='contained'  startIcon={<LockClockIcon />} onClick={handleCloseTrip}>
+                                        Mark Trip Complete
+                                    </Button>
+                                </Box>
+                            </Box>
+                        : ''
+                    }
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
                     <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>

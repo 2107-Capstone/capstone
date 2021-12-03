@@ -16,14 +16,14 @@ import { format, parseISO } from "date-fns";
 const handleLeaveTrip = () => { }
 
 
-const AllTrips = () => {
+const AllTrips = ({match}) => {
     const dispatch = useDispatch();
     useEffect(async () => {
         await dispatch(getTrips())
     }, [])
 
     // const { trips } = useSelector(state => state)
-    const trips = useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
+    const trips = match.path.includes('settings') ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
     const user = useSelector(state => state.auth)
 
     ///////////  Trip View Selection //////////
@@ -38,9 +38,16 @@ const AllTrips = () => {
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                     <CardTravelIcon fontSize='medium' />
-                    <Typography variant='h5'>
-                        &nbsp;ALL TRIPS
-                    </Typography>
+                    {
+                        match.path.includes('settings') ?
+                            <Typography variant='h5'>
+                                &nbsp;PAST TRIPS
+                            </Typography>
+                        :
+                            <Typography variant='h5'>
+                                &nbsp;ALL TRIPS
+                            </Typography>
+                    }
                 </Box>
                 <CircularLoading />
             </Box>
@@ -51,9 +58,16 @@ const AllTrips = () => {
         <>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                 <CardTravelIcon fontSize='medium' />
-                <Typography variant='h5'>
-                    &nbsp;ALL TRIPS
-                </Typography>
+                    {
+                        match.path.includes('settings') ?
+                            <Typography variant='h5'>
+                                &nbsp;PAST TRIPS
+                            </Typography>
+                        :
+                            <Typography variant='h5'>
+                                &nbsp;ALL TRIPS
+                            </Typography>
+                    }
             </Box>
             <Button component={Link} to="/trips/add" variant='outlined'>
                 Add New Trip
