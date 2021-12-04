@@ -53,8 +53,9 @@ const Navbar = (props) => {
               Home
             </Button>
           )}
-          <Box sx={{ flexGrow: 1 }}>
-            <img src="/images/logo.png" style={{maxHeight: '5rem'}}/>
+          <Box>
+            <img src={theme.palette.mode === 'light' ? "/images/logo.png" : "/images/logo-dark.png"} style={{maxHeight: '5rem', margin: '.1rem'}}/>
+            {/* <img src={"/images/logo-dark.png"} style={{maxHeight: '5rem'}}/> */}
           </Box>
           {/* <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}>
             TRIP OUT!
