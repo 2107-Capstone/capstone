@@ -1,13 +1,16 @@
+
 const Sequelize = require('sequelize')
 const db = require('../db')
-const { STRING, TEXT, DATE, BOOLEAN, DECIMAL } = Sequelize
+const { STRING, TEXT, DATE, BOOLEAN, INTEGER, DECIMAL } = Sequelize
 
 const Trip = db.define('trip', {
   name: {
     type: STRING,
+    allowNull: false
   },
   location: {
     type: STRING,
+    allowNull: false
   },
   description: {
     type: TEXT
@@ -16,10 +19,12 @@ const Trip = db.define('trip', {
     type: TEXT
   },
   startTime: {
-    type: DATE
+    type: DATE,
+    allowNull: false
   },
   endTime: {
-    type: DATE
+    type: DATE,
+    allowNull: false
   },
   isOpen: {
     type: BOOLEAN,
@@ -30,6 +35,12 @@ const Trip = db.define('trip', {
   },
   lng: {
     type: DECIMAL
+  },
+  creatorId: {
+    type: INTEGER,
+  },
+  creatorName: {
+    type: STRING
   }
 })
 

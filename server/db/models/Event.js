@@ -7,9 +7,11 @@ const axios = require('axios')
 const Event = db.define('event', {
   name: {
     type: STRING,
+    allowNull: false
   },
   location: {
     type: STRING,
+    allowNull: false
   },
   description: {
       type: TEXT
@@ -20,7 +22,6 @@ const Event = db.define('event', {
   },
   endTime: {
       type: DATE,
-  //TODO: add one hour
       defaultValue: new Date()
   },
   place_id: {

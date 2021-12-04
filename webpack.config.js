@@ -34,11 +34,4 @@ module.exports = {
       },
     ]
   },
-  // plugins: [
-  //   new webpack.DefinePlugin({
-  //     'process.env': {
-  //       MAP_API: JSON.stringify(process.env.REACT_APP_GOOGLE_MAPS_API_KEY),
-  //     },
-  //   }),
-  // ],
 }

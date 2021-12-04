@@ -31,13 +31,17 @@ const User = db.define('user', {
     unique: true
   },
   lat: {
-    type: DECIMAL
+    type: DECIMAL,
+    defaultValue: null
   },
   lng: {
-    type: DECIMAL
+    type: DECIMAL,
+    defaultValue: null
   },
   time: {
-    type: DATE
+    type: DATE,
+    defaultValue: null
+    
   }
 })
 

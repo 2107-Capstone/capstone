@@ -15,17 +15,17 @@ async function seed() {
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ username: 'Andy', password: '123', firstName: 'Andy', lastName: 'Gao', email: 'andy@123.com', phoneNumber: '1234567890', lat: 40.699251, lng: -73.953755, time: new Date() }),
-    User.create({ username: 'Corinne', password: '123', firstName: 'Corinne', lastName: 'Tinacci', email: 'corinne@123.com', phoneNumber: '2345678901', lat: 40.717989, lng: -73.951693, time: new Date() }),
-    User.create({ username: 'Jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012', lat: 40.717989, lng: -73.951693, time: new Date() }),
-    User.create({ username: 'Stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '4567890123', lat: 40.717989, lng: -73.951693, time: new Date() }),
-    User.create({ username: 'Jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234', lat: 40.717989, lng: -73.951693, time: new Date() }),
-    User.create({ username: 'Moe', password: '123', firstName: 'Moe', lastName: 'Moeman', email: 'moe@123.com', phoneNumber: '6789012341', lat: 40.717989, lng: -73.951693, time: new Date() }),
-    User.create({ username: 'Poe', password: '123', firstName: 'Poe', lastName: 'Poet', email: 'Poe@123.com', phoneNumber: '6789012342', lat: 40.717989, lng: -73.951693, time: new Date() }),
-    User.create({ username: 'Lucy', password: '123', firstName: 'Lucy', lastName: 'Luck', email: 'Lucy@123.com', phoneNumber: '6789012343', lat: 40.717989, lng: -73.951693, time: new Date() }),
-    User.create({ username: 'JJ', password: '123', firstName: 'JJ', lastName: 'Jay', email: 'jj@123.com', phoneNumber: '6789012340', lat: 40.717989, lng: -73.951693, time: new Date() }),
-    User.create({ username: 'Marge', password: '123', firstName: 'Marge', lastName: 'Bouvier', email: 'marge@123.com', phoneNumber: '6789012349', lat: 40.717989, lng: -73.951693, time: new Date() }),
-    User.create({ username: 'Prof', password: '123', firstName: 'Prof', lastName: 'Profman', email: 'prof@123.com', phoneNumber: '1239012349', lat: 40.717989, lng: -73.951693, time: new Date() }),
+    User.create({ username: 'Andy', password: '123', firstName: 'Andy', lastName: 'Gao', email: 'andy@123.com', phoneNumber: '1234567890', time: new Date() }),
+    User.create({ username: 'Corinne', password: '123', firstName: 'Corinne', lastName: 'Tinacci', email: 'corinne@123.com', phoneNumber: '2345678901', time: new Date() }),
+    User.create({ username: 'Jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012', time: new Date() }),
+    User.create({ username: 'Stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '4567890123',  time: new Date() }),
+    User.create({ username: 'Jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234',  time: new Date() }),
+    User.create({ username: 'Moe', password: '123', firstName: 'Moe', lastName: 'Moeman', email: 'moe@123.com', phoneNumber: '6789012341',  time: new Date() }),
+    User.create({ username: 'Poe', password: '123', firstName: 'Poe', lastName: 'Poet', email: 'Poe@123.com', phoneNumber: '6789012342',  time: new Date() }),
+    User.create({ username: 'Lucy', password: '123', firstName: 'Lucy', lastName: 'Luck', email: 'Lucy@123.com', phoneNumber: '6789012343',  time: new Date() }),
+    User.create({ username: 'JJ', password: '123', firstName: 'JJ', lastName: 'Jay', email: 'jj@123.com', phoneNumber: '6789012340',  time: new Date() }),
+    User.create({ username: 'Marge', password: '123', firstName: 'Marge', lastName: 'Bouvier', email: 'marge@123.com', phoneNumber: '6789012349',  time: new Date() }),
+    User.create({ username: 'Prof', password: '123', firstName: 'Prof', lastName: 'Profman', email: 'prof@123.com', phoneNumber: '1239012349',  time: new Date() }),
   ])
 
   const [andy, corinne, jonathan, stanley, jason] = users.map(user => user)
