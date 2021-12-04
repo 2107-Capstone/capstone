@@ -281,8 +281,6 @@ const Trip = (props) => {
                                                 :   <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  style={{color: 'grey'}} disabled>
                                                         You do not have access to close this trip.
                                                     </Button>
-
-
                                             }
                                         </MenuItem>
                                         <Divider sx={{ my: 0.5 }} />
