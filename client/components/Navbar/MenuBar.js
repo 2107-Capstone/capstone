@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////// REDUX //////////////////////
@@ -55,7 +56,7 @@ const MenuBar = (props) => {
                 <Button component={Link} to='/calendar' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
                     Calendar
                 </Button>
-                <Button component={Link} to='/home' onClick={handleDrawerToggle} variant='contained' startIcon={<Badge badgeContent={5} color="error" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><NotificationsIcon /></Badge>}>
+                <Button component={Link} to='/notifications' onClick={handleDrawerToggle} variant='contained' startIcon={<Badge badgeContent={props.friendsPendingReceived.length} color="error" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><NotificationsIcon /></Badge>}>
                     Notifications
                 </Button>
                 <Divider />
@@ -104,4 +105,11 @@ const MenuBar = (props) => {
     )
 }
 
-export default MenuBar
+const mapState = state => {
+    return {
+        friendsPendingReceived: state.friendsPendingReceived
+        //add pending trip requests received
+    }
+}
+
+export default connect(mapState)(MenuBar)

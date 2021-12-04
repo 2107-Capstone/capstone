@@ -1,16 +1,15 @@
-import React from 'react'
+import React, { useState, Fragment } from 'react'
 import { connect } from 'react-redux'
 import AddFriend from './AddFriend'
-import PendingFriendRequest from './PendingFriendRequest'
+import PendingFriendRequestSent from './PendingFriendRequestSent'
 import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton, Alert } from "@mui/material"
 import PeopleIcon from '@mui/icons-material/People'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CircularLoading from '../Loading/CircularLoading'
-
-
+import CloseIcon from '@mui/icons-material/Close'
 
 
 export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendshipData }) => {
@@ -18,8 +17,35 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
         const _userFriend = userFriends.find(userFriend => userFriend.userId === friend.friendId)
         await deleteUserFriend(friend.id)
         await deleteUserFriend(_userFriend.id)
+        handleClick(friend)
+        handleClose()
+        handleDeleteClick(friend)
         await loadFriendshipData()
     }
+
+    const [open, setOpen] = useState(false);
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [friend, setFriend] = useState({});
+
+    const handleClick = (friend) => {
+        setOpen(true);
+        setFriend(friend)
+    };
+
+    const handleDeleteClick = (friend) => {
+        setDeleteOpen(true);
+        setFriend(friend)
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+
+        setOpen(false);
+        setDeleteOpen(false);
+        setFriend({})
+    };
 
     if (!friends) {
         return (
@@ -53,16 +79,47 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
                             <Typography variant='h6'>
                                 {friend.friend.username}
                             </Typography>
-                            <Button startIcon={<DeleteIcon />} size="small" variant='contained' onClick={() => window.confirm(`Are you sure you wish to delete ${friend.friend.username} as a friend?`) && clickDeleteFriend(friend)}>
+                            <Button startIcon={<DeleteIcon />} size="small" variant='contained' onClick={() => handleClick(friend)}>
                                 Delete Friend
                             </Button>
+            
                         </Box>
                     </Paper>
                 </Grid>
-
+                
             ))}
         </Grid>
-        <PendingFriendRequest />
+        <Snackbar 
+            open={open}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            message={friend && friend.friend ? `Are you sure you wish to delete ${friend.friend.username} as a friend?`:''}
+            action={
+                <Fragment>
+                <Button color="secondary" size="small" onClick={() => clickDeleteFriend(friend)}>
+                YES
+                </Button>
+                <Button color="secondary" size="small" onClick={handleClose}>
+                NO
+                </Button>
+                <IconButton
+                    size="small"
+                    aria-label="close"
+                    color="inherit"
+                    onClick={handleClose}
+                >
+                <CloseIcon fontSize="small" />
+                </IconButton>
+                </Fragment>
+            }
+        />
+        <Snackbar open={deleteOpen} autoHideDuration={2000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {friend && friend.friend ? `${friend.friend.username} has been deleted as a friend!`:''}
+            </Alert>
+        </Snackbar>
+        <PendingFriendRequestSent />
         <AddFriend />
     </>
     )

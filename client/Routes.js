@@ -19,6 +19,7 @@ import TripCalendar from './components/Calendar/TripCalendar';
 import SingleTripCalendar from './components/Calendar/SingleTripCalendar';
 import Expenses from './components/Expenses/Expenses';
 import TripMap from './components/Map/TripMap';
+import Notifications from './components/Notifications/Notifications'
 import Settings from './components/Settings/Settings';
 import Password from './components/Settings/Password';
 /**
@@ -56,6 +57,7 @@ class Routes extends Component {
             <Route exact path="/trips/:id/calendar" component={SingleTripCalendar} />
             <Route exact path="/map" component={AllTripsMap} />
             <Route exact path="/calendar" component={TripCalendar} />
+            <Route exact path="/notifications" component={Notifications} />
             <Route exact path="/settings" component={Settings} />
             <Route exact path="/settings/password" component={Password} />
             <Redirect to="/home" />

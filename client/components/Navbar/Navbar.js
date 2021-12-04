@@ -20,6 +20,10 @@ import theme from '../../theme'
 /////////// SVG //////////////////
 import Logo from '/public/tripoutlogo.svg'
 
+// import { AppBar, Box, Button, Container, Divider, Toolbar, Paper, Typography, useMediaQuery } from '@mui/material';
+// import MenuBar from './MenuBar';
+// import theme from '../../theme'
+
 const Navbar = (props) => {
   const isLoggedIn = useSelector(state => !!state.auth.id)
 
@@ -63,6 +67,9 @@ const Navbar = (props) => {
           {/* <Container sx={{ px: 1, textAlign: 'center' }}>
             <img src={theme.palette.mode === 'light' ? "/images/logo.png" : "/images/logo-dark-wide.png"} style={{ maxHeight: '3rem', }} />
           </Container> */}
+//           <Container sx={{ px: 1, textAlign: 'center' }}>
+//             <img src={theme.palette.mode === 'light' ? "/images/logo.png" : "/images/logo-dark-wide.png"} style={{maxHeight: '3rem', }}/>
+//           </Container>
           {/* <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}>
             TRIP OUT!
           </Typography> */}
