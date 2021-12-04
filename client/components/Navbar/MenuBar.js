@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../../store';
 
 ///////////// MATERIAL UI ///////////////
-import { Button, Box, Divider, Drawer, Stack, Toolbar, IconButton, Typography } from '@mui/material'
+import { Button, Box, Divider, Drawer, Stack, Toolbar, IconButton, Typography, Badge } from '@mui/material'
 
 //////////// ICONS //////////////////
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -19,6 +19,7 @@ import EventIcon from '@mui/icons-material/Event';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 
 const MenuBar = (props) => {
@@ -53,12 +54,11 @@ const MenuBar = (props) => {
                 <Button component={Link} to='/calendar' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
                     Calendar
                 </Button>
-                <Button component={Link} to='/notifications' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
-                    Notifications {props.friendsPendingReceived.length === 0? '':`(${props.friendsPendingReceived.length})`}
+                <Button component={Link} to='/notifications' onClick={handleDrawerToggle} variant='contained' startIcon={<Badge badgeContent={props.friendsPendingReceived.length === 0? '':`(${props.friendsPendingReceived.length})`} color="error" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><NotificationsIcon /></Badge>}>
+                    Notifications
                 </Button>
                 <Divider />
-                <Divider />
-                <Button onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
+                <Button component={Link} to='/settings' onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
                     Settings
                 </Button>
                 <Button onClick={handleDrawerToggle} variant='outlined' onClick={handleLogout}>

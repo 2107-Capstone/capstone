@@ -17,7 +17,9 @@ import MapIcon from '@mui/icons-material/Map';
 import Avatar from '@mui/material/Avatar';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { FaBlackberry } from 'react-icons/fa'
+import SingleTripCalendar from '../Calendar/SingleTripCalendar'
 
+import { format, formatISO, parseISO, isAfter } from "date-fns";
 const Trip = (props) => {
 
     const id = + props.match.params.id
@@ -45,6 +47,8 @@ const Trip = (props) => {
     if (!trip) return <CircularLoading />
     
     const users = trip.trip.userTrips;
+    let events = trip.trip.events.sort((a,b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
+    events.length > 3 ? events.length = 3 : ''
     
     return (
 
@@ -105,7 +109,7 @@ const Trip = (props) => {
                                 <Box style={styles.headingIcon}>
                                     <PaidIcon fontSize='medium' />
                                     <Typography variant='h6'>
-                                        &nbsp;Expenses
+                                        &nbsp;Expenses Snapshot
                                     </Typography>
                                 </Box>
                             </Box>
@@ -132,12 +136,30 @@ const Trip = (props) => {
                                 <Box style={styles.headingIcon}>
                                     <DateRangeIcon fontSize='medium' />
                                     <Typography variant='h6'>
-                                        &nbsp;Calendar
+                                        &nbsp;Events Snapshot
                                     </Typography>
                                 </Box>
                             </Box>
-                            insert calendar?insert calendar?insert calendar?insert calendar?
-                            {/* <Participants trip={trip} auth={auth} /> */}
+                            <Box sx={{display: 'flex'}}>
+                                <Box >
+                                    <Button component={Link} to={`${trip.tripId}/calendar`} size='large' color='info' startIcon={<DateRangeIcon />} >
+                                        Calendar
+                                    </Button>
+                                    <Button component={Link} to={`${trip.tripId}/map`} size='large' color='info' startIcon={<MapIcon />} >
+                                        Map
+                                    </Button>
+                                </Box>
+                            </Box>
+                            <Typography>
+                                Upcoming Events:
+                            </Typography>
+                            {
+                                events.map(event => (
+                                    <li key={event.id + Math.random().toString(16)}>
+                                        {format(parseISO(event.startTime), 'Pp')} - {event.name} at {event.location}
+                                    </li>
+                                ))
+                            }
                         </Grid>
                     </Grid>
                 </Box>
@@ -159,7 +181,7 @@ const Trip = (props) => {
                             <ChatRoom trip={trip}/>
                         </Grid>
                     </Grid>
-                    <Grid container sx={{ margin: 1 }}>  
+                    {/* <Grid container sx={{ margin: 1 }}>  
                         <Grid item xs={12} sx={{border: '1px solid grey', borderRadius: '10px'}}>
                             <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
                                 <Box >
@@ -177,7 +199,7 @@ const Trip = (props) => {
                             REDESIGN THIS
                             <TripMap tripId={id} users={trip.trip.userTrips}/>
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                 </Box>
             </Box>
         </div>
