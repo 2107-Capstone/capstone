@@ -105,7 +105,7 @@ const Settings = () => {
                     alignItems: 'center',
                 }}
             >
-                <Button>TODO: Location Settings</Button>
+                <Button component={Link} to='/settings/trips' variant='outlined' color='info' startIcon={<VpnKeyIcon />}>TODO: Past Trips</Button>
                 <Button>TODO: Location Settings</Button>
                 <Button component={Link} to='/settings/password' variant='outlined' color='info' startIcon={<VpnKeyIcon />}>
                     Change Password

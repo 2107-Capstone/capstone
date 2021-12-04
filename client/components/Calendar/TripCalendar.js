@@ -31,7 +31,7 @@ const TripCalendar = () => {
     const calendarEvents = events.map(event => { return { id: event.id, tripId: event.tripId, title: event.name, start: new Date(event.startTime), end: new Date(event.endTime) } })
 
     const handleSelect = (event) => {
-        history.push(`/trip/${event.tripId}`)
+        history.push(`/trips/${event.tripId}`)
     }
 
     return (

@@ -46,13 +46,14 @@ class Routes extends Component {
             <Route path="/home" component={Home} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/trips" component={AllTrips} />
+            <Route exact path="/settings/trips" component={AllTrips} />
             <Route exact path="/trips/add" component={AddTripFrom} />
-            <Route exact path="/trip/:id" component={Trip} />
+            <Route exact path="/trips/:id" component={Trip} />
             <Route exact path="/friends" component={AllFriends} />
-            <Route exact path="/trip/:id/chat" component={ChatRoom} />
-            <Route exact path="/trip/:id/expenses" component={Expenses} />
-            <Route exact path="/trip/:id/map" component={TripMap} />
-            <Route exact path="/trip/:id/calendar" component={SingleTripCalendar} />
+            <Route exact path="/trips/:id/chat" component={ChatRoom} />
+            <Route exact path="/trips/:id/expenses" component={Expenses} />
+            <Route exact path="/trips/:id/map" component={TripMap} />
+            <Route exact path="/trips/:id/calendar" component={SingleTripCalendar} />
             <Route exact path="/map" component={AllTripsMap} />
             <Route exact path="/calendar" component={TripCalendar} />
             <Route exact path="/settings" component={Settings} />

@@ -23,12 +23,12 @@ nav a {
 }
 .headingButton:hover {
   color: white;
-  transform: scale(1.8);
+  transform: scale(1.1);
   border-radius: 5px;
 }
 .linkToTrip:hover {
   transform: scale(1.1);
-  color: dodgerblue
+  color: rgb(61, 220, 231)
 }
 @media screen and (max-width: 575px){
   #singleTrip {

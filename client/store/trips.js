@@ -6,11 +6,13 @@ const TOKEN = 'token'
 //////////// ACTION TYPES  ////////////
 const GET_TRIPS = 'GET_TRIPS'
 const ADD_TRIP = 'ADD_TRIP'
+const CLOSE_TRIP = 'CLOSE_TRIP'
 
 //////////// ACTION CREATORS ////////////
 const _getTrips = trips => ({ type: GET_TRIPS, trips })
 
 const _addTrip = trip => ({ type: ADD_TRIP, trip })
+const _closeTrip = trip => ({ type: CLOSE_TRIP, trip })
 
 //////////////////// THUNK CREATORS  //////////////
 export const getTrips = () => {
@@ -41,6 +43,23 @@ export const addTrip = (tripToAdd) => {
   };
 }
 
+export const closeTrip = (trip) => {
+  const token = window.localStorage.getItem(TOKEN)
+
+  return async (dispatch) => {
+    console.log(trip)
+    
+    const { data: closed } = await axios.put(`/api/trips/${trip.id}`, {
+      headers: {
+        authorization: token
+      }
+    });
+    // console.log(trip)
+    dispatch(_closeTrip(closed));
+    history.push('/trips')
+  };
+}
+
 ///////////// REDUCER ////////////////
 export default function (state = [], action) {
   switch (action.type) {
@@ -48,6 +67,8 @@ export default function (state = [], action) {
       return action.trips
     case ADD_TRIP:
       return [action.trip, ...state]
+    case CLOSE_TRIP:
+      return state.map(trip => trip.tripId === action.id ? action.trip : trip)
     default:
       return state
   }

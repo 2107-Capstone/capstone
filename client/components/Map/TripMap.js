@@ -20,14 +20,10 @@ import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps
 
 
 import mapStyles from './mapStyles';
-// const MAP_API = process.env.MAP_API
-// const mapStyles = {
-//     width: '60%',
-//     height: '60%',
-// }
+
 const mapContainerStyle = {
     height: "70vh",
-    width: "50vw",
+    width: "60vw",
 };
 
 const options = {
@@ -39,7 +35,7 @@ const tripZoom = 12;
 
 // export default function TripMap({ tripId, users }) {
 export default function TripMap({ match }) {
-    
+    console.log(match)
     const tripId = +match.params.id;
     
     // const { isLoaded, loadError } = useLoadScript({
@@ -56,8 +52,12 @@ export default function TripMap({ match }) {
     
     
     
+    
+    if (!trip || !events) {
+        return <CircularLoading />
+    } 
     const users = trip.trip.userTrips;
-
+    
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
     const [selected, setSelected] = useState(null);
@@ -215,9 +215,9 @@ export default function TripMap({ match }) {
     // if (!trip || !isLoaded) return <CircularLoading />
     // if (loadError) return "Error";
     // if (!trip) return <CircularLoading />
-    if (!trip || !events || !users) {
-        return <CircularLoading />
-    } 
+    // if (!trip || !events || !users) {
+    //     return <CircularLoading />
+    // } 
 
     if (trip && events.length === 0) return (
         <>
@@ -233,7 +233,7 @@ export default function TripMap({ match }) {
     return (
         <>
 
-            <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleClose}>
+            <Snackbar open={openAlert} autoHideDuration={2000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
                     Location Pinned!
                 </Alert>
@@ -252,43 +252,7 @@ export default function TripMap({ match }) {
 
             <Locate panTo={panTo} />
             <div style={{ display: 'flex' }}>
-                <div>
-                    <GoogleMap
-                        id='map'
-                        options={options}
-                        onLoad={onMapLoad}
-                        zoom={tripZoom}
-                        // zoom={tripId ? 8 : 3}
-                        mapContainerStyle={mapContainerStyle}
-                        style={mapStyles}
-                        center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
-                    >
-                        {displayMarkers()}
-                        {displayTrackingMarkers()}
-
-                        {
-                            selected ? (
-                                <InfoWindow
-                                    open={open}
-                                    position={{ lat: +selected.lat, lng: +selected.lng }}
-                                    onCloseClick={() => {
-                                        setSelected(null);
-                                    }}
-                                >
-                                    <div style={{ margin: '0 1rem .5rem 1rem' }}>
-                                        <Typography variant={'subtitle1'}>
-                                            {selected.name}
-                                        </Typography>
-                                        <Typography variant={'caption'}>
-                                            {selected.time}
-                                        </Typography>
-                                    </div>
-                                </InfoWindow>)
-                                : null
-                        }
-                    </GoogleMap>
-                </div>
-                <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
+            <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
                     {
                         events.map(event => (
                             <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
@@ -342,6 +306,43 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
+                <div>
+                    <GoogleMap
+                        id='map'
+                        options={options}
+                        onLoad={onMapLoad}
+                        zoom={tripZoom}
+                        // zoom={tripId ? 8 : 3}
+                        mapContainerStyle={mapContainerStyle}
+                        style={mapStyles}
+                        center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
+                    >
+                        {displayMarkers()}
+                        {displayTrackingMarkers()}
+
+                        {
+                            selected ? (
+                                <InfoWindow
+                                    open={open}
+                                    position={{ lat: +selected.lat, lng: +selected.lng }}
+                                    onCloseClick={() => {
+                                        setSelected(null);
+                                    }}
+                                >
+                                    <div style={{ margin: '0 1rem .5rem 1rem' }}>
+                                        <Typography variant={'subtitle1'}>
+                                            {selected.name}
+                                        </Typography>
+                                        <Typography variant={'caption'}>
+                                            {selected.time}
+                                        </Typography>
+                                    </div>
+                                </InfoWindow>)
+                                : null
+                        }
+                    </GoogleMap>
+                </div>
+                
             </div>
         </>
     );
