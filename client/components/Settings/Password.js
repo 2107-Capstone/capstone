@@ -95,7 +95,7 @@ const Password = () => {
           <Button component={Link} to='/settings' variant='outlined' color='info' startIcon={<SettingsIcon />}>
             Back
           </Button>
-          <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+          <Snackbar open={openAlert} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
               <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
                   Password Changed!
               </Alert>

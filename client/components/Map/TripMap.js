@@ -20,11 +20,7 @@ import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps
 
 
 import mapStyles from './mapStyles';
-// const MAP_API = process.env.MAP_API
-// const mapStyles = {
-//     width: '60%',
-//     height: '60%',
-// }
+
 const mapContainerStyle = {
     height: "70vh",
     width: "60vw",
@@ -39,7 +35,7 @@ const tripZoom = 12;
 
 // export default function TripMap({ tripId, users }) {
 export default function TripMap({ match }) {
-    
+    console.log(match)
     const tripId = +match.params.id;
     
     // const { isLoaded, loadError } = useLoadScript({
@@ -237,7 +233,7 @@ export default function TripMap({ match }) {
     return (
         <>
 
-            <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleClose}>
+            <Snackbar open={openAlert} autoHideDuration={2000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
                     Location Pinned!
                 </Alert>

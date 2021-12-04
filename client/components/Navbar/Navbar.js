@@ -53,7 +53,7 @@ const Navbar = (props) => {
             </Button>
           )}
           <Container sx={{ px: 1, textAlign: 'center' }}>
-            <img src={theme.palette.mode === 'light' ? "/images/logo.png" : "/images/logo-dark-wide.png"} style={{maxHeight: '4rem', }}/>
+            <img src={theme.palette.mode === 'light' ? "/images/logo.png" : "/images/logo-dark-wide.png"} style={{maxHeight: '3rem', }}/>
           </Container>
           {/* <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}>
             TRIP OUT!
