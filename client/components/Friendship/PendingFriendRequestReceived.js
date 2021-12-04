@@ -1,15 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { deleteUserFriend, approveUserFriend, createUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
+import { deleteUserFriend, approveUserFriend, createUserFriend, getFriends, getFriendsPendingReceived } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, ButtonGroup, Grid, Paper, Typography } from "@mui/material"
-import CloseIcon from '@mui/icons-material/Close'
+import { Box, Button, ButtonGroup, Grid, Paper, Typography, Snackbar, Alert } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 
 
-export const PendingFriendRequest = ({friendsPendingSent, friendsPendingReceived, deleteUserFriend, approveUserFriend, createUserFriend, loadFriendshipData }) => {
+export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUserFriend, approveUserFriend, createUserFriend, loadFriendshipData }) => {
     const clickApproveRequest = async (userFriend) => {
         await approveUserFriend({
             ...userFriend,
@@ -20,37 +19,42 @@ export const PendingFriendRequest = ({friendsPendingSent, friendsPendingReceived
             friendId: userFriend.userId,
             status: 'accepted'
         })
-        alert(`${userFriend.user.username} is now your friend!`)
+        handleClick(userFriend)
         await loadFriendshipData()
     }
     
     const clickRejectRequest = async (userFriend) => {
         await deleteUserFriend(userFriend.id)
+        handleRejectClick(userFriend)
         await loadFriendshipData()
     }
 
+    const [open, setOpen] = useState(false);
+    const [rejectOpen, setRejectOpen] = useState(false);
+    const [userFriend, setUserFriend] = useState({});
+
+    const handleClick = (userFriend) => {
+        setOpen(true);
+        setUserFriend(userFriend)
+    };
+
+    const handleRejectClick = (userFriend) => {
+        setRejectOpen(true);
+        setUserFriend(userFriend)
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+
+        setOpen(false);
+        setRejectOpen(false)
+        setUserFriend({})
+    };
+
     return(
     <>
-        <div>
-        <h3>Pending Friend Requests You Sent:</h3>
-        <h5>{friendsPendingSent.length === 0? "No pending requests sent":""}</h5>
-        </div>
-        <Grid container spacing={2} sx={{ mt: 1 }}>
-            {friendsPendingSent.map(friendPendingSent => (
-                <Grid item xs={12} sm={3} key={friendPendingSent.id}>
-                    <Paper style={{width: 225, height: 100}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
-                        <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                            <Typography variant='h6'>
-                                {friendPendingSent.friend.username}
-                            </Typography>
-                            <Button startIcon={<CloseIcon />} size="small" variant='contained' onClick={() => clickRejectRequest(friendPendingSent)}>
-                                Cancel Request
-                            </Button>
-                        </Box>
-                    </Paper>
-                </Grid>
-            ))}
-        </Grid>
         <div>
         <h3>Pending Friend Requests You Received:</h3>
         <h5>{friendsPendingReceived.length === 0? "No pending requests received":""}</h5>
@@ -76,6 +80,16 @@ export const PendingFriendRequest = ({friendsPendingSent, friendsPendingReceived
                 </Grid>
             ))}
         </Grid>
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {userFriend && userFriend.user ? `${userFriend.user.username} is now your friend!`:''}
+            </Alert>
+        </Snackbar>
+        <Snackbar open={rejectOpen} autoHideDuration={2000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {userFriend && userFriend.user ? `${userFriend.user.username}'s friend request has been rejected!`:''}
+            </Alert>
+        </Snackbar>
     </>
     )
 }
@@ -102,9 +116,8 @@ const mapDispatch = (dispatch) => {
         loadFriendshipData () {
             dispatch(getFriends())
             dispatch(getFriendsPendingReceived())
-            dispatch(getFriendsPendingSent())
         }
     }
 }
 
-export default connect(mapState, mapDispatch)(PendingFriendRequest)
+export default connect(mapState, mapDispatch)(PendingFriendRequestReceived)
