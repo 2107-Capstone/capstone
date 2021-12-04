@@ -12,21 +12,21 @@ export const PendingFriendRequestSent = ({friendsPendingSent, deleteUserFriend, 
     const clickRejectRequest = async (userFriend) => {
         await deleteUserFriend(userFriend.id)
         await loadFriendshipData()
-        handleCancelClick()
+        handleClick()
     }
 
-    const [cancelOpen, setCancelOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
-    const handleCancelClick = () => {
-        setCancelOpen(true);
+    const handleClick = () => {
+        setOpen(true);
     };
 
-    const handleCancelClose = (event, reason) => {
+    const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
         return;
         }
 
-        setCancelOpen(false);
+        setOpen(false);
     };
 
     return(
@@ -46,16 +46,17 @@ export const PendingFriendRequestSent = ({friendsPendingSent, deleteUserFriend, 
                             <Button startIcon={<CloseIcon />} size="small" variant='contained' onClick={() => clickRejectRequest(friendPendingSent)}>
                                 Cancel Request
                             </Button>
-                            <Snackbar open={cancelOpen} autoHideDuration={6000} onClose={handleCancelClose}>
-                                <Alert onClose={handleCancelClose} severity="success" sx={{ width: '100%' }}>
-                                    Friend request has been cancelled!
-                                </Alert>
-                            </Snackbar>
+                            
                         </Box>
                     </Paper>
                 </Grid>
             ))}
         </Grid>
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                Friend request has been cancelled!
+            </Alert>
+        </Snackbar>
     </>
     )
 }
