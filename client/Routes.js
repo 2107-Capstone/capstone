@@ -16,8 +16,11 @@ import Dashboard from './components/Dashboard/Dashboard';
 import { Container } from '@mui/material';
 import AddTripFrom from './components/Trips/Form/AddTripFrom';
 import TripCalendar from './components/Calendar/TripCalendar';
+import SingleTripCalendar from './components/Calendar/SingleTripCalendar';
 import Expenses from './components/Expenses/Expenses';
 import TripMap from './components/Map/TripMap';
+import Settings from './components/Settings/Settings';
+import Password from './components/Settings/Password';
 /**
  * COMPONENT
  */
@@ -49,14 +52,17 @@ class Routes extends Component {
             <Route exact path="/trip/:id/chat" component={ChatRoom} />
             <Route exact path="/trip/:id/expenses" component={Expenses} />
             <Route exact path="/trip/:id/map" component={TripMap} />
+            <Route exact path="/trip/:id/calendar" component={SingleTripCalendar} />
             <Route exact path="/map" component={AllTripsMap} />
             <Route exact path="/calendar" component={TripCalendar} />
+            <Route exact path="/settings" component={Settings} />
+            <Route exact path="/settings/password" component={Password} />
             <Redirect to="/home" />
           </Switch>
         ) : (
           <Switch>
+            <Route exact path='/' component={Home} />
             <Route path="/home" component={Home} />
-            {/* <Route path='/' exact component={Login} /> */}
             <Route path="/login" component={LoginForm} />
             <Route path="/signup" component={SignupForm} />
             {/* <Redirect to="/home" /> */}
