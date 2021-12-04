@@ -14,17 +14,22 @@ import CloseIcon from '@mui/icons-material/Close'
 
 export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendshipData }) => {
     const clickDeleteFriend = async (friend) => {
+        console.log(friend)
         const _userFriend = userFriends.find(userFriend => userFriend.userId === friend.friendId)
         await deleteUserFriend(friend.id)
         await deleteUserFriend(_userFriend.id)
         handleClick()
+        handleClose()
         await loadFriendshipData()
+        console.log(friend)
     }
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [friend, setFriend] = useState({});
 
-    const handleClick = () => {
+    const handleClick = (friend) => {
         setOpen(true);
+        setFriend(friend)
     };
 
     const handleClose = (event, reason) => {
@@ -33,6 +38,7 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
         }
 
         setOpen(false);
+        setFriend({})
     };
 
     // const action = (
@@ -87,40 +93,40 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
                             <Typography variant='h6'>
                                 {friend.friend.username}
                             </Typography>
-                            <Button startIcon={<DeleteIcon />} size="small" variant='contained' onClick={handleClick}>
+                            <Button startIcon={<DeleteIcon />} size="small" variant='contained' onClick={() => handleClick(friend)}>
                                 Delete Friend
                             </Button>
-                            <Snackbar 
-                                friend={friend}
-                                open={open}
-                                autoHideDuration={6000}
-                                onClose={handleClose}
-                                message={`Are you sure you wish to delete ${friend.friend.username} as a friend?`}
-                                action={
-                                    <Fragment>
-                                    <Button color="secondary" size="small" onClick={() => clickDeleteFriend(friend)}>
-                                    YES
-                                    </Button>
-                                    <Button color="secondary" size="small" onClick={handleClose}>
-                                    NO
-                                    </Button>
-                                    <IconButton
-                                        size="small"
-                                        aria-label="close"
-                                        color="inherit"
-                                        onClick={handleClose}
-                                    >
-                                    <CloseIcon fontSize="small" />
-                                    </IconButton>
-                                    </Fragment>
-                                }
-                            />
+            
                         </Box>
                     </Paper>
                 </Grid>
-
+                
             ))}
         </Grid>
+        <Snackbar 
+            open={open}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            message={friend && friend.friend ? `Are you sure you wish to delete ${friend.friend.username} as a friend?`:''}
+            action={
+                <Fragment>
+                <Button color="secondary" size="small" onClick={() => clickDeleteFriend(friend)}>
+                YES
+                </Button>
+                <Button color="secondary" size="small" onClick={handleClose}>
+                NO
+                </Button>
+                <IconButton
+                    size="small"
+                    aria-label="close"
+                    color="inherit"
+                    onClick={handleClose}
+                >
+                <CloseIcon fontSize="small" />
+                </IconButton>
+                </Fragment>
+            }
+        />
         <PendingFriendRequestSent />
         <AddFriend />
     </>

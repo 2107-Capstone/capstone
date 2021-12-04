@@ -11,8 +11,8 @@ import CloseIcon from '@mui/icons-material/Close'
 export const PendingFriendRequestSent = ({friendsPendingSent, deleteUserFriend, loadFriendshipData }) => {
     const clickRejectRequest = async (userFriend) => {
         await deleteUserFriend(userFriend.id)
-        handleCancelClick()
         await loadFriendshipData()
+        handleCancelClick()
     }
 
     const [cancelOpen, setCancelOpen] = useState(false);
@@ -46,7 +46,7 @@ export const PendingFriendRequestSent = ({friendsPendingSent, deleteUserFriend, 
                             <Button startIcon={<CloseIcon />} size="small" variant='contained' onClick={() => clickRejectRequest(friendPendingSent)}>
                                 Cancel Request
                             </Button>
-                            <Snackbar open={cancelOpen} autoHideDuration={1000} onClose={handleCancelClose}>
+                            <Snackbar open={cancelOpen} autoHideDuration={6000} onClose={handleCancelClose}>
                                 <Alert onClose={handleCancelClose} severity="success" sx={{ width: '100%' }}>
                                     Friend request has been cancelled!
                                 </Alert>

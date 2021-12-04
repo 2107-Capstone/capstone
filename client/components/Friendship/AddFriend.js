@@ -65,7 +65,7 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
                                 {user.username}
                             </Typography>
                             {friendIds.has(user.id)? <Button disabled startIcon={<CheckCircleIcon />} size="small" variant='contained' >Already Friend</Button>:(friendPendingSentIds.has(user.id) || friendPendingReceivedIds.has(user.id)? <Button disabled startIcon={<PendingIcon />} size="small" variant='contained' >Request Pending</Button>:<Button startIcon={<AddCircleIcon />} size="small" variant='contained' onClick={() => clickAddFriend(user.id)}>Add Friend</Button>)}
-                            <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
+                            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                                 <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
                                     Friend request has been sent!
                                 </Alert>
