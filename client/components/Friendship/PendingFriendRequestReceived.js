@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { deleteUserFriend, approveUserFriend, createUserFriend, getFriends, getFriendsPendingReceived } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, ButtonGroup, Grid, Paper, Typography } from "@mui/material"
+import { Box, Button, ButtonGroup, Grid, Paper, Typography, Snackbar, Alert } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 
@@ -19,14 +19,39 @@ export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUse
             friendId: userFriend.userId,
             status: 'accepted'
         })
-        alert(`${userFriend.user.username} is now your friend!`)
+        handleClick(userFriend)
         await loadFriendshipData()
     }
     
     const clickRejectRequest = async (userFriend) => {
         await deleteUserFriend(userFriend.id)
+        handleRejectClick(userFriend)
         await loadFriendshipData()
     }
+
+    const [open, setOpen] = useState(false);
+    const [rejectOpen, setRejectOpen] = useState(false);
+    const [userFriend, setUserFriend] = useState({});
+
+    const handleClick = (userFriend) => {
+        setOpen(true);
+        setUserFriend(userFriend)
+    };
+
+    const handleRejectClick = (userFriend) => {
+        setRejectOpen(true);
+        setUserFriend(userFriend)
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+
+        setOpen(false);
+        setRejectOpen(false)
+        setUserFriend({})
+    };
 
     return(
     <>
@@ -55,6 +80,16 @@ export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUse
                 </Grid>
             ))}
         </Grid>
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {userFriend && userFriend.user ? `${userFriend.user.username} is now your friend!`:''}
+            </Alert>
+        </Snackbar>
+        <Snackbar open={rejectOpen} autoHideDuration={2000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {userFriend && userFriend.user ? `${userFriend.user.username}'s friend has been rejected!`:''}
+            </Alert>
+        </Snackbar>
     </>
     )
 }

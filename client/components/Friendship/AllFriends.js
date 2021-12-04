@@ -14,14 +14,12 @@ import CloseIcon from '@mui/icons-material/Close'
 
 export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendshipData }) => {
     const clickDeleteFriend = async (friend) => {
-        console.log(friend)
         const _userFriend = userFriends.find(userFriend => userFriend.userId === friend.friendId)
         await deleteUserFriend(friend.id)
         await deleteUserFriend(_userFriend.id)
-        handleClick()
+        handleClick(friend)
         handleClose()
         await loadFriendshipData()
-        console.log(friend)
     }
 
     const [open, setOpen] = useState(false);
