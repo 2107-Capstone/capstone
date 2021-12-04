@@ -146,34 +146,7 @@ router.put('/:tripId', async (req, res, next) => {
         }
       ]
     })
-    // trip = await UserTrip.findOne({
-    //   where: {tripId: trip.id}, 
-    //   include: [
-    //   {
-    //     model: Trip,
-    //     include: [
-    //       {
-    //         model: Message,
-    //         include: {
-    //           model: User,
-    //           as: 'sentBy',
-    //           attributes: ['id', 'username']
-    //         }
-    //       },
-    //       //included this to possibly simplify finding participants in a trip
-    //       {
-    //         model: UserTrip,
-    //         include: {
-    //           model: User,
-    //           attributes: ['id', 'username', 'lat', 'lng', 'time']
-    //         }
-    //       },
-    //       {
-    //         model: Event
-    //       }
-    //     ]
-    //   }
-    // ]})
+
     res.json(trip)
   } catch (err) {
     next(err)
