@@ -65,17 +65,18 @@ const AllTrips = ({match}) => {
                                 &nbsp;PAST TRIPS
                         </Typography>
                         :
+                        <>
                         <Typography variant='h5'>
                                 &nbsp;ALL TRIPS
                         </Typography>
+                        <Box style={{textAlign:'center'}} >
+                            <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '30%'}}>
+                                Add New Trip
+                            </Button>
+                        </Box>
+                        </>
                     }
                 </Box>
-                <Box style={{textAlign:'center'}} >
-                    <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '30%'}}>
-                        Add New Trip
-                    </Button>
-                </Box>
-                
             </Box>
             {/* <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 1 }}>
                 <FormControl sx={{ minWidth: 160 }}>
@@ -109,6 +110,9 @@ const AllTrips = ({match}) => {
                                     </Typography>
                                     <Typography >
                                         Location: {trip.trip.location}
+                                    </Typography>
+                                    <Typography >
+                                        Trip Creator: {trip.trip.creatorName}
                                     </Typography>
                                     <Typography >
                                         Start Date: {format(parseISO(trip.trip.startTime), 'P')}

@@ -177,7 +177,11 @@ const Trip = (props) => {
                         <Box sx={{ display: 'flex', alignSelf: 'center', margin: 2}}>
                             <CardTravelIcon fontSize='medium' />
                             <Typography variant='h5'>
-                                &nbsp;{trip.trip.name}
+                                &nbsp;{trip.trip.name} 
+                                {
+                                    trip.trip.isOpen ? "" :
+                                        "- Trip Closed"
+                                }
                             </Typography>
                         </Box>
                         {/* <Box style={{textAlign:'center'}} > */}
@@ -194,9 +198,7 @@ const Trip = (props) => {
                                         </Button>
                                     </ButtonGroup>
                                 </Box>
-                                {/* <Box>
-                                    <Button/>
-                                </Box> */}
+                                
                                 <Box style={{alignSelf: 'right'}}>
                                     <Button
                                         id="demo-customized-button"
@@ -206,6 +208,7 @@ const Trip = (props) => {
                                         variant="contained"
                                         disableElevation
                                         onClick={handleClick}
+                                        disabled={!trip.trip.isOpen}
                                         endIcon={<KeyboardArrowDownIcon />}
                                     >
                                         TRIP MENU
@@ -270,9 +273,17 @@ const Trip = (props) => {
                                             TRIP
                                         </MenuItem>
                                         <MenuItem>
-                                            <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  onClick={handleCloseTrip} className='headingButton' style={styles.headingButton}>
-                                                Mark Trip as Closed
-                                            </Button>
+                                            {
+                                                trip.trip.creatorId === auth.id ? 
+                                                    <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  onClick={handleCloseTrip} className='headingButton' style={styles.headingButton}>
+                                                        Mark Trip as Closed
+                                                    </Button>
+                                                :   <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  style={{color: 'grey'}} disabled>
+                                                        You do not have access to close this trip.
+                                                    </Button>
+
+
+                                            }
                                         </MenuItem>
                                         <Divider sx={{ my: 0.5 }} />
                                     </StyledMenu>
@@ -329,7 +340,13 @@ const Trip = (props) => {
                         <Typography>
                             Total Expenses: ${totalExpenses.toFixed(2)}
                         </Typography>
-                        <PieChart expenses={tripExpenses} users={users} categories={categories}/>
+                        {
+                            tripExpenses.length !== 0 ? 
+                                <PieChart expenses={tripExpenses} users={users} categories={categories}/> :
+                                <Typography>
+                                    No expenses yet.
+                                </Typography>
+                        }
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
