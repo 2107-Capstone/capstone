@@ -5,7 +5,7 @@ import PendingFriendRequestSent from './PendingFriendRequestSent'
 import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton, Divider } from "@mui/material"
 import PeopleIcon from '@mui/icons-material/People'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CircularLoading from '../Loading/CircularLoading'
