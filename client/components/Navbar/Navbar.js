@@ -12,14 +12,13 @@ import { useDispatch } from 'react-redux'
 
 /////////// MATERIAL UI /////////////
 import { AppBar, Box, Button, Container, Divider, SvgIcon, Toolbar, Paper, Typography, useMediaQuery } from '@mui/material';
-// import { AppBar, Box, Button, Divider, Icon, SvgIcon, Toolbar, Typography, useMediaQuery } from '@mui/material';
 
-
+/////////// COMPONENTS ///////////////////
 import MenuBar from './MenuBar';
 import theme from '../../theme'
 
-import PinIcon from '/public/tripoutlogo.svg'
-const pin = 'pin-0.svg'
+/////////// SVG //////////////////
+import Logo from '/public/tripoutlogo.svg'
 
 const Navbar = (props) => {
   const isLoggedIn = useSelector(state => !!state.auth.id)
@@ -58,9 +57,8 @@ const Navbar = (props) => {
               Home
             </Button>
           )}
-          {/* <img src={pin} /> */}
-          <SvgIcon sx={{ fontSize: '4rem', width: 'auto', flexGrow: 1 }} color='inherit' viewBox="0 0 1100 520">
-            <PinIcon />
+          <SvgIcon sx={{ fontSize: '4rem', flexGrow: 1, width: 'auto', my: .5 }} color='inherit' viewBox="0 0 900 425">
+            <Logo />
           </SvgIcon>
           {/* <Container sx={{ px: 1, textAlign: 'center' }}>
             <img src={theme.palette.mode === 'light' ? "/images/logo.png" : "/images/logo-dark-wide.png"} style={{ maxHeight: '3rem', }} />
