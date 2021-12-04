@@ -152,6 +152,8 @@ const AddTripFrom = () => {
                                     name='startTime'
                                     value={input.startTime}
                                     onChange={handleStartChange}
+                                    minDate={new Date()}
+                                    minutesStep={5}
                                     renderInput={(params) => <TextField helperText={error.startTimeErr} fullWidth {...params} />}
                                 />
                             </Grid>
@@ -161,6 +163,8 @@ const AddTripFrom = () => {
                                     name='endTime'
                                     value={input.endTime}
                                     onChange={handleEndChange}
+                                    minDate={new Date(input.startTime)}
+                                    minutesStep={5}
                                     renderInput={(params) => <TextField fullWidth helperText={error.endTimeErr} {...params} />}
                                 />
                             </Grid>

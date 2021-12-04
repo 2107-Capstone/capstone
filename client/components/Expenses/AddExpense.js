@@ -121,6 +121,7 @@ const AddExpense = ({trip, handleClose}) => {
                                 name='datePaid'
                                 value={datePaid}
                                 onChange={handleDateChange}
+                                
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </Grid>

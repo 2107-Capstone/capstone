@@ -69,7 +69,7 @@ const SingleTripCalendar = ({ match }) => {
             </Dialog>
             <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                 <CardTravelIcon fontSize='medium' />
-                <Box sx={{ color: 'inherit' }} component={Link} to={`/trip/${trip.tripId}`}>
+                <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
                     <Typography variant='h5'>
                         &nbsp;{trip.trip.name}
                     </Typography>
