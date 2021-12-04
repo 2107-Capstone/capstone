@@ -11,9 +11,12 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 /////////// MATERIAL UI /////////////
-import { AppBar, Box, Button, Divider, Toolbar, Typography, useMediaQuery } from '@mui/material';
+import { AppBar, Box, Button, Divider, Icon, SvgIcon, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import MenuBar from './MenuBar';
 import theme from '../../theme'
+
+import PinIcon from '/public/tripoutlogo.svg'
+const pin = 'pin-0.svg'
 
 const Navbar = (props) => {
 
@@ -53,9 +56,13 @@ const Navbar = (props) => {
               Home
             </Button>
           )}
-          <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}>
-            TRIP OUT!
-          </Typography>
+          {/* <img src={pin} /> */}
+          <SvgIcon sx={{ fontSize: 60 }} color='inherit' viewBox="0 0 1000 360">
+            <PinIcon />
+          </SvgIcon>
+          {/* <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}> */}
+          {/* TRIP OUT! */}
+          {/* </Typography> */}
           {!isLoggedIn && (
             <Button variant='outlined' color="inherit" component={Link} to="/login">
               Login
