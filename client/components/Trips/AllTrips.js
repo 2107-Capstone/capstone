@@ -7,7 +7,7 @@ import { getTrips } from "../../store";
 import { Box, Button, Chip, Container, Divider, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material";
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-
+import AddIcon from '@mui/icons-material/Add';
 import CircularLoading from '../Loading/CircularLoading'
 
 /////////////// DATE FORMATTER  ////////////////
@@ -56,22 +56,27 @@ const AllTrips = ({match}) => {
 
     return (
         <>
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
-                <CardTravelIcon fontSize='medium' />
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent:'center', mt: 1 }}>
+                <Box sx={{ display: 'flex', alignSelf: 'center'}}>
+                    <CardTravelIcon fontSize='medium' />
                     {
                         match.path.includes('settings') ?
-                            <Typography variant='h5'>
+                        <Typography variant='h5'>
                                 &nbsp;PAST TRIPS
-                            </Typography>
+                        </Typography>
                         :
-                            <Typography variant='h5'>
+                        <Typography variant='h5'>
                                 &nbsp;ALL TRIPS
-                            </Typography>
+                        </Typography>
                     }
+                </Box>
+                <Box style={{textAlign:'center'}} >
+                    <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '30%'}}>
+                        Add New Trip
+                    </Button>
+                </Box>
+                
             </Box>
-            <Button component={Link} to="/trips/add" variant='outlined'>
-                Add New Trip
-            </Button>
             {/* <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 1 }}>
                 <FormControl sx={{ minWidth: 160 }}>
                     <InputLabel>Show Trips</InputLabel>

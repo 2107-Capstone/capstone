@@ -4,7 +4,7 @@ import { parseISO, format } from 'date-fns';
 
 import CircularLoading from '../Loading/CircularLoading'
 
-import { Box, Grid, Button, Tooltip, Divider } from '@mui/material'
+import { Box, Container, Grid, Button, Tooltip, Divider } from '@mui/material'
 
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import Accordion from '@mui/material/Accordion';
@@ -22,15 +22,9 @@ import { getTrips } from '../../store';
 
 import mapStyles from './mapStyles';
 
-// const MAP_API = process.env.MAP_API
-
-// const mapStyles = {
-//     width: '60%',
-//     height: '60%',
-// }
 const mapContainerStyle = {
     height: "70vh",
-    width: "70vw",
+    width: "65vw",
 };
 
 const options = {
@@ -134,87 +128,95 @@ export default function AllTripsMap() {
     // if (!isLoaded || !trips) return <CircularLoading />
     if (!trips) return <CircularLoading />
     return (
-        <div>
-            <Tooltip title='Refresh Event Markers'>
-                <Button startIcon={<RefreshIcon />} variant='contained' color='info' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} />
-            </Tooltip>
-            <div style={{ display: 'flex' }}>
-            <div>
-                    {
-                        trips.map(trip => (
-                            <Accordion sx={{ minWidth: '100%' }} key={trip.id + Math.random().toFixed(2)}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
-                                    id="trip-header"
-                                    onClick={() => setSelectedTrip(trip.trip)}
-                                    sx={{ borderRight: `4px solid ${trip.color}` }}
-                                >
-                                    <Typography>
-                                        {trip.trip.name}
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
-                                    {
-                                        trip.trip.events.map(event => (
-                                            <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
+    <>
+        <Box sx={{margin: 1, textAlign: 'center'}}>
+            
+                <Button startIcon={<RefreshIcon />} size='large' sx={{color: 'white'}} onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} >
+                    Refresh Event Markers
+                </Button>
+            
+        </Box>
+        <Grid container columnSpacing={2} rowSpacing={2} >
+            <Grid item xs={12} sm={12} md={12} lg={4} xl={3}>
+            {/* <Box style={{margin: 1}}> */}
+                {
+                    trips.map(trip => (
+                        <Accordion sx={{ minWidth: '100%', margin: 1 }} key={trip.id + Math.random().toFixed(2)}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
+                                id="trip-header"
+                                onClick={() => setSelectedTrip(trip.trip)}
+                                sx={{ borderRight: `4px solid ${trip.color}` }}
+                            >
+                                <Typography>
+                                    {trip.trip.name}
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
+                                {
+                                    trip.trip.events.map(event => (
+                                        <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
 
-                                            >
-                                                <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>
-                                                    <Typography gutterBottom>
-                                                        {event.name} - {event.location}
-                                                    </Typography>
-                                                    <Typography color="text.secondary" variant="subtitle2">
-                                                        {format(parseISO(event.startTime), 'Pp')}
-                                                    </Typography>
-                                                </CardContent>
-                                            </Card>
-                                        ))
-                                    }
-                                </AccordionDetails>
-                            </Accordion>
-                        ))
+                                        >
+                                            <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>
+                                                <Typography gutterBottom>
+                                                    {event.name} - {event.location}
+                                                </Typography>
+                                                <Typography color="text.secondary" variant="subtitle2">
+                                                    {format(parseISO(event.startTime), 'Pp')}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    ))
+                                }
+                            </AccordionDetails>
+                        </Accordion>
+                    ))
+                }
+            </Grid>
+            {/* <Box style={{ margin: 1}}> */}
+            <Grid item xs={12} sm={12} md={12} lg={8} xl={9} >
+                <Box style={{marginRight: 2}}>
+                <GoogleMap
+                    id='map'
+                    options={options}
+                    onLoad={onMapLoad}
+                    zoom={selectedTrip.id === 0 ? 2 : tripZoom}
+                    // zoom={tripId ? 8 : 3}
+                    mapContainerStyle={mapContainerStyle}
+                    style={mapStyles}
+                    center={{ lat: +selectedTrip.lat, lng: +selectedTrip.lng }}
+                >
+                    {displayMarkers()}
+                    {
+                        selected ? (
+                            <InfoWindow
+                                open={open}
+                                position={{ lat: +selected.lat, lng: +selected.lng }}
+                                onCloseClick={() => {
+                                    setSelected(null);
+                                }}
+                            >
+                                <div style={{ margin: '0 1rem .5rem 1rem' }}>
+                                    <Typography variant={'subtitle1'}>
+                                        {selected.trip}
+                                    </Typography>
+                                    <Divider />
+                                    <Typography variant={'subtitle2'}>
+                                        {selected.name}
+                                    </Typography>
+                                    <Typography variant={'caption'}>
+                                        {selected.time}
+                                    </Typography>
+                                </div>
+                            </InfoWindow>)
+                            : null
                     }
-                </div>
-                <div>
-                    <GoogleMap
-                        id='map'
-                        options={options}
-                        onLoad={onMapLoad}
-                        zoom={selectedTrip.id === 0 ? 2 : tripZoom}
-                        // zoom={tripId ? 8 : 3}
-                        mapContainerStyle={mapContainerStyle}
-                        style={mapStyles}
-                        center={{ lat: +selectedTrip.lat, lng: +selectedTrip.lng }}
-                    >
-                        {displayMarkers()}
-                        {
-                            selected ? (
-                                <InfoWindow
-                                    open={open}
-                                    position={{ lat: +selected.lat, lng: +selected.lng }}
-                                    onCloseClick={() => {
-                                        setSelected(null);
-                                    }}
-                                >
-                                    <div style={{ margin: '0 1rem .5rem 1rem' }}>
-                                        <Typography variant={'subtitle1'}>
-                                            {selected.trip}
-                                        </Typography>
-                                        <Divider />
-                                        <Typography variant={'subtitle2'}>
-                                            {selected.name}
-                                        </Typography>
-                                        <Typography variant={'caption'}>
-                                            {selected.time}
-                                        </Typography>
-                                    </div>
-                                </InfoWindow>)
-                                : null
-                        }
-                    </GoogleMap>
-                </div>
-                
-            </div>
-        </div>
+                </GoogleMap>
+                </Box>
+            </Grid>
+        </Grid>
+     </>       
+        
     );
 }

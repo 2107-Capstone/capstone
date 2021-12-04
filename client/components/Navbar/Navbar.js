@@ -11,12 +11,11 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 /////////// MATERIAL UI /////////////
-import { AppBar, Box, Button, Divider, Toolbar, Paper, Typography, useMediaQuery } from '@mui/material';
+import { AppBar, Box, Button, Container, Divider, Toolbar, Paper, Typography, useMediaQuery } from '@mui/material';
 import MenuBar from './MenuBar';
 import theme from '../../theme'
 
 const Navbar = (props) => {
-
   const isLoggedIn = useSelector(state => !!state.auth.id)
 
   //////// MENU BAR /////////////
@@ -53,10 +52,9 @@ const Navbar = (props) => {
               Home
             </Button>
           )}
-          <Box>
-            <img src={theme.palette.mode === 'light' ? "/images/logo.png" : "/images/logo-dark.png"} style={{maxHeight: '5rem', margin: '.1rem'}}/>
-            {/* <img src={"/images/logo-dark.png"} style={{maxHeight: '5rem'}}/> */}
-          </Box>
+          <Container sx={{ px: 1, textAlign: 'center' }}>
+            <img src={theme.palette.mode === 'light' ? "/images/logo.png" : "/images/logo-dark-wide.png"} style={{maxHeight: '4rem', }}/>
+          </Container>
           {/* <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}>
             TRIP OUT!
           </Typography> */}
