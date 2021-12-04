@@ -5,7 +5,7 @@ import PendingFriendRequestSent from './PendingFriendRequestSent'
 import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton, Divider } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton, Alert } from "@mui/material"
 import PeopleIcon from '@mui/icons-material/People'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CircularLoading from '../Loading/CircularLoading'
@@ -19,14 +19,21 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
         await deleteUserFriend(_userFriend.id)
         handleClick(friend)
         handleClose()
+        handleDeleteClick(friend)
         await loadFriendshipData()
     }
 
     const [open, setOpen] = useState(false);
+    const [deleteOpen, setDeleteOpen] = useState(false);
     const [friend, setFriend] = useState({});
 
     const handleClick = (friend) => {
         setOpen(true);
+        setFriend(friend)
+    };
+
+    const handleDeleteClick = (friend) => {
+        setDeleteOpen(true);
         setFriend(friend)
     };
 
@@ -36,28 +43,9 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
         }
 
         setOpen(false);
+        setDeleteOpen(false);
         setFriend({})
     };
-
-    // const action = (
-    //     <Fragment>
-    //     <Button color="secondary" size="small" onClick={clickDeleteFriend}>
-    //     YES
-    //     </Button>
-    //     <Button color="secondary" size="small" onClick={handleClose}>
-    //     NO
-    //     </Button>
-    //     <IconButton
-    //         size="small"
-    //         aria-label="close"
-    //         color="inherit"
-    //         onClick={handleClose}
-    //     >
-    //         <CloseIcon fontSize="small" />
-    //     </IconButton>
-    //     </Fragment>
-    // );
-
 
     if (!friends) {
         return (
@@ -103,6 +91,7 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
         </Grid>
         <Snackbar 
             open={open}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             autoHideDuration={6000}
             onClose={handleClose}
             message={friend && friend.friend ? `Are you sure you wish to delete ${friend.friend.username} as a friend?`:''}
@@ -125,6 +114,11 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
                 </Fragment>
             }
         />
+        <Snackbar open={deleteOpen} autoHideDuration={2000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {friend && friend.friend ? `${friend.friend.username} has been deleted as a friend!`:''}
+            </Alert>
+        </Snackbar>
         <PendingFriendRequestSent />
         <AddFriend />
     </>

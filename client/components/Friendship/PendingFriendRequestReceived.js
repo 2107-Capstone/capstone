@@ -87,7 +87,7 @@ export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUse
         </Snackbar>
         <Snackbar open={rejectOpen} autoHideDuration={2000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-            {userFriend && userFriend.user ? `${userFriend.user.username}'s friend has been rejected!`:''}
+            {userFriend && userFriend.user ? `${userFriend.user.username}'s friend request has been rejected!`:''}
             </Alert>
         </Snackbar>
     </>
