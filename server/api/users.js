@@ -8,7 +8,7 @@ router.get('/', async (req, res, next) => {
       // explicitly select only the id and username fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
-      attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName'],
+      attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar'],
       include: [
         {
           model: UserTrip,
@@ -55,9 +55,9 @@ router.put('/:userId', async (req, res, next) => {
       return res.send([])
     }
     try {
-      const { lat, lng, time, username, firstName, lastName, email, phoneNumber, password } = req.body;
+      const { lat, lng, time, username, firstName, lastName, email, phoneNumber, password, avatar } = req.body;
       let user = await User.findByPk(req.params.userId)
-      await user.update({...user, lat, lng, time, username, firstName, lastName, email, phoneNumber, password });
+      await user.update({...user, lat, lng, time, username, firstName, lastName, email, phoneNumber, password, avatar });
       user = await User.findByPk(user.id, {
         include: [
           {
