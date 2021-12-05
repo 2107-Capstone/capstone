@@ -25,8 +25,8 @@ User.hasMany(UserFriend, {foreignKey: 'friendId'})
 User.hasMany(UserFriend, {foreignKey: 'userId'})
 
 UserTrip.belongsTo(User)
-UserTrip.belongsTo(Trip)
 User.hasMany(UserTrip)
+UserTrip.belongsTo(Trip)
 Trip.hasMany(UserTrip)
 
 Event.belongsTo(Trip)

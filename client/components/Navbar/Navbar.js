@@ -61,7 +61,7 @@ const Navbar = (props) => {
               Home
             </Button>
           )}
-          <SvgIcon sx={{ fontSize: '4rem', flexGrow: 1, width: 'auto', my: .5 }} color='inherit' viewBox="0 0 900 425">
+          <SvgIcon sx={{ fontSize: '4rem', flexGrow: 1, width: 'auto', my: .5 }} color='primary' viewBox="0 0 900 425">
             <Logo />
           </SvgIcon>
           {/* <Container sx={{ px: 1, textAlign: 'center' }}>
