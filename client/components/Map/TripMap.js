@@ -34,24 +34,32 @@ const options = {
     disableDefaultUI: true,
     zoomControl: true,
 };
-const tripZoom = 15;
+const tripZoom = 12;
 
-// export default function TripMap({ tripId, users }) {
 export default function TripMap({ match }) {
     const tripId = match.params.id;
     
-    // const { isLoaded, loadError } = useLoadScript({
-    //     googleMapsApiKey: process.env.MAP_API
-    // });
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
     });
+
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
 
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
     let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
     
+    const avgLat = events.reduce((accum, event) => {
+        accum += +event.lat
+        return accum
+    }, 0) / events.length;
+    
+    const avgLng = events.reduce((accum, event) => {
+        accum += +event.lng
+        return accum
+    }, 0) / events.length;
+    
+
     if (!trip || !events) {
         return <CircularLoading />
     } 
@@ -96,13 +104,7 @@ export default function TripMap({ match }) {
                 setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng, avatar: user.user.avatar ? user.user.avatar : '/images/person.jpg', firstName: user.user.firstName, lastName: user.user.lastName  }])
             }
         })
-        // users.forEach(user => {
-        //     setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng }])
-        // })
-        
     }, [tripId, update])
-
-
 
     const DisplayMarkers = () => {
         console.log('markers', markers)
@@ -311,15 +313,36 @@ export default function TripMap({ match }) {
                     </Typography>
                 </Box>
             </Box>
-            <Box textAlign='center'>
-                <Button 
-                    startIcon={<AddIcon />} 
-                    variant='contained' 
-                    color='primary' 
-                    onClick={() => setOpen(true)}
-                >
-                    Add Event
-                </Button>
+            <Box 
+                display='flex'
+                justifyContent='center'
+            >
+                <Box marginRight={3}>
+                    <Locate panTo={panTo}/>
+                </Box>
+                <Box marginBottom={.5} marginRight={3} >
+                    <Button
+                        startIcon={<AddIcon />} 
+                        variant='contained' 
+                        color='primary' 
+                        onClick={() => setOpen(true)}
+                        size='small'
+                        >
+                        Add Event
+                    </Button>
+                </Box>
+                <Box >
+                    {/* </Tooltip> */}
+                    <Tooltip title='Refresh Markers'>
+                        <Button 
+                            startIcon={<RefreshIcon />} 
+                            variant='contained' 
+                            color='primary'
+                            size='small'
+                            onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} 
+                        />
+                    </Tooltip>
+                </Box>
             </Box>
             
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -329,27 +352,7 @@ export default function TripMap({ match }) {
                     marginTop={.5}
                     marginBottom={.5}
                 >
-                    <Box 
-                        display='flex'
-                        flexDirection='column'
-                        alignItems='center'
-                        marginRight={.5}
-                    >
-                        <Box marginBottom={.5}>
-                            <Locate panTo={panTo}/>
-                        </Box>
-                        <Box>
-                            {/* </Tooltip> */}
-                            <Tooltip title='Refresh Markers'>
-                                <Button 
-                                    startIcon={<RefreshIcon />} 
-                                    variant='contained' 
-                                    color='primary' 
-                                    onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} 
-                                />
-                            </Tooltip>
-                        </Box>
-                    </Box>
+                    
                     {
                         users.map(user => (
                             <Box 
@@ -454,7 +457,8 @@ export default function TripMap({ match }) {
                     // zoom={tripId ? 8 : 3}
                     mapContainerStyle={mapContainerStyle}
                     style={mapStyles}
-                    center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
+                    // center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
+                    center={{ lat: avgLat, lng: avgLng }}
                 >
                     {
                         trip.trip.events.length ? <DisplayMarkers /> : ''
