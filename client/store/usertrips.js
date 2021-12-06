@@ -6,8 +6,11 @@ const TOKEN = 'token'
 //////////// ACTION TYPES  ////////////
 const GET_USERTRIPS = 'GET_USERTRIPS'
 
+const INVITEFRIEND = 'INVITEFRIEND'
+
 //////////// ACTION CREATORS ////////////
 const _getUserTrips = usertrips => ({ type: GET_USERTRIPS, usertrips })
+const _inviteFriend = invited => ({ type: INVITEFRIEND, invited })
 
 
 //////////////////// THUNK CREATORS  //////////////
@@ -19,8 +22,21 @@ export const getUserTrips = () => {
                 authorization: token
             }
         });
-        console.log(usertrips)
+        // console.log(usertrips)
         dispatch(_getUserTrips(usertrips));
+    };
+}
+export const inviteFriend = (invite) => {
+    const token = window.localStorage.getItem(TOKEN)
+    console.log(invite)
+    return async (dispatch) => {
+        const { data: invited } = await axios.post(`/api/usertrips`, { invite }, {
+            headers: {
+                authorization: token
+            }
+        });
+        // console.log(usertrip)
+        dispatch(_inviteFriend(invited));
     };
 }
 
@@ -29,8 +45,8 @@ export default function (state = [], action) {
     switch (action.type) {
         case GET_USERTRIPS:
             return action.usertrips
-        //   case ADD_TRIP:
-        // return [action.trip, ...state]
+        case INVITEFRIEND:
+            return [action.invited, ...state]
         //   case CLOSE_TRIP:
         // return state.map(trip => trip.tripId === action.id ? action.trip : trip)
         default:

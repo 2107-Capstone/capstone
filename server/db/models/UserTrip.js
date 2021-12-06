@@ -2,7 +2,7 @@ const db = require('../db')
 const { STRING, ENUM } = require('sequelize')
 
 const UserTrip = db.define('userTrip', {
-    status: {
+    tripInvite: {
         type: ENUM('pending', 'accepted'),
         defaultValue: 'pending'
     },

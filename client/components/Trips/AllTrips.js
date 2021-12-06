@@ -22,11 +22,11 @@ const handleLeaveTrip = () => { }
 const AllTrips = ({ match }) => {
     const dispatch = useDispatch();
     useEffect(async () => {
-        await dispatch(getUserTrips())
+        await dispatch(getTrips())
     }, [])
 
     // const { trips } = useSelector(state => state)
-    const trips = match.path.includes('settings') ? useSelector(state => state.usertrips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.usertrips.filter(trip => trip.trip.isOpen))
+    const trips = match.path.includes('settings') ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
     const user = useSelector(state => state.auth)
 
     ///////////  Trip View Selection //////////
