@@ -33,7 +33,7 @@ import EventForm from '../Map/EventForm'
 import EventsTable from '../Events/EventsTable'
 import AddIcon from '@mui/icons-material/Add';
 import AddExpense from '../Expenses/AddExpense'
-import { format, formatISO, parseISO, isAfter } from "date-fns";
+import { format, formatISO, parseISO, isAfter, isBefore } from "date-fns";
 import MessagesTable from '../Chat/MessagesTable'
 import LockClockIcon from '@mui/icons-material/LockClock';
 import { styled, alpha } from '@mui/material/styles';
@@ -90,11 +90,8 @@ const Trip = (props) => {
     events.length > 5 ? events.length = 5 : ''
 
 
-    // let messages = trip.trip.messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
-    // messages = trip.trip.messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
-    messages = messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    messages = messages.sort((a,b) => isBefore(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     messages.length > 5 ? messages.length = 5 : ''
-
 
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
@@ -356,9 +353,12 @@ const Trip = (props) => {
                     </Box>
                     
                     {trip.trip.userTrips.map(user => (
-                    <Paper  sx={{ margin: '1rem', height: 'fit-content', ':hover': { boxShadow: (theme) => theme.shadows[5] } }}>
+                    <Paper  key={user.id + Math.random().toString(16)} sx={{ margin: '1rem', height: 'fit-content', ':hover': { boxShadow: (theme) => theme.shadows[5] } }}>
                         <Box sx={{alignItems: 'center'}}>
-                            <Avatar alt={user.user.username} src="https://cdn3.iconfinder.com/data/icons/avatars-flat/33/man_5-512.png" />
+                            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={user.user.avatar} >
+                                {user.user.firstName[0]+user.user.lastName[0]}
+                            </Avatar>
+                            {/* <Avatar alt={user.user.username} src="https://cdn3.iconfinder.com/data/icons/avatars-flat/33/man_5-512.png" /> */}
                         </Box>
                         <Box sx={{ color: 'inherit', alignItems: 'center'}}>
                             <Typography variant='h6'>

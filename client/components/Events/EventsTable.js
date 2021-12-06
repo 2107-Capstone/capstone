@@ -21,9 +21,6 @@ const EventsTable = ({events}) => {
         <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} aria-label="events table">
             <TableHead>
                 <TableRow>
-                    Next Five Events
-                </TableRow>
-                <TableRow>
                     <TableCell>Time</TableCell>
                     <TableCell>Event</TableCell>
                 </TableRow>

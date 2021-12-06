@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { connect, useSelector, useDispatch } from 'react-redux'
+import { Link } from "react-router-dom";
 import { parseISO, format } from 'date-fns';
 import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
 import Card from '@mui/material/Card';
@@ -15,6 +16,7 @@ import PersonPinIcon from '@mui/icons-material/PersonPin';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import CardTravelIcon from '@mui/icons-material/CardTravel';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
@@ -35,7 +37,6 @@ const tripZoom = 12;
 
 // export default function TripMap({ tripId, users }) {
 export default function TripMap({ match }) {
-    console.log(match)
     const tripId = +match.params.id;
     
     // const { isLoaded, loadError } = useLoadScript({
@@ -242,6 +243,14 @@ export default function TripMap({ match }) {
                 <EventForm trip={trip} event={eventToEdit} handleClose={handleClose} />
             </Dialog>
             {/* <Tooltip title='Add Event'> */}
+            <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+                <CardTravelIcon fontSize='medium' />
+                <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
+                    <Typography variant='h5'>
+                        &nbsp;{trip.trip.name}
+                    </Typography>
+                </Box>
+            </Box>
             <Button startIcon={<AddIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
                 Add Event
             </Button>
