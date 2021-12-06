@@ -8,7 +8,7 @@ import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import CircularLoading from '../Loading/CircularLoading'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
-import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import { Avatar, Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
 // const ChatRoom = (props) => {
 //   const { id } = props.match.params;
 const ChatRoom = ({trip, match}) => {
@@ -47,7 +47,19 @@ const ChatRoom = ({trip, match}) => {
         key={message.id + Math.random().toString(16)}
         style={message.ownedByCurrentUser ? styles.messageItemMyMessageOld : styles.messageItemReceivedMessageOld}
       >
-        ({format(parseISO(message.dateSent), 'Pp')}) {message.sentBy.username}:   {message.content}
+        <Box display='flex' flexDirection='column'>
+            <Typography variant='caption'>
+              ({format(parseISO(message.dateSent), 'Pp')})
+            </Typography>
+          <Box display='flex' alignItems='center'>
+            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.sentBy.avatar} >
+                {message.sentBy.firstName[0]+message.sentBy.lastName[0]}
+            </Avatar>
+            <Typography>
+              {message.content}
+            </Typography> 
+          </Box>
+        </Box>
       </li>
     ))
   }
@@ -58,7 +70,20 @@ const ChatRoom = ({trip, match}) => {
         key={message.id + Math.random().toString(16)}
         style={message.ownedByCurrentUser ? styles.messageItemMyMessage : styles.messageItemReceivedMessage}
       >
-        ({format(Date.now(), 'Pp')}) {message.senderName}:   {message.content}
+        <Box display='flex' flexDirection='column'>
+            <Typography variant='caption'>
+              ({format(Date.now(), 'Pp')})
+            </Typography>
+          <Box display='flex' alignItems='center'>
+            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.avatar} >
+                {message.firstName[0]+message.lastName[0]}
+            </Avatar>
+            <Typography>
+              {message.content}
+            </Typography> 
+          </Box>
+        </Box>
+        {/* ({format(Date.now(), 'Pp')}) {message.senderName}:   {message.content} */}
       </li>
     ))
   }
