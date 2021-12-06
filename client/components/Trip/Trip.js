@@ -186,7 +186,7 @@ const Trip = (props) => {
                                 &nbsp;{trip.trip.name} 
                                 {
                                     trip.trip.isOpen ? "" :
-                                        "- Trip Closed"
+                                        " (Trip Closed)"
                                 }
                             </Typography>
                         </Box>
@@ -266,12 +266,14 @@ const Trip = (props) => {
                                     <MenuItem onClick={handleCloseMenu} disableRipple>
                                         FRIENDS
                                     </MenuItem>
-                                    <MenuItem onClick={() => {
-                                        // setOpen(true);
-                                        // setForm('expense')
-                                    }}>
-                                        <AddIcon />
-                                        Add Friend to Trip
+                                    <MenuItem>
+                                        <Button startIcon={<AddIcon />} variant='contained' onClick={() => {
+                                            handleCloseMenu();
+                                            setOpen(true);
+                                            setForm('invitefriend')
+                                        }} className='headingButton' style={styles.headingButton}>
+                                            Invite Friend
+                                        </Button>
                                     </MenuItem>
                                     <Divider sx={{ my: 0.5 }} />
                                     <MenuItem onClick={handleCloseMenu} disableRipple>
