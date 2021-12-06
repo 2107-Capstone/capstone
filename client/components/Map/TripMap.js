@@ -163,15 +163,15 @@ export default function TripMap({ match }) {
             },
             () => null
         );
-        setStatus('watching');
-        navigator.geolocation.watchPosition(async position => {
-            userLocation.current = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            }
-            await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
-            setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
-        })
+        // setStatus('watching');
+        // navigator.geolocation.watchPosition(async position => {
+        //     userLocation.current = {
+        //         lat: position.coords.latitude,
+        //         lng: position.coords.longitude
+        //     }
+        //     await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
+        //     setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
+        // })
         setOpenAlert(true);
     }
     function Locate({ panTo }) {
