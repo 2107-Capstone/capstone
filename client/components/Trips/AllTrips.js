@@ -14,7 +14,7 @@ import { getUserTrips } from "../../store";
 import { getTrips } from "../../store";
 
 /////////////// DATE FORMATTER  ////////////////
-import { format, parseISO } from "date-fns";
+import { format, parseISO, isAfter } from "date-fns";
 
 const handleLeaveTrip = () => { }
 
@@ -33,7 +33,9 @@ const AllTrips = ({ match }) => {
         setChecked(event.target.checked)
     };
     // const { trips } = useSelector(state => state)
-    const trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
+    let trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
+    trips = trips.sort((a, b) => isAfter(new Date(a.trip.startTime), new Date(b.trip.startTime)) ? 1 : -1);
+
     const user = useSelector(state => state.auth)
 
 
@@ -138,11 +140,16 @@ const AllTrips = ({ match }) => {
                                     </Typography>
                                     <Box display='flex' justifyContent='center' alignItems='center'>
                                         <Typography >
-                                            Trip Creator: {trip.trip.user.username}
+                                            Trip Creator: 
                                         </Typography>
-                                        <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={trip.trip.user.avatar} >
-                                            {trip.trip.user.firstName[0]+trip.trip.user.lastName[0]}
-                                        </Avatar>
+                                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0}} src={trip.trip.user.avatar} >
+                                                {trip.trip.user.firstName[0]+trip.trip.user.lastName[0]}
+                                            </Avatar>
+                                            <Typography variant='caption'>
+                                                {trip.trip.user.username}
+                                            </Typography >
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Box>
