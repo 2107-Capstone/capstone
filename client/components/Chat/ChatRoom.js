@@ -50,7 +50,7 @@ const ChatRoom = ({trip, match}) => {
       >
         <Box display='flex' flexDirection='column'>
             <Typography variant='caption'>
-              ({format(parseISO(message.dateSent), 'Pp')})
+              {format(parseISO(message.dateSent), 'Pp')}
             </Typography>
           <Box display='flex' alignItems='center'>
             <Box display='flex' flexDirection='column' alignItems='center'>

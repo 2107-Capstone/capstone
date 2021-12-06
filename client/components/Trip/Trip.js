@@ -57,13 +57,13 @@ const Trip = (props) => {
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
     let events = useSelector(state => state.events.filter(event => event.tripId === id));
     let messages = useSelector(state => state.messages.filter(message => message.tripId === id));
+    const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
 
     // if (!trip) return <CircularLoading />
-    if (!trip || !events || !messages) return <CircularLoading />
+    if (!trip || !events || !messages || !tripExpenses) return <CircularLoading />
     //     if (!trip) return '...loading'
     //TODO: why does    trip = trip.trip    not allow refresh?
     // console.log('TRIPPPPPPPPPPPPP', trip)
-    const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
     const totalExpenses = tripExpenses.reduce((total, expense) => {
         return total + +expense.amount
     }, 0);
@@ -93,7 +93,7 @@ const Trip = (props) => {
 
     // let messages = trip.trip.messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     // messages = trip.trip.messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
-    messages = messages.sort((a, b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    messages = messages.sort((a, b) => isBefore(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     messages.length > 5 ? messages.length = 5 : ''
     messages = messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     
@@ -146,16 +146,18 @@ const Trip = (props) => {
             },
         },
     }));
-    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const [anchorEl, setAnchorEl] = useState(null);
     const openMenu = Boolean(anchorEl);
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
     const handleCloseMenu = () => {
         setAnchorEl(null);
     };
+    
     return (
-
         <div>
             {/* <InviteToTrip /> */}
             {/* <Button
@@ -332,21 +334,6 @@ const Trip = (props) => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
-                    <Box bgcolor="primary.main"  sx={{display: 'flex'}}>
-                        <Box >
-                            <Button component={Link} to={`${trip.tripId}/calendar`} size='large' color='info' startIcon={<OpenInNewIcon />} className='expand' style={styles.expand}>
-                            </Button>
-                        </Box>
-                        <Box style={styles.headingIcon}>
-                            <DateRangeIcon fontSize='medium' />
-                            <Typography variant='h6'>
-                                &nbsp;Events Snapshot
-                            </Typography>
-                        </Box>
-                    </Box>
-                    <EventsTable events={events} />
-                </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={6} >
                     <Box bgcolor="primary.main" sx={{display: 'flex'}}>
                         <Box >
                             <Button component={Link} to={`${trip.tripId}/chat`} size='large' color='info' startIcon={<OpenInNewIcon />} className='expand' style={styles.expand}>
@@ -355,12 +342,28 @@ const Trip = (props) => {
                         <Box style={styles.headingIcon}>
                             <ChatIcon fontSize='medium' />
                             <Typography variant='h6'>
-                                &nbsp;Messages Snapshot
+                                &nbsp;Recent Messages Snapshot
                             </Typography>
                         </Box>
                     </Box>
                     <MessagesTable messages={messages} />
                 </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={6} >
+                    <Box bgcolor="primary.main"  sx={{display: 'flex'}}>
+                        <Box >
+                            <Button component={Link} to={`${trip.tripId}/calendar`} size='large' color='info' startIcon={<OpenInNewIcon />} className='expand' style={styles.expand}>
+                            </Button>
+                        </Box>
+                        <Box style={styles.headingIcon}>
+                            <DateRangeIcon fontSize='medium' />
+                            <Typography variant='h6'>
+                                &nbsp;Upcoming Events Snapshot
+                            </Typography>
+                        </Box>
+                    </Box>
+                    <EventsTable events={events} />
+                </Grid>
+                
                 <Grid item xs={12} sm={12} md={12} lg={6} >
                     <Box bgcolor="primary.main" sx={{display: 'flex'}}>
                         <Box >

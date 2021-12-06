@@ -290,21 +290,20 @@ export default function TripMap({ match }) {
                     <Box display='flex' justifyContent='center'>
                         {
                             users.map(user => (
-                                
-                                    <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
-                                        sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
-                                    >
-                                        <Avatar 
-                                            sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
-                                            src={user.user.avatar}
-                                            onClick={() => handleClick2(user.userId, user.user.username)}
-                                            >
-                                            {user.user.firstName[0]+user.user.lastName[0]}
-                                        </Avatar>
-                                        <Typography variant='caption'>
-                                            {user.user.username}
-                                        </Typography>
-                                    </Box>
+                                <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
+                                    sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
+                                >
+                                    <Avatar 
+                                        sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
+                                        src={user.user.avatar}
+                                        onClick={() => handleClick2(user.userId, user.user.username)}
+                                        >
+                                        {user.user.firstName[0]+user.user.lastName[0]}
+                                    </Avatar>
+                                    <Typography variant='caption'>
+                                        {user.user.username}
+                                    </Typography>
+                                </Box>
                               
                             ))
                         }
