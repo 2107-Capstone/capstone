@@ -3,7 +3,7 @@ const db = require('../db')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const axios = require('axios');
-const { STRING, DECIMAL, DATE } = Sequelize
+const { STRING, DECIMAL, DATE, TEXT } = Sequelize
 
 const SALT_ROUNDS = 5;
 
@@ -38,6 +38,9 @@ const User = db.define('user', {
   },
   time: {
     type: DATE
+  },
+  avatar: {
+    type: TEXT
   }
 })
 
