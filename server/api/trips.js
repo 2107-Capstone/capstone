@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const isLoggedIn = require('../middleware/isLoggedIn')
-const { models: { User, Trip, UserTrip, Message, Event }} = require('../db')
+const { models: { User, Trip, UserTrip, Message, Event, Expense }} = require('../db')
 
 module.exports = router
 
@@ -44,6 +44,9 @@ router.get('/', async (req, res, next) => {
               },
               {
                 model: Event
+              },
+              {
+                model: Expense
               }
             ]
           }
@@ -103,6 +106,12 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 model: User,
                 attributes: ['id', 'username']
               }
+            },
+            {
+              model: Event
+            },
+            {
+              model: Expense
             }
           ]
         }
@@ -155,6 +164,9 @@ router.put('/:tripId', async (req, res, next) => {
             },
             {
               model: Event
+            },
+            {
+              model: Expense
             }
           ]
         }

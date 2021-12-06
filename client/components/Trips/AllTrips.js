@@ -14,7 +14,7 @@ import { getUserTrips } from "../../store";
 import { getTrips } from "../../store";
 
 /////////////// DATE FORMATTER  ////////////////
-import { format, parseISO } from "date-fns";
+import { format, parseISO, isAfter } from "date-fns";
 
 const handleLeaveTrip = () => { }
 
@@ -33,7 +33,9 @@ const AllTrips = ({ match }) => {
         setChecked(event.target.checked)
     };
     // const { trips } = useSelector(state => state)
-    const trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
+    let trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
+    trips = trips.sort((a, b) => isAfter(new Date(a.trip.startTime), new Date(b.trip.startTime)) ? 1 : -1);
+
     const user = useSelector(state => state.auth)
 
 
@@ -88,7 +90,7 @@ const AllTrips = ({ match }) => {
                     {
                         checked ? '' :
                             <Box style={{textAlign:'center'}} >
-                                <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '30%'}}>
+                                <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '40%'}}>
                                     Create Trip
                                 </Button>
                             </Box>
@@ -134,21 +136,29 @@ const AllTrips = ({ match }) => {
                                         End Date: {format(parseISO(trip.trip.endTime), 'P')}
                                     </Typography>
                                     <Typography>
-                                        {/* Friends: {trip.trip.userTrips.length} */}
+                                        Friends: {trip.trip.userTrips.length}
                                     </Typography>
                                     <Box display='flex' justifyContent='center' alignItems='center'>
                                         <Typography >
-                                            Trip Creator: {trip.trip.user.username}
+                                            Trip Creator: 
                                         </Typography>
-                                        <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={trip.trip.user.avatar} >
-                                            {trip.trip.user.firstName[0]+trip.trip.user.lastName[0]}
-                                        </Avatar>
+                                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0}} src={trip.trip.user.avatar} >
+                                                {trip.trip.user.firstName[0]+trip.trip.user.lastName[0]}
+                                            </Avatar>
+                                            <Typography variant='caption'>
+                                                {trip.trip.user.username}
+                                            </Typography >
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Box>
-                            <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                <Chip onClick={handleLeaveTrip} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
-                            </Box>
+                            {
+                                !trip.trip.expenses.length ? 
+                                    <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
+                                        <Chip onClick={handleLeaveTrip} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
+                                    </Box> : ''
+                            }
                         </Paper>
                     </Grid>
                 ))}

@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
         },
         {
           model: UserFriend,
-          include: [{ model: User, as: 'friend' }]
+          include: [{ model: User, as: 'friend', attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar'] }]
         }
       ]
     })
@@ -32,6 +32,7 @@ router.get('/:userId', async (req, res, next) => {
       where: {
         id: req.params.userId
       },
+      attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar'],
       include: [
         {
           model: UserTrip,
@@ -39,7 +40,7 @@ router.get('/:userId', async (req, res, next) => {
         },
         {
           model: UserFriend,
-          include: [{ model: User, as: 'friend' }]
+          include: [{ model: User, as: 'friend', attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar'] }]
         }
       ]
     })
@@ -59,6 +60,7 @@ router.put('/:userId', async (req, res, next) => {
       let user = await User.findByPk(req.params.userId)
       await user.update({...user, lat, lng, time, username, firstName, lastName, email, phoneNumber, password, avatar });
       user = await User.findByPk(user.id, {
+        attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar'],
         include: [
           {
             model: UserTrip,
@@ -66,7 +68,7 @@ router.put('/:userId', async (req, res, next) => {
           },
           {
             model: UserFriend,
-            include: [{model: User, as: 'friend'}]
+            include: [{model: User, as: 'friend', attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']}]
           }
         ]
       })

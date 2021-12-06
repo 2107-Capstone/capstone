@@ -14,12 +14,19 @@ const MessagesTable = ({messages}) => {
     const rows = messages
     return (
     <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} aria-label="events table">
+        <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="events table">
+            <colgroup>
+                <col style={{width: '5%'}} />
+                <col style={{width: '5%'}} />
+                <col style={{width: '10%'}} />
+                <col style={{width: '80%'}} />
+            </colgroup>
             <TableHead>
                 <TableRow>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Sender</TableCell>
-                    <TableCell>Message</TableCell>
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Date</TableCell>
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Time</TableCell>
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Sender</TableCell>
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Message</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -28,8 +35,11 @@ const MessagesTable = ({messages}) => {
                     key={row.id + Math.random().toString(16)}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                    <TableCell component="th" scope="row">
-                        {format(parseISO(row.dateSent), 'Pp')}
+                    <TableCell >
+                        {format(parseISO(row.dateSent), 'P')}
+                    </TableCell>
+                    <TableCell >
+                        {format(parseISO(row.dateSent), 'p')}
                     </TableCell>
                     <TableCell >{row.sentBy.username}</TableCell>
                     <TableCell >{row.content}</TableCell>
