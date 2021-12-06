@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 //////////// MUI //////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -27,6 +28,7 @@ import { updateUser, me, authenticate } from '../../store'
 
 const Password = () => {
     const dispatch = useDispatch()
+    const history = useHistory()
     const auth = useSelector((state) => state.auth);
     
     const [input, setinput] = useState({
@@ -75,6 +77,7 @@ const Password = () => {
            await dispatch(me({...input, id: auth.id, password: input.newPassword}));
            setOpenAlert(true)
            setOldPasswordCorrect(() => false)
+           history.push('/settings')
         }
         catch (error) {
           console.log(error)

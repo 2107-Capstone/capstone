@@ -353,7 +353,7 @@ const Trip = (props) => {
                     </Box>
                     
                     {trip.trip.userTrips.map(user => (
-                    <Paper  key={user.id + Math.random().toString(16)} sx={{ margin: '1rem', height: 'fit-content', ':hover': { boxShadow: (theme) => theme.shadows[5] } }}>
+                    <Paper  key={user.id} sx={{ margin: '1rem', height: 'fit-content', ':hover': { boxShadow: (theme) => theme.shadows[5] } }}>
                         <Box sx={{alignItems: 'center'}}>
                             <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={user.user.avatar} >
                                 {user.user.firstName[0]+user.user.lastName[0]}

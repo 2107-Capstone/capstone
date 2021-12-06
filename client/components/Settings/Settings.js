@@ -112,9 +112,6 @@ const Settings = () => {
                 }}
             >
                 <Button>TODO: Location Settings</Button>
-                <Button component={Link} to='/settings/password' variant='outlined' color='info' startIcon={<VpnKeyIcon />}>
-                    Change Password
-                </Button>
                 <IconButton component={Link} to='/settings/authavatar'>
                 <Badge badgeContent={<EditIcon sx={{ fontSize: 15 }}/>} color="primary" anchorOrigin={{vertical: 'bottom', horizontal: 'right',}} overlap="circular" >
                   <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={auth.avatar} >
