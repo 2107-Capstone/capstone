@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 //////////// MUI //////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -22,10 +23,12 @@ import Snackbar from '@mui/material/Snackbar';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import SettingsIcon from '@mui/icons-material/Settings';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { updateUser, me, authenticate } from '../../store'
 
 const Password = () => {
     const dispatch = useDispatch()
+    const history = useHistory()
     const auth = useSelector((state) => state.auth);
     
     const [input, setinput] = useState({
@@ -74,6 +77,7 @@ const Password = () => {
            await dispatch(me({...input, id: auth.id, password: input.newPassword}));
            setOpenAlert(true)
            setOldPasswordCorrect(() => false)
+           history.push('/settings')
         }
         catch (error) {
           console.log(error)
@@ -92,7 +96,7 @@ const Password = () => {
 
     return (
         <Container component="main" maxWidth="xs">
-          <Button component={Link} to='/settings' variant='outlined' color='info' startIcon={<SettingsIcon />}>
+          <Button component={Link} to='/settings' variant='contained' startIcon={<ArrowBackIcon />}>
             Back
           </Button>
           <Snackbar open={openAlert} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>

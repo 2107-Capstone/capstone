@@ -28,7 +28,7 @@ router.get('/', async (req, res, next) => {
           {
             model: User,
             as: 'sentBy',
-            attributes: ['id', 'username'],
+            attributes: ['id', 'username', 'avatar', 'firstName', 'lastName'],
           },
           {
             model: Trip
@@ -62,7 +62,7 @@ router.post('/', async (req, res, next) => {
           {
             model: User,
             as: 'sentBy',
-            attributes: ['id', 'username'],
+            attributes: ['id', 'username', 'avatar', 'firstName', 'lastName'],
           },
           {
             model: Trip

@@ -33,7 +33,7 @@ import EventForm from '../Map/EventForm'
 import EventsTable from '../Events/EventsTable'
 import AddIcon from '@mui/icons-material/Add';
 import AddExpense from '../Expenses/AddExpense'
-import { format, formatISO, parseISO, isAfter } from "date-fns";
+import { format, formatISO, parseISO, isAfter, isBefore } from "date-fns";
 import MessagesTable from '../Chat/MessagesTable'
 import LockClockIcon from '@mui/icons-material/LockClock';
 import { styled, alpha } from '@mui/material/styles';
@@ -49,7 +49,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import InviteToTrip from './Form/InviteToTrip'
 
 const Trip = (props) => {
-    const id = + props.match.params.id
+    const id = props.match.params.id
     const dispatch = useDispatch();
 
     const { auth, categories } = useSelector(state => state);
@@ -95,7 +95,8 @@ const Trip = (props) => {
     // messages = trip.trip.messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     messages = messages.sort((a, b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     messages.length > 5 ? messages.length = 5 : ''
-
+    messages = messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    
 
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
@@ -182,27 +183,28 @@ const Trip = (props) => {
                         <Box sx={{ display: 'flex', alignSelf: 'center', margin: 2 }}>
                             <CardTravelIcon fontSize='medium' />
                             <Typography variant='h5'>
-                                &nbsp;{trip.trip.name}
+                                &nbsp;{trip.trip.name} 
+                                {
+                                    trip.trip.isOpen ? "" :
+                                        " (Trip Closed)"
+                                }
                             </Typography>
                         </Box>
-                        {/* <Box style={{textAlign:'center'}} > */}
-                        <Box style={{ display: 'flex', flexDirection: 'row', textAlign: 'space-evenly' }} >
+                        <Box style={{display: 'flex', flexDirection: 'row', textAlign:'space-evenly'}} >
                             <Box>
                                 <ButtonGroup
                                     aria-label='large button group'
-                                >
+                                    >
                                     <Button component={Link} to={`${trip.tripId}/calendar`} color='secondary' startIcon={<DateRangeIcon />} >
                                         TRIP CALENDAR
                                     </Button>
-                                    <Button component={Link} to={`${trip.tripId}/map`} color='secondary' startIcon={<MapIcon />} >
+                                    <Button component={Link} to={`${trip.tripId}/map`}  color='secondary' startIcon={<MapIcon />} >
                                         TRIP MAP
                                     </Button>
                                 </ButtonGroup>
                             </Box>
-                            {/* <Box>
-                                    <Button/>
-                                </Box> */}
-                            <Box style={{ alignSelf: 'right' }}>
+                            
+                            <Box style={{alignSelf: 'right'}}>
                                 <Button
                                     id="demo-customized-button"
                                     aria-controls="demo-customized-menu"
@@ -211,6 +213,7 @@ const Trip = (props) => {
                                     variant="contained"
                                     disableElevation
                                     onClick={handleClick}
+                                    disabled={!trip.trip.isOpen}
                                     endIcon={<KeyboardArrowDownIcon />}
                                 >
                                     TRIP MENU
@@ -218,40 +221,40 @@ const Trip = (props) => {
                                 <StyledMenu
                                     id="demo-customized-menu"
                                     MenuListProps={{
-                                        'aria-labelledby': 'demo-customized-button',
-                                    }}
-                                    anchorEl={anchorEl}
-                                    open={openMenu}
-                                    onClose={handleCloseMenu}
-                                >
-                                    <MenuItem onClick={handleCloseMenu} disableRipple>
-                                        MESSAGES
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <Button component={Link} to={`${trip.tripId}/chat`} size='large' startIcon={<ChatIcon />} className='headingButton' style={styles.headingButton}>
-                                            Group Chat Room
-                                        </Button>
-                                    </MenuItem>
-                                    <Divider sx={{ my: 0.5 }} />
-                                    <MenuItem onClick={handleCloseMenu} disableRipple>
-                                        EVENTS
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <Button startIcon={<AddIcon />} variant='contained' onClick={() => {
-                                            handleCloseMenu();
-                                            setOpen(true);
-                                            setForm('event')
-                                        }} className='headingButton' style={styles.headingButton}>
-                                            Add Event
-                                        </Button>
-                                    </MenuItem>
-                                    <Divider sx={{ my: 0.5 }} />
+                                    'aria-labelledby': 'demo-customized-button',
+                                }}
+                                anchorEl={anchorEl}
+                                open={openMenu}
+                                onClose={handleCloseMenu}
+                            >
+                                <MenuItem onClick={handleCloseMenu} disableRipple>
+                                    MESSAGES
+                                </MenuItem>
+                                <MenuItem>
+                                    <Button component={Link} to={`${trip.tripId}/chat`} size='large' startIcon={<ChatIcon />} className='headingButton' style={styles.headingButton}>
+                                        Group Chat Room
+                                    </Button>
+                                </MenuItem>
+                                <Divider sx={{ my: 0.5 }} />
+                                <MenuItem onClick={handleCloseMenu} disableRipple>
+                                    EVENTS
+                                </MenuItem>
+                                <MenuItem>
+                                    <Button startIcon={<AddIcon />} variant='contained' onClick={() => {
+                                        handleCloseMenu();
+                                        setOpen(true);
+                                        setForm('event')
+                                    }} className='headingButton' style={styles.headingButton}>
+                                        Add Event
+                                    </Button>
+                                </MenuItem>
+                                <Divider sx={{ my: 0.5 }} />
 
                                     <MenuItem onClick={handleCloseMenu} disableRipple>
                                         EXPENSES
                                     </MenuItem>
                                     <MenuItem>
-                                        <Button startIcon={<AddIcon />} variant='contained' onClick={() => {
+                                        <Button startIcon={<AddIcon />} variant='contained'  onClick={() => {
                                             handleCloseMenu();
                                             setOpen(true);
                                             setForm('expense')
@@ -277,19 +280,24 @@ const Trip = (props) => {
                                         TRIP
                                     </MenuItem>
                                     <MenuItem>
-                                        <Button startIcon={<AssignmentTurnedInIcon />} variant='contained' onClick={handleCloseTrip} className='headingButton' style={styles.headingButton}>
-                                            Mark Trip as Closed
-                                        </Button>
+                                        {
+                                            trip.trip.userId === auth.id ? 
+                                                <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  onClick={handleCloseTrip} className='headingButton' style={styles.headingButton}>
+                                                    Mark Trip as Closed
+                                                </Button>
+                                            :   <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  style={{color: 'grey'}} disabled>
+                                                    {trip.trip.user.username} can close this trip
+                                                </Button>
+                                        }
                                     </MenuItem>
                                     <Divider sx={{ my: 0.5 }} />
                                 </StyledMenu>
                             </Box>
                         </Box>
-                        {/* </Box> */}
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
-                    <Box sx={{ display: 'flex', backgroundColor: 'cornsilk' }}>
+                    <Box bgcolor="primary.main"  sx={{display: 'flex'}}>
                         <Box >
                             <Button component={Link} to={`${trip.tripId}/calendar`} size='large' color='info' startIcon={<OpenInNewIcon />} className='expand' style={styles.expand}>
                             </Button>
@@ -304,7 +312,7 @@ const Trip = (props) => {
                     <EventsTable events={events} />
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
-                    <Box sx={{ display: 'flex', backgroundColor: 'cornsilk' }}>
+                    <Box bgcolor="primary.main" sx={{display: 'flex'}}>
                         <Box >
                             <Button component={Link} to={`${trip.tripId}/chat`} size='large' color='info' startIcon={<OpenInNewIcon />} className='expand' style={styles.expand}>
                             </Button>
@@ -319,12 +327,12 @@ const Trip = (props) => {
                     <MessagesTable messages={messages} />
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
-                    <Box sx={{ display: 'flex', backgroundColor: 'cornsilk' }}>
+                    <Box bgcolor="primary.main" sx={{display: 'flex'}}>
                         <Box >
                             <Button component={Link} to={`${trip.tripId}/expenses`} size='large' color='info' startIcon={<OpenInNewIcon />} className='expand' style={styles.expand}>
                             </Button>
                         </Box>
-                        <Box style={styles.headingIcon}>
+                        <Box style={styles.headingIcon} bgcolor='primary.main'>
                             <PaidIcon fontSize='medium' />
                             <Typography variant='h6'>
                                 &nbsp;Expenses Snapshot
@@ -336,28 +344,37 @@ const Trip = (props) => {
                         <Typography>
                             Total Expenses: ${totalExpenses.toFixed(2)}
                         </Typography>
-                        <PieChart expenses={tripExpenses} users={users} categories={categories} />
+                        {
+                            tripExpenses.length !== 0 ? 
+                                <PieChart expenses={tripExpenses} users={users} categories={categories}/> :
+                                <Typography>
+                                    No expenses yet.
+                                </Typography>
+                        }
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
-                    <Box sx={{ display: 'flex', backgroundColor: 'cornsilk' }}>
+                    <Box bgcolor="primary.main" sx={{display: 'flex', justifyContent: 'center'}}>
                         <PeopleIcon fontSize='medium' />
                         <Typography variant='h6'>
                             &nbsp;Trip Friends
                         </Typography>
                     </Box>
-
-                    {trip.trip.userTrips.map((user, idx) => (
-                        <Paper key={idx} sx={{ margin: '1rem', height: 'fit-content', ':hover': { boxShadow: (theme) => theme.shadows[5] } }}>
-                            <Box sx={{ alignItems: 'center' }}>
-                                <Avatar alt={user.user.username} src="https://cdn3.iconfinder.com/data/icons/avatars-flat/33/man_5-512.png" />
-                            </Box>
-                            <Box sx={{ color: 'inherit', alignItems: 'center' }}>
-                                <Typography variant='h6'>
-                                    {user.user.username}
-                                </Typography>
-                            </Box>
-                        </Paper>
+                    
+                    {trip.trip.userTrips.map(user => (
+                    <Paper  key={user.id} sx={{ margin: '1rem', height: 'fit-content', ':hover': { boxShadow: (theme) => theme.shadows[5] } }}>
+                        <Box sx={{alignItems: 'center'}}>
+                            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={user.user.avatar} >
+                                {user.user.firstName[0]+user.user.lastName[0]}
+                            </Avatar>
+                            {/* <Avatar alt={user.user.username} src="https://cdn3.iconfinder.com/data/icons/avatars-flat/33/man_5-512.png" /> */}
+                        </Box>
+                        <Box sx={{ color: 'inherit', alignItems: 'center'}}>
+                            <Typography variant='h6'>
+                                {user.user.username}
+                            </Typography>
+                        </Box>
+                    </Paper>
                     ))}
                 </Grid>
             </Grid>
@@ -382,7 +399,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'cornsilk',
+        backgroundColor: 'primary.main',
         flexGrow: 1,
     },
 

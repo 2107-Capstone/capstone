@@ -18,7 +18,7 @@ const MessagesTable = ({messages}) => {
             <TableHead>
                 <TableRow>
                     <TableCell>Time</TableCell>
-                    <TableCell>Sent By</TableCell>
+                    <TableCell>Sender</TableCell>
                     <TableCell>Message</TableCell>
                 </TableRow>
             </TableHead>

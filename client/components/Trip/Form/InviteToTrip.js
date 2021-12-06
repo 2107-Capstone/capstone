@@ -28,7 +28,7 @@ const InviteToTrip = (props) => {
 
     /////// Get the trip id from the browser //////
     const path = history.location.pathname
-    const tripId = path.slice(path.lastIndexOf('/') + 1) * 1
+    const tripId = path.slice(path.lastIndexOf('/') + 1)
 
     const user = useSelector(state => state.auth)
     const friends = useSelector(state => state.friends)

@@ -19,7 +19,7 @@ import './TripCalendar.css'
 import CircularLoading from '../Loading/CircularLoading'
 
 const SingleTripCalendar = ({ match }) => {
-    let trip = useSelector(state => state.trips.find(trip => trip.tripId === +match.params.id))
+    let trip = useSelector(state => state.trips.find(trip => trip.tripId === match.params.id))
     
     if (!trip) {
         return (

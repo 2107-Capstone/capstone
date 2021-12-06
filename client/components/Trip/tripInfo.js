@@ -30,11 +30,11 @@ export const Events = ({ tripId }) => {
     } else {
         if (events.length === 0) return "...loading"
     }
-    return (
-        <ol>
-            {
-                events.map((event, idx) => (
-                    <li key={idx}>
+        return (
+            <ol>
+                {
+                  events.map(event => (
+                    <li key={event.id}>
                         ({format(parseISO(event.startTime), 'Pp')}): {event.name} at {event.location}
                         <br></br>
                         Details: {event.description}

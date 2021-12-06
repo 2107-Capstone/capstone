@@ -1,15 +1,23 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const { STRING, TEXT, DATE, DECIMAL } = Sequelize
+const { STRING, TEXT, DATE, DECIMAL, UUID, UUIDV4 } = Sequelize
 
 const axios = require('axios')
 
 const Event = db.define('event', {
+  id: {
+    type: UUID,
+    defaultValue: UUIDV4,
+    allowNull: false,
+    primaryKey: true
+  },
   name: {
     type: STRING,
+    allowNull: false
   },
   location: {
     type: STRING,
+    allowNull: false
   },
   description: {
       type: TEXT
@@ -20,7 +28,6 @@ const Event = db.define('event', {
   },
   endTime: {
       type: DATE,
-  //TODO: add one hour
       defaultValue: new Date()
   },
   place_id: {

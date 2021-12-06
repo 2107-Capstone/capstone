@@ -111,11 +111,7 @@ const Settings = () => {
                     alignItems: 'center',
                 }}
             >
-                <Button component={Link} to='/settings/trips' variant='outlined' color='info' startIcon={<VpnKeyIcon />}>TODO: Past Trips</Button>
                 <Button>TODO: Location Settings</Button>
-                <Button component={Link} to='/settings/password' variant='outlined' color='info' startIcon={<VpnKeyIcon />}>
-                    Change Password
-                </Button>
                 <IconButton component={Link} to='/settings/authavatar'>
                 <Badge badgeContent={<EditIcon sx={{ fontSize: 15 }}/>} color="primary" anchorOrigin={{vertical: 'bottom', horizontal: 'right',}} overlap="circular" >
                   <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={auth.avatar} >
@@ -235,6 +231,15 @@ const Settings = () => {
                         sx={{ mt: 3, mb: 2 }}
                     >
                         Update Information
+                    </Button>
+                    <Button 
+                      component={Link} 
+                      to='/settings/password' 
+                      variant='contained'
+                      fullWidth 
+                      startIcon={<VpnKeyIcon />}
+                    >
+                      Change Password
                     </Button>
                 </Box>
             </Box>

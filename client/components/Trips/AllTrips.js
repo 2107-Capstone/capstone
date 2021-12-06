@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom";
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Chip, Container, Divider, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material";
+import { Avatar, Box, Button, Chip, Container, Divider, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material";
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AddIcon from '@mui/icons-material/Add';
@@ -25,16 +25,17 @@ const AllTrips = ({ match }) => {
         await dispatch(getTrips())
     }, [])
 
-    // const { trips } = useSelector(state => state)
-    const trips = match.path.includes('settings') ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
-    const user = useSelector(state => state.auth)
-
     ///////////  Trip View Selection //////////
-    const [showTrips, setshowTrips] = useState('all');
+    // const [showTrips, setshowTrips] = useState('all');
+    const [checked, setChecked] = useState(false);
 
     const handleChange = (event) => {
-        setshowTrips(event.target.value);
+        setChecked(event.target.checked)
     };
+    // const { trips } = useSelector(state => state)
+    const trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
+    const user = useSelector(state => state.auth)
+
 
     if (!trips) {
         return (
@@ -42,13 +43,13 @@ const AllTrips = ({ match }) => {
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                     <CardTravelIcon fontSize='medium' />
                     {
-                        match.path.includes('settings') ?
+                        checked ?
                             <Typography variant='h5'>
                                 &nbsp;PAST TRIPS
                             </Typography>
                             :
                             <Typography variant='h5'>
-                                &nbsp;ALL TRIPS
+                                &nbsp;ACTIVE TRIPS
                             </Typography>
                     }
                 </Box>
@@ -59,26 +60,39 @@ const AllTrips = ({ match }) => {
 
     return (
         <>
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
-                <Box sx={{ display: 'flex', alignSelf: 'center' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent:'center', mt: 1 }}>
+                <FormGroup>
+                    <FormControlLabel 
+                        control={<Switch 
+                        checked={checked}
+                        onChange={handleChange}
+                        />}
+                        label='Past Trips'
+                    />
+                </FormGroup>
+                <Box sx={{ display: 'flex', alignSelf: 'center'}}>
                     <CardTravelIcon fontSize='medium' />
                     {
-                        match.path.includes('settings') ?
-                            <Typography variant='h5'>
+                        checked ?
+                        <Typography variant='h5'>
                                 &nbsp;PAST TRIPS
-                            </Typography>
-                            :
-                            <Typography variant='h5'>
-                                &nbsp;ALL TRIPS
-                            </Typography>
+                        </Typography>
+                        :
+                        <>
+                        <Typography variant='h5'>
+                                &nbsp;ACTIVE TRIPS
+                        </Typography>
+                        </>
                     }
                 </Box>
-                <Box style={{ textAlign: 'center' }} >
-                    <Button startIcon={<AddIcon fontSize='large' />} component={Link} to="/trips/add" variant='contained' sx={{ width: '30%' }}>
-                        Add New Trip
-                    </Button>
-                </Box>
-
+                    {
+                        checked ? '' :
+                            <Box style={{textAlign:'center'}} >
+                                <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '30%'}}>
+                                    Create Trip
+                                </Button>
+                            </Box>
+                    }
             </Box>
             {/* <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 1 }}>
                 <FormControl sx={{ minWidth: 160 }}>
@@ -122,6 +136,14 @@ const AllTrips = ({ match }) => {
                                     <Typography>
                                         {/* Friends: {trip.trip.userTrips.length} */}
                                     </Typography>
+                                    <Box display='flex' justifyContent='center' alignItems='center'>
+                                        <Typography >
+                                            Trip Creator: {trip.trip.user.username}
+                                        </Typography>
+                                        <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={trip.trip.user.avatar} >
+                                            {trip.trip.user.firstName[0]+trip.trip.user.lastName[0]}
+                                        </Avatar>
+                                    </Box>
                                 </Box>
                             </Box>
                             <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>

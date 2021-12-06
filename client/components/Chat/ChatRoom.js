@@ -8,7 +8,7 @@ import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import CircularLoading from '../Loading/CircularLoading'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
-import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import { Avatar, Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
 // const ChatRoom = (props) => {
 //   const { id } = props.match.params;
 const ChatRoom = ({trip, match}) => {
@@ -17,7 +17,7 @@ const ChatRoom = ({trip, match}) => {
   const dispatch = useDispatch();
 
   const auth = useSelector(state => state.auth);
-  const thisTrip = trip ? trip : useSelector(state => state.trips.find(trip => trip.tripId === +id))
+  const thisTrip = trip ? trip : useSelector(state => state.trips.find(trip => trip.tripId === id))
 
   const { messages, sendMessage } = useChat(id);
   
@@ -38,16 +38,29 @@ const ChatRoom = ({trip, match}) => {
 
   useEffect(scrollToBottom, [messages])
 
-  let storeMessages = useSelector(state => state.messages.filter(message => message.tripId === +id).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1));
+  let storeMessages = useSelector(state => state.messages.filter(message => message.tripId === id).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1));
   storeMessages.forEach(message => message.ownedByCurrentUser = (message.sentById === auth.id));
 
   const DisplayStoreMessages = () => {
+    
     return storeMessages.filter(message => isAfter(parseISO(timeOpened), parseISO(message.dateSent))).map((message) => (
       <li
         key={message.id + Math.random().toString(16)}
         style={message.ownedByCurrentUser ? styles.messageItemMyMessageOld : styles.messageItemReceivedMessageOld}
       >
-        ({format(parseISO(message.dateSent), 'Pp')}) {message.sentBy.username}:   {message.content}
+        <Box display='flex' flexDirection='column'>
+            <Typography variant='caption'>
+              ({format(parseISO(message.dateSent), 'Pp')})
+            </Typography>
+          <Box display='flex' alignItems='center'>
+            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.sentBy.avatar} >
+                {message.sentBy.firstName[0]+message.sentBy.lastName[0]}
+            </Avatar>
+            <Typography>
+              {message.content}
+            </Typography> 
+          </Box>
+        </Box>
       </li>
     ))
   }
@@ -58,7 +71,20 @@ const ChatRoom = ({trip, match}) => {
         key={message.id + Math.random().toString(16)}
         style={message.ownedByCurrentUser ? styles.messageItemMyMessage : styles.messageItemReceivedMessage}
       >
-        ({format(Date.now(), 'Pp')}) {message.senderName}:   {message.content}
+        <Box display='flex' flexDirection='column'>
+            <Typography variant='caption'>
+              ({format(Date.now(), 'Pp')})
+            </Typography>
+          <Box display='flex' alignItems='center'>
+            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.avatar} >
+                {message.firstName[0]+message.lastName[0]}
+            </Avatar>
+            <Typography>
+              {message.content}
+            </Typography> 
+          </Box>
+        </Box>
+        {/* ({format(Date.now(), 'Pp')}) {message.senderName}:   {message.content} */}
       </li>
     ))
   }
@@ -126,7 +152,9 @@ const styles = {
     bottom: 0,
     display: 'flex',
     flexDirection: 'column',
-    margin: '16px'
+    margin: '16px',
+    maxHeight: 800, 
+    overflow: 'auto' 
   },
   roomName: {
     marginTop: 0,
@@ -174,7 +202,7 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
+    color: 'darkslategrey',
     backgroundColor: '#F7C409',
     marginLeft: 'auto',
     fontStyle: 'italic'
@@ -195,7 +223,7 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
+    color: 'darkslategrey',
     backgroundColor: '#3BBB67',
     marginRight: 'auto',
     fontStyle: 'italic'

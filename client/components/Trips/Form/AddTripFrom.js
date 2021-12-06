@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 ///////////// MATERIAL UI /////////////////////////
 import { DateTimePicker, LocalizationProvider } from "@mui/lab"
@@ -11,6 +11,7 @@ import { addTrip } from "../../../store/trips"
 const airplane = '/images/airplane.png'
 
 const AddTripFrom = () => {
+    const auth = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     const [input, setinput] = useState({
@@ -21,9 +22,10 @@ const AddTripFrom = () => {
         startTime: new Date(),
         endTime: new Date(),
         lat: 40.7127753,
-        lng: -74.0059728
+        lng: -74.0059728,
+        userId: auth.id,
     })
-
+        
     let googlePlace;
     useEffect(() => {
         const autocomplete = new google.maps.places.Autocomplete(googlePlace)
@@ -85,7 +87,7 @@ const AddTripFrom = () => {
 
     const handleSubmit = async () => {
         try {
-            dispatch(addTrip(input))
+            dispatch(addTrip({...input}))
             setinput({
                 name: '',
                 imageUrl: '',
@@ -124,7 +126,7 @@ const AddTripFrom = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                required
+                                // required
                                 fullWidth
                                 id="description"
                                 label="Trip Details"
@@ -151,7 +153,7 @@ const AddTripFrom = () => {
                                     value={input.startTime}
                                     onChange={handleStartChange}
                                     minDate={new Date()}
-                                    minutesStep={5}
+                                    minutesStep={15}
                                     renderInput={(params) => <TextField helperText={error.startTimeErr} fullWidth {...params} />}
                                 />
                             </Grid>
@@ -162,7 +164,7 @@ const AddTripFrom = () => {
                                     value={input.endTime}
                                     onChange={handleEndChange}
                                     minDate={new Date(input.startTime)}
-                                    minutesStep={5}
+                                    minutesStep={15}
                                     renderInput={(params) => <TextField fullWidth helperText={error.endTimeErr} {...params} />}
                                 />
                             </Grid>
