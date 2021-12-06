@@ -105,11 +105,8 @@ const Settings = () => {
                     alignItems: 'center',
                 }}
             >
-                <Button component={Link} to='/settings/trips' variant='outlined' color='info' startIcon={<VpnKeyIcon />}>TODO: Past Trips</Button>
                 <Button>TODO: Location Settings</Button>
-                <Button component={Link} to='/settings/password' variant='outlined' color='info' startIcon={<VpnKeyIcon />}>
-                    Change Password
-                </Button>
+                
                 <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main' }}>
                     <FlightTakeoffIcon fontSize='large' />
                 </Avatar>
@@ -225,6 +222,15 @@ const Settings = () => {
                         sx={{ mt: 3, mb: 2 }}
                     >
                         Update Information
+                    </Button>
+                    <Button 
+                      component={Link} 
+                      to='/settings/password' 
+                      variant='contained'
+                      fullWidth 
+                      startIcon={<VpnKeyIcon />}
+                    >
+                      Change Password
                     </Button>
                 </Box>
             </Box>

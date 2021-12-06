@@ -22,6 +22,7 @@ import Snackbar from '@mui/material/Snackbar';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import SettingsIcon from '@mui/icons-material/Settings';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { updateUser, me, authenticate } from '../../store'
 
 const Password = () => {
@@ -92,7 +93,7 @@ const Password = () => {
 
     return (
         <Container component="main" maxWidth="xs">
-          <Button component={Link} to='/settings' variant='outlined' color='info' startIcon={<SettingsIcon />}>
+          <Button component={Link} to='/settings' variant='contained' startIcon={<ArrowBackIcon />}>
             Back
           </Button>
           <Snackbar open={openAlert} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>

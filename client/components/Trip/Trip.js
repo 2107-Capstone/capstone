@@ -279,7 +279,7 @@ const Trip = (props) => {
                                                         Mark Trip as Closed
                                                     </Button>
                                                 :   <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  style={{color: 'grey'}} disabled>
-                                                        You do not have access to close this trip.
+                                                        Trip creator ({trip.trip.creatorName}) can close this trip
                                                     </Button>
                                             }
                                         </MenuItem>

@@ -47,7 +47,6 @@ class Routes extends Component {
             <Route path="/home" component={Home} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/trips" component={AllTrips} />
-            <Route exact path="/settings/trips" component={AllTrips} />
             <Route exact path="/trips/add" component={AddTripFrom} />
             <Route exact path="/trips/:id" component={Trip} />
             <Route exact path="/friends" component={AllFriends} />
