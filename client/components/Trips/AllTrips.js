@@ -25,7 +25,7 @@ const AllTrips = ({match}) => {
     ///////////  Trip View Selection //////////
     // const [showTrips, setshowTrips] = useState('all');
     const [checked, setChecked] = useState(false);
-    
+
     const handleChange = (event) => {
         setChecked(event.target.checked)
     };
@@ -83,7 +83,7 @@ const AllTrips = ({match}) => {
                     }
                 </Box>
                     {
-                        match.path.includes('settings') ? '' :
+                        checked ? '' :
                             <Box style={{textAlign:'center'}} >
                                 <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '30%'}}>
                                     Create Trip

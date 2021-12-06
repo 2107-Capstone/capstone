@@ -4,7 +4,7 @@ import { parseISO, format } from 'date-fns';
 
 import CircularLoading from '../Loading/CircularLoading'
 
-import { Box, Container, Grid, Button, Tooltip, Divider } from '@mui/material'
+import { Box, Container, FormGroup, FormControlLabel, Switch, Grid, Button, Tooltip, Divider } from '@mui/material'
 
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import Accordion from '@mui/material/Accordion';
@@ -16,7 +16,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RefreshIcon from '@mui/icons-material/Refresh';
-
+import CardTravelIcon from '@mui/icons-material/CardTravel';
 import FaMapMarkerAlt from 'react-icons/fa'
 import { getTrips } from '../../store';
 
@@ -41,8 +41,18 @@ export default function AllTripsMap() {
     // });
     const dispatch = useDispatch()
     const auth = useSelector(state => state.auth);
+    
+    ///////////  Trip View Selection //////////
+    // const [showTrips, setshowTrips] = useState('all');
+    const [checked, setChecked] = useState(false);
+    
+    const handleChange = (event) => {
+        setChecked(event.target.checked)
+    };
+    // const { trips } = useSelector(state => state)
+    const trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
 
-    let trips = useSelector(state => state.trips);
+    // let trips = useSelector(state => state.trips);
 
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
@@ -81,7 +91,7 @@ export default function AllTripsMap() {
                 trip.color = idx > 10 ? colors[idx % 10] : colors[idx]
             })
         });
-    }, [update])
+    }, [update, checked])
 
     //TODO: Add form to add new event after clicking on map and getting lat/lng
 
@@ -129,12 +139,36 @@ export default function AllTripsMap() {
     if (!trips) return <CircularLoading />
     return (
     <>
-        <Box sx={{margin: 1, textAlign: 'center'}}>
-            
-                <Button startIcon={<RefreshIcon />} size='large' sx={{color: 'white'}} onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} >
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent:'center', mt: 1 }}>
+            <Box>
+                <FormGroup>
+                    <FormControlLabel 
+                        control={<Switch 
+                            checked={checked}
+                            onChange={handleChange}
+                            />}
+                            label='Past Trips'
+                            />
+                </FormGroup>
+            </Box>
+            <Box sx={{ display: 'flex', alignSelf: 'center'}}>
+                <CardTravelIcon fontSize='medium' />
+                {
+                    checked ?
+                    <Typography variant='h5'>
+                            &nbsp;PAST TRIPS
+                    </Typography>
+                    :
+                    <>
+                    <Typography variant='h5'>
+                            &nbsp;ACTIVE TRIPS
+                    </Typography>
+                    </>
+                }
+            </Box>
+            <Button startIcon={<RefreshIcon />} size='large'onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} >
                     Refresh Event Markers
-                </Button>
-            
+            </Button>
         </Box>
         <Grid container columnSpacing={2} rowSpacing={2} >
             <Grid item xs={12} sm={12} md={12} lg={4} xl={3}>
