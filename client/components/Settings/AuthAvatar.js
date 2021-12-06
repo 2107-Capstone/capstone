@@ -59,13 +59,30 @@ class AuthAvatar extends Component {
       })
       reader.readAsDataURL(file)
     })
+
+    let fileUpload = document.getElementById('fileUpload')
+    let fileSizeLimit = document.getElementById('fileSizeLimit')
+    
+    fileUpload.addEventListener('change', () => {
+      let files = fileUpload.files
+      if (files.length > 0) {
+        if (files[0].size > 5*1024*1024) {
+          fileSizeLimit.innerText = 'File size cannot exceed 5MB'
+          return
+        }
+      }
+      fileSizeLimit.innerText = ''
+    })
   }
+
+  
 
   render () {
     const { avatar, open } = this.state
     const { auth } = this.props
     const { save, handleClose } = this
-
+    let fileSizeLimit = document.getElementById('fileSizeLimit')
+    
     return (
       <Container component="main" maxWidth="xs">
       <Button component={Link} to='/settings' variant='outlined' color='info' startIcon={<SettingsIcon />}>
@@ -94,18 +111,20 @@ class AuthAvatar extends Component {
               >
                 Upload File
                 <input
+                  id='fileUpload'
                   type="file"
                   hidden
                   ref={ el => this.el = el}
                   accept="image/*"
                 />
               </Button>
+              <span id='fileSizeLimit'></span>
               </FormControl>
             </Grid>
             <Button
               type="save"
               variant="contained"
-              disabled={!avatar}
+              disabled={ !avatar || !!fileSizeLimit.innerText }
               sx={{ mt: 2, mb: 2 }}
               xs={12}
             >

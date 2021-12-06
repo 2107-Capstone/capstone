@@ -15,24 +15,28 @@ nav a {
  margin: 1em;
 }
 .card:hover {
-  /* box-shadow: 0px 10px 5px -5px rgba(48, 70, 170, .5 ), 0px 3px 5px 5px rgba(48, 70, 170, .5); */
-  /* background-color: rgb(0,124,200); */
-  /* color: cornsilk */
-  background-color: lightskyblue;
-  transform: scale(1.1);
+ /* box-shadow: 0px 10px 5px -5px rgba(48, 70, 170, .5 ), 0px 3px 5px 5px rgba(48, 70, 170, .5); */
+ /* background-color: rgb(0,124,200); */
+ /* color: cornsilk */
+ background-color: lightskyblue;
+ transform: scale(1.1);
 }
 .headingButton:hover {
-  color: white;
-  transform: scale(1.1);
-  border-radius: 5px;
+ color: white;
+ transform: scale(1.1);
+ border-radius: 5px;
 }
 .linkToTrip:hover {
-  transform: scale(1.1);
-  color: rgb(61, 220, 231)
+ transform: scale(1.1);
+ color: rgb(61, 220, 231);
 }
-@media screen and (max-width: 575px){
-  #singleTrip {
-    display: flex;
-    flex-direction: column;
-  }
+@media screen and (max-width: 575px) {
+ #singleTrip {
+  display: flex;
+  flex-direction: column;
+ }
+}
+
+#fileSizeLimit {
+ color: red;
 }
