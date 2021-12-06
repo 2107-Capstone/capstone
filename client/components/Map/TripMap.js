@@ -34,7 +34,7 @@ const options = {
     disableDefaultUI: true,
     zoomControl: true,
 };
-const tripZoom = 12;
+const tripZoom = 15;
 
 // export default function TripMap({ tripId, users }) {
 export default function TripMap({ match }) {
@@ -194,10 +194,11 @@ export default function TripMap({ match }) {
                 startIcon={<MyLocationIcon />}
                 variant='outlined'
                 className="locate"
+                size='small'
                 //TODO: USE WATCH POSITION AND SET TIMEOUT LATER TO CONTINUALLY UPDATE POSITION
                 onClick={handleLocate}
             >
-                Pin My Location
+                PIN LOCATION
             </Button>
         );
     }
@@ -254,134 +255,240 @@ export default function TripMap({ match }) {
 
     return (
         <>
-
-            <Snackbar open={openAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={2000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
+            <Snackbar 
+                open={openAlert} 
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+                autoHideDuration={2000} 
+                onClose={handleClose}
+            >
+                <Alert 
+                    onClose={handleClose} 
+                    severity='success' 
+                    sx={{ width: '100%' }}
+                >
                     Location Pinned!
                 </Alert>
             </Snackbar>
-            <Snackbar open={openNoLocationAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={2000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity='info' sx={{ width: '100%' }}>
+            <Snackbar 
+                open={openNoLocationAlert} 
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={2000} 
+                onClose={handleClose}
+            >
+                <Alert 
+                    onClose={handleClose} 
+                    severity='info' 
+                    sx={{ width: '100%' }}
+                >
                     {selectedUser} is not sharing location.
                 </Alert>
             </Snackbar>
-            <Dialog open={open} onClose={handleClose}>
-                <EventForm trip={trip} event={eventToEdit} handleClose={handleClose} />
+            <Dialog 
+                open={open} 
+                onClose={handleClose}
+            >
+                <EventForm 
+                    trip={trip} 
+                    event={eventToEdit} 
+                    handleClose={handleClose} 
+                />
             </Dialog>
             {/* <Tooltip title='Add Event'> */}
-            <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+            <Box 
+                className='linkToTrip' 
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+                marginTop={1}
+            >
                 <CardTravelIcon fontSize='medium' />
-                <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
+                <Box 
+                    sx={{ color: 'inherit' }} 
+                    component={Link} 
+                    to={`/trips/${trip.tripId}`}
+                >
                     <Typography variant='h5'>
                         &nbsp;{trip.trip.name}
                     </Typography>
                 </Box>
             </Box>
-            <Button startIcon={<AddIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
-                Add Event
-            </Button>
-            {/* </Tooltip> */}
-            <Tooltip title='Refresh Event Markers'>
-                <Button startIcon={<RefreshIcon />} variant='contained' color='info' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} />
-            </Tooltip>
-
-            <Locate panTo={panTo} />
+            <Box textAlign='center'>
+                <Button 
+                    startIcon={<AddIcon />} 
+                    variant='contained' 
+                    color='primary' 
+                    onClick={() => setOpen(true)}
+                >
+                    Add Event
+                </Button>
+            </Box>
+            
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <Box display='flex' justifyContent='center'>
-                        {
-                            users.map(user => (
-                                <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
-                                    sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
-                                >
-                                    <Avatar 
-                                        sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
-                                        src={user.user.avatar}
-                                        onClick={() => handleClick2(user.userId, user.user.username)}
-                                        >
-                                        {user.user.firstName[0]+user.user.lastName[0]}
-                                    </Avatar>
-                                    <Typography variant='caption'>
-                                        {user.user.username}
-                                    </Typography>
-                                </Box>
-                              
-                            ))
-                        }
-                    </Box>
-                    <GoogleMap
-                        id='map'
-                        options={options}
-                        onLoad={onMapLoad}
-                        zoom={tripZoom}
-                        // zoom={tripId ? 8 : 3}
-                        mapContainerStyle={mapContainerStyle}
-                        style={mapStyles}
-                        center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
+                <Box 
+                    display='flex' 
+                    justifyContent='center'
+                    marginTop={.5}
+                    marginBottom={.5}
+                >
+                    <Box 
+                        display='flex'
+                        flexDirection='column'
+                        alignItems='center'
+                        marginRight={.5}
                     >
-                        {
-                            trip.trip.events.length ? <DisplayMarkers /> : ''
-                        }
-                        <DisplayTrackingMarkers />
-
-                        {
-                            selected ?
-                            (
-                                <InfoWindow
-                                    open={open}
-                                    position={{ lat: +selected.lat, lng: +selected.lng }}
-                                    onCloseClick={() => {
-                                        setSelected(null);
-                                    }}
-                                >
-                                    <div style={{ margin: '0 1rem .5rem 1rem' }}>
-                                        <Typography variant={'subtitle1'}>
-                                            {selected.name}
-                                        </Typography>
-                                        <Typography variant={'caption'}>
-                                            {selected.time}
-                                        </Typography>
-                                    </div>
-                                </InfoWindow>
-                            )
-                                : null
-                        }
-                    </GoogleMap>
-                    <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
+                        <Box marginBottom={.5}>
+                            <Locate panTo={panTo}/>
+                        </Box>
+                        <Box>
+                            {/* </Tooltip> */}
+                            <Tooltip title='Refresh Markers'>
+                                <Button 
+                                    startIcon={<RefreshIcon />} 
+                                    variant='contained' 
+                                    color='primary' 
+                                    onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} 
+                                />
+                            </Tooltip>
+                        </Box>
+                    </Box>
                     {
-                        events.map(event => (
-                            <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
-
+                        users.map(user => (
+                            <Box 
+                                key={user.userId} 
+                                marginRight={1}
+                                padding={.25} 
+                                border='1px solid lightgrey'
+                                borderRadius='10%'
+                                display='flex' 
+                                flexDirection='column' 
+                                flexWrap='wrap' justifyContent='center' alignItems='center'
+                                sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
                             >
-                                <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>
-                                    <Typography gutterBottom>
-                                        {event.name} - {event.location}
-                                    </Typography>
-                                    <Typography color="text.secondary" variant="subtitle2" sx={{ mb: 0 }}>
-                                        {format(parseISO(event.startTime), 'Pp')}
-                                    </Typography>
-                                </CardContent>
-                                {/* <CardActionArea> */}
-                                <Button startIcon={<ModeEditIcon />} color='info' onClick={() => {
-                                    setEventToEdit(event);
-                                    setOpen(true);
-                                }}>
-                                    Edit
-                                </Button>
-                                <Button startIcon={<DeleteForeverIcon />} color='error' onClick={async () => {
-                                    try {
-                                        await dispatch(deleteEvent(event.id))
-                                    } catch (err) {
-                                        console.log(err)
-                                    }
-                                }}>
-                                    Delete
-                                </Button>
-                                {/* </CardActionArea> */}
-                            </Card>
+                                <Avatar 
+                                    sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
+                                    src={user.user.avatar}
+                                    onClick={() => handleClick2(user.userId, user.user.username)}
+                                >
+                                    {user.user.firstName[0]+user.user.lastName[0]}
+                                </Avatar>
+                                <Typography variant='caption'>
+                                    {user.user.username}
+                                </Typography>
+                            </Box>
                         ))
                     }
                 </Box>
-                
+                <Box 
+                    display='flex' 
+                    justifyContent='center'
+                    marginBottom={.5}
+                    flexWrap='wrap'
+                >
+                {
+                    events.map(event => (
+                        <Box 
+                            display='flex' 
+                            flexDirection='column'
+                            marginRight={1}
+                            padding={.25} 
+                            border='1px solid lightgrey'
+                            borderRadius='7%'
+                            key={event.id} 
+                            onClick={() => handleClick(event.id)}
+                            justifyContent='center' 
+                            alignItems='center'
+                            marginRight={1}
+                            padding={.5}
+                            sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
+                        >
+                            <Box>
+                                <Typography 
+                                    sx={{m: 0}}
+                                    variant='subtitle2'    
+                                >
+                                    {event.name}
+                                </Typography>
+                                <Typography 
+                                    color="text.secondary" variant="caption" 
+                                    sx={{ m: 0 }}
+                                >
+                                    {format(parseISO(event.startTime), 'Pp')}
+                                </Typography>
+                            </Box>
+                            <Box 
+                                display='flex'
+                                justifyContent='space-evenly'
+                            >
+                                <Button 
+                                    startIcon={<ModeEditIcon />} color='info' 
+                                    size='small' 
+                                    onClick={() => {
+                                        setEventToEdit(event);
+                                        setOpen(true);
+                                    }}
+                                >
+                                    Edit
+                                </Button>
+                                <Button 
+                                    startIcon={<DeleteForeverIcon />} color='error' 
+                                    size='small' 
+                                    onClick={async () => {
+                                        try {
+                                            await dispatch(deleteEvent(event.id))
+                                        } catch (err) {
+                                            console.log(err)
+                                        }
+                                    }}
+                                >
+                                    Delete
+                                </Button>
+                            </Box>
+                        </Box>
+                    ))
+                }
+                </Box>
+                <GoogleMap
+                    id='map'
+                    options={options}
+                    onLoad={onMapLoad}
+                    zoom={tripZoom}
+                    // zoom={tripId ? 8 : 3}
+                    mapContainerStyle={mapContainerStyle}
+                    style={mapStyles}
+                    center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
+                >
+                    {
+                        trip.trip.events.length ? <DisplayMarkers /> : ''
+                    }
+                    <DisplayTrackingMarkers />
+                    {
+                        selected ?
+                        (
+                            <InfoWindow
+                                open={open}
+                                position={{ lat: +selected.lat, lng: +selected.lng }}
+                                onCloseClick={() => {
+                                    setSelected(null);
+                                }}
+                            >
+                                <Box 
+                                    marginTop={.5} 
+                                    marginRight={1}
+                                    marginBottom={.5}
+                                    marginLeft={.5}
+                                >
+                                    <Typography variant={'subtitle2'}>
+                                        {selected.name}
+                                    </Typography>
+                                    <Typography variant={'caption'}>
+                                        {selected.time}
+                                    </Typography>
+                                </Box>
+                            </InfoWindow>
+                        )
+                            : null
+                    }
+                </GoogleMap>
+                 
             </div>
         </>
     );
