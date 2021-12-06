@@ -83,24 +83,24 @@ async function seed() {
   ])
 
   const userTrips = await Promise.all([
-    UserTrip.create({ userId: andy.id, tripId: nyc.id }),
-    UserTrip.create({ userId: andy.id, tripId: charlotte.id }),
-    UserTrip.create({ userId: andy.id, tripId: miami.id }),
-    UserTrip.create({ userId: corinne.id, tripId: nyc.id }),
-    UserTrip.create({ userId: corinne.id, tripId: miami.id }),
-    UserTrip.create({ userId: corinne.id, tripId: paris.id }),
-    UserTrip.create({ userId: jonathan.id, tripId: charlotte.id }),
-    UserTrip.create({ userId: jonathan.id, tripId: miami.id }),
-    UserTrip.create({ userId: jonathan.id, tripId: paris.id }),
-    UserTrip.create({ userId: jason.id, tripId: paris.id }),
-    UserTrip.create({ userId: jason.id, tripId: friday.id }),
-    UserTrip.create({ userId: jonathan.id, tripId: friday.id }),
-    UserTrip.create({ userId: corinne.id, tripId: friday.id }),
-    UserTrip.create({ userId: andy.id, tripId: friday.id }),
-    UserTrip.create({ userId: stanley.id, tripId: friday.id }),
-    UserTrip.create({ userId: stanley.id, tripId: nye.id }),
-    UserTrip.create({ userId: andy.id, tripId: nye.id }),
-    UserTrip.create({ userId: prof.id, tripId: friday.id }),
+
+    UserTrip.create({ userId: andy.id, tripId: nyc.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: andy.id, tripId: charlotte.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: andy.id, tripId: miami.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: corinne.id, tripId: nyc.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: corinne.id, tripId: miami.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: corinne.id, tripId: paris.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: jonathan.id, tripId: charlotte.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: jonathan.id, tripId: miami.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: jonathan.id, tripId: paris.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: jason.id, tripId: paris.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: jason.id, tripId: friday.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: jonathan.id, tripId: friday.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: corinne.id, tripId: friday.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: andy.id, tripId: friday.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: stanley.id, tripId: friday.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: stanley.id, tripId: nye.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: andy.id, tripId: nye.id, tripInvite: 'accepted' }),
   ])
 
   const userFriends = await Promise.all([

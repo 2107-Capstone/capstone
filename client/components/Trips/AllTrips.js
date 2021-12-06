@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom";
-import { getTrips } from "../../store";
 
 ////////////// MATERIAL UI ///////////
 import { Box, Button, Chip, Container, Divider, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material";
@@ -10,13 +9,17 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AddIcon from '@mui/icons-material/Add';
 import CircularLoading from '../Loading/CircularLoading'
 
+//////////////////////// STORE ///////////////////
+import { getUserTrips } from "../../store";
+import { getTrips } from "../../store";
+
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";
 
 const handleLeaveTrip = () => { }
 
 
-const AllTrips = ({match}) => {
+const AllTrips = ({ match }) => {
     const dispatch = useDispatch();
     useEffect(async () => {
         await dispatch(getTrips())
@@ -43,7 +46,7 @@ const AllTrips = ({match}) => {
                             <Typography variant='h5'>
                                 &nbsp;PAST TRIPS
                             </Typography>
-                        :
+                            :
                             <Typography variant='h5'>
                                 &nbsp;ALL TRIPS
                             </Typography>
@@ -56,26 +59,26 @@ const AllTrips = ({match}) => {
 
     return (
         <>
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent:'center', mt: 1 }}>
-                <Box sx={{ display: 'flex', alignSelf: 'center'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
+                <Box sx={{ display: 'flex', alignSelf: 'center' }}>
                     <CardTravelIcon fontSize='medium' />
                     {
                         match.path.includes('settings') ?
-                        <Typography variant='h5'>
+                            <Typography variant='h5'>
                                 &nbsp;PAST TRIPS
-                        </Typography>
-                        :
-                        <Typography variant='h5'>
+                            </Typography>
+                            :
+                            <Typography variant='h5'>
                                 &nbsp;ALL TRIPS
-                        </Typography>
+                            </Typography>
                     }
                 </Box>
-                <Box style={{textAlign:'center'}} >
-                    <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '30%'}}>
+                <Box style={{ textAlign: 'center' }} >
+                    <Button startIcon={<AddIcon fontSize='large' />} component={Link} to="/trips/add" variant='contained' sx={{ width: '30%' }}>
                         Add New Trip
                     </Button>
                 </Box>
-                
+
             </Box>
             {/* <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 1 }}>
                 <FormControl sx={{ minWidth: 160 }}>
@@ -117,7 +120,7 @@ const AllTrips = ({match}) => {
                                         End Date: {format(parseISO(trip.trip.endTime), 'P')}
                                     </Typography>
                                     <Typography>
-                                        Friends: {trip.trip.userTrips.length}
+                                        {/* Friends: {trip.trip.userTrips.length} */}
                                     </Typography>
                                 </Box>
                             </Box>
