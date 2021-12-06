@@ -92,7 +92,7 @@ const Expenses = ({match}) => {
                 <Dialog open={open} onClose={handleClose}>
                     <AddExpense trip={trip} handleClose={handleClose}/>
                 </Dialog>
-                <Button sx={{ml: 1, mt: 1, color: 'green'}}  variant='outlined' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+                <Button sx={{ml: 1, mt: 1}} color='primary' variant='contained' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
                     Add Expense
                 </Button>
             </Container>
@@ -113,7 +113,7 @@ const Expenses = ({match}) => {
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
-            <Button sx={{mb: 1, mt: 1, color: 'green'}}  variant='outlined' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+            <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
                 Add Expense
             </Button>
             <TableContainer component={Paper} sx={{border: '1px solid darkgrey'}}>
