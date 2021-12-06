@@ -22,6 +22,8 @@ import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import Badge from '@mui/material/Badge';
+import EditIcon from '@mui/icons-material/Edit';
 import { updateUser, me } from '../../store'
 
 const Settings = () => {
@@ -90,6 +92,10 @@ const Settings = () => {
       setOpenAlert(false);
     }
 
+    const userAvatar = <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={auth.avatar} >
+    {auth.firstName[0]+auth.lastName[0]}
+  </Avatar>
+
     return (
         <Container component="main" maxWidth="xs">
           <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
@@ -106,10 +112,16 @@ const Settings = () => {
                 }}
             >
                 <Button>TODO: Location Settings</Button>
-                
-                <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main' }}>
-                    <FlightTakeoffIcon fontSize='large' />
-                </Avatar>
+                <Button component={Link} to='/settings/password' variant='outlined' color='info' startIcon={<VpnKeyIcon />}>
+                    Change Password
+                </Button>
+                <IconButton component={Link} to='/settings/authavatar'>
+                <Badge badgeContent={<EditIcon sx={{ fontSize: 15 }}/>} color="primary" anchorOrigin={{vertical: 'bottom', horizontal: 'right',}} overlap="circular" >
+                  <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={auth.avatar} >
+                    {auth.firstName[0]+auth.lastName[0]}
+                  </Avatar>
+                </Badge>
+                </IconButton>
                 <Typography component="h1" variant="h5">
                     {auth.username}'s Profile
                 </Typography>

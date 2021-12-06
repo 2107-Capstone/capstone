@@ -29,6 +29,7 @@ app.get('/', (req, res) => res.render(path.join(__dirname, '..', 'public/index.h
 // static file-serving middleware
 app.use(express.static(path.join(__dirname, '..', 'public')))
 app.use('images/', express.static(path.join(__dirname, '..', 'public', 'images')))
+app.use('logo/', express.static(path.join(__dirname, '..', 'public', 'logo')))
 
 // any remaining requests with an extension (.js, .css, etc.) send 404
 app.use((req, res, next) => {

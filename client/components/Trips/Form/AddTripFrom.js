@@ -10,8 +10,6 @@ import { addTrip } from "../../../store/trips"
 /////// IMPORT LOGO IMAGE //////////////////
 const airplane = '/images/airplane.png'
 
-// const googleKey = process.env.MAP_API;
-
 const AddTripFrom = () => {
     const auth = useSelector(state => state.auth)
     const dispatch = useDispatch()
