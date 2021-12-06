@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
         },
         include: [
           {
-            model: User, as: 'friend'
+            model: User, as: 'friend', attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
           }
         ]
       })
@@ -44,7 +44,7 @@ router.get('/:friendId', async (req, res, next) => {
       },
       include: [
         {
-          mode: User, as: 'friend'
+          mode: User, as: 'friend', attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
         }
       ]
     })
