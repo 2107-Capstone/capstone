@@ -18,10 +18,10 @@ router.get('/', async (req, res, next) => {
         },
         include: [
           {
-            model: User, as: 'friend'
+            model: User, as: 'friend', attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
           },
           {
-            model: User, as: 'user'
+            model: User, as: 'user', attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
           }
         ]
       })
