@@ -19,14 +19,17 @@ const UserFriend = require('./models/UserFriend')
 // User.belongsToMany(Trip, {as: "user", foreignKey: "userId", through: "UserTrip"})
 // Trip.belongsToMany(User, {as: "trip", foreignKey: "tripId", through: "UserTrip"})
 
-UserFriend.belongsTo(User, {as: 'friend'})
-UserFriend.belongsTo(User, {as: 'user'})
-User.hasMany(UserFriend, {foreignKey: 'friendId'})
-User.hasMany(UserFriend, {foreignKey: 'userId'})
+// User.belongsTo(Trip)
+// Trip.hasMany(User)
+
+UserFriend.belongsTo(User, { as: 'friend' })
+UserFriend.belongsTo(User, { as: 'user' })
+User.hasMany(UserFriend, { foreignKey: 'friendId' })
+User.hasMany(UserFriend, { foreignKey: 'userId' })
 
 UserTrip.belongsTo(User)
-UserTrip.belongsTo(Trip)
 User.hasMany(UserTrip)
+UserTrip.belongsTo(Trip)
 Trip.hasMany(UserTrip)
 
 Trip.belongsTo(User)
@@ -38,8 +41,8 @@ Trip.hasMany(Event)
 Expense.belongsTo(Trip)
 Trip.hasMany(Expense)
 
-Expense.belongsTo(User, {as: 'paidBy'})
-User.hasMany(Expense, {foreignKey: 'paidById'})
+Expense.belongsTo(User, { as: 'paidBy' })
+User.hasMany(Expense, { foreignKey: 'paidById' })
 
 Expense.belongsTo(Category)
 Category.hasMany(Expense)
@@ -47,8 +50,8 @@ Category.hasMany(Expense)
 Message.belongsTo(Trip)
 Trip.hasMany(Message)
 
-Message.belongsTo(User, {as: "sentBy"})
-User.hasMany(Message, {foreignKey: "sentById"})
+Message.belongsTo(User, { as: "sentBy" })
+User.hasMany(Message, { foreignKey: "sentById" })
 
 module.exports = {
   db,
