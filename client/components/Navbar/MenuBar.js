@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../../store';
 
 ///////////// MATERIAL UI ///////////////
-import { Button, Box, Divider, Drawer, Stack, Toolbar, IconButton, Typography, Badge } from '@mui/material'
+import { Button, Box, Divider, Drawer, Stack, Toolbar, IconButton, Typography, Badge, SvgIcon } from '@mui/material'
 
 //////////// ICONS //////////////////
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -18,8 +18,8 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 import EventIcon from '@mui/icons-material/Event';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import LogoIcon from '/public/tripIcon.svg'
 
 
 const MenuBar = (props) => {
@@ -34,7 +34,9 @@ const MenuBar = (props) => {
         <Box sx={{ px: 1 }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'center' }}>
                 <IconButton component={Link} to='/home' color='primary' onClick={handleDrawerToggle}>
-                    <FlightTakeoffIcon sx={{ fontSize: 45 }} />
+                    <SvgIcon sx={{ fontSize: '3rem', width: 'auto', my: .5 }} viewBox="0 0 272 264">
+                        <LogoIcon />
+                    </SvgIcon>
                 </IconButton>
             </Toolbar>
             <Divider />

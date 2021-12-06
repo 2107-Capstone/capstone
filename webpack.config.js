@@ -22,16 +22,20 @@ module.exports = {
         }
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'file-loader',
-        options: {
-          name: '/public/logo/[name].[ext]'
-        }
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
       },
+      // {
+      //   test: /\.(jpe?g|png|gif|svg)$/i,
+      //   loader: 'file-loader',
+      //   options: {
+      //     name: 'public/images/[name].[ext]'
+      //   }
+      // },
       {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
-      },
+      }
     ]
   },
   // plugins: [
