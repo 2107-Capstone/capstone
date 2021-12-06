@@ -13,7 +13,7 @@ import SignupForm from './components/User/SignupForm';
 import AllTrips from './components/Trips/AllTrips';
 import AllFriends from './components/Friendship/AllFriends';
 import Dashboard from './components/Dashboard/Dashboard';
-import { Container } from '@mui/material';
+import { Avatar, Container } from '@mui/material';
 import AddTripFrom from './components/Trips/Form/AddTripFrom';
 import TripCalendar from './components/Calendar/TripCalendar';
 import SingleTripCalendar from './components/Calendar/SingleTripCalendar';
@@ -22,6 +22,7 @@ import TripMap from './components/Map/TripMap';
 import Notifications from './components/Notifications/Notifications'
 import Settings from './components/Settings/Settings';
 import Password from './components/Settings/Password';
+import AuthAvatar from './components/Settings/AuthAvatar';
 /**
  * COMPONENT
  */
@@ -60,6 +61,7 @@ class Routes extends Component {
             <Route exact path="/notifications" component={Notifications} />
             <Route exact path="/settings" component={Settings} />
             <Route exact path="/settings/password" component={Password} />
+            <Route exact path="/settings/authavatar" component={AuthAvatar} />
             <Redirect to="/home" />
           </Switch>
         ) : (

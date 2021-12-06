@@ -5,7 +5,7 @@ import PendingFriendRequestSent from './PendingFriendRequestSent'
 import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton, Alert } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton, Alert, Avatar } from "@mui/material"
 import PeopleIcon from '@mui/icons-material/People'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CircularLoading from '../Loading/CircularLoading'
@@ -74,8 +74,11 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
         <Grid container spacing={2} sx={{ mt: 1 }}>
             {friends.map(friend => (
                 <Grid item xs={12} sm={3} key={friend.id}>
-                    <Paper style={{width: 225, height: 100}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
+                    <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
                         <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                            <Avatar sx={{ bgcolor: 'primary.main' }} src={friend.friend.avatar}>
+                                {friend.friend.firstName[0]+friend.friend.lastName[0]}
+                            </Avatar>
                             <Typography variant='h6'>
                                 {friend.friend.username}
                             </Typography>
