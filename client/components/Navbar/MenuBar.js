@@ -1,5 +1,5 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect } from 'react'
+import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////// REDUX //////////////////////
@@ -20,15 +20,35 @@ import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoIcon from '/public/tripIcon.svg'
+import { getUserTrips } from '../../store/usertrips';
 
 
 const MenuBar = (props) => {
     const { mobileOpen, handleDrawerToggle, drawerWidth } = props
     const dispatch = useDispatch()
 
-    const handleLogout = () => {
-        dispatch(logout())
+    const handleLogout = async () => {
+        try {
+            await dispatch(logout())
+        } catch (error) {
+            console.log(error)
+        }
     }
+    const user = useSelector(state => state.auth)
+    const pendingInvites = useSelector(state => state.usertrips).filter(usertrip => usertrip.tripInvite === 'pending' && usertrip.userId === user.id) || []
+
+    useEffect(async () => {
+        try {
+            await dispatch(getUserTrips())
+        } catch (error) {
+            console.log(error)
+        }
+    }, [])
+
+    const friendNotifications = props.friendsPendingReceived.length || 0
+    const tripInvitations = pendingInvites.length || 0
+
+    const countNotifications = friendNotifications + tripInvitations
 
     const menuBarButtons = (
         <Box sx={{ px: 1 }}>
@@ -56,7 +76,7 @@ const MenuBar = (props) => {
                 <Button component={Link} to='/calendar' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
                     Calendar
                 </Button>
-                <Button component={Link} to='/notifications' onClick={handleDrawerToggle} variant='contained' startIcon={<Badge badgeContent={props.friendsPendingReceived.length} color="error" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><NotificationsIcon /></Badge>}>
+                <Button component={Link} to='/notifications' onClick={handleDrawerToggle} variant='contained' startIcon={<Badge badgeContent={countNotifications} color="error" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><NotificationsIcon /></Badge>}>
                     Notifications
                 </Button>
                 <Divider />

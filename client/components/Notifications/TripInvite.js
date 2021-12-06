@@ -1,20 +1,40 @@
-import React, { useEffect } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 
 /////////////// MATERIAL UI ///////////////////////
-import { Box, Avatar, Button, Container, Divider, IconButton, InputBase, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material'
+import { Box, Avatar, Button, Container, Divider, IconButton, InputBase, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography, useMediaQuery } from '@mui/material'
+import { useTheme } from "@emotion/react";
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 /////////////// COMPONENTS ///////////////////
 
 ////////////// STORE ////////////////
 import { getUserTrips } from '../../store'
+import { acceptInvite, rejectInvite } from "../../store/usertrips";
 
 
 const TripInvite = () => {
+    ///////////// Media Query /////////////
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('md'));
+
+    let flexdirection = 'row'
+    if (matches) {
+        flexdirection = 'column'
+    }
+    else {
+        flexdirection = 'row'
+    }
+
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(getUserTrips())
+    useEffect(async () => {
+        try {
+            await dispatch(getUserTrips())
+        } catch (error) {
+            console.log(error)
+        }
     }, [])
 
     const user = useSelector(state => state.auth)
@@ -27,55 +47,74 @@ const TripInvite = () => {
     }
 
     const invites = pendingInvites.map(invite => {
-        const friendInvite = friends.find(friend => friend.friendId === invite.sentBy * 1)
+        const friendInvite = friends.find(f => f.friendId === invite.sentBy * 1)
         if (friendInvite) {
             return { ...invite, friend: friendInvite.friend }
         }
     })
 
-    const handleInvite = (friendId) => {
-        // const invite = { tripId, userId: friendId, sentBy: user.id }
-        // dispatch(inviteFriend(invite))
+    const handleAcceptInvite = async (inviteId) => {
+        try {
+            const invite = { id: inviteId, tripInvite: 'accepted' }
+            await dispatch(acceptInvite(invite))
+        } catch (error) {
+            console.log(erro)
+        }
     }
 
-    // const handleChange = (e) => {
-    //     const value = e.target.value
-    //     setsearch(value)
-    // }
+    const handleRejectInvite = async (inviteId) => {
+        try {
+            // console.log(inviteId)
+            await dispatch(rejectInvite(inviteId))
 
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    if (invites.length === 0) {
+        return (
+            <Typography align='center' variant='h6'>
+                You do not have any trip invites at this moment!
+            </Typography>
+        )
+    }
 
     return (
-        <Box>
-            <List>
-                {/* {invitefriends.filter(friend => friend.friend.firstName.toLowerCase().startsWith(search)).map((friend, idx) => (
-                    <Fragment key={idx} >
-                        <ListItem
-                            secondaryAction={
-                                friend.tripInvite ? (friend.tripInvite === "accepted" ? (<Button disabled>
-                                    accepted
-                                </Button>) : (<Button disabled>
-                                    ...pending
-                                </Button>)) : (<Button variant='outlined' onClick={() => handleInvite(friend.friendId)}>
-                                    Invite
-                                </Button>)
-                            }
-                        >
-                            <ListItemAvatar>
-                                <Avatar>
-                                    <PersonIcon />
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={`${friend.friend.firstName}`}
-                            // secondary={friend.tripInvite==="accepted" ? 'Already on the trip' : 'pending request'}
-                            />
-                        </ListItem>
-                        <Divider variant="inset" />
-                    </Fragment >
-                ))
-                } */}
-            </List >
-        </Box >
+        <List>
+            {invites.map((invite, idx) => (
+                <Fragment key={idx}>
+                    <Box sx={{
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: `${flexdirection}`
+                    }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Avatar src={invite.friend.avatar} >
+                                {invite.friend.firstName[0] + invite.friend.lastName[0]}
+                            </Avatar>
+                            <Box sx={{ m: 1 }}>
+                                <Typography>
+                                    {invite.friend.firstName}
+                                </Typography>
+                                <Typography variant='body2'>
+                                    {`Invite to ${invite.trip.location}`}
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Box sx={{ '& button': { m: .5 }, alignSelf: 'center' }}>
+                            <Button onClick={() => handleAcceptInvite(invite.id)} startIcon={<CheckIcon />} size="small" variant='outlined' color='success'>
+                                accept
+                            </Button>
+                            <Button onClick={() => handleRejectInvite(invite.id)} startIcon={<CloseIcon />} size="small" variant='outlined' color='error'>
+                                reject
+                            </Button>
+                        </Box>
+                    </Box>
+
+                    <Divider />
+                </Fragment>
+            ))
+            }
+        </List >
     )
 }
 
