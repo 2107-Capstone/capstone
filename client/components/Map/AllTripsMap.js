@@ -78,7 +78,7 @@ export default function AllTripsMap() {
                 setMarkers(prevMarkers => [...prevMarkers,
                 {
                     time: format(parseISO(event.startTime), 'Pp'),
-                    key: event.id + Math.random().toString(16),
+                    key: event.id,
                     id: event.id,
                     lat: +event.lat,
                     lng: +event.lng,
@@ -175,7 +175,7 @@ export default function AllTripsMap() {
             {/* <Box style={{margin: 1}}> */}
                 {
                     trips.map(trip => (
-                        <Accordion sx={{ minWidth: '100%', margin: 1 }} key={trip.id + Math.random().toFixed(2)}>
+                        <Accordion sx={{ minWidth: '100%', margin: 1 }} key={trip.id}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
                                 id="trip-header"
@@ -189,7 +189,7 @@ export default function AllTripsMap() {
                             <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
                                 {
                                     trip.trip.events.map(event => (
-                                        <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
+                                        <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
 
                                         >
                                             <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>

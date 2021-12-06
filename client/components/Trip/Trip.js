@@ -48,7 +48,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const Trip = (props) => {
-    const id = + props.match.params.id
+    const id = props.match.params.id
     const dispatch = useDispatch();
 
     const { auth, categories } = useSelector(state => state);

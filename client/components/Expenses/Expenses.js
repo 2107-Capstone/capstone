@@ -18,7 +18,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 // const Expenses = ({ tripId, trip }) => {
 const Expenses = ({match}) => {
-    const tripId = +match.params.id;
+    const tripId = match.params.id;
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
     const categories = useSelector(state => state.categories);
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId));

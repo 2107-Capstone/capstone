@@ -34,7 +34,7 @@ export const Events = ({tripId}) => {
             <ol>
                 {
                   events.map(event => (
-                    <li key={event.id + Math.random().toString(16)}>
+                    <li key={event.id}>
                         ({format(parseISO(event.startTime), 'Pp')}): {event.name} at {event.location}
                         <br></br>
                         Details: {event.description}

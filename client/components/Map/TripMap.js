@@ -37,7 +37,7 @@ const tripZoom = 12;
 
 // export default function TripMap({ tripId, users }) {
 export default function TripMap({ match }) {
-    const tripId = +match.params.id;
+    const tripId = match.params.id;
     
     // const { isLoaded, loadError } = useLoadScript({
     //     googleMapsApiKey: process.env.MAP_API
@@ -90,7 +90,7 @@ export default function TripMap({ match }) {
         //   () => null
         // );
         events.forEach(event => {
-            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id + Math.random().toString(16), id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
+            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
         });
         //TODO: WHY DOESN'T FORMAT?PARSEISO WORK FOR THE USER TIME???
         users.forEach(user => {
@@ -264,7 +264,7 @@ export default function TripMap({ match }) {
             <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
                     {
                         events.map(event => (
-                            <Card className='card' key={event.id + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
+                            <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
 
                             >
                                 <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>

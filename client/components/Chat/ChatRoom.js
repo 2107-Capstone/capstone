@@ -17,7 +17,7 @@ const ChatRoom = ({trip, match}) => {
   const dispatch = useDispatch();
 
   const auth = useSelector(state => state.auth);
-  const thisTrip = trip ? trip : useSelector(state => state.trips.find(trip => trip.tripId === +id))
+  const thisTrip = trip ? trip : useSelector(state => state.trips.find(trip => trip.tripId === id))
 
   const { messages, sendMessage } = useChat(id);
   

@@ -17,7 +17,6 @@ import CircularLoading from '../Loading/CircularLoading'
 const EventForm = (props) => {
     const { trip, handleClose } = props
     const event = props.event || {}
-console.log(trip)
     const dispatch = useDispatch()
 
     const [inputs, setInputs] = useState({
