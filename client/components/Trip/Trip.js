@@ -1,80 +1,66 @@
 import React, { useEffect, useState } from 'react'
-
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import CircularLoading from '../Loading/CircularLoading'
-import TripMap from '../Map/TripMap'
-import { Participants, Events } from './tripInfo'
-import Expenses from '../Expenses/Expenses'
-import TextsmsIcon from '@mui/icons-material/Textsms';
-import { Box, Grid, Paper, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+
+/////////////// STORE /////////////////
 import { closeTrip } from '../../store'
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import ChatRoom from '../Chat/ChatRoom'
-import CardTravelIcon from '@mui/icons-material/CardTravel';
-import PeopleIcon from '@mui/icons-material/People'
-import PaidIcon from '@mui/icons-material/Paid';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import ChatIcon from '@mui/icons-material/Chat';
-import MapIcon from '@mui/icons-material/Map';
-import Avatar from '@mui/material/Avatar';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { FaBlackberry } from 'react-icons/fa'
-import SingleTripCalendar from '../Calendar/SingleTripCalendar'
+
+/////////////// COMPONENTS /////////////////
+import CircularLoading from '../Loading/CircularLoading'
 import PieChart from '../Expenses/PieChart'
 import EventForm from '../Map/EventForm'
 import EventsTable from '../Events/EventsTable'
-import AddIcon from '@mui/icons-material/Add';
 import AddExpense from '../Expenses/AddExpense'
-import { format, formatISO, parseISO, isAfter, isBefore } from "date-fns";
 import MessagesTable from '../Chat/MessagesTable'
-import LockClockIcon from '@mui/icons-material/LockClock';
-import { styled, alpha } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import EditIcon from '@mui/icons-material/Edit';
-import Divider from '@mui/material/Divider';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import InviteToTrip from './Form/InviteToTrip'
 
+/////////////// MUI /////////////////
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography'
+import { styled, alpha } from '@mui/material/styles';
+
+/////////////// ICONS /////////////////
+import AddIcon from '@mui/icons-material/Add';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import CardTravelIcon from '@mui/icons-material/CardTravel';
+import ChatIcon from '@mui/icons-material/Chat';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import MapIcon from '@mui/icons-material/Map';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import PaidIcon from '@mui/icons-material/Paid';
+import PeopleIcon from '@mui/icons-material/People'
+
+import { format, formatISO, parseISO, isAfter, isBefore } from "date-fns";
+
 const Trip = (props) => {
-    const id = props.match.params.id
     const dispatch = useDispatch();
+    const id = props.match.params.id
 
     const { auth, categories } = useSelector(state => state);
 
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
     let events = useSelector(state => state.events.filter(event => event.tripId === id));
     let messages = useSelector(state => state.messages.filter(message => message.tripId === id));
+    
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
-
-    // if (!trip) return <CircularLoading />
-    if (!trip || !events || !messages || !tripExpenses) return <CircularLoading />
-    //     if (!trip) return '...loading'
-    //TODO: why does    trip = trip.trip    not allow refresh?
-    // console.log('TRIPPPPPPPPPPPPP', trip)
     const totalExpenses = tripExpenses.reduce((total, expense) => {
         return total + +expense.amount
     }, 0);
-    // const userTotal = tripExpenses.reduce((total, expense) => {
-    //     if (expense.paidById === auth.id) {
-    //         total += +expense.amount
-    //     }
-    //     return total;
-    // }, 0);
+    
+    const users = trip.trip.userTrips;
 
-    // if (!trip) return <CircularLoading />
+    if (!trip || !events || !messages || !tripExpenses || !users) {
+        return <CircularLoading />
+    }
+    
     const handleCloseTrip = async () => {
         try {
             console.log(trip)
@@ -84,7 +70,6 @@ const Trip = (props) => {
         }
     }
 
-    const users = trip.trip.userTrips;
 
     // let events = trip.trip.events.sort((a,b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
     events = events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
