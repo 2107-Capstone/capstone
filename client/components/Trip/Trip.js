@@ -269,7 +269,7 @@ const Trip = (props) => {
                                         handleCloseMenu();
                                         setOpen(true);
                                         setForm('event')
-                                    }} className='headingButton' style={styles.headingButton}>
+                                    }} >
                                         Add Event
                                     </Button>
                                 </MenuItem>
@@ -283,7 +283,7 @@ const Trip = (props) => {
                                             handleCloseMenu();
                                             setOpen(true);
                                             setForm('expense')
-                                        }} className='headingButton' style={styles.headingButton}>
+                                        }} >
                                             Add Expense
                                         </Button>
                                     </MenuItem>
@@ -296,7 +296,7 @@ const Trip = (props) => {
                                             handleCloseMenu();
                                             setOpen(true);
                                             setForm('invitefriend')
-                                        }} className='headingButton' style={styles.headingButton}>
+                                        }} >
                                             Invite Friend
                                         </Button>
                                     </MenuItem>
@@ -307,7 +307,7 @@ const Trip = (props) => {
                                     <MenuItem>
                                         {
                                             trip.trip.userId === auth.id ? 
-                                                <Button size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained'  onClick={handleCloseTrip} className='headingButton' style={styles.headingButton}>
+                                                <Button size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained'  onClick={handleCloseTrip} >
                                                     Mark Trip as Closed
                                                 </Button>
                                             :   <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  style={{color: 'grey'}} disabled>
