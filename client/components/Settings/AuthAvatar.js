@@ -1,30 +1,16 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux'
-import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { updateUser, me, authenticate } from '../../store'
+import { updateUser, me } from '../../store'
 //////////// MUI //////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import VpnKeyIcon from '@mui/icons-material/VpnKey';
-import MuiPhoneNumber from 'material-ui-phone-number';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Input from '@mui/material/Input';
 import Alert from '@mui/material/Alert';
 
 class AuthAvatar extends Component {
@@ -37,7 +23,6 @@ class AuthAvatar extends Component {
     this.save = this.save.bind(this)
     this.setOpen = this.setOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
-
   }
 
   async save (ev) {
@@ -74,13 +59,30 @@ class AuthAvatar extends Component {
       })
       reader.readAsDataURL(file)
     })
+
+    let fileUpload = document.getElementById('fileUpload')
+    let fileSizeLimit = document.getElementById('fileSizeLimit')
+    
+    fileUpload.addEventListener('change', () => {
+      let files = fileUpload.files
+      if (files.length > 0) {
+        if (files[0].size > 5*1024*1024) {
+          fileSizeLimit.innerText = 'File size cannot exceed 5MB'
+          return
+        }
+      }
+      fileSizeLimit.innerText = ''
+    })
   }
+
+  
 
   render () {
     const { avatar, open } = this.state
     const { auth } = this.props
     const { save, handleClose } = this
-
+    let fileSizeLimit = document.getElementById('fileSizeLimit')
+    
     return (
       <Container component="main" maxWidth="xs">
       <Button component={Link} to='/settings' variant='outlined' color='info' startIcon={<SettingsIcon />}>
@@ -90,7 +92,7 @@ class AuthAvatar extends Component {
         {auth.firstName[0]+auth.lastName[0]}
       </Avatar>
       {
-        !!avatar && <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={avatar} />
+        !!avatar && !fileSizeLimit.innerText && <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={avatar} />
       }
       <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
       <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
@@ -109,17 +111,20 @@ class AuthAvatar extends Component {
               >
                 Upload File
                 <input
+                  id='fileUpload'
                   type="file"
                   hidden
                   ref={ el => this.el = el}
+                  accept="image/*"
                 />
               </Button>
+              <span id='fileSizeLimit'></span>
               </FormControl>
             </Grid>
             <Button
               type="save"
               variant="contained"
-              disabled={!avatar}
+              disabled={ !avatar || !!fileSizeLimit.innerText }
               sx={{ mt: 2, mb: 2 }}
               xs={12}
             >

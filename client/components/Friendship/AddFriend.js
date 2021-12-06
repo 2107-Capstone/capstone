@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { createUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography, TextField, Snackbar, Alert } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography, TextField, Snackbar, Alert, Avatar } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import PendingIcon from '@mui/icons-material/Pending';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -59,8 +59,11 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
             })
             .map(user => (
                 <Grid item xs={12} sm={3} key={user.id}>
-                    <Paper style={{width: 225, height: 100}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
+                    <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
                         <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                            <Avatar sx={{ bgcolor: 'primary.main' }} src={user.avatar}>
+                                {user.firstName[0]+user.lastName[0]}
+                            </Avatar>
                             <Typography variant='h6'>
                                 {user.username}
                             </Typography>
