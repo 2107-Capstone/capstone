@@ -3,6 +3,7 @@ import { connect, useSelector, useDispatch } from 'react-redux'
 import { Link } from "react-router-dom";
 import { parseISO, format } from 'date-fns';
 import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
+import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -24,8 +25,8 @@ import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps
 import mapStyles from './mapStyles';
 
 const mapContainerStyle = {
-    height: "70vh",
-    width: "60vw",
+    height: "95vh",
+    width: "95vw",
 };
 
 const options = {
@@ -92,7 +93,7 @@ export default function TripMap({ match }) {
 
         users.forEach(user => {
             if (user.user.lat) {
-                setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng }])
+                setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng, avatar: user.user.avatar ? user.user.avatar : '/images/person.jpg', firstName: user.user.firstName, lastName: user.user.lastName  }])
             }
         })
         // users.forEach(user => {
@@ -100,8 +101,6 @@ export default function TripMap({ match }) {
         // })
         
     }, [tripId, update])
-
-    //TODO: Add form to add new event after clicking on map and getting lat/lng
 
 
 
@@ -130,15 +129,29 @@ export default function TripMap({ match }) {
                     position={{ lat: marker.lat, lng: marker.lng }}
                     name={marker.name}
                     onClick={() => { setSelected(marker) }}
+                    // icon={{
+                    //     url: marker.avatar,
+                    //     origin: new google.maps.Point(0,0),
+                    //     size: new google.maps.Size(20,32),
+                    //     anchor: new google.maps.Point(0, 32)
+                    // }}
+                    // icon={
+                    //     <Avatar 
+                    //         sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
+                    //         src={marker.avatar}
+                    //         >
+                    //         {marker.firstName[0]+marker.lastName[0]}
+                    //     </Avatar>
+                    // }
                     icon={{
-                        url: '/search-people.svg',
-                        color: 'green'
+                        url: '/person.svg',
+                    
                     }}
                 />
             )
         })
     }
-    //TODO: tracking markers are repeating
+    
     const userLocation = useRef(null);
     const [status, setStatus] = useState('initial')
     const handleLocate = async () => {
@@ -151,10 +164,10 @@ export default function TripMap({ match }) {
                 }
                 // await setTrackingMarkers(trackingMarkers.filter(marker => marker.id !== auth.id), { key: auth.id + Math.random().toString(16), id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') });
                 let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-                console.log(usersMarker)
+                // console.log(usersMarker)
                 usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
                 const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
-                console.log(usersMarker)
+                // console.log(usersMarker)
                 await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
                 panTo({
                     lat: position.coords.latitude,
@@ -191,6 +204,7 @@ export default function TripMap({ match }) {
 
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
+    const [selectedUser, setSelectedUser] = useState('');
     const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
 
     const handleClose = () => {
@@ -207,11 +221,16 @@ export default function TripMap({ match }) {
         // ev.stopPropagation()
         setSelected(marker);
     }
-    const handleClick2 = (id) => {
+    const handleClick2 = async(id, username) => {
         // setUpdate(prevUpdate => prevUpdate + Math.random())
         const trackingMarker = trackingMarkers.find(marker => marker.id === id);
         // ev.stopPropagation()
-        trackingMarker ? setSelected(trackingMarker) : setOpenNoLocationAlert(true)
+        if (trackingMarker) {
+            setSelected(trackingMarker)
+        } else {
+            await setSelectedUser(username)
+            setOpenNoLocationAlert(true)
+        }
     }
     const [eventToEdit, setEventToEdit] = useState({});
 
@@ -243,7 +262,7 @@ export default function TripMap({ match }) {
             </Snackbar>
             <Snackbar open={openNoLocationAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={2000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity='info' sx={{ width: '100%' }}>
-                    User is not sharing location.
+                    {selectedUser} is not sharing location.
                 </Alert>
             </Snackbar>
             <Dialog open={open} onClose={handleClose}>
@@ -267,8 +286,68 @@ export default function TripMap({ match }) {
             </Tooltip>
 
             <Locate panTo={panTo} />
-            <div style={{ display: 'flex' }}>
-            <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box display='flex' justifyContent='center'>
+                        {
+                            users.map(user => (
+                                
+                                    <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
+                                        sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
+                                    >
+                                        <Avatar 
+                                            sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
+                                            src={user.user.avatar}
+                                            onClick={() => handleClick2(user.userId, user.user.username)}
+                                            >
+                                            {user.user.firstName[0]+user.user.lastName[0]}
+                                        </Avatar>
+                                        <Typography variant='caption'>
+                                            {user.user.username}
+                                        </Typography>
+                                    </Box>
+                              
+                            ))
+                        }
+                    </Box>
+                    <GoogleMap
+                        id='map'
+                        options={options}
+                        onLoad={onMapLoad}
+                        zoom={tripZoom}
+                        // zoom={tripId ? 8 : 3}
+                        mapContainerStyle={mapContainerStyle}
+                        style={mapStyles}
+                        center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
+                    >
+                        {
+                            trip.trip.events.length ? <DisplayMarkers /> : ''
+                        }
+                        <DisplayTrackingMarkers />
+
+                        {
+                            selected ?
+                            (
+                                <InfoWindow
+                                    open={open}
+                                    position={{ lat: +selected.lat, lng: +selected.lng }}
+                                    onCloseClick={() => {
+                                        setSelected(null);
+                                    }}
+                                >
+                                    <div style={{ margin: '0 1rem .5rem 1rem' }}>
+                                        <Typography variant={'subtitle1'}>
+                                            {selected.name}
+                                        </Typography>
+                                        <Typography variant={'caption'}>
+                                            {selected.time}
+                                        </Typography>
+                                    </div>
+                                </InfoWindow>
+                            )
+                                : null
+                        }
+                    </GoogleMap>
+                    <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
                     {
                         events.map(event => (
                             <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
@@ -303,66 +382,28 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
-                <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
-                    {
-                        users.map(user => (
-                            <Card className='card' key={user.userId} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
-
-                            >
-                                <CardContent sx={{ mb: 0 }} onClick={() => handleClick2(user.userId)}>
-                                    {/* <CardContent sx={{ mb: 0}} > */}
-                                    <Typography gutterBottom>
-                                        {user.user.username}
-                                    </Typography>
-                                    <Typography color="text.secondary" variant="subtitle2" sx={{ mb: 0 }}>
-                                        {format(parseISO(user.user.time), 'Pp')}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        ))
-                    }
-                </Box>
-                <div>
-                    <GoogleMap
-                        id='map'
-                        options={options}
-                        onLoad={onMapLoad}
-                        zoom={tripZoom}
-                        // zoom={tripId ? 8 : 3}
-                        mapContainerStyle={mapContainerStyle}
-                        style={mapStyles}
-                        center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
-                    >
-                        <DisplayMarkers />
-                        <DisplayTrackingMarkers />
-
-                        {
-                            selected ?
-                            (
-                                <InfoWindow
-                                    open={open}
-                                    position={{ lat: +selected.lat, lng: +selected.lng }}
-                                    onCloseClick={() => {
-                                        setSelected(null);
-                                    }}
-                                >
-                                    <div style={{ margin: '0 1rem .5rem 1rem' }}>
-                                        <Typography variant={'subtitle1'}>
-                                            {selected.name}
-                                        </Typography>
-                                        <Typography variant={'caption'}>
-                                            {selected.time}
-                                        </Typography>
-                                    </div>
-                                </InfoWindow>
-                            )
-                                : null
-                        }
-                    </GoogleMap>
-                </div>
                 
             </div>
         </>
     );
 }
 
+// <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
+//                         {
+//                             users.map(user => (
+//                                 <Card className='card' key={user.userId} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
+
+//                                 >
+//                                     <CardContent sx={{ mb: 0 }} onClick={() => handleClick2(user.userId, user.user.username)}>
+//                                         {/* <CardContent sx={{ mb: 0}} > */}
+//                                         <Typography gutterBottom>
+//                                             {user.user.username}
+//                                         </Typography>
+//                                         <Typography color="text.secondary" variant="subtitle2" sx={{ mb: 0 }}>
+//                                             {format(parseISO(user.user.time), 'Pp')}
+//                                         </Typography>
+//                                     </CardContent>
+//                                 </Card>
+//                             ))
+//                         }
+// </Box>
