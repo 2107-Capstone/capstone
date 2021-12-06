@@ -20,9 +20,9 @@ const EventsTable = ({events}) => {
     <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="events table">
             <colgroup>
-                <col style={{width: '5%'}} />
-                <col style={{width: '5%'}} />
-                <col style={{width: '90%'}} />
+                <col style={{width: '10%'}} />
+                <col style={{width: '10%'}} />
+                <col style={{width: '80%'}} />
             </colgroup>
             <TableHead>
                 <TableRow>

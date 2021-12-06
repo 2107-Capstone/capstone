@@ -53,10 +53,15 @@ const ChatRoom = ({trip, match}) => {
               ({format(parseISO(message.dateSent), 'Pp')})
             </Typography>
           <Box display='flex' alignItems='center'>
-            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.sentBy.avatar} >
-                {message.sentBy.firstName[0]+message.sentBy.lastName[0]}
-            </Avatar>
-            <Typography>
+            <Box display='flex' flexDirection='column' alignItems='center'>
+              <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0}} src={message.sentBy.avatar} >
+                  {message.sentBy.firstName[0]+message.sentBy.lastName[0]}
+              </Avatar>
+              <Typography variant='caption'>
+                {message.sentBy.username}
+              </Typography> 
+            </Box>
+            <Typography marginLeft={1}>
               {message.content}
             </Typography> 
           </Box>

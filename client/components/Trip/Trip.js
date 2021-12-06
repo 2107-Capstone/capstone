@@ -305,6 +305,33 @@ const Trip = (props) => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
+                    <Box bgcolor="primary.main" sx={{display: 'flex', justifyContent: 'center'}}>
+                        <PeopleIcon fontSize='medium' />
+                        <Typography variant='h6'>
+                            &nbsp;Trip Friends
+                        </Typography>
+                    </Box>
+                    <Box display='flex' justifyContent='center'>
+                        {
+                            trip.trip.userTrips.map(user => (
+                                <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
+                                    sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
+                                >
+                                    <Avatar 
+                                        sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
+                                        src={user.user.avatar}
+                                        >
+                                        {user.user.firstName[0]+user.user.lastName[0]}
+                                    </Avatar>
+                                    <Typography variant='caption'>
+                                        {user.user.username}
+                                    </Typography>
+                                </Box>
+                            ))
+                        }
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={6} >
                     <Box bgcolor="primary.main"  sx={{display: 'flex'}}>
                         <Box >
                             <Button component={Link} to={`${trip.tripId}/calendar`} size='large' color='info' startIcon={<OpenInNewIcon />} className='expand' style={styles.expand}>
@@ -361,33 +388,7 @@ const Trip = (props) => {
                         }
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={6} >
-                    <Box bgcolor="primary.main" sx={{display: 'flex', justifyContent: 'center'}}>
-                        <PeopleIcon fontSize='medium' />
-                        <Typography variant='h6'>
-                            &nbsp;Trip Friends
-                        </Typography>
-                    </Box>
-                    <Box display='flex' justifyContent='center'>
-                        {
-                            trip.trip.userTrips.map(user => (
-                                <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
-                                    sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
-                                >
-                                    <Avatar 
-                                        sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
-                                        src={user.user.avatar}
-                                        >
-                                        {user.user.firstName[0]+user.user.lastName[0]}
-                                    </Avatar>
-                                    <Typography variant='caption'>
-                                        {user.user.username}
-                                    </Typography>
-                                </Box>
-                            ))
-                        }
-                    </Box>
-                </Grid>
+                
             </Grid>
         </div>
     )
