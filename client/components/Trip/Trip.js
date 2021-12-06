@@ -180,7 +180,7 @@ const Trip = (props) => {
             <Grid container rowSpacing={2} columnSpacing={2} >
                 <Grid item xs={12}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
-                        <Box sx={{ display: 'flex', alignSelf: 'center', margin: 2 }}>
+                        <Box sx={{ display: 'flex', alignSelf: 'center', margin: 2, marginBottom: 0 }}>
                             <CardTravelIcon fontSize='medium' />
                             <Typography variant='h5'>
                                 &nbsp;{trip.trip.name} 
@@ -189,6 +189,14 @@ const Trip = (props) => {
                                         " (Trip Closed)"
                                 }
                             </Typography>
+                        </Box>
+                        <Box display='flex' justifyContent='center' alignItems='center'>
+                            <Typography >
+                                Trip Creator: {trip.trip.user.username}
+                            </Typography>
+                            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={trip.trip.user.avatar} >
+                                {trip.trip.user.firstName[0]+trip.trip.user.lastName[0]}
+                            </Avatar>
                         </Box>
                         <Box style={{display: 'flex', flexDirection: 'row', textAlign:'space-evenly'}} >
                             <Box>
