@@ -368,22 +368,25 @@ const Trip = (props) => {
                             &nbsp;Trip Friends
                         </Typography>
                     </Box>
-                    
-                    {trip.trip.userTrips.map(user => (
-                    <Paper  key={user.id} sx={{ margin: '1rem', height: 'fit-content', ':hover': { boxShadow: (theme) => theme.shadows[5] } }}>
-                        <Box sx={{alignItems: 'center'}}>
-                            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={user.user.avatar} >
-                                {user.user.firstName[0]+user.user.lastName[0]}
-                            </Avatar>
-                            {/* <Avatar alt={user.user.username} src="https://cdn3.iconfinder.com/data/icons/avatars-flat/33/man_5-512.png" /> */}
-                        </Box>
-                        <Box sx={{ color: 'inherit', alignItems: 'center'}}>
-                            <Typography variant='h6'>
-                                {user.user.username}
-                            </Typography>
-                        </Box>
-                    </Paper>
-                    ))}
+                    <Box display='flex' justifyContent='center'>
+                        {
+                            trip.trip.userTrips.map(user => (
+                                <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
+                                    sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
+                                >
+                                    <Avatar 
+                                        sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
+                                        src={user.user.avatar}
+                                        >
+                                        {user.user.firstName[0]+user.user.lastName[0]}
+                                    </Avatar>
+                                    <Typography variant='caption'>
+                                        {user.user.username}
+                                    </Typography>
+                                </Box>
+                            ))
+                        }
+                    </Box>
                 </Grid>
             </Grid>
         </div>
