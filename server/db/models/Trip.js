@@ -35,12 +35,6 @@ const Trip = db.define('trip', {
   },
   lng: {
     type: DECIMAL
-  },
-  creatorId: {
-    type: INTEGER,
-  },
-  creatorName: {
-    type: STRING
   }
 })
 

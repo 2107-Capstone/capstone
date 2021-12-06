@@ -23,8 +23,7 @@ const AddTripFrom = () => {
         endTime: new Date(),
         lat: 40.7127753,
         lng: -74.0059728,
-        creatorId: auth.id,
-        creatorName: auth.username
+        userId: auth.id,
     })
         
     let googlePlace;

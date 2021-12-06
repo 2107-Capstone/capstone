@@ -29,6 +29,9 @@ UserTrip.belongsTo(Trip)
 User.hasMany(UserTrip)
 Trip.hasMany(UserTrip)
 
+Trip.belongsTo(User)
+User.hasMany(Trip)
+
 Event.belongsTo(Trip)
 Trip.hasMany(Event)
 

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { getTrips } from "../../store";
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Chip, Container, Divider, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material";
+import { Avatar, Box, Button, Chip, Container, Divider, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material";
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AddIcon from '@mui/icons-material/Add';
@@ -125,9 +125,6 @@ const AllTrips = ({match}) => {
                                         Location: {trip.trip.location}
                                     </Typography>
                                     <Typography >
-                                        Trip Creator: {trip.trip.creatorName}
-                                    </Typography>
-                                    <Typography >
                                         Start Date: {format(parseISO(trip.trip.startTime), 'P')}
                                     </Typography>
                                     <Typography>
@@ -136,6 +133,14 @@ const AllTrips = ({match}) => {
                                     <Typography>
                                         Friends: {trip.trip.userTrips.length}
                                     </Typography>
+                                    <Box display='flex' justifyContent='center' alignItems='center'>
+                                        <Typography >
+                                            Trip Creator: {trip.trip.user.username}
+                                        </Typography>
+                                        <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={trip.trip.user.avatar} >
+                                            {trip.trip.user.firstName[0]+trip.trip.user.lastName[0]}
+                                        </Avatar>
+                                    </Box>
                                 </Box>
                             </Box>
                             <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>

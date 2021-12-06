@@ -274,12 +274,12 @@ const Trip = (props) => {
                                         </MenuItem>
                                         <MenuItem>
                                             {
-                                                trip.trip.creatorId === auth.id ? 
+                                                trip.trip.userId === auth.id ? 
                                                     <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  onClick={handleCloseTrip} className='headingButton' style={styles.headingButton}>
                                                         Mark Trip as Closed
                                                     </Button>
                                                 :   <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  style={{color: 'grey'}} disabled>
-                                                        Trip creator ({trip.trip.creatorName}) can close this trip
+                                                        {trip.trip.user.username} can close this trip
                                                     </Button>
                                             }
                                         </MenuItem>

@@ -23,6 +23,10 @@ router.get('/', async (req, res, next) => {
             model: Trip,
             include: [
               {
+                model: User,
+                attributes: ['id', 'username', 'avatar', 'firstName', 'lastName']
+              },
+              {
                 model: Message,
                 include: {
                   model: User,
@@ -88,13 +92,19 @@ router.post('/', isLoggedIn, async (req, res, next) => {
       include: [
         {
           model: Trip,
-          include: [{
-            model: UserTrip,
-            include: {
+          include: [
+            {
               model: User,
-              attributes: ['id', 'username']
+              attributes: ['id', 'username', 'avatar', 'firstName', 'lastName']
+            },
+            {
+              model: UserTrip,
+              include: {
+                model: User,
+                attributes: ['id', 'username']
+              }
             }
-          }]
+          ]
         }
       ]
     })
@@ -124,11 +134,15 @@ router.put('/:tripId', async (req, res, next) => {
           model: Trip,
           include: [
             {
+              model: User,
+              attributes: ['id', 'username', 'avatar', 'firstName', 'lastName']
+            },
+            {
               model: Message,
               include: {
                 model: User,
                 as: 'sentBy',
-                attributes: ['id', 'username']
+                attributes: ['id', 'username', 'avatar']
               }
             },
             //included this to possibly simplify finding participants in a trip
