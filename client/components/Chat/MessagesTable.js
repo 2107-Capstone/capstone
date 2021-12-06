@@ -19,14 +19,14 @@ const MessagesTable = ({messages}) => {
                 <col style={{width: '5%'}} />
                 <col style={{width: '5%'}} />
                 <col style={{width: '10%'}} />
-                <col style={{width: '90%'}} />
+                <col style={{width: '80%'}} />
             </colgroup>
             <TableHead>
                 <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Sender</TableCell>
-                    <TableCell>Message</TableCell>
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Date</TableCell>
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Time</TableCell>
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Sender</TableCell>
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Message</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>

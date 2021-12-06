@@ -90,7 +90,7 @@ const AllTrips = ({ match }) => {
                     {
                         checked ? '' :
                             <Box style={{textAlign:'center'}} >
-                                <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '30%'}}>
+                                <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '40%'}}>
                                     Create Trip
                                 </Button>
                             </Box>

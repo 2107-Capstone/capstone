@@ -25,10 +25,10 @@ const EventsTable = ({events}) => {
                 <col style={{width: '80%'}} />
             </colgroup>
             <TableHead>
-                <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Event</TableCell>
+                <TableRow >
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Date</TableCell>
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Time</TableCell>
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Event</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
