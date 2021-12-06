@@ -92,6 +92,8 @@ const Trip = (props) => {
 
     messages = messages.sort((a,b) => isBefore(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     messages.length > 5 ? messages.length = 5 : ''
+    messages = messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    
 
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
@@ -288,7 +290,7 @@ const Trip = (props) => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
-                    <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
+                    <Box bgcolor="primary.main"  sx={{display: 'flex'}}>
                         <Box >
                             <Button component={Link} to={`${trip.tripId}/calendar`} size='large' color='info' startIcon={<OpenInNewIcon />} className='expand'  style={styles.expand}>
                             </Button>
@@ -303,7 +305,7 @@ const Trip = (props) => {
                     <EventsTable events={events}/>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
-                    <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
+                    <Box bgcolor="primary.main" sx={{display: 'flex'}}>
                         <Box >
                             <Button component={Link} to={`${trip.tripId}/chat`} size='large' color='info' startIcon={<OpenInNewIcon />} className='expand' style={styles.expand}>
                             </Button>
@@ -318,12 +320,12 @@ const Trip = (props) => {
                     <MessagesTable messages={messages} />
                 </Grid>    
                 <Grid item xs={12} sm={12} md={12} lg={6} >
-                    <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
+                    <Box bgcolor="primary.main" sx={{display: 'flex'}}>
                         <Box >
                             <Button component={Link} to={`${trip.tripId}/expenses`} size='large' color='info' startIcon={<OpenInNewIcon />} className='expand' style={styles.expand}>
                             </Button>
                         </Box>
-                        <Box style={styles.headingIcon}>
+                        <Box style={styles.headingIcon} bgcolor='primary.main'>
                             <PaidIcon fontSize='medium' />
                             <Typography variant='h6'>
                                 &nbsp;Expenses Snapshot
@@ -345,7 +347,7 @@ const Trip = (props) => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6} >
-                    <Box sx={{display: 'flex', backgroundColor: 'cornsilk'}}>
+                    <Box bgcolor="primary.main" sx={{display: 'flex', justifyContent: 'center'}}>
                         <PeopleIcon fontSize='medium' />
                         <Typography variant='h6'>
                             &nbsp;Trip Friends
@@ -390,7 +392,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'cornsilk',
+        backgroundColor: 'primary.main',
         flexGrow: 1,
     },
 

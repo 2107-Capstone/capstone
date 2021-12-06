@@ -38,10 +38,11 @@ const ChatRoom = ({trip, match}) => {
 
   useEffect(scrollToBottom, [messages])
 
-  let storeMessages = useSelector(state => state.messages.filter(message => message.tripId === +id).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1));
+  let storeMessages = useSelector(state => state.messages.filter(message => message.tripId === id).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1));
   storeMessages.forEach(message => message.ownedByCurrentUser = (message.sentById === auth.id));
 
   const DisplayStoreMessages = () => {
+    
     return storeMessages.filter(message => isAfter(parseISO(timeOpened), parseISO(message.dateSent))).map((message) => (
       <li
         key={message.id + Math.random().toString(16)}
@@ -151,7 +152,9 @@ const styles = {
     bottom: 0,
     display: 'flex',
     flexDirection: 'column',
-    margin: '16px'
+    margin: '16px',
+    maxHeight: 800, 
+    overflow: 'auto' 
   },
   roomName: {
     marginTop: 0,
@@ -199,7 +202,7 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
+    color: 'darkslategrey',
     backgroundColor: '#F7C409',
     marginLeft: 'auto',
     fontStyle: 'italic'
@@ -220,7 +223,7 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
+    color: 'darkslategrey',
     backgroundColor: '#3BBB67',
     marginRight: 'auto',
     fontStyle: 'italic'
