@@ -92,7 +92,7 @@ class AuthAvatar extends Component {
         {auth.firstName[0]+auth.lastName[0]}
       </Avatar>
       {
-        !!avatar && <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={avatar} />
+        !!avatar && !fileSizeLimit.innerText && <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={avatar} />
       }
       <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
       <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
