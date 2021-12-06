@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { deleteUserFriend, approveUserFriend, createUserFriend, getFriends, getFriendsPendingReceived } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, ButtonGroup, Grid, Paper, Typography, Snackbar, Alert } from "@mui/material"
+import { Box, Button, ButtonGroup, Grid, Paper, Typography, Snackbar, Alert, Avatar } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 
@@ -62,8 +62,11 @@ export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUse
         <Grid container spacing={2} sx={{ mt: 1 }}>
             {friendsPendingReceived.map(friendPendingReceived => (
                 <Grid item xs={12} sm={3} key={friendPendingReceived.id}>
-                    <Paper style={{width: 225, height: 100}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] }}}>
+                    <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] }}}>
                         <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                            <Avatar sx={{ bgcolor: 'primary.main' }} src={friendPendingReceived.user.avatar}>
+                                {friendPendingReceived.user.firstName[0]+friendPendingReceived.user.lastName[0]}
+                            </Avatar>
                             <Typography variant='h6'>
                                 {friendPendingReceived.user.username}
                             </Typography>

@@ -1,30 +1,16 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux'
-import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { updateUser, me, authenticate } from '../../store'
+import { updateUser, me } from '../../store'
 //////////// MUI //////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import VpnKeyIcon from '@mui/icons-material/VpnKey';
-import MuiPhoneNumber from 'material-ui-phone-number';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Input from '@mui/material/Input';
 import Alert from '@mui/material/Alert';
 
 class AuthAvatar extends Component {
@@ -37,7 +23,6 @@ class AuthAvatar extends Component {
     this.save = this.save.bind(this)
     this.setOpen = this.setOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
-
   }
 
   async save (ev) {
@@ -112,6 +97,7 @@ class AuthAvatar extends Component {
                   type="file"
                   hidden
                   ref={ el => this.el = el}
+                  accept="image/*"
                 />
               </Button>
               </FormControl>

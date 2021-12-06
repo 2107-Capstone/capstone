@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { deleteUserFriend, getFriends, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography, Snackbar, Alert } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography, Snackbar, Alert, Avatar } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close'
 
 
@@ -38,8 +38,11 @@ export const PendingFriendRequestSent = ({friendsPendingSent, deleteUserFriend, 
         <Grid container spacing={2} sx={{ mt: 1 }}>
             {friendsPendingSent.map(friendPendingSent => (
                 <Grid item xs={12} sm={3} key={friendPendingSent.id}>
-                    <Paper style={{width: 225, height: 100}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
+                    <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
                         <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                            <Avatar sx={{ bgcolor: 'primary.main' }} src={friendPendingSent.friend.avatar}>
+                                {friendPendingSent.friend.firstName[0]+friendPendingSent.friend.lastName[0]}
+                            </Avatar>
                             <Typography variant='h6'>
                                 {friendPendingSent.friend.username}
                             </Typography>

@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
 const ejs = require('ejs')
+const bodyParser = require('body-parser');
 
 /////// use ejs to render google api key for client side ////////////
 app.engine('html', ejs.renderFile)
@@ -17,8 +18,7 @@ app.use(morgan('dev'))
 app.use(cors())
 
 // body parsing middleware
-app.use(express.json())
-
+app.use(express.json({limit: '50mb'}))
 
 // auth and api routes
 app.use('/auth', require('./auth'))
