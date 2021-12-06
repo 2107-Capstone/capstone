@@ -55,18 +55,9 @@ const InviteToTrip = (props) => {
         dispatch(inviteFriend(invite))
     }
 
-    // let filteredFriends = [...inviteFriend]
-    // const filter = (value) => {
-    //     const friends = invitefriends.filter(friend => friend.friend.firstName.toLowerCase().startsWith(value))
-    //     filteredFriends = [...friends]
-    // }
-
     const handleChange = (e) => {
-        // const name = e.target.name
         const value = e.target.value
         setsearch(value)
-
-        // filter(search)
     }
 
     return (
@@ -104,8 +95,8 @@ const InviteToTrip = (props) => {
                             }
                         >
                             <ListItemAvatar>
-                                <Avatar>
-                                    <PersonIcon />
+                                <Avatar src={friend.friend.avatar} >
+                                    {friend.friend.firstName[0] + friend.friend.lastName[0]}
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
