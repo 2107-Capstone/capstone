@@ -51,9 +51,6 @@ export default function TripMap({ match }) {
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
     let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
     
-    
-    
-    
     if (!trip || !events) {
         return <CircularLoading />
     } 
@@ -76,7 +73,7 @@ export default function TripMap({ match }) {
     useEffect(() => {
         
         setMarkers(prevMarkers => []);
-        // setTrackingMarkers(prevTrackingMarkers => []);
+        setTrackingMarkers(prevTrackingMarkers => []);
 
         // navigator.geolocation.getCurrentPosition(
         //     async (position) => {
@@ -92,18 +89,23 @@ export default function TripMap({ match }) {
         events.forEach(event => {
             setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
         });
-        //TODO: WHY DOESN'T FORMAT?PARSEISO WORK FOR THE USER TIME???
+
         users.forEach(user => {
-            setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId + Math.random().toString(16), id: user.userId, lat: +user.user.lat, lng: +user.user.lng }])
+            if (user.user.lat) {
+                setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng }])
+            }
         })
-        //TODO: set tracking markers for users in this trip
+        // users.forEach(user => {
+        //     setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng }])
+        // })
+        
     }, [tripId, update])
 
     //TODO: Add form to add new event after clicking on map and getting lat/lng
 
 
 
-    const displayMarkers = () => {
+    const DisplayMarkers = () => {
         console.log('markers', markers)
         return markers.map((marker) => {
             return (
@@ -118,7 +120,7 @@ export default function TripMap({ match }) {
             )
         })
     }
-    const displayTrackingMarkers = () => {
+    const DisplayTrackingMarkers = () => {
         console.log('trackingmarkers', trackingMarkers)
         return trackingMarkers.map((marker) => {
             return (
@@ -132,14 +134,6 @@ export default function TripMap({ match }) {
                         url: '/search-people.svg',
                         color: 'green'
                     }}
-
-                // icon={{
-                //     // url: `http://google.com/mapfiles/ms/micons/man.png`
-                //     url: `http://labs.google.com/mapfiles/kml/pal4/icon20.png`,
-                //     // origin: new window.google.maps.Point(0, 0),
-                //     // anchor: new window.google.maps.Point(10, 10),
-                //     // scaledSize: new window.google.maps.Size(20, 20),
-                // }}
                 />
             )
         })
@@ -156,7 +150,12 @@ export default function TripMap({ match }) {
                     lng: position.coords.longitude
                 }
                 // await setTrackingMarkers(trackingMarkers.filter(marker => marker.id !== auth.id), { key: auth.id + Math.random().toString(16), id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') });
-                await setTrackingMarkers([...trackingMarkers, { id: auth.id, key: auth.id + Math.random().toString(16), lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
+                let usersMarker = trackingMarkers.find(m => m.id === auth.id);
+                console.log(usersMarker)
+                usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
+                const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
+                console.log(usersMarker)
+                await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
                 panTo({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -192,24 +191,27 @@ export default function TripMap({ match }) {
 
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
+    const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
+
     const handleClose = () => {
         setOpen(false);
         setEventToEdit({})
         setOpenAlert(false);
+        setOpenNoLocationAlert(false);
         setUpdate(prevUpdate => prevUpdate + Math.random())
     }
     //TODO: rename these
     const handleClick = (id) => {
-        setUpdate(prevUpdate => prevUpdate + Math.random())
+        // setUpdate(prevUpdate => prevUpdate + Math.random())
         const marker = markers.find(marker => marker.id === id);
         // ev.stopPropagation()
         setSelected(marker);
     }
     const handleClick2 = (id) => {
-        setUpdate(prevUpdate => prevUpdate + Math.random())
+        // setUpdate(prevUpdate => prevUpdate + Math.random())
         const trackingMarker = trackingMarkers.find(marker => marker.id === id);
         // ev.stopPropagation()
-        setSelected(trackingMarker);
+        trackingMarker ? setSelected(trackingMarker) : setOpenNoLocationAlert(true)
     }
     const [eventToEdit, setEventToEdit] = useState({});
 
@@ -234,9 +236,14 @@ export default function TripMap({ match }) {
     return (
         <>
 
-            <Snackbar open={openAlert} autoHideDuration={2000} onClose={handleClose}>
+            <Snackbar open={openAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={2000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
                     Location Pinned!
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openNoLocationAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={2000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity='info' sx={{ width: '100%' }}>
+                    User is not sharing location.
                 </Alert>
             </Snackbar>
             <Dialog open={open} onClose={handleClose}>
@@ -299,7 +306,7 @@ export default function TripMap({ match }) {
                 <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
                     {
                         users.map(user => (
-                            <Card className='card' key={user.userId + Math.random().toFixed(2)} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
+                            <Card className='card' key={user.userId} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
 
                             >
                                 <CardContent sx={{ mb: 0 }} onClick={() => handleClick2(user.userId)}>
@@ -326,11 +333,12 @@ export default function TripMap({ match }) {
                         style={mapStyles}
                         center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
                     >
-                        {displayMarkers()}
-                        {displayTrackingMarkers()}
+                        <DisplayMarkers />
+                        <DisplayTrackingMarkers />
 
                         {
-                            selected ? (
+                            selected ?
+                            (
                                 <InfoWindow
                                     open={open}
                                     position={{ lat: +selected.lat, lng: +selected.lng }}
@@ -346,7 +354,8 @@ export default function TripMap({ match }) {
                                             {selected.time}
                                         </Typography>
                                     </div>
-                                </InfoWindow>)
+                                </InfoWindow>
+                            )
                                 : null
                         }
                     </GoogleMap>
