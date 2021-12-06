@@ -57,7 +57,7 @@ export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUse
     <>
         <div>
         <h3>Pending Friend Requests You Received:</h3>
-        <h5>{friendsPendingReceived.length === 0? "No pending requests received":""}</h5>
+        <h5>{friendsPendingReceived.length === 0? "No pending friend requests received":""}</h5>
         </div>
         <Grid container spacing={2} sx={{ mt: 1 }}>
             {friendsPendingReceived.map(friendPendingReceived => (

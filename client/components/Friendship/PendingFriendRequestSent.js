@@ -33,7 +33,7 @@ export const PendingFriendRequestSent = ({friendsPendingSent, deleteUserFriend, 
     <>
         <div>
         <h3>Pending Friend Requests You Sent:</h3>
-        <h5>{friendsPendingSent.length === 0? "No pending requests sent":""}</h5>
+        <h5>{friendsPendingSent.length === 0? "No pending friend requests sent":""}</h5>
         </div>
         <Grid container spacing={2} sx={{ mt: 1 }}>
             {friendsPendingSent.map(friendPendingSent => (
@@ -49,7 +49,6 @@ export const PendingFriendRequestSent = ({friendsPendingSent, deleteUserFriend, 
                             <Button startIcon={<CloseIcon />} size="small" variant='contained' onClick={() => clickRejectRequest(friendPendingSent)}>
                                 Cancel Request
                             </Button>
-                            
                         </Box>
                     </Paper>
                 </Grid>
