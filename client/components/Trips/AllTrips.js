@@ -134,7 +134,7 @@ const AllTrips = ({ match }) => {
                                         End Date: {format(parseISO(trip.trip.endTime), 'P')}
                                     </Typography>
                                     <Typography>
-                                        {/* Friends: {trip.trip.userTrips.length} */}
+                                        Friends: {trip.trip.userTrips.length}
                                     </Typography>
                                     <Box display='flex' justifyContent='center' alignItems='center'>
                                         <Typography >
@@ -146,9 +146,12 @@ const AllTrips = ({ match }) => {
                                     </Box>
                                 </Box>
                             </Box>
-                            <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                <Chip onClick={handleLeaveTrip} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
-                            </Box>
+                            {
+                                !trip.trip.expenses.length ? 
+                                    <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
+                                        <Chip onClick={handleLeaveTrip} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
+                                    </Box> : ''
+                            }
                         </Paper>
                     </Grid>
                 ))}
