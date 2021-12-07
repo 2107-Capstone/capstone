@@ -47,7 +47,7 @@ const TripInvite = () => {
     }
 
     const invites = pendingInvites.map(invite => {
-        const friendInvite = friends.find(f => f.friendId === invite.sentBy * 1)
+        const friendInvite = friends.find(f => f.friendId === invite.sentBy)
         if (friendInvite) {
             return { ...invite, friend: friendInvite.friend }
         }
@@ -58,7 +58,7 @@ const TripInvite = () => {
             const invite = { id: inviteId, tripInvite: 'accepted' }
             await dispatch(acceptInvite(invite))
         } catch (error) {
-            console.log(erro)
+            console.log(error)
         }
     }
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom";
 
 ////////////// MATERIAL UI ///////////
-import { Avatar, Box, Button, Chip, Container, Divider, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material";
+import { Avatar, Box, Button, Chip, Container, Divider, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Tooltip, Typography } from "@mui/material";
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AddIcon from '@mui/icons-material/Add';
@@ -153,12 +153,29 @@ const AllTrips = ({ match }) => {
                                     </Box>
                                 </Box>
                             </Box>
-                            {
-                                !trip.trip.expenses.length ? 
-                                    <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                        <Chip onClick={handleLeaveTrip} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
-                                    </Box> : ''
-                            }
+                                <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
+                                    {
+                                        trip.trip.expenses.length ?
+//TODO: why doesnt tooltip work? 
+                                        <Tooltip title="You are unable to leave a trip that already has expenses.">
+                                            <Chip 
+                                                label="leave this trip" 
+                                                variant="outlined" 
+                                                color="warning" 
+                                                icon={<ExitToAppIcon />} 
+                                                disabled
+                                            />
+                                        </Tooltip>
+                                        :
+                                        <Chip 
+                                            onClick={handleLeaveTrip} 
+                                            label="leave this trip" 
+                                            variant="outlined" 
+                                            color="warning" 
+                                            icon={<ExitToAppIcon />} 
+                                        />
+                                    }
+                                </Box>
                         </Paper>
                     </Grid>
                 ))}
