@@ -100,8 +100,8 @@ class AuthAvatar extends Component {
       </Alert>
       </Snackbar>
       <Box component="form" onSubmit={save} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-        <Grid container spacing={1}>
-        <Grid item xs={12}>
+        <Grid container spacing={1} >
+        <Grid item xs={12} >
           <FormControl variant="outlined">
             <Button
                 variant="contained"

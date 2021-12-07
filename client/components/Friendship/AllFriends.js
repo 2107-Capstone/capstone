@@ -5,7 +5,7 @@ import PendingFriendRequestSent from './PendingFriendRequestSent'
 import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton, Alert, Avatar } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton, Alert, Avatar, Divider } from "@mui/material"
 import PeopleIcon from '@mui/icons-material/People'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CircularLoading from '../Loading/CircularLoading'
@@ -63,15 +63,14 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
 
     return(
         <>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
             <PeopleIcon fontSize='medium' />
             <Typography variant='h5'>
                 &nbsp;ALL FRIENDS
             </Typography>
         </Box>
-        <h3>Your Friends:</h3>
-        <h5>{friends.length === 0? "No friends":""}</h5>
-        <Grid container spacing={2} sx={{ mt: 1 }}>
+        <h5 align='center'>{friends.length === 0? "No friends":""}</h5>
+        <Grid container spacing={2} sx={{ mt: 4, mb: 4 }}>
             {friends.map(friend => (
                 <Grid item xs={12} sm={3} key={friend.id}>
                     <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
@@ -122,7 +121,9 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
             {friend && friend.friend ? `${friend.friend.username} has been deleted as a friend!`:''}
             </Alert>
         </Snackbar>
+        <Divider />
         <PendingFriendRequestSent />
+        <Divider />
         <AddFriend />
     </>
     )

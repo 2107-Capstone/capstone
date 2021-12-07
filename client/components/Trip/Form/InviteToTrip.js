@@ -104,13 +104,12 @@ const InviteToTrip = (props) => {
                             }
                         >
                             <ListItemAvatar>
-                                <Avatar src={friend.friend.avatar} >
-                                    {friend.friend.firstName[0] + friend.friend.lastName[0]}
+                                <Avatar sx={{ bgcolor: 'primary.main' }} src={friend.friend.avatar}>
+                                    {friend.friend.firstName[0]+friend.friend.lastName[0]}
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
-                                primary={`${friend.friend.firstName}`}
-                            // secondary={friend.tripInvite==="accepted" ? 'Already on the trip' : 'pending request'}
+                                primary={`${friend.friend.username}`}
                             />
                         </ListItem>
                         <Divider variant="inset" />
