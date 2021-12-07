@@ -6,7 +6,7 @@ import { deleteUserFriend, approveUserFriend, createUserFriend, getFriends, getF
 import { Box, Button, ButtonGroup, Grid, Paper, Typography, Snackbar, Alert, Avatar } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
-
+import PendingIcon from '@mui/icons-material/Pending';
 
 export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUserFriend, approveUserFriend, createUserFriend, loadFriendshipData }) => {
     const clickApproveRequest = async (userFriend) => {
@@ -56,10 +56,15 @@ export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUse
     return(
     <>
         <div>
-        <h3>Pending Friend Requests You Received:</h3>
-        <h5>{friendsPendingReceived.length === 0? "No pending friend requests received":""}</h5>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
+            <PendingIcon fontSize='medium' />
+            <Typography variant='h5'>
+                &nbsp;Pending Friend Requests You Received
+            </Typography>
+        </Box>
+        <h5 align='center'>{friendsPendingReceived.length === 0? "No pending friend requests received":""}</h5>
         </div>
-        <Grid container spacing={2} sx={{ mt: 1 }}>
+        <Grid container spacing={2} sx={{ mt: 4, mb: 4 }}>
             {friendsPendingReceived.map(friendPendingReceived => (
                 <Grid item xs={12} sm={3} key={friendPendingReceived.id}>
                     <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] }}}>

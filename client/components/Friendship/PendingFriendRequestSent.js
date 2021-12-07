@@ -6,7 +6,7 @@ import { deleteUserFriend, getFriends, getFriendsPendingSent } from '../../store
 ////////////// MATERIAL UI ///////////
 import { Box, Button, Grid, Paper, Typography, Snackbar, Alert, Avatar } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close'
-
+import PendingIcon from '@mui/icons-material/Pending';
 
 export const PendingFriendRequestSent = ({friendsPendingSent, deleteUserFriend, loadFriendshipData }) => {
     const clickRejectRequest = async (userFriend) => {
@@ -32,10 +32,15 @@ export const PendingFriendRequestSent = ({friendsPendingSent, deleteUserFriend, 
     return(
     <>
         <div>
-        <h3>Pending Friend Requests You Sent:</h3>
-        <h5>{friendsPendingSent.length === 0? "No pending friend requests sent":""}</h5>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
+            <PendingIcon fontSize='medium' />
+            <Typography variant='h5'>
+                &nbsp;Pendng Friend Requests You Sent
+            </Typography>
+        </Box>
+        <h5 align='center'>{friendsPendingSent.length === 0? "No pending friend requests sent":""}</h5>
         </div>
-        <Grid container spacing={2} sx={{ mt: 1 }}>
+        <Grid container spacing={2} sx={{ mt: 4, mb: 4 }} >
             {friendsPendingSent.map(friendPendingSent => (
                 <Grid item xs={12} sm={3} key={friendPendingSent.id}>
                     <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
