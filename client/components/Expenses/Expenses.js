@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PieChart from "./PieChart";
 import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
-import SettleUp from './SettleUp';
+// import SettleUp from './SettleUp';
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";
 
@@ -224,7 +224,7 @@ const Expenses = ({match}) => {
                             <TableCell/>
                             <TableCell/>
                         </TableRow>
-                        <SettleUp expenses={tripExpenses} users={trip.trip.userTrips} />
+                        {/* <SettleUp expenses={tripExpenses} users={trip.trip.userTrips} /> */}
                     </TableBody>
                 </Table>
             </TableContainer>
