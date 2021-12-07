@@ -5,7 +5,7 @@ import PendingFriendRequestReceived from '../Friendship/PendingFriendRequestRece
 import TripInvite from './TripInvite'
 import LuggageIcon from '@mui/icons-material/Luggage';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-
+import Debts from './Debts'
 
 export const Notifications = () => {
   return (
@@ -22,9 +22,10 @@ export const Notifications = () => {
       <TripInvite />
       <Divider />
       <Typography sx={{ mt: 2 }} align='center' variant='h5' gutterBottom>
-        <LuggageIcon />&nbsp;Closed Trips
+        <LuggageIcon />&nbsp;Unpaid Expenses
       </Typography>
-      <TripInvite />
+      <Debts />
+      
     </>
   )
 }

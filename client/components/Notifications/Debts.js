@@ -16,19 +16,19 @@ import { acceptInvite, rejectInvite } from "../../store/usertrips";
 
 const Debts = () => {
     ///////////// Media Query /////////////
-    // const theme = useTheme();
-    // const matches = useMediaQuery(theme.breakpoints.down('md'));
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('md'));
 
-    // let flexdirection = 'row'
-    // if (matches) {
-    //     flexdirection = 'column'
-    // }
-    // else {
-    //     flexdirection = 'row'
-    // }
+    let flexdirection = 'row'
+    if (matches) {
+        flexdirection = 'column'
+    }
+    else {
+        flexdirection = 'row'
+    }
 
     const dispatch = useDispatch()
-    const closedTrips = useSelector(state => state.trips.filter(trip => !trip.isOpen));
+    const closedTrips = useSelector(state => state.trips.filter(trip => !trip.trip.isOpen));
 
     useEffect(async () => {
         try {
@@ -46,6 +46,14 @@ const Debts = () => {
         return (<CircularLoading />)
     }
 
+    const tripDebts = closedTrips.map(trip => {
+        return (
+            {[trip.trip.name]: userDebts.filter(debt => debt.tripId === trip.tripId)}
+        )
+    })
+
+    console.log(tripDebts)
+
     if (userDebts.length === 0) {
         return (
             <Typography align='center' variant='h6'>
@@ -54,7 +62,12 @@ const Debts = () => {
         )
     }
 
-    // return (
+     return (
+        <div>
+            hi
+
+        </div> 
+     )
     //     <List>
     //         {invites.map((invite, idx) => (
     //             <Fragment key={idx}>
