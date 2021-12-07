@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
 import { connect } from 'react-redux'
 import AddFriend from './AddFriend'
 import PendingFriendRequestSent from './PendingFriendRequestSent'
@@ -13,6 +13,11 @@ import CloseIcon from '@mui/icons-material/Close'
 
 
 export const AllFriends = ({ friends, userFriends, deleteUserFriend, loadFriendshipData }) => {
+
+    useEffect(async () => {
+        await loadFriendshipData()
+    }, [])
+
     const clickDeleteFriend = async (friend) => {
         const _userFriend = userFriends.find(userFriend => userFriend.userId === friend.friendId)
         await deleteUserFriend(friend.id)
@@ -94,8 +99,9 @@ export const AllFriends = ({ friends, userFriends, deleteUserFriend, loadFriends
                 ))}
             </Grid>
             <Snackbar
+                sx={{ mt: 9 }}
                 open={open}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 autoHideDuration={6000}
                 onClose={handleClose}
                 message={friend && friend.friend ? `Are you sure you wish to delete ${friend.friend.username} as a friend?` : ''}

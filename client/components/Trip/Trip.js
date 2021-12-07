@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////////// STORE /////////////////
-import { closeTrip } from '../../store'
+import { closeTrip, getTrips } from '../../store'
 
 /////////////// COMPONENTS /////////////////
 import CircularLoading from '../Loading/CircularLoading'
@@ -43,15 +43,18 @@ import theme from '../../theme'
 
 const Trip = (props) => {
     const id = props.match.params.id
-    
+
     const dispatch = useDispatch();
-    
+    useEffect(async () => {
+        await dispatch(getTrips())
+    }, [])
+
     const { auth, categories } = useSelector(state => state);
-    
+
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
     let events = useSelector(state => state.events.filter(event => event.tripId === id));
     let messages = useSelector(state => state.messages.filter(message => message.tripId === id));
-    
+
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
     const totalExpenses = tripExpenses.reduce((total, expense) => {
         return total + +expense.amount
@@ -74,11 +77,11 @@ const Trip = (props) => {
     const handleCloseMenu = () => {
         setAnchorEl(null);
     };
-    
+
     if (!trip || !events || !messages || !tripExpenses) {
         return <CircularLoading />
     }
-    
+
     const handleCloseTrip = async () => {
         try {
             console.log(trip)
@@ -96,8 +99,8 @@ const Trip = (props) => {
 
     messages = messages.sort((a, b) => isBefore(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     messages.length > 5 ? messages.length = 5 : ''
-    messages = messages.sort((a,b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
-    
+    messages = messages.sort((a, b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+
     return (
         <div>
             {/* <InviteToTrip /> */}
@@ -126,7 +129,7 @@ const Trip = (props) => {
                         <Box sx={{ display: 'flex', alignSelf: 'center', margin: 2, marginBottom: 0 }}>
                             <CardTravelIcon fontSize='medium' />
                             <Typography variant='h5'>
-                                &nbsp;{trip.trip.name} 
+                                &nbsp;{trip.trip.name}
                                 {
                                     trip.trip.isOpen ? "" :
                                         " (Trip Closed)"
@@ -137,120 +140,120 @@ const Trip = (props) => {
                             <Typography >
                                 Trip Creator: {trip.trip.user.username}
                             </Typography>
-                            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={trip.trip.user.avatar} >
-                                {trip.trip.user.firstName[0]+trip.trip.user.lastName[0]}
+                            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }} src={trip.trip.user.avatar} >
+                                {trip.trip.user.firstName[0] + trip.trip.user.lastName[0]}
                             </Avatar>
                         </Box>
                     </Box>
                 </Grid>
             </Grid>
-                <Grid container spacing={2} marginBottom={2}>
-                    <Grid item xs={12} sm={12} md={2} lg={2}>
-                        {/* <Box style={{display: 'flex', justifyContent:'space-around', alignItems: 'center'}} > */}
-                            <Button
-                                className='tripButton'
-                                style={styles.tripButton} 
-                                component={Link} to={`${trip.tripId}/chat`} 
-                                startIcon={<ChatIcon />} 
-                                size='medium' 
-                                color='secondary'
-                                variant='contained'
-                            >
-                                CHAT
-                            </Button>
-                        </Grid>
-                        <Grid item xs sm md lg>
-                            <Button 
-                                component={Link} to={`${trip.tripId}/calendar`} 
-                                size='medium' 
-                                startIcon={<DateRangeIcon />} 
-                                color='secondary'
-                                variant='contained'
-                            >
-                                CALENDAR
-                            </Button>
-                        </Grid>
-                        <Grid item xs sm md lg>
-                            <Button 
-                                component={Link} to={`${trip.tripId}/map`}  
-                                size='medium'  
-                                startIcon={<MapIcon />} 
-                                color='secondary'
-                                variant='contained'
-                            >
-                                MAP
-                            </Button>
-                        </Grid>
-                            {/* </Box> */}
-                        <Grid item xs sm md lg>    
-                            <Box style={{alignSelf: 'right'}}>
-                                <Button
-                                    aria-expanded={openMenu ? 'true' : undefined}
-                                    variant="contained"
-                                    onClick={handleClick}
-                                    disabled={!trip.trip.isOpen}
-                                    endIcon={<KeyboardArrowDownIcon />}
-                                    size='medium'
-                                >
-                                    EDIT TRIP
+            <Grid container spacing={2} marginBottom={2}>
+                <Grid item xs={12} sm={12} md={2} lg={2}>
+                    {/* <Box style={{display: 'flex', justifyContent:'space-around', alignItems: 'center'}} > */}
+                    <Button
+                        className='tripButton'
+                        style={styles.tripButton}
+                        component={Link} to={`${trip.tripId}/chat`}
+                        startIcon={<ChatIcon />}
+                        size='medium'
+                        color='secondary'
+                        variant='contained'
+                    >
+                        CHAT
+                    </Button>
+                </Grid>
+                <Grid item xs sm md lg>
+                    <Button
+                        component={Link} to={`${trip.tripId}/calendar`}
+                        size='medium'
+                        startIcon={<DateRangeIcon />}
+                        color='secondary'
+                        variant='contained'
+                    >
+                        CALENDAR
+                    </Button>
+                </Grid>
+                <Grid item xs sm md lg>
+                    <Button
+                        component={Link} to={`${trip.tripId}/map`}
+                        size='medium'
+                        startIcon={<MapIcon />}
+                        color='secondary'
+                        variant='contained'
+                    >
+                        MAP
+                    </Button>
+                </Grid>
+                {/* </Box> */}
+                <Grid item xs sm md lg>
+                    <Box style={{ alignSelf: 'right' }}>
+                        <Button
+                            aria-expanded={openMenu ? 'true' : undefined}
+                            variant="contained"
+                            onClick={handleClick}
+                            disabled={!trip.trip.isOpen}
+                            endIcon={<KeyboardArrowDownIcon />}
+                            size='medium'
+                        >
+                            EDIT TRIP
+                        </Button>
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={openMenu}
+                            onClose={handleCloseMenu}
+                        >
+                            <MenuItem>
+                                <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
+                                    handleCloseMenu();
+                                    setOpen(true);
+                                    setForm('event')
+                                }} >
+                                    Add Event
                                 </Button>
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    open={openMenu}
-                                    onClose={handleCloseMenu}
-                                >
-                                <MenuItem>
-                                    <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
-                                        handleCloseMenu();
-                                        setOpen(true);
-                                        setForm('event')
-                                    }} >
-                                        Add Event
-                                    </Button>
-                                </MenuItem>
-                                <Divider sx={{ my: 0.5 }} />
-                                    <MenuItem>
-                                        <Button size='small' startIcon={<AddIcon />} variant='contained'  onClick={() => {
-                                            handleCloseMenu();
-                                            setOpen(true);
-                                            setForm('expense')
-                                        }} >
-                                            Add Expense
+                            </MenuItem>
+                            <Divider sx={{ my: 0.5 }} />
+                            <MenuItem>
+                                <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
+                                    handleCloseMenu();
+                                    setOpen(true);
+                                    setForm('expense')
+                                }} >
+                                    Add Expense
+                                </Button>
+                            </MenuItem>
+                            <Divider sx={{ my: 0.5 }} />
+                            <MenuItem>
+                                <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
+                                    handleCloseMenu();
+                                    setOpen(true);
+                                    setForm('invitefriend')
+                                }} >
+                                    Invite Friend
+                                </Button>
+                            </MenuItem>
+                            <Divider sx={{ my: 0.5 }} />
+
+                            <MenuItem>
+                                {
+                                    trip.trip.userId === auth.id ?
+                                        <Button size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained' onClick={handleCloseTrip} >
+                                            Mark Trip as Closed
                                         </Button>
-                                    </MenuItem>
-                                    <Divider sx={{ my: 0.5 }} />
-                                    <MenuItem>
-                                        <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
-                                            handleCloseMenu();
-                                            setOpen(true);
-                                            setForm('invitefriend')
-                                        }} >
-                                            Invite Friend
+                                        : <Button startIcon={<AssignmentTurnedInIcon />} variant='contained' style={{ color: 'grey' }} disabled>
+                                            {trip.trip.user.username} can close this trip
                                         </Button>
-                                    </MenuItem>
-                                    <Divider sx={{ my: 0.5 }} />
-                                    
-                                    <MenuItem>
-                                        {
-                                            trip.trip.userId === auth.id ? 
-                                                <Button size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained'  onClick={handleCloseTrip} >
-                                                    Mark Trip as Closed
-                                                </Button>
-                                            :   <Button startIcon={<AssignmentTurnedInIcon />} variant='contained'  style={{color: 'grey'}} disabled>
-                                                    {trip.trip.user.username} can close this trip
-                                                </Button>
-                                        }
-                                    </MenuItem>
-                                    <Divider sx={{ my: 0.5 }} />
-                                </Menu>
-                            </Box>
-                        {/* </Box> */}
-                    </Grid> 
-                </Grid>    
-                    
-            <Grid container spacing={2}>    
+                                }
+                            </MenuItem>
+                            <Divider sx={{ my: 0.5 }} />
+                        </Menu>
+                    </Box>
+                    {/* </Box> */}
+                </Grid>
+            </Grid>
+
+            <Grid container spacing={2}>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{display: 'flex', justifyContent: 'center'}}>
+                    <Box style={styles.headingIcon} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <PeopleIcon fontSize='medium' />
                         <Typography variant='h6'>
                             &nbsp;Trip Friends
@@ -260,13 +263,13 @@ const Trip = (props) => {
                         {
                             trip.trip.userTrips.map(user => (
                                 <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
-                                    sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
+                                    sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}
                                 >
-                                    <Avatar 
-                                        sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
+                                    <Avatar
+                                        sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
                                         src={user.user.avatar}
-                                        >
-                                        {user.user.firstName[0]+user.user.lastName[0]}
+                                    >
+                                        {user.user.firstName[0] + user.user.lastName[0]}
                                     </Avatar>
                                     <Typography variant='caption'>
                                         {user.user.username}
@@ -277,9 +280,9 @@ const Trip = (props) => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{display: 'flex'}}>
+                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}} component={Link} to={`${trip.tripId}/expenses`} variant='outlined' startIcon={<OpenInNewIcon />} style={{color: 'white', }}>
+                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/expenses`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
                                 Details
                             </Button>
                         </Box>
@@ -296,8 +299,8 @@ const Trip = (props) => {
                             Total Expenses: ${totalExpenses.toFixed(2)}
                         </Typography>
                         {
-                            tripExpenses.length !== 0 ? 
-                                <PieChart expenses={tripExpenses} users={users} categories={categories}/> :
+                            tripExpenses.length !== 0 ?
+                                <PieChart expenses={tripExpenses} users={users} categories={categories} /> :
                                 <Typography>
                                     No expenses yet.
                                 </Typography>
@@ -305,7 +308,7 @@ const Trip = (props) => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box bgcolor="primary.main" sx={{display: 'flex'}}>
+                    <Box bgcolor="primary.main" sx={{ display: 'flex' }}>
                         <Box style={styles.headingIcon}>
                             <ChatIcon fontSize='medium' />
                             <Typography variant='h6'>
@@ -316,7 +319,7 @@ const Trip = (props) => {
                     <MessagesTable messages={messages} />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box bgcolor="primary.main"  sx={{display: 'flex'}}>
+                    <Box bgcolor="primary.main" sx={{ display: 'flex' }}>
                         <Box style={styles.headingIcon}>
                             <DateRangeIcon fontSize='medium' />
                             <Typography variant='h6'>
