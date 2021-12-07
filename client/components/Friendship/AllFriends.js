@@ -12,7 +12,7 @@ import CircularLoading from '../Loading/CircularLoading'
 import CloseIcon from '@mui/icons-material/Close'
 
 
-export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendshipData }) => {
+export const AllFriends = ({ friends, userFriends, deleteUserFriend, loadFriendshipData }) => {
     const clickDeleteFriend = async (friend) => {
         const _userFriend = userFriends.find(userFriend => userFriend.userId === friend.friendId)
         await deleteUserFriend(friend.id)
@@ -39,7 +39,7 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
-        return;
+            return;
         }
 
         setOpen(false);
@@ -61,78 +61,80 @@ export const AllFriends = ({friends, userFriends, deleteUserFriend, loadFriendsh
         )
     }
 
-    return(
+    return (
         <>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
-            <PeopleIcon fontSize='medium' />
-            <Typography variant='h5'>
-                &nbsp;ALL FRIENDS
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
+                <PeopleIcon fontSize='medium' />
+                <Typography variant='h5'>
+                    &nbsp;ALL FRIENDS
+                </Typography>
+            </Box>
+            <Typography align='center'>
+                {friends.length === 0 ? "No friends" : ""}
             </Typography>
-        </Box>
-        <h5 align='center'>{friends.length === 0? "No friends":""}</h5>
-        <Grid container spacing={2} sx={{ mt: 4, mb: 4 }}>
-            {friends.map(friend => (
-                <Grid item xs={12} sm={3} key={friend.id}>
-                    <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
-                        <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                            <Avatar sx={{ bgcolor: 'primary.main' }} src={friend.friend.avatar}>
-                                {friend.friend.firstName[0]+friend.friend.lastName[0]}
-                            </Avatar>
-                            <Typography variant='h6'>
-                                {friend.friend.username}
-                            </Typography>
-                            <Button startIcon={<DeleteIcon />} size="small" variant='contained' onClick={() => handleClick(friend)}>
-                                Delete Friend
-                            </Button>
-            
-                        </Box>
-                    </Paper>
-                </Grid>
-                
-            ))}
-        </Grid>
-        <Snackbar 
-            open={open}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            autoHideDuration={6000}
-            onClose={handleClose}
-            message={friend && friend.friend ? `Are you sure you wish to delete ${friend.friend.username} as a friend?`:''}
-            action={
-                <Fragment>
-                <Button color="secondary" size="small" onClick={() => clickDeleteFriend(friend)}>
-                YES
-                </Button>
-                <Button color="secondary" size="small" onClick={handleClose}>
-                NO
-                </Button>
-                <IconButton
-                    size="small"
-                    aria-label="close"
-                    color="inherit"
-                    onClick={handleClose}
-                >
-                <CloseIcon fontSize="small" />
-                </IconButton>
-                </Fragment>
-            }
-        />
-        <Snackbar open={deleteOpen} autoHideDuration={2000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-            {friend && friend.friend ? `${friend.friend.username} has been deleted as a friend!`:''}
-            </Alert>
-        </Snackbar>
-        <Divider />
-        <PendingFriendRequestSent />
-        <Divider />
-        <AddFriend />
-    </>
+            <Grid container spacing={2} sx={{ my: 4 }}>
+                {friends.map(friend => (
+                    <Grid item xs={12} sm={6} md={4} key={friend.id}>
+                        <Paper elevation={1}>
+                            <Box sx={{ py: 1, color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                                <Avatar sx={{ bgcolor: 'primary.main' }} src={friend.friend.avatar}>
+                                    {friend.friend.firstName[0] + friend.friend.lastName[0]}
+                                </Avatar>
+                                <Typography variant='h6'>
+                                    {friend.friend.username}
+                                </Typography>
+                                <Button startIcon={<DeleteIcon />} size="small" variant='outlined' onClick={() => handleClick(friend)}>
+                                    Delete Friend
+                                </Button>
+
+                            </Box>
+                        </Paper>
+                    </Grid>
+
+                ))}
+            </Grid>
+            <Snackbar
+                open={open}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                message={friend && friend.friend ? `Are you sure you wish to delete ${friend.friend.username} as a friend?` : ''}
+                action={
+                    <Fragment>
+                        <Button color="secondary" size="small" onClick={() => clickDeleteFriend(friend)}>
+                            YES
+                        </Button>
+                        <Button color="secondary" size="small" onClick={handleClose}>
+                            NO
+                        </Button>
+                        <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={handleClose}
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </Fragment>
+                }
+            />
+            <Snackbar open={deleteOpen} autoHideDuration={2000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    {friend && friend.friend ? `${friend.friend.username} has been deleted as a friend!` : ''}
+                </Alert>
+            </Snackbar>
+            <Divider />
+            <PendingFriendRequestSent />
+            <Divider />
+            <AddFriend />
+        </>
     )
 }
 
 const mapState = state => {
     return {
-      friends: state.friends,
-      userFriends: state.userFriends
+        friends: state.friends,
+        userFriends: state.userFriends
     }
 }
 
@@ -141,7 +143,7 @@ const mapDispatch = (dispatch) => {
         deleteUserFriend: (id) => {
             dispatch(deleteUserFriend(id))
         },
-        loadFriendshipData () {
+        loadFriendshipData() {
             dispatch(getFriends())
             dispatch(getFriendsPendingReceived())
             dispatch(getFriendsPendingSent())
