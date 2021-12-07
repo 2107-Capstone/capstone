@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { createUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography, TextField, Snackbar, Alert, Avatar } from "@mui/material"
+import { Box, Button, Typography, TextField, Snackbar, Alert, Avatar, List, ListItem, ListItemAvatar, ListItemText, Divider } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import PendingIcon from '@mui/icons-material/Pending';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import SearchIcon from '@mui/icons-material/Search';
+
 
 export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendingSent, friendsPendingReceived, loadFriendshipData}) => {
     const [query, setQuery] = useState('')
@@ -41,13 +43,23 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
 
     return(
     <>
-        <h3>Search below to add a new friend!!!</h3>
-        <TextField 
-            style={{width: 500}}
-            label='Search by username or email'
-            onChange={ev => setQuery(ev.target.value)}
-        />
-        <Grid container spacing={2} sx={{ mt: 1 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
+            <PersonAddIcon fontSize='medium' />
+            <Typography variant='h5'>
+                &nbsp;Add Friend
+            </Typography>
+        </Box>
+        <Box
+            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '50%', m: '1rem auto' }}
+        >
+            <TextField 
+                sx={{ ml: 1, flex: 1 }}
+                style={{width: 500}}
+                label='Search by username or email'
+                onChange={ev => setQuery(ev.target.value)}
+            />
+        </Box>
+        <List>
             {users
             .filter(user => user.id != auth.id)
             .filter(user => {
@@ -57,27 +69,31 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
                     return user
                 }
             })
-            .map(user => (
-                <Grid item xs={12} sm={3} key={user.id}>
-                    <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
-                        <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+            .map((user, idx) => (
+                <Fragment key={idx} >
+                    <ListItem
+                        secondaryAction={
+                            friendIds.has(user.id)? <Button disabled startIcon={<CheckCircleIcon />} size="small" variant='contained' >Already Friend</Button>:(friendPendingSentIds.has(user.id) || friendPendingReceivedIds.has(user.id)? <Button disabled startIcon={<PendingIcon />} size="small" variant='contained' >Request Pending</Button>:<Button startIcon={<AddCircleIcon />} size="small" variant='contained' onClick={() => clickAddFriend(user.id)}>Add Friend</Button>)
+                        }
+                    >
+                        <ListItemAvatar>
                             <Avatar sx={{ bgcolor: 'primary.main' }} src={user.avatar}>
                                 {user.firstName[0]+user.lastName[0]}
                             </Avatar>
-                            <Typography variant='h6'>
-                                {user.username}
-                            </Typography>
-                            {friendIds.has(user.id)? <Button disabled startIcon={<CheckCircleIcon />} size="small" variant='contained' >Already Friend</Button>:(friendPendingSentIds.has(user.id) || friendPendingReceivedIds.has(user.id)? <Button disabled startIcon={<PendingIcon />} size="small" variant='contained' >Request Pending</Button>:<Button startIcon={<AddCircleIcon />} size="small" variant='contained' onClick={() => clickAddFriend(user.id)}>Add Friend</Button>)}
-                            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-                                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                                    Friend request has been sent!
-                                </Alert>
-                            </Snackbar>
-                        </Box>
-                    </Paper>
-                </Grid>
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={`${user.username}`}
+                        />
+                    </ListItem>
+                    <Divider variant="inset" />
+                </Fragment >
             ))}
-        </Grid>
+        </List >
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                Friend request has been sent!
+            </Alert>
+        </Snackbar>
     </>
     )
 }
