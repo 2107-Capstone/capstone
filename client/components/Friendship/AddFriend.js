@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { createUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography, TextField, Snackbar, Alert, Avatar, InputBase, List, ListItem, ListItemAvatar, ListItemText, Divider } from "@mui/material"
+import { Box, Button, Typography, TextField, Snackbar, Alert, Avatar, List, ListItem, ListItemAvatar, ListItemText, Divider } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import PendingIcon from '@mui/icons-material/Pending';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -75,15 +74,6 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
                     <ListItem
                         secondaryAction={
                             friendIds.has(user.id)? <Button disabled startIcon={<CheckCircleIcon />} size="small" variant='contained' >Already Friend</Button>:(friendPendingSentIds.has(user.id) || friendPendingReceivedIds.has(user.id)? <Button disabled startIcon={<PendingIcon />} size="small" variant='contained' >Request Pending</Button>:<Button startIcon={<AddCircleIcon />} size="small" variant='contained' onClick={() => clickAddFriend(user.id)}>Add Friend</Button>)
-
-
-                            // friend.tripInvite ? (friend.tripInvite === "accepted" ? (<Button disabled>
-                            //     accepted
-                            // </Button>) : (<Button disabled>
-                            //     ...pending
-                            // </Button>)) : (<Button variant='outlined' onClick={() => handleInvite(friend.friendId)}>
-                            //     Invite
-                            // </Button>)
                         }
                     >
                         <ListItemAvatar>
@@ -97,42 +87,13 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
                     </ListItem>
                     <Divider variant="inset" />
                 </Fragment >
-            ))
-            }
-        </List >
-
-
-        {/* <Grid container spacing={2} sx={{ mt: 4, mb: 4 }}>
-            {users
-            .filter(user => user.id != auth.id)
-            .filter(user => {
-                if (query === '') {
-                    return ''
-                } else if (user.username.toLowerCase().includes(query.toLowerCase()) || user.email.toLowerCase() === query.toLowerCase()) {
-                    return user
-                }
-            })
-            .map(user => (
-                <Grid item xs={12} sm={3} key={user.id}>
-                    <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
-                        <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                            <Avatar sx={{ bgcolor: 'primary.main' }} src={user.avatar}>
-                                {user.firstName[0]+user.lastName[0]}
-                            </Avatar>
-                            <Typography variant='h6'>
-                                {user.username}
-                            </Typography>
-                            {friendIds.has(user.id)? <Button disabled startIcon={<CheckCircleIcon />} size="small" variant='contained' >Already Friend</Button>:(friendPendingSentIds.has(user.id) || friendPendingReceivedIds.has(user.id)? <Button disabled startIcon={<PendingIcon />} size="small" variant='contained' >Request Pending</Button>:<Button startIcon={<AddCircleIcon />} size="small" variant='contained' onClick={() => clickAddFriend(user.id)}>Add Friend</Button>)}
-                            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-                                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                                    Friend request has been sent!
-                                </Alert>
-                            </Snackbar>
-                        </Box>
-                    </Paper>
-                </Grid>
             ))}
-        </Grid> */}
+        </List >
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                Friend request has been sent!
+            </Alert>
+        </Snackbar>
     </>
     )
 }
