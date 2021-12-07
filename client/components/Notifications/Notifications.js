@@ -20,6 +20,11 @@ export const Notifications = () => {
         <LuggageIcon />&nbsp;Trip Invites
       </Typography>
       <TripInvite />
+      <Divider />
+      <Typography sx={{ mt: 2 }} align='center' variant='h5' gutterBottom>
+        <LuggageIcon />&nbsp;Closed Trips
+      </Typography>
+      <TripInvite />
     </>
   )
 }
