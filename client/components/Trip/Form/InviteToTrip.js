@@ -19,14 +19,8 @@ import SearchIcon from '@mui/icons-material/Search';
 const InviteToTrip = (props) => {
     const { handleClose } = props
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(getUserTrips())
-    }, [])
-
-    const [search, setsearch] = useState('')
-
-    /////// Get the trip id from the browser //////
+    
+    /////// Get the trip id from the Browser //////
     const path = history.location.pathname
     const tripId = path.slice(path.lastIndexOf('/') + 1)
 
@@ -34,6 +28,17 @@ const InviteToTrip = (props) => {
     const friends = useSelector(state => state.friends)
 
     const usertrips = useSelector(state => state.usertrips).filter(usertrip => usertrip.tripId === tripId && usertrip.userId !== user.id)
+
+    useEffect(async () => {
+        try {
+            await dispatch(getUserTrips())
+        } catch (error) {
+            console.log(error)
+        }
+    }, [])
+
+    const [search, setsearch] = useState('')
+
 
     const invitefriends = friends.map(friend => {
         const invited = usertrips.find(user => user.userId === friend.friendId)
@@ -50,23 +55,18 @@ const InviteToTrip = (props) => {
         return (<CircularLoading />)
     }
 
-    const handleInvite = (friendId) => {
-        const invite = { tripId, userId: friendId, sentBy: user.id }
-        dispatch(inviteFriend(invite))
+    const handleInvite = async (friendId) => {
+        try {
+            const invite = { tripId, userId: friendId, sentBy: user.id }
+            await dispatch(inviteFriend(invite))
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-    // let filteredFriends = [...inviteFriend]
-    // const filter = (value) => {
-    //     const friends = invitefriends.filter(friend => friend.friend.firstName.toLowerCase().startsWith(value))
-    //     filteredFriends = [...friends]
-    // }
-
     const handleChange = (e) => {
-        // const name = e.target.name
         const value = e.target.value
         setsearch(value)
-
-        // filter(search)
     }
 
     return (
@@ -78,7 +78,7 @@ const InviteToTrip = (props) => {
                 <PersonAddIcon />&nbsp;Invite Friends
             </Typography>
             <Paper
-                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '50%', m: '1rem auto' }}
+                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '75%', m: '1rem auto' }}
             >
                 <InputBase
                     sx={{ ml: 1, flex: 1 }}
@@ -94,18 +94,18 @@ const InviteToTrip = (props) => {
                     <Fragment key={idx} >
                         <ListItem
                             secondaryAction={
-                                friend.tripInvite ? (friend.tripInvite === "accepted" ? (<Button disabled>
+                                friend.tripInvite ? (friend.tripInvite === "accepted" ? (<Button disabled size="small">
                                     accepted
-                                </Button>) : (<Button disabled>
+                                </Button>) : (<Button disabled size="small">
                                     ...pending
-                                </Button>)) : (<Button variant='outlined' onClick={() => handleInvite(friend.friendId)}>
+                                </Button>)) : (<Button variant='outlined' onClick={() => handleInvite(friend.friendId)} size="small">
                                     Invite
                                 </Button>)
                             }
                         >
                             <ListItemAvatar>
-                                <Avatar>
-                                    <PersonIcon />
+                                <Avatar src={friend.friend.avatar} >
+                                    {friend.friend.firstName[0] + friend.friend.lastName[0]}
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText

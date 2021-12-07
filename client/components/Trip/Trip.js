@@ -110,7 +110,7 @@ const Trip = (props) => {
     hidden
   />
 </Button> */}
-            <Dialog fullWidth open={form === 'invitefriend' && open} onClose={handleClose}>
+            <Dialog fullWidth maxWidth="md" open={form === 'invitefriend' && open} onClose={handleClose}>
                 <InviteToTrip handleClose={handleClose} />
             </Dialog>
             <Dialog open={form === 'expense' && open} onClose={handleClose}>

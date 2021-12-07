@@ -1,23 +1,35 @@
+import { Divider, Typography } from '@mui/material'
 import React from 'react'
 import { connect } from 'react-redux'
 import PendingFriendRequestReceived from '../Friendship/PendingFriendRequestReceived'
+import TripInvite from './TripInvite'
+import LuggageIcon from '@mui/icons-material/Luggage';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 
 export const Notifications = () => {
-    return(
+  return (
     <>
-        <PendingFriendRequestReceived />
-        {/* Add pending trip requets */}
+      <Typography sx={{ mt: 2 }} align='center' variant='h5' gutterBottom>
+        <PersonAddIcon />&nbsp;Friend Requests
+      </Typography>
+      <PendingFriendRequestReceived />
+      {/* Add pending trip requets */}
+      <Divider />
+      <Typography sx={{ mt: 2 }} align='center' variant='h5' gutterBottom>
+        <LuggageIcon />&nbsp;Trip Invites
+      </Typography>
+      <TripInvite />
     </>
-    )
+  )
 }
 
 const mapState = state => {
-    return {
-      auth: state.auth,
-      friendsPendingSent: state.friendsPendingSent,
-      friendsPendingReceived: state.friendsPendingReceived
-    }
+  return {
+    auth: state.auth,
+    friendsPendingSent: state.friendsPendingSent,
+    friendsPendingReceived: state.friendsPendingReceived
   }
+}
 
 export default connect(mapState)(Notifications)
