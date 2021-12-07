@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 
 /////////////// MATERIAL UI ///////////////////////
-import { Box, Avatar, Button, Container, Divider, IconButton, InputBase, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography, useMediaQuery } from '@mui/material'
+import { Box, Avatar, Button, Divider, List, Typography, useMediaQuery } from '@mui/material'
 import { useTheme } from "@emotion/react";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -47,7 +47,7 @@ const TripInvite = () => {
     }
 
     const invites = pendingInvites.map(invite => {
-        const friendInvite = friends.find(f => f.friendId === invite.sentBy * 1)
+        const friendInvite = friends.find(f => f.friendId === invite.sentBy)
         if (friendInvite) {
             return { ...invite, friend: friendInvite.friend }
         }
@@ -58,13 +58,12 @@ const TripInvite = () => {
             const invite = { id: inviteId, tripInvite: 'accepted' }
             await dispatch(acceptInvite(invite))
         } catch (error) {
-            console.log(erro)
+            console.log(error)
         }
     }
 
     const handleRejectInvite = async (inviteId) => {
         try {
-            // console.log(inviteId)
             await dispatch(rejectInvite(inviteId))
 
         } catch (error) {

@@ -33,7 +33,7 @@ const AllTrips = ({ match }) => {
         setChecked(event.target.checked)
     };
     // const { trips } = useSelector(state => state)
-    let trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
+    let trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen && trip.tripInvite === 'accepted')) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen && trip.tripInvite === 'accepted'))
     trips = trips.sort((a, b) => isAfter(new Date(a.trip.startTime), new Date(b.trip.startTime)) ? 1 : -1);
 
     const user = useSelector(state => state.auth)
@@ -62,39 +62,39 @@ const AllTrips = ({ match }) => {
 
     return (
         <>
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent:'center', mt: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
                 <FormGroup>
-                    <FormControlLabel 
-                        control={<Switch 
-                        checked={checked}
-                        onChange={handleChange}
+                    <FormControlLabel
+                        control={<Switch
+                            checked={checked}
+                            onChange={handleChange}
                         />}
                         label='Past Trips'
                     />
                 </FormGroup>
-                <Box sx={{ display: 'flex', alignSelf: 'center'}}>
+                <Box sx={{ display: 'flex', alignSelf: 'center' }}>
                     <CardTravelIcon fontSize='medium' />
                     {
                         checked ?
-                        <Typography variant='h5'>
+                            <Typography variant='h5'>
                                 &nbsp;PAST TRIPS
-                        </Typography>
-                        :
-                        <>
-                        <Typography variant='h5'>
-                                &nbsp;ACTIVE TRIPS
-                        </Typography>
-                        </>
+                            </Typography>
+                            :
+                            <>
+                                <Typography variant='h5'>
+                                    &nbsp;ACTIVE TRIPS
+                                </Typography>
+                            </>
                     }
                 </Box>
-                    {
-                        checked ? '' :
-                            <Box style={{textAlign:'center'}} >
-                                <Button startIcon={<AddIcon fontSize='large'/>}component={Link} to="/trips/add" variant='contained' sx={{width: '40%'}}>
-                                    Create Trip
-                                </Button>
-                            </Box>
-                    }
+                {
+                    checked ? '' :
+                        <Box style={{ textAlign: 'center' }} >
+                            <Button startIcon={<AddIcon fontSize='large' />} component={Link} to="/trips/add" variant='contained' sx={{ width: '40%' }}>
+                                Create Trip
+                            </Button>
+                        </Box>
+                }
             </Box>
             {/* <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 1 }}>
                 <FormControl sx={{ minWidth: 160 }}>
@@ -140,11 +140,11 @@ const AllTrips = ({ match }) => {
                                     </Typography>
                                     <Box display='flex' justifyContent='center' alignItems='center'>
                                         <Typography >
-                                            Trip Creator: 
+                                            Trip Creator:
                                         </Typography>
                                         <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0}} src={trip.trip.user.avatar} >
-                                                {trip.trip.user.firstName[0]+trip.trip.user.lastName[0]}
+                                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={trip.trip.user.avatar} >
+                                                {trip.trip.user.firstName[0] + trip.trip.user.lastName[0]}
                                             </Avatar>
                                             <Typography variant='caption'>
                                                 {trip.trip.user.username}
@@ -154,7 +154,7 @@ const AllTrips = ({ match }) => {
                                 </Box>
                             </Box>
                             {
-                                !trip.trip.expenses.length ? 
+                                !trip.trip.expenses.length ?
                                     <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
                                         <Chip onClick={handleLeaveTrip} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
                                     </Box> : ''
