@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const isLoggedIn = require('../middleware/isLoggedIn')
-const { models: { User, Trip, UserTrip, Message, Event, Expense }} = require('../db')
+const { models: { User, Trip, UserTrip, Message, Event, Expense } } = require('../db')
 
 module.exports = router
 
@@ -132,7 +132,7 @@ router.put('/:tripId', async (req, res, next) => {
     return res.json([])
   }
   try {
-    
+
     // const { name, location, startTime, endTime, isOpen } = req.body
     const userTrip = await UserTrip.findByPk(req.params.tripId)
     let trip = await Trip.findByPk(userTrip.tripId);
@@ -179,15 +179,16 @@ router.put('/:tripId', async (req, res, next) => {
   }
 })
 
-router.delete('/:tripId', async (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
   if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
   try {
-    const trip = await Trip.findByPk(req.params.tripId)
+    const { id } = req.params
+    const trip = await UserTrip.findByPk(id)
     await trip.destroy()
-    res.sendStatus(201)
+    res.status(201).send(trip)
   } catch (err) {
     next(err)
   }
