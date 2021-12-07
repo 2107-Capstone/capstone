@@ -25,8 +25,7 @@ import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps
 import mapStyles from './mapStyles';
 
 const mapContainerStyle = {
-    height: "95vh",
-    width: "95vw",
+    height: "50vh",
 };
 
 const options = {

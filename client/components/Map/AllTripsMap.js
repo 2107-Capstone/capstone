@@ -23,8 +23,7 @@ import { getTrips } from '../../store';
 import mapStyles from './mapStyles';
 
 const mapContainerStyle = {
-    height: "95vh",
-    width: "95vw",
+    height: "50vh",
 };
 
 const options = {
@@ -41,11 +40,11 @@ export default function AllTripsMap() {
     // });
     const dispatch = useDispatch()
     const auth = useSelector(state => state.auth);
-    
+
     ///////////  Trip View Selection //////////
     // const [showTrips, setshowTrips] = useState('all');
     const [checked, setChecked] = useState(false);
-    
+
     const handleChange = (event) => {
         setChecked(event.target.checked)
     };
@@ -138,121 +137,121 @@ export default function AllTripsMap() {
     // if (!isLoaded || !trips) return <CircularLoading />
     if (!trips) return <CircularLoading />
     return (
-    <>
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent:'center', mt: 1 }}>
-            <Box>
-                <FormGroup>
-                    <FormControlLabel 
-                        control={<Switch 
-                            checked={checked}
-                            onChange={handleChange}
+        <>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
+                <Box>
+                    <FormGroup>
+                        <FormControlLabel
+                            control={<Switch
+                                checked={checked}
+                                onChange={handleChange}
                             />}
                             label='Past Trips'
-                            />
-                </FormGroup>
-            </Box>
-            <Box sx={{ display: 'flex', alignSelf: 'center'}}>
-                <CardTravelIcon fontSize='medium' />
-                {
-                    checked ?
-                    <Typography variant='h5'>
-                            &nbsp;PAST TRIPS
-                    </Typography>
-                    :
-                    <>
-                    <Typography variant='h5'>
-                            &nbsp;ACTIVE TRIPS
-                    </Typography>
-                    </>
-                }
-            </Box>
-            <Button startIcon={<RefreshIcon />} size='large'onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} >
-                    Refresh Event Markers
-            </Button>
-        </Box>
-        <Grid container columnSpacing={2} rowSpacing={2} >
-            <Grid item xs={12} >
-            {/* <Box style={{margin: 1}}> */}
-                {
-                    trips.map(trip => (
-                        <Box display='flex' flexWrap='wrap' key={trip.id}>
-                            <Accordion sx={{ margin: 1 , minWidth: '100%'}} >
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
-                                    id="trip-header"
-                                    onClick={() => setSelectedTrip(trip.trip)}
-                                    sx={{ borderRight: `4px solid ${trip.color}` }}
-                                    >
-                                    <Typography>
-                                        {trip.trip.name}
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
-                                    {
-                                        trip.trip.events.map(event => (
-                                            <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
-                                            
-                                            >
-                                                <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>
-                                                    <Typography gutterBottom>
-                                                        {event.name} - {event.location}
-                                                    </Typography>
-                                                    <Typography color="text.secondary" variant="subtitle2">
-                                                        {format(parseISO(event.startTime), 'Pp')}
-                                                    </Typography>
-                                                </CardContent>
-                                            </Card>
-                                        ))
-                                    }
-                                </AccordionDetails>
-                            </Accordion>
-                        </Box>
-                    ))
-                }
-            </Grid>
-            {/* <Box style={{ margin: 1}}> */}
-            <Grid item xs={12} sm={12} md={12} lg={8} xl={9} >
-                <Box style={{marginRight: 2}}>
-                <GoogleMap
-                    id='map'
-                    options={options}
-                    onLoad={onMapLoad}
-                    zoom={selectedTrip.id === 0 ? 2 : tripZoom}
-                    // zoom={tripId ? 8 : 3}
-                    mapContainerStyle={mapContainerStyle}
-                    style={mapStyles}
-                    center={{ lat: +selectedTrip.lat, lng: +selectedTrip.lng }}
-                >
-                    {displayMarkers()}
-                    {
-                        selected ? (
-                            <InfoWindow
-                                open={open}
-                                position={{ lat: +selected.lat, lng: +selected.lng }}
-                                onCloseClick={() => {
-                                    setSelected(null);
-                                }}
-                            >
-                                <div style={{ margin: '0 1rem .5rem 1rem' }}>
-                                    <Typography variant={'subtitle1'}>
-                                        {selected.trip}
-                                    </Typography>
-                                    <Divider />
-                                    <Typography variant={'subtitle2'}>
-                                        {selected.name}
-                                    </Typography>
-                                    <Typography variant={'caption'}>
-                                        {selected.time}
-                                    </Typography>
-                                </div>
-                            </InfoWindow>)
-                            : null
-                    }
-                </GoogleMap>
+                        />
+                    </FormGroup>
                 </Box>
+                <Box sx={{ display: 'flex', alignSelf: 'center' }}>
+                    <CardTravelIcon fontSize='medium' />
+                    {
+                        checked ?
+                            <Typography variant='h5'>
+                                &nbsp;PAST TRIPS
+                            </Typography>
+                            :
+                            <>
+                                <Typography variant='h5'>
+                                    &nbsp;ACTIVE TRIPS
+                                </Typography>
+                            </>
+                    }
+                </Box>
+                <Button startIcon={<RefreshIcon />} size='large' onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} >
+                    Refresh Event Markers
+                </Button>
+            </Box>
+            <Grid container columnSpacing={2} rowSpacing={2} >
+                <Grid item xs={12} >
+                    {/* <Box style={{margin: 1}}> */}
+                    {
+                        trips.map(trip => (
+                            <Box display='flex' flexWrap='wrap' key={trip.id}>
+                                <Accordion sx={{ margin: 1, minWidth: '100%' }} >
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
+                                        id="trip-header"
+                                        onClick={() => setSelectedTrip(trip.trip)}
+                                        sx={{ borderRight: `4px solid ${trip.color}` }}
+                                    >
+                                        <Typography>
+                                            {trip.trip.name}
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
+                                        {
+                                            trip.trip.events.map(event => (
+                                                <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
+
+                                                >
+                                                    <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>
+                                                        <Typography gutterBottom>
+                                                            {event.name} - {event.location}
+                                                        </Typography>
+                                                        <Typography color="text.secondary" variant="subtitle2">
+                                                            {format(parseISO(event.startTime), 'Pp')}
+                                                        </Typography>
+                                                    </CardContent>
+                                                </Card>
+                                            ))
+                                        }
+                                    </AccordionDetails>
+                                </Accordion>
+                            </Box>
+                        ))
+                    }
+                </Grid>
+                {/* <Box style={{ margin: 1}}> */}
+                <Grid item xs={12} >
+                    <Box style={{ marginRight: 2 }}>
+                        <GoogleMap
+                            id='map'
+                            options={options}
+                            onLoad={onMapLoad}
+                            zoom={selectedTrip.id === 0 ? 2 : tripZoom}
+                            // zoom={tripId ? 8 : 3}
+                            mapContainerStyle={mapContainerStyle}
+                            style={mapStyles}
+                            center={{ lat: +selectedTrip.lat, lng: +selectedTrip.lng }}
+                        >
+                            {displayMarkers()}
+                            {
+                                selected ? (
+                                    <InfoWindow
+                                        open={open}
+                                        position={{ lat: +selected.lat, lng: +selected.lng }}
+                                        onCloseClick={() => {
+                                            setSelected(null);
+                                        }}
+                                    >
+                                        <div style={{ margin: '0 1rem .5rem 1rem' }}>
+                                            <Typography variant={'subtitle1'}>
+                                                {selected.trip}
+                                            </Typography>
+                                            <Divider />
+                                            <Typography variant={'subtitle2'}>
+                                                {selected.name}
+                                            </Typography>
+                                            <Typography variant={'caption'}>
+                                                {selected.time}
+                                            </Typography>
+                                        </div>
+                                    </InfoWindow>)
+                                    : null
+                            }
+                        </GoogleMap>
+                    </Box>
+                </Grid>
             </Grid>
-        </Grid>
-     </>       
-        
+        </>
+
     );
 }
