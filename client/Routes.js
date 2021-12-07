@@ -27,9 +27,15 @@ import AuthAvatar from './components/Settings/AuthAvatar';
  * COMPONENT
  */
 class Routes extends Component {
+  constructor(props) {
+    super()
+  }
+
   async componentDidMount() {
     await this.props.loadInitialData();
-    await this.props.loadAppData();
+    if (this.props.isLoggedIn) {
+      await this.props.loadAppData();
+    }
   }
 
   async componentDidUpdate(prevProps) {

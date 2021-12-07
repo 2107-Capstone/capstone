@@ -89,7 +89,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     const tripToAdd = req.body;
     const trip = await Trip.create(tripToAdd)
 
-    const adduserTrip = await UserTrip.create({ userId: user.id, tripId: trip.id })
+    const adduserTrip = await UserTrip.create({ userId: user.id, tripId: trip.id, tripInvite: "accepted" })
 
     const userTrip = await UserTrip.findByPk(adduserTrip.id, {
       include: [
