@@ -64,13 +64,9 @@ const Navbar = (props) => {
           <SvgIcon sx={{ fontSize: '4rem', flexGrow: 1, width: 'auto', my: .5 }} color='primary' viewBox="0 0 900 425">
             <Logo />
           </SvgIcon>
-          {/* <Container sx={{ px: 1, textAlign: 'center' }}>
-            <img src={theme.palette.mode === 'light' ? "/images/logo.png" : "/images/logo-dark-wide.png"} style={{ maxHeight: '3rem', }} />
-          </Container> */}
-          {/* <Typography align='center' color="inherit" variant="h5" sx={{ flexGrow: 1 }}>
-            TRIP OUT!
-          </Typography> */}
-          {!isLoggedIn && (
+          {isLoggedIn ? (
+            null
+          ) : (
             <Button variant='outlined' color="inherit" component={Link} to="/login">
               Login
             </Button>
@@ -78,10 +74,12 @@ const Navbar = (props) => {
         </Toolbar>
       </AppBar >
       <Divider />
-      {isLoggedIn && (
-        <MenuBar mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle}
-          drawerWidth={drawerWidth} />
-      )}
+      {
+        isLoggedIn && (
+          <MenuBar mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle}
+            drawerWidth={drawerWidth} />
+        )
+      }
     </Box >
   )
 }

@@ -14,7 +14,7 @@ const REJECT_INVITE = 'REJECT_INVITE'
 const _getUserTrips = usertrips => ({ type: GET_USERTRIPS, usertrips })
 const _inviteFriend = invited => ({ type: INVITEFRIEND, invited })
 const _acceptInvite = acceptedinvite => ({ type: ACCEPT_INVITE, acceptedinvite })
-const _rejectInvite = rejectedinvite => ({ type: ACCEPT_INVITE, rejectedinvite })
+const _rejectInvite = rejectedinvite => ({ type: REJECT_INVITE, rejectedinvite })
 
 
 //////////////////// THUNK CREATORS  //////////////
@@ -62,7 +62,7 @@ export const rejectInvite = (inviteId) => {
             }
         });
         // console.log(rejectedinvite)
-        dispatch(_acceptInvite(acceptedinvite));
+        dispatch(_rejectInvite(rejectedinvite));
     };
 }
 
