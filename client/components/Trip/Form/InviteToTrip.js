@@ -110,7 +110,6 @@ const InviteToTrip = (props) => {
                             </ListItemAvatar>
                             <ListItemText
                                 primary={`${friend.friend.username}`}
-                            // secondary={friend.tripInvite==="accepted" ? 'Already on the trip' : 'pending request'}
                             />
                         </ListItem>
                         <Divider variant="inset" />
