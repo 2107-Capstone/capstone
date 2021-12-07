@@ -24,12 +24,12 @@ async function seed() {
     User.create({ username: 'Jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012', lat: 35.131821, lng: -80.950150, time: new Date(), avatar: jonathanAvatar }),
     User.create({ username: 'Stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '4567890123', time: new Date() }),
     User.create({ username: 'Jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234', time: new Date() }),
+    User.create({ username: 'Prof', password: '123', firstName: 'Prof', lastName: 'Katz', email: 'prof@123.com', phoneNumber: '1239012349', time: new Date() }),
     User.create({ username: 'Moe', password: '123', firstName: 'Moe', lastName: 'Moeman', email: 'moe@123.com', phoneNumber: '6789012341', time: new Date() }),
     User.create({ username: 'Poe', password: '123', firstName: 'Poe', lastName: 'Poet', email: 'Poe@123.com', phoneNumber: '6789012342',  time: new Date() }),
     User.create({ username: 'Lucy', password: '123', firstName: 'Lucy', lastName: 'Luck', email: 'Lucy@123.com', phoneNumber: '6789012343',  time: new Date() }),
     User.create({ username: 'JJ', password: '123', firstName: 'JJ', lastName: 'Jay', email: 'jj@123.com', phoneNumber: '6789012340', time: new Date() }),
     User.create({ username: 'Marge', password: '123', firstName: 'Marge', lastName: 'Bouvier', email: 'marge@123.com', phoneNumber: '6789012349', time: new Date() }),
-    User.create({ username: 'Prof', password: '123', firstName: 'Prof', lastName: 'Profman', email: 'prof@123.com', phoneNumber: '1239012349', time: new Date() }),
   ])
 
   const [andy, corinne, jonathan, stanley, jason, prof] = users.map(user => user)
@@ -100,6 +100,7 @@ async function seed() {
     UserTrip.create({ userId: stanley.id, tripId: friday.id, tripInvite: 'accepted' }),
     UserTrip.create({ userId: stanley.id, tripId: nye.id, tripInvite: 'accepted' }),
     UserTrip.create({ userId: andy.id, tripId: nye.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: prof.id, tripId: friday.id, tripInvite: 'accepted' }),
   ])
 
   const userFriends = await Promise.all([
