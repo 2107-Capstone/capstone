@@ -22,6 +22,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography'
 
@@ -193,14 +194,11 @@ const Trip = (props) => {
                                 >
                                     EDIT TRIP
                                 </Button>
-                                <StyledMenu
+                                <Menu
                                     anchorEl={anchorEl}
                                     open={openMenu}
                                     onClose={handleCloseMenu}
                                 >
-                                <MenuItem onClick={handleCloseMenu} disableRipple>
-                                    EVENTS
-                                </MenuItem>
                                 <MenuItem>
                                     <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
                                         handleCloseMenu();
@@ -211,9 +209,6 @@ const Trip = (props) => {
                                     </Button>
                                 </MenuItem>
                                 <Divider sx={{ my: 0.5 }} />
-                                    <MenuItem onClick={handleCloseMenu} disableRipple>
-                                        EXPENSES
-                                    </MenuItem>
                                     <MenuItem>
                                         <Button size='small' startIcon={<AddIcon />} variant='contained'  onClick={() => {
                                             handleCloseMenu();
@@ -224,9 +219,6 @@ const Trip = (props) => {
                                         </Button>
                                     </MenuItem>
                                     <Divider sx={{ my: 0.5 }} />
-                                    <MenuItem onClick={handleCloseMenu} disableRipple>
-                                        FRIENDS
-                                    </MenuItem>
                                     <MenuItem>
                                         <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
                                             handleCloseMenu();
@@ -237,9 +229,7 @@ const Trip = (props) => {
                                         </Button>
                                     </MenuItem>
                                     <Divider sx={{ my: 0.5 }} />
-                                    <MenuItem onClick={handleCloseMenu} disableRipple>
-                                        TRIP
-                                    </MenuItem>
+                                    
                                     <MenuItem>
                                         {
                                             trip.trip.userId === auth.id ? 
@@ -252,7 +242,7 @@ const Trip = (props) => {
                                         }
                                     </MenuItem>
                                     <Divider sx={{ my: 0.5 }} />
-                                </StyledMenu>
+                                </Menu>
                             </Box>
                         {/* </Box> */}
                     </Grid> 

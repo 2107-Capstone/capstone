@@ -212,6 +212,10 @@ export default function TripMap({ match }) {
             </Button>
         );
     }
+    if (!trip || !events) {
+        return <CircularLoading />
+    } 
+    const users = trip.trip.userTrips;
     useEffect(() => {
         // const users = trip.trip.userTrips
         setMarkers(prevMarkers => []);
@@ -228,10 +232,6 @@ export default function TripMap({ match }) {
         })
     }, [tripId, update])
 
-    if (!trip || !events) {
-        return <CircularLoading />
-    } 
-    const users = trip.trip.userTrips;
     
     
     
