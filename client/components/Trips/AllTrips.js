@@ -10,13 +10,12 @@ import AddIcon from '@mui/icons-material/Add';
 import CircularLoading from '../Loading/CircularLoading'
 
 //////////////////////// STORE ///////////////////
-import { getUserTrips } from "../../store";
+import { getUserTrips, leaveTrip } from "../../store";
 import { getTrips } from "../../store";
 
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO, isAfter } from "date-fns";
 
-const handleLeaveTrip = () => { }
 
 
 const AllTrips = ({ match }) => {
@@ -38,6 +37,15 @@ const AllTrips = ({ match }) => {
 
     const user = useSelector(state => state.auth)
 
+    const handleLeaveTrip = async (usertripId) => {
+        try {
+            dispatch(leaveTrip(usertripId))
+        }
+        catch (error) {
+            console.log(error)
+        }
+
+    }
 
     if (!trips) {
         return (
@@ -156,7 +164,7 @@ const AllTrips = ({ match }) => {
                             {
                                 !trip.trip.expenses.length ?
                                     <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                        <Chip onClick={handleLeaveTrip} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
+                                        <Chip onClick={() => handleLeaveTrip(trip.id)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
                                     </Box> : ''
                             }
                         </Paper>

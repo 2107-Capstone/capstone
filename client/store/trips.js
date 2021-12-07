@@ -7,12 +7,14 @@ const TOKEN = 'token'
 const GET_TRIPS = 'GET_TRIPS'
 const ADD_TRIP = 'ADD_TRIP'
 const CLOSE_TRIP = 'CLOSE_TRIP'
+const LEAVE_TRIP = 'LEAVE_TRIP'
 
 //////////// ACTION CREATORS ////////////
 const _getTrips = trips => ({ type: GET_TRIPS, trips })
 
 const _addTrip = trip => ({ type: ADD_TRIP, trip })
 const _closeTrip = trip => ({ type: CLOSE_TRIP, trip })
+const _leaveTrip = trip => ({ type: LEAVE_TRIP, trip })
 
 //////////////////// THUNK CREATORS  //////////////
 export const getTrips = () => {
@@ -48,7 +50,7 @@ export const closeTrip = (trip) => {
 
   return async (dispatch) => {
     console.log(trip)
-    
+
     const { data: closed } = await axios.put(`/api/trips/${trip.id}`, {
       headers: {
         authorization: token
@@ -57,6 +59,23 @@ export const closeTrip = (trip) => {
     // console.log(trip)
     dispatch(_closeTrip(closed));
     history.push('/trips')
+  };
+}
+
+export const leaveTrip = (usertripId) => {
+  const token = window.localStorage.getItem(TOKEN)
+
+  // console.log(usertripId)
+  return async (dispatch) => {
+
+    const { data: leavetrip } = await axios.delete(`/api/trips/${usertripId}`, {
+      headers: {
+        authorization: token
+      }
+    });
+    // console.log(leavetrip)
+    dispatch(_leaveTrip(leavetrip));
+    // history.push('/trips')
   };
 }
 
@@ -69,6 +88,8 @@ export default function (state = [], action) {
       return [action.trip, ...state]
     case CLOSE_TRIP:
       return state.map(trip => trip.tripId === action.id ? action.trip : trip)
+    case LEAVE_TRIP:
+      return state.filter(trip => trip.id !== action.trip.id)
     default:
       return state
   }

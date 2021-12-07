@@ -6,13 +6,13 @@ const TOKEN = 'token'
 //////////// ACTION TYPES  ////////////
 const GET_USERTRIPS = 'GET_USERTRIPS'
 
-const INVITEFRIEND = 'INVITEFRIEND'
+const INVITE_FRIEND = 'INVITE_FRIEND'
 const ACCEPT_INVITE = 'ACCEPT_INVITE'
 const REJECT_INVITE = 'REJECT_INVITE'
 
 //////////// ACTION CREATORS ////////////
 const _getUserTrips = usertrips => ({ type: GET_USERTRIPS, usertrips })
-const _inviteFriend = invited => ({ type: INVITEFRIEND, invited })
+const _inviteFriend = invited => ({ type: INVITE_FRIEND, invited })
 const _acceptInvite = acceptedinvite => ({ type: ACCEPT_INVITE, acceptedinvite })
 const _rejectInvite = rejectedinvite => ({ type: REJECT_INVITE, rejectedinvite })
 
@@ -71,7 +71,7 @@ export default function (state = [], action) {
     switch (action.type) {
         case GET_USERTRIPS:
             return action.usertrips
-        case INVITEFRIEND:
+        case INVITE_FRIEND:
             return [action.invited, ...state]
         case ACCEPT_INVITE:
             state = state.filter(pendinginvite => pendinginvite.id !== action.acceptedinvite.id)
