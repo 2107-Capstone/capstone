@@ -39,20 +39,18 @@ const Debts = () => {
     }, [])
 
     const userDebts = useSelector(state => state.userDebts.filter(debt => debt.status === 'pending'))
-
-    const [users, auth] = useSelector(state => [state.users, state.auth])
+console.log(userDebts)
+    const auth = useSelector(state => state.auth)
     
-    if (!users || !auth || !closedTrips || !userDebts) {
+    if ( !auth || !closedTrips || !userDebts) {
         return (<CircularLoading />)
     }
 
-    const tripDebts = closedTrips.map(trip => {
-        return (
-            {[trip.trip.name]: userDebts.filter(debt => debt.tripId === trip.tripId)}
-        )
+    let tripDebts = {};
+    userDebts.forEach(debt => {
+        !tripDebts[debt.trip.name] ? tripDebts[debt.trip.name] = [debt] : tripDebts[debt.trip.name].push(debt)
     })
 
-    console.log(tripDebts)
 
     if (userDebts.length === 0) {
         return (
@@ -62,47 +60,54 @@ const Debts = () => {
         )
     }
 
-     return (
-        <div>
-            hi
+    return (
+        <List textAlign='center'>
+            <Typography align='center' >
+                (The person owed can mark an expense as paid.)
+            </Typography>
+            {Object.entries(tripDebts).map(trip => (
+                <Fragment key={Math.random().toString(16)}>
+                    <Box sx={{
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: `${flexdirection}`
+                    }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            {/* <Avatar src={debt.trip.imageUrl} /> */}
+                    {trip.map((info, idx) => (
+                        idx === 0 ?
+                            <Typography sx={{fontWeight: 'bold'}} variant='h6'>
+                                {info}
+                            </Typography>
+                            
+                        :
+                            // <Box sx={{ m: 1 }}>
+                                <List>
+                                    {
+                                        info.map((debt) => (
+                                            <>
+                                            <Box sx={{ '& button': { m: .5 }, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                            <Typography>
+                                                {debt.payor.username} owes {debt.payee.username} ${(+debt.amount).toFixed(2)}
+                                            </Typography>
+    //TODO: ADD ON CLICK
+                                                <Button  startIcon={<CheckIcon />} size="small" variant='outlined' color='success' disabled={debt.payee.username !== auth.username}>
+                                                    PAID
+                                                </Button>
+                                            </Box>
+                                            </>
+                                        ))
+                                    }
+                                </List>
+                                
+                    ))}
+                        </Box>
+                    </Box>
 
-        </div> 
-     )
-    //     <List>
-    //         {invites.map((invite, idx) => (
-    //             <Fragment key={idx}>
-    //                 <Box sx={{
-    //                     display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: `${flexdirection}`
-    //                 }}>
-    //                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-    //                         <Avatar src={invite.friend.avatar} >
-    //                             {invite.friend.firstName[0] + invite.friend.lastName[0]}
-    //                         </Avatar>
-    //                         <Box sx={{ m: 1 }}>
-    //                             <Typography>
-    //                                 {invite.friend.firstName}
-    //                             </Typography>
-    //                             <Typography variant='body2'>
-    //                                 {`Invite to ${invite.trip.location}`}
-    //                             </Typography>
-    //                         </Box>
-    //                     </Box>
-    //                     <Box sx={{ '& button': { m: .5 }, alignSelf: 'center' }}>
-    //                         <Button onClick={() => handleAcceptInvite(invite.id)} startIcon={<CheckIcon />} size="small" variant='outlined' color='success'>
-    //                             accept
-    //                         </Button>
-    //                         <Button onClick={() => handleRejectInvite(invite.id)} startIcon={<CloseIcon />} size="small" variant='outlined' color='error'>
-    //                             reject
-    //                         </Button>
-    //                     </Box>
-    //                 </Box>
-
-    //                 <Divider />
-    //             </Fragment>
-    //         ))
-    //         }
-    //     </List >
-    // )
+                    <Divider />
+                </Fragment>
+            ))
+            }
+        </List >
+    )
 }
 
 export default Debts

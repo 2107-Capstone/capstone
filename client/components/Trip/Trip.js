@@ -95,7 +95,7 @@ const Trip = (props) => {
                 const debts = settleUp(tripExpenses, users)
                 if (debts) {
                     debts.forEach(async(debt) => {
-                        await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[0], payorId: debt[1], amount: +debt[2], status: 'pending'}))
+                        await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[1], payorId: debt[0], amount: +debt[2], status: 'pending'}))
                     })
                 }
                 //
