@@ -37,35 +37,30 @@ const datasets2 = [
     // <div style={{display: 'flex', justifyContent: 'space-around'}}>
     //     <div>
         <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={12} sm={12} lg={6}>
-                {/* <Paper style={{width: 150, height: 80}} sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}> */}
-                    {/* <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}> */}
-                    <Pie
-                        options={{
-                            width: "400",
-                            height: "400",
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: 'Expenses by Category'
-                                }
-                            },
-                            responsive: true,
-                        }}
-                        data={{
-                            labels: categoriesLabels,
-                            datasets: datasets
-                        }}
-                    />
-                    {/* </Box>
-                </Paper> */}
-            </Grid>
-        
-            <Grid item xs={12} sm={12} lg={6}>
+            <Grid item xs={12} lg={6}>
                 <Pie
                     options={{
-                        width: "400",
-                        height: "400",
+                        // width: "200",
+                        // height: "200",
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Expenses by Category'
+                            }
+                        },
+                        responsive: true,
+                    }}
+                    data={{
+                        labels: categoriesLabels,
+                        datasets: datasets
+                    }}
+                    />
+            </Grid>       
+            <Grid item xs={12} lg={6}>
+                <Pie
+                    options={{
+                        // width: "200",
+                        // height: "200",
                         plugins: {
                             title: {
                                 display: true,
@@ -81,7 +76,6 @@ const datasets2 = [
                 />
             </Grid>
         </Grid>
-        
     )
 }
 

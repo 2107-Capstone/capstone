@@ -21,6 +21,10 @@ import CircularLoading from '../Loading/CircularLoading'
 const SingleTripCalendar = ({ match }) => {
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === match.params.id))
     
+    ////////// DIALOG TO OPEN EVENT FORM ////////////////
+    const [open, setOpen] = useState(false);
+    const [tripEvent, setTripEvent] = useState({});
+    
     if (!trip) {
         return (
             <CircularLoading />
@@ -36,9 +40,7 @@ const SingleTripCalendar = ({ match }) => {
     ////////// EVENTS ////////////////
     const calendarEvents = trip.trip.events.map(event => { return { ...event, isTrip: false, title: `${event.name} - ${event.location}`, start: new Date(event.startTime), end: new Date(event.endTime) } })
 
-    ////////// DIALOG TO OPEN EVENT FORM ////////////////
-    const [open, setOpen] = useState(false);
-    const [tripEvent, setTripEvent] = useState({});
+    
 
     const handleSelect = (event) => {
         

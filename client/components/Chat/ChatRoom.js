@@ -4,7 +4,7 @@ import { format, formatISO, parseISO, isAfter } from "date-fns";
 import { Link } from "react-router-dom";
 
 import { createMessage } from "../../store";
-import { Participants } from "../Trip/tripInfo";
+// import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import CircularLoading from '../Loading/CircularLoading'
 import CardTravelIcon from '@mui/icons-material/CardTravel';

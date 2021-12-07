@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom";
 
 ////////////// MATERIAL UI ///////////
-import { Avatar, Box, Button, Chip, Container, Divider, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material";
+import { Avatar, Box, Button, Chip, Container, Divider, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Tooltip, Typography } from "@mui/material";
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AddIcon from '@mui/icons-material/Add';
@@ -161,12 +161,22 @@ const AllTrips = ({ match }) => {
                                     </Box>
                                 </Box>
                             </Box>
-                            {
+                                {
                                 !trip.trip.expenses.length ?
                                     <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                        <Chip onClick={() => handleLeaveTrip(trip.id)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} />
-                                    </Box> : ''
-                            }
+                                        <Chip onClick={() => handleLeaveTrip(trip.id)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} 
+                                        disabled={!trip.trip.expenses.length ? false : true}
+                                        />
+                                    </Box> 
+                                    :
+                                    <Tooltip title="You can not leave a trip that already has expenses." >
+                                        <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
+                                            <Chip label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} 
+                                            disabled={!trip.trip.expenses.length ? false : true}
+                                            />
+                                        </Box> 
+                                    </Tooltip>
+                                }
                         </Paper>
                     </Grid>
                 ))}

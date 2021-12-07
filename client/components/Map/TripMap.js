@@ -59,52 +59,56 @@ export default function TripMap({ match }) {
         return accum
     }, 0) / events.length;
     
-
-    if (!trip || !events) {
-        return <CircularLoading />
-    } 
-    const users = trip.trip.userTrips;
-    
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
     const [selected, setSelected] = useState(null);
     const [update, setUpdate] = useState(0);
+
     const mapRef = React.useRef();
     const onMapLoad = React.useCallback((map) => {
         mapRef.current = map;
     }, []);
-
+    
     const panTo = React.useCallback(({ lat, lng }) => {
         mapRef.current.panTo({ lat, lng });
         mapRef.current.setZoom(tripZoom);
     }, []);
     
-    useEffect(() => {
-        
-        setMarkers(prevMarkers => []);
-        setTrackingMarkers(prevTrackingMarkers => []);
+    const userLocation = useRef(null);
+    const [status, setStatus] = useState('initial')
+    
+    
+    const [open, setOpen] = useState(false);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [selectedUser, setSelectedUser] = useState('');
+    const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
 
-        // navigator.geolocation.getCurrentPosition(
-        //     async (position) => {
-        //       dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date()}));
-        //       setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
-        //     panTo({
-        //       lat: position.coords.latitude,
-        //       lng: position.coords.longitude,
-        //   });
-        //   },
-        //   () => null
-        // );
-        events.forEach(event => {
-            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
-        });
-
-        users.forEach(user => {
-            if (user.user.lat) {
-                setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng, avatar: user.user.avatar ? user.user.avatar : '/images/person.jpg', firstName: user.user.firstName, lastName: user.user.lastName  }])
-            }
-        })
-    }, [tripId, update])
+    const handleClose = () => {
+        setOpen(false);
+        setEventToEdit({})
+        setOpenAlert(false);
+        setOpenNoLocationAlert(false);
+        setUpdate(prevUpdate => prevUpdate + Math.random())
+    }
+    //TODO: rename these
+    const handleClick = (id) => {
+        // setUpdate(prevUpdate => prevUpdate + Math.random())
+        const marker = markers.find(marker => marker.id === id);
+        // ev.stopPropagation()
+        setSelected(marker);
+    }
+    const handleClick2 = async(id, username) => {
+        // setUpdate(prevUpdate => prevUpdate + Math.random())
+        const trackingMarker = trackingMarkers.find(marker => marker.id === id);
+        // ev.stopPropagation()
+        if (trackingMarker) {
+            setSelected(trackingMarker)
+        } else {
+            await setSelectedUser(username)
+            setOpenNoLocationAlert(true)
+        }
+    }
+    const [eventToEdit, setEventToEdit] = useState({});
 
     const DisplayMarkers = () => {
         console.log('markers', markers)
@@ -154,8 +158,7 @@ export default function TripMap({ match }) {
         })
     }
     
-    const userLocation = useRef(null);
-    const [status, setStatus] = useState('initial')
+    
     const handleLocate = async () => {
         await navigator.geolocation.getCurrentPosition(
             async (position) => {
@@ -166,10 +169,10 @@ export default function TripMap({ match }) {
                 }
                 // await setTrackingMarkers(trackingMarkers.filter(marker => marker.id !== auth.id), { key: auth.id + Math.random().toString(16), id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') });
                 let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-                // console.log(usersMarker)
+                
                 usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
                 const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
-                // console.log(usersMarker)
+                
                 await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
                 panTo({
                     lat: position.coords.latitude,
@@ -178,15 +181,20 @@ export default function TripMap({ match }) {
             },
             () => null
         );
-        // setStatus('watching');
-        // navigator.geolocation.watchPosition(async position => {
-        //     userLocation.current = {
-        //         lat: position.coords.latitude,
-        //         lng: position.coords.longitude
-        //     }
-        //     await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
-        //     setTrackingMarkers([...trackingMarkers, { key: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') }]);
-        // })
+        setStatus('watching');
+        navigator.geolocation.watchPosition(async position => {
+            userLocation.current = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            }
+            await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
+            let usersMarker = trackingMarkers.find(m => m.id === auth.id);
+                
+            usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
+            const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
+            
+            await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
+        })
         setOpenAlert(true);
     }
     function Locate({ panTo }) {
@@ -204,46 +212,29 @@ export default function TripMap({ match }) {
             </Button>
         );
     }
+    if (!trip || !events) {
+        return <CircularLoading />
+    } 
+    const users = trip.trip.userTrips;
+    useEffect(() => {
+        // const users = trip.trip.userTrips
+        setMarkers(prevMarkers => []);
+        setTrackingMarkers(prevTrackingMarkers => []);
 
-    const [open, setOpen] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [selectedUser, setSelectedUser] = useState('');
-    const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
+        events.forEach(event => {
+            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
+        });
+        
+        users.forEach(user => {
+            if (user.user.lat) {
+                setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng, avatar: user.user.avatar ? user.user.avatar : '/images/person.jpg', firstName: user.user.firstName, lastName: user.user.lastName  }])
+            }
+        })
+    }, [tripId, update])
 
-    const handleClose = () => {
-        setOpen(false);
-        setEventToEdit({})
-        setOpenAlert(false);
-        setOpenNoLocationAlert(false);
-        setUpdate(prevUpdate => prevUpdate + Math.random())
-    }
-    //TODO: rename these
-    const handleClick = (id) => {
-        // setUpdate(prevUpdate => prevUpdate + Math.random())
-        const marker = markers.find(marker => marker.id === id);
-        // ev.stopPropagation()
-        setSelected(marker);
-    }
-    const handleClick2 = async(id, username) => {
-        // setUpdate(prevUpdate => prevUpdate + Math.random())
-        const trackingMarker = trackingMarkers.find(marker => marker.id === id);
-        // ev.stopPropagation()
-        if (trackingMarker) {
-            setSelected(trackingMarker)
-        } else {
-            await setSelectedUser(username)
-            setOpenNoLocationAlert(true)
-        }
-    }
-    const [eventToEdit, setEventToEdit] = useState({});
-
-    // if (!trip || !isLoaded) return <CircularLoading />
-    // if (loadError) return "Error";
-    // if (!trip) return <CircularLoading />
-    // if (!trip || !events || !users) {
-    //     return <CircularLoading />
-    // } 
-
+    
+    
+    
     if (trip && events.length === 0) return (
         <>
             <Dialog open={open} onClose={handleClose}>
