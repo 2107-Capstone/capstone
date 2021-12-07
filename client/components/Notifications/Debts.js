@@ -10,8 +10,8 @@ import CloseIcon from '@mui/icons-material/Close';
 /////////////// COMPONENTS ///////////////////
 
 ////////////// STORE ////////////////
-import {  getUserDebts } from '../../store'
-import { acceptInvite, rejectInvite } from "../../store/usertrips";
+import {  getUserDebts, editUserDebt } from '../../store'
+
 
 
 const Debts = () => {
@@ -39,7 +39,7 @@ const Debts = () => {
     }, [])
 
     const userDebts = useSelector(state => state.userDebts.filter(debt => debt.status === 'pending'))
-console.log(userDebts)
+
     const auth = useSelector(state => state.auth)
     
     if ( !auth || !closedTrips || !userDebts) {
@@ -51,6 +51,10 @@ console.log(userDebts)
         !tripDebts[debt.trip.name] ? tripDebts[debt.trip.name] = [debt] : tripDebts[debt.trip.name].push(debt)
     })
 
+    const handleClick = async (userDebt) => {
+        
+        dispatch(editUserDebt(userDebt))
+    }
 
     if (userDebts.length === 0) {
         return (
@@ -88,8 +92,7 @@ console.log(userDebts)
                                             <Typography>
                                                 {debt.payor.username} owes {debt.payee.username} ${(+debt.amount).toFixed(2)}
                                             </Typography>
-    //TODO: ADD ON CLICK
-                                                <Button  startIcon={<CheckIcon />} size="small" variant='outlined' color='success' disabled={debt.payee.username !== auth.username}>
+                                                <Button  startIcon={<CheckIcon />} onClick={() => handleClick(debt)} size="small" variant='outlined' color='success' disabled={debt.payee.username !== auth.username}>
                                                     PAID
                                                 </Button>
                                             </Box>

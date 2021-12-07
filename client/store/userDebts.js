@@ -35,10 +35,11 @@ export const addUserDebt = (userDebt) => {
         dispatch(_addUserDebt(added));
     };
 }
-export const editUserDebt = (id) => {
+export const editUserDebt = (userDebt) => {
     const token = window.localStorage.getItem(TOKEN)
     return async (dispatch) => {
-        const { data: edited } = await axios.put(`/api/userDebts`, { id }, {
+        console.log('store', userDebt)
+        const { data: edited } = await axios.put(`/api/userDebts/${userDebt.id}`, {userDebt}, {
             headers: {
                 authorization: token
             }
@@ -55,7 +56,7 @@ export default function (state = [], action) {
         case ADD_USERDEBT:
             return [action.userDebt, ...state]
         case EDIT_USERDEBT:
-            return state.map(userdebt => userdebt.id === action.userdebt.id ? action.userdebt : userdebt)
+            return state.map(userDebt => userDebt.id === action.userDebt.id ? action.userDebt : userDebt)
         default:
             return state
     }
