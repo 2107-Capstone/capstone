@@ -40,6 +40,10 @@ const Settings = () => {
         error: '',
     })
 
+  
+
+    const userDebts = useSelector((state) => state.userDebts);
+
     useEffect(() => {
       setinput({
         username: auth.username,
