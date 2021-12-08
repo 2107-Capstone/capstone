@@ -1,6 +1,6 @@
 'use strict'
 
-const { db, models: { User, Category, Event, Expense, Message, Trip, UserTrip, UserFriend } } = require('../server/db')
+const { db, models: { User, Category, Event, Expense, Message, Trip, UserTrip, UserFriend, UserDebt } } = require('../server/db')
 
 /////// import image //////////////////
 const airplane = '/images/airplane.png'
@@ -36,7 +36,7 @@ async function seed() {
 
   const trips = await Promise.all([
     Trip.create({ name: 'Trip to NYC', location: 'New York, NY', description: 'A group trip to NYC!', imageUrl: 'https://lh3.googleusercontent.com/places/AAcXr8qW_5nGteBkgrTUQb2QxbtKdTuJd2HcCpZ9TRFSDsi1_iNFTzBRyz3pRY9cV0Lst6sHiF4tkAFDLNgIgKOeCKFIof7GebFJXJE=s1600-w4032', startTime: '2022-01-07 12:00:00', endTime: '2022-01-14 23:59:59', isOpen: true, lat: 40.712776, lng: -74.005974, userId: andy.id }),
-    Trip.create({ name: 'Trip to Charlotte', location: 'Charlotte, NC', description: 'A group trip to Charlotte!', imageUrl: 'https://lh3.googleusercontent.com/places/AAcXr8qFrlXaH_sLHU0REAkEOyptZnIJ3_Yddyeb8QSHQXR9wk2FsI6wsKDfSJOyjcw6-QpJ64O1LrJPRrxnMsiFIsNydfOMcMRFfhM=s1600-w1080', startTime: '2021-12-01 12:00:00', endTime: '2021-12-03 23:59:59', isOpen: true, lat: 35.227085, lng: -80.843124, userId: jonathan.id }),
+    Trip.create({ name: 'Trip to Charlotte', location: 'Charlotte, NC', description: 'A group trip to Charlotte!', imageUrl: 'https://lh3.googleusercontent.com/places/AAcXr8qFrlXaH_sLHU0REAkEOyptZnIJ3_Yddyeb8QSHQXR9wk2FsI6wsKDfSJOyjcw6-QpJ64O1LrJPRrxnMsiFIsNydfOMcMRFfhM=s1600-w1080', startTime: '2021-12-01 12:00:00', endTime: '2021-12-03 23:59:59', isOpen: false, lat: 35.227085, lng: -80.843124, userId: jonathan.id }),
     Trip.create({ name: 'Trip to Miami', location: 'Miami, FL', description: 'A group trip to Miami!', imageUrl: 'https://lh3.googleusercontent.com/places/AAcXr8qveJ4lsmw7U_l8zUnBWDBLMCImIIT2I9mCX1Gvbgys7XbgGtRl6GyB-l7rRccc-azR-UGA3Wc5EsU61QJKXxSwZGxV0eZkFVw=s1600-w2560', startTime: '2021-12-12 12:00:00', endTime: '2021-12-15 23:59:59', isOpen: true, lat: 25.761681, lng: -80.191788, userId: jonathan.id }),
     Trip.create({ name: 'Trip to Paris', location: 'Paris, France', description: 'A group trip to Paris!', imageUrl: 'https://lh3.googleusercontent.com/places/AAcXr8qAEVTGSbA79pzizPEYGJ0Cpwk637M1DP_nOw6-MVGLohKktj7dJY6E67Xz-PCCqSAWvyZy6e3wF3zF-H7v-MARpAx44w1AH38=s1600-w600', startTime: '2021-12-20 12:00:00', endTime: '2021-12-30 23:59:59', isOpen: true, lat: 48.87531999859082, lng: 2.3302103060471153, userId: jason.id }),
     Trip.create({ name: 'Friday night!', location: 'New York, NY', description: 'Weekend hangout with the gang in the new year', imageUrl: 'https://lh3.googleusercontent.com/places/AAcXr8qW_5nGteBkgrTUQb2QxbtKdTuJd2HcCpZ9TRFSDsi1_iNFTzBRyz3pRY9cV0Lst6sHiF4tkAFDLNgIgKOeCKFIof7GebFJXJE=s1600-w4032', startTime: '2022-01-07 20:00:00', endTime: '2022-01-08 05:00:00', isOpen: true, lat: 40.712776, lng: -74.005974, userId: corinne.id }),
@@ -143,6 +143,8 @@ async function seed() {
     Message.create({ content: "Don't worry, we'll be reunited soon!", tripId: friday.id, sentById: prof.id, dateSent: '2021-12-03T11:25:34.000Z' }),
   ])
 
+  const userDebt = await UserDebt.create({ amount: 57.50, payorId: jonathan.id, payeeId: andy.id, tripId: charlotte.id})
+
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
   return {
@@ -171,7 +173,8 @@ async function seed() {
       nye
     },
     userTrips,
-    userFriends
+    userFriends,
+    userDebt
   }
 }
 

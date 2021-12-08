@@ -14,8 +14,9 @@ import categories from './categories'
 import userFriends from './userFriends'
 import friendsPendingSent from './friendsPendingSent'
 import friendsPendingReceived from './friendsPendingReceived'
+import userDebts from './userDebts'
 
-const reducer = combineReducers({ auth, users, usertrips, trips, messages, friends, events, expenses, categories, userFriends, friendsPendingSent, friendsPendingReceived })
+const reducer = combineReducers({ auth, users, usertrips, trips, messages, friends, events, expenses, categories, userFriends, friendsPendingSent, friendsPendingReceived, userDebts })
 
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
@@ -35,5 +36,6 @@ export * from './categories'
 export * from './userFriends'
 export * from './friendsPendingSent'
 export * from './friendsPendingReceived'
+export * from './userDebts'
 
 

@@ -10,6 +10,9 @@ const Message = require('./models/Message')
 const Trip = require('./models/Trip')
 const UserTrip = require('./models/UserTrip')
 const UserFriend = require('./models/UserFriend')
+const UserDebt = require('./models/UserDebt')
+// const { debuggerStatement } = require('@babel/types')
+// const { defaultValueSchemable } = require('sequelize/types/lib/utils')
 
 //associations could go here!
 
@@ -53,6 +56,22 @@ Trip.hasMany(Message)
 Message.belongsTo(User, { as: "sentBy" })
 User.hasMany(Message, { foreignKey: "sentById" })
 
+// Debt.belongsTo(User, { as: 'debtor' })
+// User.hasMany(Debt, { as: 'debtorId' })
+// Debt.belongsTo(User, { as: 'payee' })
+// User.hasMany(Debt, { as: 'payeeId' })
+// Debt.belongsTo(Trip)
+// Trip.hasMany(Debt)
+
+UserDebt.belongsTo(User, { as: 'payor'})
+UserDebt.belongsTo(User, { as: 'payee'})
+User.hasMany(UserDebt)
+UserDebt.belongsTo(Trip)
+Trip.hasMany(UserDebt)
+
+
+
+
 module.exports = {
   db,
   models: {
@@ -63,6 +82,7 @@ module.exports = {
     Message,
     Trip,
     UserTrip,
-    UserFriend
+    UserFriend,
+    UserDebt
   },
 }

@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////////// STORE /////////////////
-import { closeTrip } from '../../store'
+import { closeTrip, addUserDebt } from '../../store'
 
 /////////////// COMPONENTS /////////////////
 import CircularLoading from '../Loading/CircularLoading'
@@ -41,6 +41,8 @@ import PeopleIcon from '@mui/icons-material/People'
 import { format, formatISO, parseISO, isAfter, isBefore } from "date-fns";
 import theme from '../../theme'
 
+import { settleUp } from '../Expenses/SettleUp'
+
 const Trip = (props) => {
     const id = props.match.params.id
     
@@ -57,6 +59,7 @@ const Trip = (props) => {
         return total + +expense.amount
     }, 0);
 
+    
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
     const handleClose = () => {
@@ -64,31 +67,45 @@ const Trip = (props) => {
         setForm('')
     }
     // if (!trip || !events || !messages || !tripExpenses) {
-    //     return <CircularLoading />
-    // }
-    const [anchorEl, setAnchorEl] = useState(null);
-    const openMenu = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleCloseMenu = () => {
-        setAnchorEl(null);
-    };
-    
-    if (!trip || !events || !messages || !tripExpenses) {
-        return <CircularLoading />
-    }
-    
-    const handleCloseTrip = async () => {
-        try {
-            console.log(trip)
-            await dispatch(closeTrip({ ...trip }))
-        } catch (error) {
-            console.log(error)
+        //     return <CircularLoading />
+        // }
+        const [anchorEl, setAnchorEl] = useState(null);
+        const openMenu = Boolean(anchorEl);
+        const handleClick = (event) => {
+            setAnchorEl(event.currentTarget);
+        };
+        const handleCloseMenu = () => {
+            setAnchorEl(null);
+        };
+        
+        if (!trip || !events || !messages || !tripExpenses) {
+            return <CircularLoading />
         }
-    }
-
-    const users = trip.trip.userTrips;
+        
+        const users = trip.trip.userTrips;
+        const findUsername = (userId) => {
+            const user = users.find(user => user.userId === userId);
+            return user.user.username
+        }
+        
+        const handleCloseTrip = async () => {
+            try {
+                console.log(trip)
+                await dispatch(closeTrip({ ...trip }))
+                const debts = settleUp(tripExpenses, users)
+                if (debts) {
+                    debts.forEach(async(debt) => {
+                        await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[1], payorId: debt[0], amount: +debt[2], status: 'pending'}))
+                    })
+                }
+                //
+                //    await dispatch(addUserDebt({}))
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        
+    
 
     events = events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
     events.length > 5 ? events.length = 5 : ''

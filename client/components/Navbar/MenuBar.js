@@ -36,6 +36,7 @@ const MenuBar = (props) => {
     }
     const user = useSelector(state => state.auth)
     const pendingInvites = useSelector(state => state.usertrips).filter(usertrip => usertrip.tripInvite === 'pending' && usertrip.userId === user.id) || []
+    const userDebts = useSelector(state => state.userDebts).filter(userDebt => userDebt.status === 'pending');
 
     useEffect(async () => {
         try {
@@ -47,8 +48,8 @@ const MenuBar = (props) => {
 
     const friendNotifications = props.friendsPendingReceived.length || 0
     const tripInvitations = pendingInvites.length || 0
-
-    const countNotifications = friendNotifications + tripInvitations
+    const debtNotifications = userDebts.length || 0
+    const countNotifications = friendNotifications + tripInvitations + debtNotifications
 
     const menuBarButtons = (
         <Box sx={{ px: 1 }}>
