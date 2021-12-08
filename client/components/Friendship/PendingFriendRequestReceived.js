@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { deleteUserFriend, approveUserFriend, createUserFriend, getFriends, getFriendsPendingReceived } from '../../store'
 
 ////////////// MATERIAL UI ///////////
-import { Box, Button, ButtonGroup, Grid, Paper, Typography, Snackbar, Alert, Avatar } from "@mui/material"
+import { Box, Button, ButtonGroup, Grid, Paper, Typography, Snackbar, Alert, Avatar, Stack } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 import PendingIcon from '@mui/icons-material/Pending';
@@ -22,7 +22,7 @@ export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUse
         handleClick(userFriend)
         await loadFriendshipData()
     }
-    
+
     const clickRejectRequest = async (userFriend) => {
         await deleteUserFriend(userFriend.id)
         handleRejectClick(userFriend)
@@ -45,7 +45,7 @@ export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUse
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
-        return;
+            return;
         }
 
         setOpen(false);
@@ -53,62 +53,64 @@ export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUse
         setUserFriend({})
     };
 
-    return(
-    <>
-        <div>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
-            <PendingIcon fontSize='medium' />
-            <Typography variant='h5'>
-                &nbsp;Pending Friend Requests You Received
-            </Typography>
-        </Box>
-        <h5 align='center'>{friendsPendingReceived.length === 0? "No pending friend requests received":""}</h5>
-        </div>
-        <Grid container spacing={2} sx={{ mt: 4, mb: 4 }}>
-            {friendsPendingReceived.map(friendPendingReceived => (
-                <Grid item xs={12} sm={3} key={friendPendingReceived.id}>
-                    <Paper style={{width: 225, height: 110}} sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] }}}>
-                        <Box sx={{ color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                            <Avatar sx={{ bgcolor: 'primary.main' }} src={friendPendingReceived.user.avatar}>
-                                {friendPendingReceived.user.firstName[0]+friendPendingReceived.user.lastName[0]}
-                            </Avatar>
-                            <Typography variant='h6'>
-                                {friendPendingReceived.user.username}
-                            </Typography>
-                            <ButtonGroup>
-                            <Button startIcon={<CheckCircleIcon />} size="small" variant='contained' onClick={() => clickApproveRequest(friendPendingReceived)}>
-                                Approve
-                            </Button>
-                            <Button startIcon={<CancelIcon />} size="small" variant='contained' onClick={() => clickRejectRequest(friendPendingReceived)}>
-                                Reject
-                            </Button>
-                            </ButtonGroup>
-                        </Box>
-                    </Paper>
-                </Grid>
-            ))}
-        </Grid>
-        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-            {userFriend && userFriend.user ? `${userFriend.user.username} is now your friend!`:''}
-            </Alert>
-        </Snackbar>
-        <Snackbar open={rejectOpen} autoHideDuration={2000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-            {userFriend && userFriend.user ? `${userFriend.user.username}'s friend request has been rejected!`:''}
-            </Alert>
-        </Snackbar>
-    </>
+    return (
+        <>
+            <div>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
+                    <PendingIcon fontSize='medium' />
+                    <Typography variant='h5'>
+                        &nbsp;Pending Friend Requests You Received
+                    </Typography>
+                </Box>
+                <h5 align='center'>{friendsPendingReceived.length === 0 ? "No pending friend requests received" : ""}</h5>
+            </div>
+            <Grid container spacing={2} sx={{ mt: 4, mb: 4 }}>
+                {friendsPendingReceived.map(friendPendingReceived => (
+                    <Grid item xs={12} sm={4} md={3} key={friendPendingReceived.id}>
+                        <Paper elevation={1}>
+                            <Box sx={{ py: 1, color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                                <Avatar sx={{ bgcolor: 'primary.main' }} src={friendPendingReceived.user.avatar}>
+                                    {friendPendingReceived.user.firstName[0] + friendPendingReceived.user.lastName[0]}
+                                </Avatar>
+                                <Typography variant='h6'>
+                                    {friendPendingReceived.user.username}
+                                </Typography>
+                                {/* <ButtonGroup> */}
+                                <Stack spacing={0.5}>
+                                    <Button color='success' startIcon={<CheckCircleIcon />} size="small" variant='outlined' onClick={() => clickApproveRequest(friendPendingReceived)}>
+                                        Approve
+                                    </Button>
+                                    <Button color='error' startIcon={<CancelIcon />} size="small" variant='outlined' onClick={() => clickRejectRequest(friendPendingReceived)}>
+                                        Reject
+                                    </Button>
+                                </Stack>
+                                {/* </ButtonGroup> */}
+                            </Box>
+                        </Paper>
+                    </Grid>
+                ))}
+            </Grid>
+            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    {userFriend && userFriend.user ? `${userFriend.user.username} is now your friend!` : ''}
+                </Alert>
+            </Snackbar>
+            <Snackbar open={rejectOpen} autoHideDuration={2000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    {userFriend && userFriend.user ? `${userFriend.user.username}'s friend request has been rejected!` : ''}
+                </Alert>
+            </Snackbar>
+        </>
     )
 }
 
 const mapState = state => {
     return {
-      auth: state.auth,
-      friendsPendingSent: state.friendsPendingSent,
-      friendsPendingReceived: state.friendsPendingReceived
+        auth: state.auth,
+        friendsPendingSent: state.friendsPendingSent,
+        friendsPendingReceived: state.friendsPendingReceived
     }
-  }
+}
 
 const mapDispatch = (dispatch) => {
     return {
@@ -121,7 +123,7 @@ const mapDispatch = (dispatch) => {
         createUserFriend: (userFriend) => {
             dispatch(createUserFriend(userFriend))
         },
-        loadFriendshipData () {
+        loadFriendshipData() {
             dispatch(getFriends())
             dispatch(getFriendsPendingReceived())
         }
