@@ -12,7 +12,7 @@ import { logout } from '../../store';
 import { Button, Box, Divider, Drawer, Stack, Toolbar, IconButton, Typography, Badge, SvgIcon } from '@mui/material'
 
 //////////// ICONS //////////////////
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import HomeIcon from '@mui/icons-material/Home';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import EventIcon from '@mui/icons-material/Event';
@@ -54,16 +54,19 @@ const MenuBar = (props) => {
     const menuBarButtons = (
         <Box sx={{ px: 1 }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'center' }}>
-                <IconButton component={Link} to='/home' color='primary' onClick={handleDrawerToggle}>
+                {/* <IconButton component={Link} to='/home' color='primary' onClick={handleDrawerToggle}>
                     <SvgIcon sx={{ fontSize: '3rem', width: 'auto', my: .5 }} viewBox="0 0 272 264">
                         <LogoIcon />
                     </SvgIcon>
-                </IconButton>
+                </IconButton> */}
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Hello, {user.firstName}
+                </Typography>
             </Toolbar>
             <Divider />
             <Stack spacing={2}>
-                <Button component={Link} onClick={handleDrawerToggle} to='/dashboard' variant='contained' sx={{ mt: 2 }} startIcon={<DashboardIcon />}>
-                    Dashboard
+                <Button component={Link} onClick={handleDrawerToggle} to='/home' variant='contained' sx={{ mt: 2 }} startIcon={<HomeIcon />}>
+                    Home
                 </Button>
                 <Button component={Link} onClick={handleDrawerToggle} to='/trips' variant='contained' startIcon={<CardTravelIcon />}>
                     Trips
