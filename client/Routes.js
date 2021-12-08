@@ -101,15 +101,15 @@ const mapDispatch = dispatch => {
     },
     loadAppData() {
       dispatch(getUsers())
-      // dispatch(getTrips())
+      dispatch(getTrips())
       dispatch(getMessages())
-      // dispatch(getFriends())
+      dispatch(getFriends())
       dispatch(getEvents())
       dispatch(getExpenses())
       dispatch(getCategories())
-      // dispatch(getUserFriends())
-      // dispatch(getFriendsPendingSent())
-      // dispatch(getFriendsPendingReceived())
+      dispatch(getUserFriends())
+      dispatch(getFriendsPendingSent())
+      dispatch(getFriendsPendingReceived())
       dispatch(getUserDebts())
     }
   }
