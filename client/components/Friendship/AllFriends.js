@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close'
 
 export const AllFriends = ({ friends, userFriends, deleteUserFriend, loadFriendshipData }) => {
 
-  
+
 
     const clickDeleteFriend = async (friend) => {
         const _userFriend = userFriends.find(userFriend => userFriend.userId === friend.friendId)
@@ -77,7 +77,7 @@ export const AllFriends = ({ friends, userFriends, deleteUserFriend, loadFriends
             </Typography>
             <Grid container spacing={2} sx={{ my: 4 }}>
                 {friends.map(friend => (
-                    <Grid item xs={12} md={3} key={friend.id}>
+                    <Grid item xs={12} sm={4} md={3} key={friend.id}>
                         <Paper elevation={1}>
                             <Box sx={{ py: 1, color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                                 <Avatar sx={{ bgcolor: 'primary.main' }} src={friend.friend.avatar}>
@@ -86,7 +86,7 @@ export const AllFriends = ({ friends, userFriends, deleteUserFriend, loadFriends
                                 <Typography variant='h6'>
                                     {friend.friend.username}
                                 </Typography>
-                                <Button startIcon={<DeleteIcon />} size="small" variant='outlined' onClick={() => handleClick(friend)}>
+                                <Button color='error' startIcon={<DeleteIcon />} size="small" variant='outlined' onClick={() => handleClick(friend)}>
                                     Delete Friend
                                 </Button>
 
