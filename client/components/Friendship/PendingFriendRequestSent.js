@@ -35,7 +35,7 @@ export const PendingFriendRequestSent = ({friendsPendingSent, deleteUserFriend, 
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
             <PendingIcon fontSize='medium' />
             <Typography variant='h5'>
-                &nbsp;Pendng Friend Requests You Sent
+                &nbsp;Pending Friend Requests You Sent
             </Typography>
         </Box>
         <h5 align='center'>{friendsPendingSent.length === 0? "No pending friend requests sent":""}</h5>
