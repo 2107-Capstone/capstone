@@ -59,7 +59,7 @@ const MenuBar = (props) => {
                         <LogoIcon />
                     </SvgIcon>
                 </IconButton> */}
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography variant='h6' sx={{ my: 2.5, fontWeight: 'bold' }}>
                     Hello, {user.firstName}
                 </Typography>
             </Toolbar>
