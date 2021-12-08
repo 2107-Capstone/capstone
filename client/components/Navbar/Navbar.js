@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom'
 //////// MENU BAR /////////////
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 ////////// REDUX ////////////
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 /////////// MATERIAL UI /////////////
-import { AppBar, Box, Button, Container, Divider, SvgIcon, Toolbar, Paper, Typography, useMediaQuery } from '@mui/material';
+import { AppBar, Box, Button, Container, Divider, SvgIcon, Toolbar, Paper, Typography, useMediaQuery, Badge } from '@mui/material';
 
 /////////// COMPONENTS ///////////////////
 import MenuBar from './MenuBar';
@@ -42,6 +42,14 @@ const Navbar = (props) => {
     }
   };
 
+  const user = useSelector(state => state.auth)
+  const pendingInvites = useSelector(state => state.usertrips).filter(usertrip => usertrip.tripInvite === 'pending' && usertrip.userId === user.id) || []
+
+  const friendNotifications = useSelector(state => state.friendsPendingReceived).length || 0
+  const tripInvitations = pendingInvites.length || 0
+
+  const countNotifications = friendNotifications + tripInvitations
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color='inherit' sx={{ boxShadow: 0 }}>
@@ -65,7 +73,11 @@ const Navbar = (props) => {
             <Logo />
           </SvgIcon>
           {isLoggedIn ? (
-            null
+            <IconButton component={Link} to='/notifications' sx={{ display: { sm: 'none' } }}>
+              <Badge badgeContent={countNotifications} color="error">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
           ) : (
             <Button variant='outlined' color="inherit" component={Link} to="/login">
               Login

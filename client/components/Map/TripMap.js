@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, forwardRef, useCallback } from 'react'
 import { connect, useSelector, useDispatch } from 'react-redux'
 import { Link } from "react-router-dom";
 import { parseISO, format } from 'date-fns';
@@ -12,7 +12,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 import EventForm from './EventForm'
 import CircularLoading from '../Loading/CircularLoading'
-import { updateUser, deleteEvent } from '../../store';
+import { updateUser, deleteEvent, getTrips, getEvents } from '../../store';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddIcon from '@mui/icons-material/Add';
@@ -37,47 +37,57 @@ const options = {
 const tripZoom = 12;
 
 export default function TripMap({ match }) {
+    const dispatch = useDispatch();
     const tripId = match.params.id;
-    
-    const Alert = React.forwardRef(function Alert(props, ref) {
+
+    const Alert = forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
     });
 
-    const dispatch = useDispatch();
+    // useEffect(async () => {
+    //     try {
+    //         await dispatch(getTrips())
+    //         await dispatch(getEvents())
+    //     }
+    //     catch (error) {
+    //         console.log(error)
+    //     }
+    // }, [])
+
     const auth = useSelector(state => state.auth);
 
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
     let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
-    
+
     const avgLat = events.reduce((accum, event) => {
         accum += +event.lat
         return accum
     }, 0) / events.length;
-    
+
     const avgLng = events.reduce((accum, event) => {
         accum += +event.lng
         return accum
     }, 0) / events.length;
-    
+
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
     const [selected, setSelected] = useState(null);
     const [update, setUpdate] = useState(0);
 
-    const mapRef = React.useRef();
-    const onMapLoad = React.useCallback((map) => {
+    const mapRef = useRef();
+    const onMapLoad = useCallback((map) => {
         mapRef.current = map;
     }, []);
-    
-    const panTo = React.useCallback(({ lat, lng }) => {
+
+    const panTo = useCallback(({ lat, lng }) => {
         mapRef.current.panTo({ lat, lng });
         mapRef.current.setZoom(tripZoom);
     }, []);
-    
+
     const userLocation = useRef(null);
     const [status, setStatus] = useState('initial')
-    
-    
+
+
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
@@ -97,7 +107,7 @@ export default function TripMap({ match }) {
         // ev.stopPropagation()
         setSelected(marker);
     }
-    const handleClick2 = async(id, username) => {
+    const handleClick2 = async (id, username) => {
         // setUpdate(prevUpdate => prevUpdate + Math.random())
         const trackingMarker = trackingMarkers.find(marker => marker.id === id);
         // ev.stopPropagation()
@@ -151,14 +161,14 @@ export default function TripMap({ match }) {
                     // }
                     icon={{
                         url: '/person.svg',
-                    
+
                     }}
                 />
             )
         })
     }
-    
-    
+
+
     const handleLocate = async () => {
         await navigator.geolocation.getCurrentPosition(
             async (position) => {
@@ -169,10 +179,10 @@ export default function TripMap({ match }) {
                 }
                 // await setTrackingMarkers(trackingMarkers.filter(marker => marker.id !== auth.id), { key: auth.id + Math.random().toString(16), id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') });
                 let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-                
+
                 usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
                 const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
-                
+
                 await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
                 panTo({
                     lat: position.coords.latitude,
@@ -189,10 +199,10 @@ export default function TripMap({ match }) {
             }
             await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
             let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-                
+
             usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
             const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
-            
+
             await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
         })
         setOpenAlert(true);
@@ -212,10 +222,8 @@ export default function TripMap({ match }) {
             </Button>
         );
     }
-    if (!trip || !events) {
-        return <CircularLoading />
-    } 
-    const users = trip.trip.userTrips;
+    console.log(trip)
+    let users = []
     useEffect(() => {
         // const users = trip.trip.userTrips
         setMarkers(prevMarkers => []);
@@ -224,17 +232,22 @@ export default function TripMap({ match }) {
         events.forEach(event => {
             setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
         });
-        
+
         users.forEach(user => {
             if (user.user.lat) {
-                setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng, avatar: user.user.avatar ? user.user.avatar : '/images/person.jpg', firstName: user.user.firstName, lastName: user.user.lastName  }])
+                setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng, avatar: user.user.avatar ? user.user.avatar : '/images/person.jpg', firstName: user.user.firstName, lastName: user.user.lastName }])
             }
         })
     }, [tripId, update])
 
-    
-    
-    
+
+
+    if (!trip || !events) {
+        return <CircularLoading />
+    }
+
+    users = trip.trip.userTrips;
+
     if (trip && events.length === 0) return (
         <>
             <Dialog open={open} onClose={handleClose}>
@@ -248,55 +261,55 @@ export default function TripMap({ match }) {
 
     return (
         <>
-            <Snackbar 
-                open={openAlert} 
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
-                autoHideDuration={2000} 
+            <Snackbar
+                open={openAlert}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                autoHideDuration={2000}
                 onClose={handleClose}
             >
-                <Alert 
-                    onClose={handleClose} 
-                    severity='success' 
+                <Alert
+                    onClose={handleClose}
+                    severity='success'
                     sx={{ width: '100%' }}
                 >
                     Location Pinned!
                 </Alert>
             </Snackbar>
-            <Snackbar 
-                open={openNoLocationAlert} 
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={2000} 
+            <Snackbar
+                open={openNoLocationAlert}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={2000}
                 onClose={handleClose}
             >
-                <Alert 
-                    onClose={handleClose} 
-                    severity='info' 
+                <Alert
+                    onClose={handleClose}
+                    severity='info'
                     sx={{ width: '100%' }}
                 >
                     {selectedUser} is not sharing location.
                 </Alert>
             </Snackbar>
-            <Dialog 
-                open={open} 
+            <Dialog
+                open={open}
                 onClose={handleClose}
             >
-                <EventForm 
-                    trip={trip} 
-                    event={eventToEdit} 
-                    handleClose={handleClose} 
+                <EventForm
+                    trip={trip}
+                    event={eventToEdit}
+                    handleClose={handleClose}
                 />
             </Dialog>
             {/* <Tooltip title='Add Event'> */}
-            <Box 
-                className='linkToTrip' 
+            <Box
+                className='linkToTrip'
                 display='flex'
                 justifyContent='center'
                 alignItems='center'
                 marginTop={1}
             >
                 <CardTravelIcon fontSize='medium' />
-                <Box 
-                    sx={{ color: 'inherit' }} 
-                    component={Link} 
+                <Box
+                    sx={{ color: 'inherit' }}
+                    component={Link}
                     to={`/trips/${trip.tripId}`}
                 >
                     <Typography variant='h5'>
@@ -304,65 +317,65 @@ export default function TripMap({ match }) {
                     </Typography>
                 </Box>
             </Box>
-            <Box 
+            <Box
                 display='flex'
                 justifyContent='center'
             >
                 <Box marginRight={3}>
-                    <Locate panTo={panTo}/>
+                    <Locate panTo={panTo} />
                 </Box>
                 <Box marginBottom={.5} marginRight={3} >
                     <Button
-                        startIcon={<AddIcon />} 
-                        variant='contained' 
-                        color='primary' 
+                        startIcon={<AddIcon />}
+                        variant='contained'
+                        color='primary'
                         onClick={() => setOpen(true)}
                         size='small'
-                        >
+                    >
                         Add Event
                     </Button>
                 </Box>
                 <Box >
                     {/* </Tooltip> */}
                     <Tooltip title='Refresh Markers'>
-                        <Button 
-                            startIcon={<RefreshIcon />} 
-                            variant='contained' 
+                        <Button
+                            startIcon={<RefreshIcon />}
+                            variant='contained'
                             color='primary'
                             size='small'
-                            onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())} 
+                            onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
                         />
                     </Tooltip>
                 </Box>
             </Box>
-            
+
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <Box 
-                    display='flex' 
+                <Box
+                    display='flex'
                     justifyContent='center'
                     marginTop={.5}
                     marginBottom={.5}
                 >
-                    
+
                     {
                         users.map(user => (
-                            <Box 
-                                key={user.userId} 
+                            <Box
+                                key={user.userId}
                                 marginRight={1}
-                                padding={.25} 
+                                padding={.25}
                                 border='1px solid lightgrey'
                                 borderRadius='10%'
-                                display='flex' 
-                                flexDirection='column' 
+                                display='flex'
+                                flexDirection='column'
                                 flexWrap='wrap' justifyContent='center' alignItems='center'
-                                sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
+                                sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}
                             >
-                                <Avatar 
-                                    sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
+                                <Avatar
+                                    sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
                                     src={user.user.avatar}
                                     onClick={() => handleClick2(user.userId, user.user.username)}
                                 >
-                                    {user.user.firstName[0]+user.user.lastName[0]}
+                                    {user.user.firstName[0] + user.user.lastName[0]}
                                 </Avatar>
                                 <Typography variant='caption'>
                                     {user.user.username}
@@ -371,74 +384,74 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
-                <Box 
-                    display='flex' 
+                <Box
+                    display='flex'
                     justifyContent='center'
                     marginBottom={.5}
                     flexWrap='wrap'
                 >
-                {
-                    events.map(event => (
-                        <Box 
-                            display='flex' 
-                            flexDirection='column'
-                            marginRight={1}
-                            padding={.25} 
-                            border='1px solid lightgrey'
-                            borderRadius='7%'
-                            key={event.id} 
-                            onClick={() => handleClick(event.id)}
-                            justifyContent='center' 
-                            alignItems='center'
-                            marginRight={1}
-                            padding={.5}
-                            sx={{':hover': { boxShadow: (theme) => theme.shadows[5] }}}
-                        >
-                            <Box>
-                                <Typography 
-                                    sx={{m: 0}}
-                                    variant='subtitle2'    
-                                >
-                                    {event.name}
-                                </Typography>
-                                <Typography 
-                                    color="text.secondary" variant="caption" 
-                                    sx={{ m: 0 }}
-                                >
-                                    {format(parseISO(event.startTime), 'Pp')}
-                                </Typography>
-                            </Box>
-                            <Box 
+                    {
+                        events.map(event => (
+                            <Box
                                 display='flex'
-                                justifyContent='space-evenly'
+                                flexDirection='column'
+                                marginRight={1}
+                                padding={.25}
+                                border='1px solid lightgrey'
+                                borderRadius='7%'
+                                key={event.id}
+                                onClick={() => handleClick(event.id)}
+                                justifyContent='center'
+                                alignItems='center'
+                                marginRight={1}
+                                padding={.5}
+                                sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}
                             >
-                                <Button 
-                                    startIcon={<ModeEditIcon />} color='info' 
-                                    size='small' 
-                                    onClick={() => {
-                                        setEventToEdit(event);
-                                        setOpen(true);
-                                    }}
+                                <Box>
+                                    <Typography
+                                        sx={{ m: 0 }}
+                                        variant='subtitle2'
+                                    >
+                                        {event.name}
+                                    </Typography>
+                                    <Typography
+                                        color="text.secondary" variant="caption"
+                                        sx={{ m: 0 }}
+                                    >
+                                        {format(parseISO(event.startTime), 'Pp')}
+                                    </Typography>
+                                </Box>
+                                <Box
+                                    display='flex'
+                                    justifyContent='space-evenly'
                                 >
-                                    Edit
-                                </Button>
-                                <Button 
-                                    startIcon={<DeleteForeverIcon />} color='error' 
-                                    size='small' 
-                                    onClick={async () => {
-                                        try {
-                                            await dispatch(deleteEvent(event.id))
-                                        } catch (err) {
-                                            console.log(err)
-                                        }
-                                    }}
-                                >
-                                    Delete
-                                </Button>
+                                    <Button
+                                        startIcon={<ModeEditIcon />} color='info'
+                                        size='small'
+                                        onClick={() => {
+                                            setEventToEdit(event);
+                                            setOpen(true);
+                                        }}
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        startIcon={<DeleteForeverIcon />} color='error'
+                                        size='small'
+                                        onClick={async () => {
+                                            try {
+                                                await dispatch(deleteEvent(event.id))
+                                            } catch (err) {
+                                                console.log(err)
+                                            }
+                                        }}
+                                    >
+                                        Delete
+                                    </Button>
+                                </Box>
                             </Box>
-                        </Box>
-                    ))
-                }
+                        ))
+                    }
                 </Box>
                 <GoogleMap
                     id='map'
@@ -457,33 +470,33 @@ export default function TripMap({ match }) {
                     <DisplayTrackingMarkers />
                     {
                         selected ?
-                        (
-                            <InfoWindow
-                                open={open}
-                                position={{ lat: +selected.lat, lng: +selected.lng }}
-                                onCloseClick={() => {
-                                    setSelected(null);
-                                }}
-                            >
-                                <Box 
-                                    marginTop={.5} 
-                                    marginRight={1}
-                                    marginBottom={.5}
-                                    marginLeft={.5}
+                            (
+                                <InfoWindow
+                                    open={open}
+                                    position={{ lat: +selected.lat, lng: +selected.lng }}
+                                    onCloseClick={() => {
+                                        setSelected(null);
+                                    }}
                                 >
-                                    <Typography variant={'subtitle2'}>
-                                        {selected.name}
-                                    </Typography>
-                                    <Typography variant={'caption'}>
-                                        {selected.time}
-                                    </Typography>
-                                </Box>
-                            </InfoWindow>
-                        )
+                                    <Box
+                                        marginTop={.5}
+                                        marginRight={1}
+                                        marginBottom={.5}
+                                        marginLeft={.5}
+                                    >
+                                        <Typography variant={'subtitle2'}>
+                                            {selected.name}
+                                        </Typography>
+                                        <Typography variant={'caption'}>
+                                            {selected.time}
+                                        </Typography>
+                                    </Box>
+                                </InfoWindow>
+                            )
                             : null
                     }
                 </GoogleMap>
-                 
+
             </div>
         </>
     );
