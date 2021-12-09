@@ -30,6 +30,7 @@ async function seed() {
     User.create({ username: 'Lucy', password: '123', firstName: 'Lucy', lastName: 'Luck', email: 'Lucy@123.com', phoneNumber: '6789012343',  time: new Date() }),
     User.create({ username: 'JJ', password: '123', firstName: 'JJ', lastName: 'Jay', email: 'jj@123.com', phoneNumber: '6789012340', time: new Date() }),
     User.create({ username: 'Marge', password: '123', firstName: 'Marge', lastName: 'Bouvier', email: 'marge@123.com', phoneNumber: '6789012349', time: new Date() }),
+    User.create({ username: 'Admin', password: '123', firstName: 'Admin', lastName: 'Admin', email: 'admin@123.com', phoneNumber: '67890123498', time: new Date() }),
   ])
 
   const [andy, corinne, jonathan, stanley, jason, prof] = users.map(user => user)
