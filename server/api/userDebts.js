@@ -1,10 +1,10 @@
 const router = require('express').Router()
-const { models: { User, UserDebt, Trip }} = require('../db')
+const { models: { User, UserDebt, Trip } } = require('../db')
 const { Op } = require("sequelize")
 module.exports = router
 
 router.get('/', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
+  if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {
     if (user) {
       const userDebts = await UserDebt.findAll({
         where: {
-          [Op.or]: [{payorId: user.id}, {payeeId: user.id}]
+          [Op.or]: [{ payorId: user.id }, { payeeId: user.id }]
         },
         include: [
           {
@@ -37,7 +37,7 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:userDebtId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
+  if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
@@ -50,42 +50,58 @@ router.get('/:userDebtId', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
+  if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
   try {
-    const { userDebt } = req.body 
+    const { userDebt } = req.body
     const created = await UserDebt.create(userDebt)
-    // console.log(userDebt)
-    res.json(created)
+
+    const debt = await UserDebt.findByPk(created.id,
+      {
+        include: [
+          {
+            model: User, as: 'payor', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
+          },
+          {
+            model: User, as: 'payee', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
+          },
+          {
+            model: Trip
+          },
+        ]
+      }
+    )
+
+    res.json(debt)
   } catch (err) {
     next(err)
   }
 })
 
 router.put('/:userDebtId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
+  if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
-  
+
   try {
     let userDebt = await UserDebt.findByPk(req.params.userDebtId)
     await userDebt.update({ ...userDebt, status: 'paid' })
-    // userDebt = await UserDebt.findByPk(userDebt.id, {
-    //   include: [
-    //     {
-    //       model: User, as: 'payor', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
-    //     },
-    //     {
-    //       model: User, as: 'payee', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
-    //     },
-    //     {
-    //       model: Trip
-    //     },
-    //   ]
-    // })
+    userDebt = await UserDebt.findByPk(userDebt.id, {
+      include: [
+        {
+          model: User, as: 'payor', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
+        },
+        {
+          model: User, as: 'payee', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
+        },
+        {
+          model: Trip
+        },
+      ]
+    })
     res.json(userDebt)
   } catch (err) {
     next(err)

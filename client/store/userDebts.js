@@ -9,8 +9,8 @@ const ADD_USERDEBT = 'ADD_USERDEBT'
 const EDIT_USERDEBT = 'EDIT_USERDEBT'
 //////////// ACTION CREATORS ////////////
 const _getUserDebts = userDebts => ({ type: GET_USERDEBTS, userDebts })
-const _addUserDebt = userDebt => ({ type: ADD_USERDEBT, userDebt})
-const _editUserDebt = userDebt => ({ type: EDIT_USERDEBT, userDebt})
+const _addUserDebt = userDebt => ({ type: ADD_USERDEBT, userDebt })
+const _editUserDebt = userDebt => ({ type: EDIT_USERDEBT, userDebt })
 //////////////////// THUNK CREATORS  //////////////
 export const getUserDebts = () => {
     const token = window.localStorage.getItem(TOKEN)
@@ -25,7 +25,7 @@ export const getUserDebts = () => {
 }
 export const addUserDebt = (userDebt) => {
     const token = window.localStorage.getItem(TOKEN)
-    
+
     return async (dispatch) => {
         const { data: added } = await axios.post(`/api/userDebts`, { userDebt }, {
             headers: {
@@ -39,7 +39,7 @@ export const editUserDebt = (userDebt) => {
     const token = window.localStorage.getItem(TOKEN)
     return async (dispatch) => {
         console.log('store', userDebt)
-        const { data: edited } = await axios.put(`/api/userDebts/${userDebt.id}`, {userDebt}, {
+        const { data: edited } = await axios.put(`/api/userDebts/${userDebt.id}`, { userDebt }, {
             headers: {
                 authorization: token
             }

@@ -25,7 +25,6 @@ const AllTrips = ({ match }) => {
     }, [])
 
     ///////////  Trip View Selection //////////
-    // const [showTrips, setshowTrips] = useState('all');
     const [checked, setChecked] = useState(false);
 
     const handleChange = (event) => {
@@ -98,26 +97,12 @@ const AllTrips = ({ match }) => {
                 {
                     checked ? '' :
                         <Box style={{ textAlign: 'center' }} >
-                            <Button startIcon={<AddIcon fontSize='large' />} component={Link} to="/trips/add" variant='contained' sx={{ width: '40%' }}>
+                            <Button startIcon={<AddIcon fontSize='large' />} component={Link} to="/trips/add" variant='contained'>
                                 Create Trip
                             </Button>
                         </Box>
                 }
             </Box>
-            {/* <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 1 }}>
-                <FormControl sx={{ minWidth: 160 }}>
-                    <InputLabel>Show Trips</InputLabel>
-                    <Select
-                        value={showTrips}
-                        label="Show Trips"
-                        onChange={handleChange}
-                    >
-                        <MenuItem value='all'>ALL</MenuItem>
-                        <MenuItem value='active'>ACTIVE TRIPS</MenuItem>
-                        <MenuItem value='inactive'>PAST TRIPS</MenuItem>
-                    </Select>
-                </FormControl>
-            </Box> */}
             <Grid container spacing={2} sx={{ mt: 1 }}>
                 {trips.map(trip => (
                     <Grid item xs={12} sm={6} key={trip.id} >
@@ -161,22 +146,22 @@ const AllTrips = ({ match }) => {
                                     </Box>
                                 </Box>
                             </Box>
-                                {
+                            {
                                 !trip.trip.expenses.length ?
                                     <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                        <Chip onClick={() => handleLeaveTrip(trip.id)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} 
-                                        disabled={!trip.trip.expenses.length ? false : true}
+                                        <Chip onClick={() => handleLeaveTrip(trip.id)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
+                                            disabled={!trip.trip.expenses.length ? false : true}
                                         />
-                                    </Box> 
+                                    </Box>
                                     :
                                     <Tooltip title="You can not leave a trip that already has expenses." >
                                         <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                            <Chip label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />} 
-                                            disabled={!trip.trip.expenses.length ? false : true}
+                                            <Chip label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
+                                                disabled={!trip.trip.expenses.length ? false : true}
                                             />
-                                        </Box> 
+                                        </Box>
                                     </Tooltip>
-                                }
+                            }
                         </Paper>
                     </Grid>
                 ))}
@@ -186,20 +171,3 @@ const AllTrips = ({ match }) => {
 }
 
 export default AllTrips
-
-
-{/* <ul>
-    {
-        trips.length === 0 ? <h5>No Trips :(</h5> :
-            trips.map(trip => (
-                <div key={trip.id + Math.random().toString(16)}>
-                    <pre>
-                        {JSON.stringify(trip, null, 2)}
-                    </pre>
-                    <li>
-                        <Link to={`/trip/${trip.tripId}`}>{trip.trip.name}</Link>
-                    </li>
-                </div>
-            ))
-    }
-</ul> */}

@@ -10,9 +10,8 @@ import CloseIcon from '@mui/icons-material/Close';
 /////////////// COMPONENTS ///////////////////
 
 ////////////// STORE ////////////////
-import {  getUserDebts, editUserDebt } from '../../store'
-
-
+import { getUserDebts, editUserDebt } from '../../store'
+import CircularLoading from "../Loading/CircularLoading";
 
 const Debts = () => {
     ///////////// Media Query /////////////
@@ -38,11 +37,11 @@ const Debts = () => {
         }
     }, [])
 
-    const userDebts = useSelector(state => state.userDebts.filter(debt => debt.status === 'pending'))
+    const Debts = useSelector(state => state.userDebts)
+    const userDebts = Debts.filter(debt => debt.status === 'pending')
+    const user = useSelector(state => state.auth)
 
-    const auth = useSelector(state => state.auth)
-    
-    if ( !auth || !closedTrips || !userDebts) {
+    if (!user || !closedTrips || !userDebts) {
         return (<CircularLoading />)
     }
 
@@ -52,7 +51,6 @@ const Debts = () => {
     })
 
     const handleClick = async (userDebt) => {
-        
         dispatch(editUserDebt(userDebt))
     }
 
@@ -65,46 +63,36 @@ const Debts = () => {
     }
 
     return (
-        <List textAlign='center'>
+        <List>
             <Typography align='center' >
                 (The person owed can mark an expense as paid.)
             </Typography>
-            {Object.entries(tripDebts).map(trip => (
-                <Fragment key={Math.random().toString(16)}>
-                    <Box sx={{
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: `${flexdirection}`
-                    }}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            {/* <Avatar src={debt.trip.imageUrl} /> */}
-                    {trip.map((info, idx) => (
-                        idx === 0 ?
-                            <Typography sx={{fontWeight: 'bold'}} variant='h6'>
-                                {info}
-                            </Typography>
-                            
-                        :
-                            // <Box sx={{ m: 1 }}>
-                                <List>
+            {Object.entries(tripDebts).map((trip, idx) => (
+                <Fragment key={idx}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        {/* <Avatar src={debt.trip.imageUrl} /> */}
+                        {trip.map((info, idx) => (
+                            idx === 0 ?
+                                <Typography key={idx} sx={{ fontWeight: 'bold' }} variant='h6'>
+                                    {info}
+                                </Typography>
+                                :
+                                <List key={idx}>
                                     {
-                                        info.map((debt) => (
-                                            <>
-                                            <Box sx={{ '& button': { m: .5 }, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                            <Typography>
-                                                {debt.payor.username} owes {debt.payee.username} ${(+debt.amount).toFixed(2)}
-                                            </Typography>
-                                                <Button  startIcon={<CheckIcon />} onClick={() => handleClick(debt)} size="small" variant='outlined' color='success' disabled={debt.payee.username !== auth.username}>
+                                        info.map((debt, idx) => (
+                                            <Box key={idx} sx={{ m: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                <Typography>
+                                                    {debt.payor.username} owes {debt.payee.username} ${(+debt.amount).toFixed(2)}
+                                                </Typography>
+                                                <Button sx={{mx:1}} startIcon={<CheckIcon />} onClick={() => handleClick(debt)} size="small" variant='outlined' color='success' disabled={debt.payee.id !== user.id}>
                                                     PAID
                                                 </Button>
                                             </Box>
-                                            </>
                                         ))
                                     }
                                 </List>
-                                
-                    ))}
-                        </Box>
+                        ))}
                     </Box>
-
                     <Divider />
                 </Fragment>
             ))
