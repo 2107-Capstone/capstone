@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 
 /////////////// MATERIAL UI ///////////////////////
-import { Box, Avatar, Button, Divider, List, Typography, useMediaQuery } from '@mui/material'
+import { Box, Checkbox, Avatar, Button, Tooltip, FormGroup, FormControlLabel, Divider, List, Typography, useMediaQuery } from '@mui/material'
 import { useTheme } from "@emotion/react";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -52,7 +52,6 @@ const Debts = () => {
     })
 
     const handleClick = async (userDebt) => {
-        
         dispatch(editUserDebt(userDebt))
     }
 
@@ -66,9 +65,9 @@ const Debts = () => {
 
     return (
         <List textAlign='center'>
-            <Typography align='center' >
+            {/* <Typography align='center' >
                 (The person owed can mark an expense as paid.)
-            </Typography>
+            </Typography> */}
             {Object.entries(tripDebts).map(trip => (
                 <Fragment key={Math.random().toString(16)}>
                     <Box sx={{
@@ -90,11 +89,25 @@ const Debts = () => {
                                             <>
                                             <Box sx={{ '& button': { m: .5 }, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                             <Typography>
-                                                {debt.payor.username} owes {debt.payee.username} ${(+debt.amount).toFixed(2)}
+                                                {debt.payor.username === auth.username ? 'You owe' : `${debt.payor.username} owes`}  {debt.payee.username === auth.username ? ' you' : debt.payee.username} ${(+debt.amount).toFixed(2)}
                                             </Typography>
-                                                <Button  startIcon={<CheckIcon />} onClick={() => handleClick(debt)} size="small" variant='outlined' color='success' disabled={debt.payee.username !== auth.username}>
+                                            <Tooltip title={`${debt.payee.username} can mark this as paid.`}>
+                                                <FormGroup>
+                                                    <FormControlLabel 
+                                                        control={
+                                                            <Checkbox 
+                                                                sx={{ml: 1}}
+                                                                disabled={debt.payee.username !== auth.username}
+                                                                onChange={() => handleClick(debt)}
+                                                                inputProps={{ 'aria-label' : 'controlled' }}
+                                                                color="success"
+                                                            />} 
+                                                        label="Paid" />
+                                                </FormGroup>
+                                            </Tooltip>
+                                                {/* <Button  startIcon={<CheckIcon />} onClick={() => handleClick(debt)} size="small" variant='outlined' color='success' disabled={debt.payee.username !== auth.username}>
                                                     PAID
-                                                </Button>
+                                                </Button> */}
                                             </Box>
                                             </>
                                         ))
