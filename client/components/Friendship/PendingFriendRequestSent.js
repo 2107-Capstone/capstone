@@ -38,9 +38,11 @@ export const PendingFriendRequestSent = ({ friendsPendingSent, deleteUserFriend,
                         &nbsp;Pending Friend Requests You Sent
                     </Typography>
                 </Box>
-                <Typography align='center'>{friendsPendingSent.length === 0 ? "No pending friend requests sent" : ""}</Typography>
+                <Typography align='center' variant='h6' sx={{ mt: 4, mb: 4 }}>
+                    {friendsPendingSent.length === 0 ? "No pending friend requests sent" : ""}
+                </Typography>
             </div>
-            <Grid container spacing={2} sx={{ my: 4 }} >
+            <Grid container spacing={2} sx={{ mt: 4, mb: 4 }} >
                 {friendsPendingSent.map(friendPendingSent => (
                     <Grid item xs={12} sm={4} md={3} key={friendPendingSent.id}>
                         <Paper elevation={1}>

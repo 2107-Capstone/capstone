@@ -56,14 +56,14 @@ const Debts = () => {
 
     if (userDebts.length === 0) {
         return (
-            <Typography align='center' variant='h6'>
+            <Typography align='center' variant='h6' sx={{ mt: 4, mb: 8 }}>
                 You do not have any unpaid expenses.
             </Typography>
         )
     }
 
     return (
-        <List>
+        <List sx={{ mt: 4, mb: 4 }}>
             <Typography align='center' >
                 (The person owed can mark an expense as paid.)
             </Typography>
