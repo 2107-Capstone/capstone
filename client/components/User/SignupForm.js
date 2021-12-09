@@ -5,8 +5,10 @@ import { useDispatch } from "react-redux";
 
 
 ///////////////// MATERIAL UI ////////////////////////
-import { Box, Container, Avatar, Typography, Grid, TextField, Button, Link } from '@mui/material';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import { Box, Container, Avatar, Typography, Grid, TextField, Button, Link, SvgIcon } from '@mui/material';
+
+///////////AIRPLANE LOGO //////////////
+import LogoIcon from '/public/tripIcon.svg'
 
 const SignupForm = () => {
     const dispatch = useDispatch()
@@ -49,9 +51,12 @@ const SignupForm = () => {
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main' }}>
-                    <FlightTakeoffIcon fontSize='large' />
-                </Avatar>
+                <SvgIcon color='primary' sx={{ fontSize: '5rem', my: 1 }} viewBox="0 0 272 264">
+                    <LogoIcon />
+                </SvgIcon>
+                <Typography variant="body">
+                    Welcome to Trip Out!
+                </Typography>
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>

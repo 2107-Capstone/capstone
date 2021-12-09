@@ -19,7 +19,7 @@ import EventIcon from '@mui/icons-material/Event';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import LogoIcon from '/public/tripIcon.svg'
+// import LogoIcon from '/public/tripIcon.svg'
 import { getUserTrips } from '../../store/usertrips';
 
 
