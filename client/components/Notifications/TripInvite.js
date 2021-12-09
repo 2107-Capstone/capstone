@@ -73,14 +73,14 @@ const TripInvite = () => {
 
     if (invites.length === 0) {
         return (
-            <Typography align='center' variant='h6'>
+            <Typography align='center' variant='h6' sx={{ mt: 4, mb: 8 }}>
                 You do not have any trip invites at this moment!
             </Typography>
         )
     }
 
     return (
-        <List>
+        <List sx={{ mt: 4, mb: 4 }}>
             {invites.map((invite, idx) => (
                 <Fragment key={idx}>
                     <Box sx={{
