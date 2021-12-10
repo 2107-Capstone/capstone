@@ -1,10 +1,10 @@
 const router = require('express').Router()
-const { models: { User, Trip, UserTrip, Expense, Category }} = require('../db')
+const { models: { User, Trip, UserTrip, Expense, Category } } = require('../db')
 
 module.exports = router
 
 router.get('/', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
+  if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
@@ -22,7 +22,7 @@ router.get('/', async (req, res, next) => {
           }
         ]
       })
-      
+
       const tripIds = trips.map(trip => trip.tripId)
 
       let expenses = await Expense.findAll({
@@ -30,7 +30,7 @@ router.get('/', async (req, res, next) => {
           {
             model: Trip
           },
-//included this to have access to name of person who paid
+          //included this to have access to name of person who paid
           {
             model: User,
             as: 'paidBy',
@@ -55,7 +55,7 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:expenseId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
+  if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
@@ -77,7 +77,7 @@ router.get('/:expenseId', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
+  if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
@@ -88,7 +88,7 @@ router.post('/', async (req, res, next) => {
         {
           model: Trip
         },
-//included this to have access to name of person who paid
+        //included this to have access to name of person who paid
         {
           model: User,
           as: 'paidBy',
@@ -107,14 +107,14 @@ router.post('/', async (req, res, next) => {
 
 
 router.put('/:expenseId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
+  if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
   try {
     const { name, amount, datePaid, tripId, paidById, categoryId } = req.body
     let expense = await Expense.findByPk(req.params.expenseId)
-    await expense.update({...expense, name, amount, datePaid, tripId, paidById, categoryId})
+    await expense.update({ ...expense, name, amount, datePaid, tripId, paidById, categoryId })
     expense = await Expense.findByPk(expense.id, {
       include: {
         model: Trip
@@ -127,7 +127,7 @@ router.put('/:expenseId', async (req, res, next) => {
 })
 
 router.delete('/:expenseId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
+  if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
   }
