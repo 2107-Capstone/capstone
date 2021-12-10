@@ -182,21 +182,7 @@ export default function TripMap({ match }) {
         })
         setOpenAlert(true);
     }
-    function Locate({ panTo }) {
-        return (
 
-            <Button
-                startIcon={<MyLocationIcon />}
-                variant='outlined'
-                className="locate"
-                size='small'
-                //TODO: USE WATCH POSITION AND SET TIMEOUT LATER TO CONTINUALLY UPDATE POSITION
-                onClick={handleLocate}
-            >
-                PIN LOCATION
-            </Button>
-        );
-    }
     console.log(trip)
     let users = []
     useEffect(() => {
@@ -224,31 +210,14 @@ export default function TripMap({ match }) {
 
     if (trip && events.length === 0) return (
         <>
-            <Dialog open={open} onClose={handleClose}>
-                <EventForm trip={trip} handleClose={handleClose} />
-            </Dialog>
-            <Button startIcon={<AddIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
-                Add Event
-            </Button>
+            <Typography variant='contained' color='info' >
+                No Events!
+            </Typography>
         </>
     )
 
     return (
         <>
-            <Snackbar
-                open={openAlert}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                autoHideDuration={2000}
-                onClose={handleClose}
-            >
-                <Alert
-                    onClose={handleClose}
-                    severity='success'
-                    sx={{ width: '100%' }}
-                >
-                    Location Pinned!
-                </Alert>
-            </Snackbar>
             <Snackbar
                 open={openNoLocationAlert}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={2000}
@@ -284,7 +253,7 @@ export default function TripMap({ match }) {
                 <Box
                     sx={{ color: 'inherit' }}
                     component={Link}
-                    to={`/trips/${trip.tripId}`}
+                    to={`/admin/admintrips/${trip.id}`}
                 >
                     <Typography variant='h5'>
                         &nbsp;{trip.name}
@@ -295,20 +264,6 @@ export default function TripMap({ match }) {
                 display='flex'
                 justifyContent='center'
             >
-                <Box marginRight={3}>
-                    <Locate panTo={panTo} />
-                </Box>
-                <Box marginBottom={.5} marginRight={3} >
-                    <Button
-                        startIcon={<AddIcon />}
-                        variant='contained'
-                        color='primary'
-                        onClick={() => setOpen(true)}
-                        size='small'
-                    >
-                        Add Event
-                    </Button>
-                </Box>
                 <Box >
                     {/* </Tooltip> */}
                     <Tooltip title='Refresh Markers'>
@@ -394,34 +349,6 @@ export default function TripMap({ match }) {
                                     >
                                         {format(parseISO(event.startTime), 'Pp')}
                                     </Typography>
-                                </Box>
-                                <Box
-                                    display='flex'
-                                    justifyContent='space-evenly'
-                                >
-                                    <Button
-                                        startIcon={<ModeEditIcon />} color='info'
-                                        size='small'
-                                        onClick={() => {
-                                            setEventToEdit(event);
-                                            setOpen(true);
-                                        }}
-                                    >
-                                        Edit
-                                    </Button>
-                                    <Button
-                                        startIcon={<DeleteForeverIcon />} color='error'
-                                        size='small'
-                                        onClick={async () => {
-                                            try {
-                                                await dispatch(deleteEvent(event.id))
-                                            } catch (err) {
-                                                console.log(err)
-                                            }
-                                        }}
-                                    >
-                                        Delete
-                                    </Button>
                                 </Box>
                             </Box>
                         ))
