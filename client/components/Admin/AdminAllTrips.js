@@ -18,7 +18,7 @@ import { format, parseISO, isAfter } from "date-fns";
 
 
 
-const AllAdminTrips = ({ match }) => {
+const AdminAllTrips = ({ match }) => {
     const dispatch = useDispatch();
     useEffect(async () => {
         await dispatch(getAdminTrips())
@@ -136,4 +136,4 @@ const AllAdminTrips = ({ match }) => {
     )
 }
 
-export default AllAdminTrips
+export default AdminAllTrips

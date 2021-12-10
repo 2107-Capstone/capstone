@@ -20,13 +20,14 @@ import Notifications from './components/Notifications/Notifications'
 import Settings from './components/Settings/Settings';
 import Password from './components/Settings/Password';
 import AuthAvatar from './components/Settings/AuthAvatar';
-import AllAdminTrips from './components/Admin/AllAdminTrips';
+import AdminAllTrips from './components/Admin/AdminAllTrips';
 import AdminTrip from './components/Admin/AdminTrip';
 import AdminChatRoom from './components/Admin/AdminChatRoom'
 import AdminExpenses from './components/Admin/AdminExpenses'
 import AdminSingleTripCalendar from './components/Admin/AdminSingleTripCalendar'
 import AdminTripMap from './components/Admin/AdminTripMap'
 import AdminTripCalendar from './components/Admin/AdminTripCalendar';
+import AdminAllTripsMap from './components/Admin/AdminAllTripsMap';
 // import Dashboard from './components/Dashboard/Dashboard';
 
 ///////////// STORE /////////////////////
@@ -82,13 +83,14 @@ class Routes extends Component {
                 <Route exact path="/settings" component={Settings} />
                 <Route exact path="/settings/password" component={Password} />
                 <Route exact path="/settings/authavatar" component={AuthAvatar} />
-                <Route exact path="/admin/admintrips" component={AllAdminTrips} />
+                <Route exact path="/admin/admintrips" component={AdminAllTrips} />
                 <Route exact path="/admin/admintrips/:id" component={AdminTrip} />
                 <Route exact path="/admin/admintrips/:id/chat" component={AdminChatRoom} />
                 <Route exact path="/admin/admintrips/:id/expenses" component={AdminExpenses} />
                 <Route exact path="/admin/admintrips/:id/calendar" component={AdminSingleTripCalendar} />
                 <Route exact path="/admin/admintrips/:id/map" component={AdminTripMap} />
                 <Route exact path="/admin/calendar" component={AdminTripCalendar} />
+                <Route exact path="/admin/map" component={AdminAllTripsMap} />
                 <Redirect to="/home" />
               </Switch >
             ) : (
