@@ -116,9 +116,13 @@ const MenuBar = (props) => {
                         </Button>
                 }
                 <Divider />
-                <Button component={Link} to='/settings' onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
-                    Settings
-                </Button>
+                {
+                    user.username === 'Admin' ? 
+                        '':
+                        <Button component={Link} to='/settings' onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
+                            Settings
+                        </Button>
+                }
                 <Button onClick={handleDrawerToggle} variant='outlined' onClick={handleLogout}>
                     Logout
                 </Button>
