@@ -7,8 +7,6 @@ import { useTheme } from "@emotion/react";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 
-/////////////// COMPONENTS ///////////////////
-
 ////////////// STORE ////////////////
 import { getUserDebts, editUserDebt } from '../../store'
 import CircularLoading from "../Loading/CircularLoading";
@@ -65,53 +63,53 @@ const Debts = () => {
     return (
         <List sx={{ mt: 4, mb: 4 }}>
             {
-                Object.entries(tripDebts).map(trip => (
-                    <Fragment key={Math.random().toString(16)}>
-                        <Box 
+                Object.entries(tripDebts).map((trip, idx) => (
+                    <Fragment key={idx}>
+                        <Box
                             sx={{
-                                display: 'flex', 
+                                display: 'flex',
                                 flexDirection: 'column',
-                                alignItems: 'center', 
-                        }}>
+                                alignItems: 'center',
+                            }}>
                             {/* <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}> */}
-                                {
-                                    trip.map((info, idx) => (
-                                        idx === 0 ?
-                                        <Typography sx={{fontWeight: 'bold'}} variant='h6'>
+                            {
+                                trip.map((info, idx) => (
+                                    idx === 0 ?
+                                        <Typography key={idx} sx={{ fontWeight: 'bold' }} variant='h6'>
                                             {info}
                                         </Typography>
-                                    :
-                                        <List>
+                                        :
+                                        <List key={idx}>
                                             {
-                                                info.map((debt) => (
-                                                    <>
-                                                    <Box key={debt.id} 
-                                                        sx={{ m: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                                                    >
-                                                        <Typography>
-                                                            {debt.payor.username === user.username ? 'You owe' : `${debt.payor.username} owes`}  {debt.payee.username === user.username ? ' you' : debt.payee.username} ${(+debt.amount).toFixed(2)}
-                                                        </Typography>
-                                                        <Tooltip title={debt.payee.username !== user.username ? `Only ${debt.payee.username} can mark this as paid.` : ''}>
-                                                            <FormGroup>
-                                                                <FormControlLabel 
-                                                                    control={
-                                                                        <Checkbox 
-                                                                            sx={{ml: 1}}
-                                                                            disabled={debt.payee.username !== user.username}
-                                                                            onChange={() => handleClick(debt)}
-                                                                            inputProps={{ 'aria-label' : 'controlled' }}
-                                                                            color="success"
-                                                                        />} 
-                                                                    label="Paid" />
-                                                            </FormGroup>
-                                                        </Tooltip>
-                                                    </Box>
-                                                    </>
+                                                info.map((debt, idx) => (
+                                                    <Fragment key={idx}>
+                                                        <Box key={debt.id}
+                                                            sx={{ m: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                                                        >
+                                                            <Typography>
+                                                                {debt.payor.username === user.username ? 'You owe' : `${debt.payor.username} owes`}  {debt.payee.username === user.username ? ' you' : debt.payee.username} ${(+debt.amount).toFixed(2)}
+                                                            </Typography>
+                                                            <Tooltip title={debt.payee.username !== user.username ? `Only ${debt.payee.username} can mark this as paid.` : ''}>
+                                                                <FormGroup>
+                                                                    <FormControlLabel
+                                                                        control={
+                                                                            <Checkbox
+                                                                                sx={{ ml: 1 }}
+                                                                                disabled={debt.payee.username !== user.username}
+                                                                                onChange={() => handleClick(debt)}
+                                                                                inputProps={{ 'aria-label': 'controlled' }}
+                                                                                color="success"
+                                                                            />}
+                                                                        label="Paid" />
+                                                                </FormGroup>
+                                                            </Tooltip>
+                                                        </Box>
+                                                    </Fragment>
                                                 ))
                                             }
                                         </List>
-                                    ))
-                                }
+                                ))
+                            }
                             {/* </Box> */}
                         </Box>
                         <Divider />

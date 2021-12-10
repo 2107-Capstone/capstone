@@ -48,7 +48,7 @@ const TripInvite = () => {
 
     const invites = pendingInvites.map(invite => {
         const friendInvite = friends.find(f => f.friendId === invite.sentBy)
-        if (friendInvite) {
+        if (friendInvite.friend) {
             return { ...invite, friend: friendInvite.friend }
         }
     })
