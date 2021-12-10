@@ -21,10 +21,12 @@ import Settings from './components/Settings/Settings';
 import Password from './components/Settings/Password';
 import AuthAvatar from './components/Settings/AuthAvatar';
 import AllAdminTrips from './components/Admin/AllAdminTrips';
+import AdminTrip from './components/Admin/AdminTrip';
+import AdminChatRoom from './components/Admin/AdminChatRoom'
 // import Dashboard from './components/Dashboard/Dashboard';
 
 ///////////// STORE /////////////////////
-import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses, getCategories, getUserFriends, getFriendsPendingSent, getFriendsPendingReceived, getUserDebts, getAdminTrips } from './store'
+import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses, getCategories, getUserFriends, getFriendsPendingSent, getFriendsPendingReceived, getUserDebts, getAdminTrips, getAdminUserTrips, getAdminMessages, getAdminEvents, getAdminExpenses } from './store'
 
 //////////// MATERIAL UI /////////////////////////
 import { Avatar, Container } from '@mui/material';
@@ -77,6 +79,8 @@ class Routes extends Component {
                 <Route exact path="/settings/password" component={Password} />
                 <Route exact path="/settings/authavatar" component={AuthAvatar} />
                 <Route exact path="/admin/admintrips" component={AllAdminTrips} />
+                <Route exact path="/admin/admintrips/:id" component={AdminTrip} />
+                <Route exact path="/admin/admintrips/:id/chat" component={AdminChatRoom} />
                 <Redirect to="/home" />
               </Switch >
             ) : (
@@ -116,6 +120,10 @@ const mapDispatch = dispatch => {
       dispatch(getFriendsPendingReceived())
       dispatch(getUserDebts())
       dispatch(getAdminTrips())
+      dispatch(getAdminUserTrips())
+      dispatch(getAdminMessages())
+      dispatch(getAdminEvents())
+      dispatch(getAdminExpenses())
     }
   }
 }
