@@ -114,7 +114,7 @@ const AdminTrip = (props) => {
                 </Grid>
                 <Grid item xs sm md lg>
                     <Button
-                        component={Link} to={`${trip.tripId}/calendar`}
+                        component={Link} to={`${trip.id}/calendar`}
                         size='medium'
                         startIcon={<DateRangeIcon />}
                         color='secondary'

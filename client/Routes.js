@@ -24,6 +24,7 @@ import AllAdminTrips from './components/Admin/AllAdminTrips';
 import AdminTrip from './components/Admin/AdminTrip';
 import AdminChatRoom from './components/Admin/AdminChatRoom'
 import AdminExpenses from './components/Admin/AdminExpenses'
+import AdminSingleTripCalendar from './components/Admin/AdminSingleTripCalendar'
 // import Dashboard from './components/Dashboard/Dashboard';
 
 ///////////// STORE /////////////////////
@@ -83,6 +84,7 @@ class Routes extends Component {
                 <Route exact path="/admin/admintrips/:id" component={AdminTrip} />
                 <Route exact path="/admin/admintrips/:id/chat" component={AdminChatRoom} />
                 <Route exact path="/admin/admintrips/:id/expenses" component={AdminExpenses} />
+                <Route exact path="/admin/admintrips/:id/calendar" component={AdminSingleTripCalendar} />
                 <Redirect to="/home" />
               </Switch >
             ) : (

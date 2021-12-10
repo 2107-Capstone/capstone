@@ -72,8 +72,12 @@ router.get('/admintrips/:admintripId', async (req, res, next) => {
 })
 
 router.get('/adminusertrips', isLoggedIn, async (req, res, next) => {
+  if (req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
   try {
-      const user = req.user
+      const user = await User.findByToken(req.headers.authorization)
       if (user && user.username === 'Admin') {
         const usertrips = await UserTrip.findAll({
             include: [
@@ -87,6 +91,8 @@ router.get('/adminusertrips', isLoggedIn, async (req, res, next) => {
             ]
         })
         res.json(usertrips)
+      } else {
+      res.send('No current user found via token')
       }
   }
   catch (error) {
