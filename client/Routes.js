@@ -23,6 +23,7 @@ import AuthAvatar from './components/Settings/AuthAvatar';
 import AllAdminTrips from './components/Admin/AllAdminTrips';
 import AdminTrip from './components/Admin/AdminTrip';
 import AdminChatRoom from './components/Admin/AdminChatRoom'
+import AdminExpenses from './components/Admin/AdminExpenses'
 // import Dashboard from './components/Dashboard/Dashboard';
 
 ///////////// STORE /////////////////////
@@ -81,6 +82,7 @@ class Routes extends Component {
                 <Route exact path="/admin/admintrips" component={AllAdminTrips} />
                 <Route exact path="/admin/admintrips/:id" component={AdminTrip} />
                 <Route exact path="/admin/admintrips/:id/chat" component={AdminChatRoom} />
+                <Route exact path="/admin/admintrips/:id/expenses" component={AdminExpenses} />
                 <Redirect to="/home" />
               </Switch >
             ) : (

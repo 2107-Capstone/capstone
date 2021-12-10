@@ -167,7 +167,7 @@ const AdminTrip = (props) => {
                 <Grid item xs={12} sm={12} md={6} lg={6} >
                     <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/expenses`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.id}/expenses`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
                                 Details
                             </Button>
                         </Box>
