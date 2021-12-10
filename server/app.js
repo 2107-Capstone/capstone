@@ -18,7 +18,7 @@ app.use(morgan('dev'))
 app.use(cors())
 
 // body parsing middleware
-app.use(express.json({limit: '50mb'}))
+app.use(express.json({ limit: '50mb' }))
 
 // auth and api routes
 app.use('/auth', require('./auth'))

@@ -14,6 +14,9 @@ const theme = createTheme({
     },
     typography: {
         fontFamily: 'Chakra Petch',
+        h2: {
+            fontFamily: 'Lobster',
+          }
     },
 })
 
