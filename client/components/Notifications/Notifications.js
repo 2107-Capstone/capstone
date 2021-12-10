@@ -11,18 +11,14 @@ import Debts from './Debts'
 export const Notifications = () => {
   return (
     <>
-      <Typography sx={{ mt: 2 }} align='center' variant='h5' gutterBottom>
-        <PersonAddIcon />&nbsp;Friend Requests
-      </Typography>
       <PendingFriendRequestReceived />
-      {/* Add pending trip requets */}
       <Divider />
-      <Typography sx={{ mt: 2 }} align='center' variant='h5' gutterBottom>
+      <Typography sx={{ mt: 4 }} align='center' variant='h5' gutterBottom>
         <LuggageIcon />&nbsp;Trip Invites
       </Typography>
       <TripInvite />
       <Divider />
-      <Typography sx={{ mt: 2 }} align='center' variant='h5' gutterBottom>
+      <Typography sx={{ mt: 4 }} align='center' variant='h5' gutterBottom>
         <PaidIcon />&nbsp;Unpaid Expenses from Closed Trips
       </Typography>
       <Debts />

@@ -2,11 +2,13 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux";
 
 /////////// Material UI /////////////////
-import { Box, Avatar, TextField, Typography, Button, Link, Container, } from '@mui/material';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import { Box, Avatar, TextField, Typography, Button, Link, Container, SvgIcon, } from '@mui/material';
 
 ///////////// REDUX STORE ///////////////
 import { authenticate } from "../../store";
+
+///////////AIRPLANE LOGO //////////////
+import LogoIcon from '/public/tripIcon.svg'
 
 const LoginForm = () => {
     const dispatch = useDispatch()
@@ -39,10 +41,13 @@ const LoginForm = () => {
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main' }}>
-                    <FlightTakeoffIcon fontSize='large' />
-                </Avatar>
-                <Typography component="h1" variant="h5">
+                <SvgIcon color='primary' sx={{ fontSize: '5rem', my: 1 }} viewBox="0 0 272 264">
+                    <LogoIcon />
+                </SvgIcon>
+                <Typography variant="body">
+                    Welcome to Trip Out!
+                </Typography>
+                <Typography component='h1' variant="h5">
                     Sign in
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>

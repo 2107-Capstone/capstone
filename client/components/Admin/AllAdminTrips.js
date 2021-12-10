@@ -10,18 +10,18 @@ import AddIcon from '@mui/icons-material/Add';
 import CircularLoading from '../Loading/CircularLoading'
 
 //////////////////////// STORE ///////////////////
-import { getUserTrips, leaveTrip } from "../../store";
-import { getTrips } from "../../store";
+import { getAdminUserTrips, leaveTrip } from "../../store";
+import { getAdminTrips } from "../../store";
 
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO, isAfter } from "date-fns";
 
 
 
-const AllTrips = ({ match }) => {
+const AllAdminTrips = ({ match }) => {
     const dispatch = useDispatch();
     useEffect(async () => {
-        await dispatch(getTrips())
+        await dispatch(getAdminTrips())
     }, [])
 
     ///////////  Trip View Selection //////////
@@ -31,8 +31,8 @@ const AllTrips = ({ match }) => {
         setChecked(event.target.checked)
     };
     // const { trips } = useSelector(state => state)
-    let trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen && trip.tripInvite === 'accepted')) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen && trip.tripInvite === 'accepted'))
-    trips = trips.sort((a, b) => isAfter(new Date(a.trip.startTime), new Date(b.trip.startTime)) ? 1 : -1);
+    let adminTrips = checked ? useSelector(state => state.adminTrips.filter(adminTrip => !adminTrip.trip.isOpen && adminTrip.tripInvite === 'accepted')) : useSelector(state => state.adminTrips.filter(adminTrip => adminTrip.trip.isOpen && adminTrip.tripInvite === 'accepted'))
+    adminTrips = adminTrips.sort((a, b) => isAfter(new Date(a.trip.startTime), new Date(b.trip.startTime)) ? 1 : -1);
 
     const user = useSelector(state => state.auth)
 
@@ -46,7 +46,7 @@ const AllTrips = ({ match }) => {
 
     }
 
-    if (!trips) {
+    if (!adminTrips) {
         return (
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
@@ -97,67 +97,67 @@ const AllTrips = ({ match }) => {
                 {
                     checked ? '' :
                         <Box style={{ textAlign: 'center' }} >
-                            <Button startIcon={<AddIcon fontSize='large' />} component={Link} to="/trips/add" variant='contained'>
+                            <Button startIcon={<AddIcon fontSize='large' />} variant='contained'>
                                 Create Trip
                             </Button>
                         </Box>
                 }
             </Box>
             <Grid container spacing={2} sx={{ mt: 1 }}>
-                {trips.map(trip => (
-                    <Grid item xs={12} sm={6} key={trip.id} >
+                {adminTrips.map(adminTrip => (
+                    <Grid item xs={12} sm={6} key={adminTrip.id} >
                         <Paper sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
-                            <Box sx={{ color: 'inherit', textDecoration: 'none' }} component={Link} to={`/trips/${trip.tripId}`} >
-                                <img src={trip.trip.imageUrl} width='100%' height='240rem' />
+                            <Box sx={{ color: 'inherit' }} component={Link} to={`/admin/admintrips/${adminTrip.tripId}`}>
+                                <img src={adminTrip.trip.imageUrl} width='100%' height='240rem' />
                                 <Typography variant='h6' align='center'>
-                                    {trip.trip.name}
+                                    {adminTrip.trip.name}
                                 </Typography>
                                 <Typography align='center'>
-                                    {trip.trip.description}
+                                    {adminTrip.trip.description}
                                 </Typography>
                                 <Box sx={{ m: 2 }}>
                                     <Typography sx={{ textDecoration: 'underline' }}>
-                                        SUMMARY
+                                        SUMMARY:
                                     </Typography>
                                     <Typography >
-                                        Location: {trip.trip.location}
+                                        Location: {adminTrip.trip.location}
                                     </Typography>
                                     <Typography >
-                                        Start Date: {format(parseISO(trip.trip.startTime), 'P')}
+                                        Start Date: {format(parseISO(adminTrip.trip.startTime), 'P')}
                                     </Typography>
                                     <Typography>
-                                        End Date: {format(parseISO(trip.trip.endTime), 'P')}
+                                        End Date: {format(parseISO(adminTrip.trip.endTime), 'P')}
                                     </Typography>
                                     <Typography>
-                                        Friends: {trip.trip.userTrips.length}
+                                        Friends: {adminTrip.trip.userTrips.length}
                                     </Typography>
                                     <Box display='flex' justifyContent='center' alignItems='center'>
                                         <Typography >
                                             Trip Creator:
                                         </Typography>
                                         <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={trip.trip.user.avatar} >
-                                                {trip.trip.user.firstName[0] + trip.trip.user.lastName[0]}
+                                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={adminTrip.trip.user.avatar} >
+                                                {adminTrip.trip.user.firstName[0] + adminTrip.trip.user.lastName[0]}
                                             </Avatar>
                                             <Typography variant='caption'>
-                                                {trip.trip.user.username}
+                                                {adminTrip.trip.user.username}
                                             </Typography >
                                         </Box>
                                     </Box>
                                 </Box>
                             </Box>
                             {
-                                !trip.trip.expenses.length ?
+                                !adminTrip.trip.expenses.length ?
                                     <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                        <Chip onClick={() => handleLeaveTrip(trip.id)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
-                                            disabled={!trip.trip.expenses.length ? false : true}
+                                        <Chip onClick={() => handleLeaveTrip(adminTrip.id)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
+                                            disabled={!adminTrip.trip.expenses.length ? false : true}
                                         />
                                     </Box>
                                     :
                                     <Tooltip title="You can not leave a trip that already has expenses." >
                                         <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
                                             <Chip label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
-                                                disabled={!trip.trip.expenses.length ? false : true}
+                                                disabled={!adminTrip.trip.expenses.length ? false : true}
                                             />
                                         </Box>
                                     </Tooltip>
@@ -170,4 +170,4 @@ const AllTrips = ({ match }) => {
     )
 }
 
-export default AllTrips
+export default AllAdminTrips

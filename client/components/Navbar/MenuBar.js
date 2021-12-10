@@ -12,14 +12,14 @@ import { logout } from '../../store';
 import { Button, Box, Divider, Drawer, Stack, Toolbar, IconButton, Typography, Badge, SvgIcon } from '@mui/material'
 
 //////////// ICONS //////////////////
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import HomeIcon from '@mui/icons-material/Home';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import EventIcon from '@mui/icons-material/Event';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import LogoIcon from '/public/tripIcon.svg'
+// import LogoIcon from '/public/tripIcon.svg'
 import { getUserTrips } from '../../store/usertrips';
 
 
@@ -54,32 +54,67 @@ const MenuBar = (props) => {
     const menuBarButtons = (
         <Box sx={{ px: 1 }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'center' }}>
-                <IconButton component={Link} to='/home' color='primary' onClick={handleDrawerToggle}>
+                {/* <IconButton component={Link} to='/home' color='primary' onClick={handleDrawerToggle}>
                     <SvgIcon sx={{ fontSize: '3rem', width: 'auto', my: .5 }} viewBox="0 0 272 264">
                         <LogoIcon />
                     </SvgIcon>
-                </IconButton>
+                </IconButton> */}
+                <Typography variant='h6' sx={{ my: 2.5, fontWeight: 'bold' }}>
+                    Hello, {user.firstName}
+                </Typography>
             </Toolbar>
             <Divider />
             <Stack spacing={2}>
-                <Button component={Link} onClick={handleDrawerToggle} to='/dashboard' variant='contained' sx={{ mt: 2 }} startIcon={<DashboardIcon />}>
-                    Dashboard
-                </Button>
-                <Button component={Link} onClick={handleDrawerToggle} to='/trips' variant='contained' startIcon={<CardTravelIcon />}>
-                    Trips
-                </Button>
-                <Button component={Link} onClick={handleDrawerToggle} to='/friends' variant='contained' startIcon={<PeopleIcon />}>
-                    Friends
-                </Button>
-                <Button component={Link} onClick={handleDrawerToggle} to='/map' variant='contained' startIcon={<LocationOnIcon />}>
-                    Map
-                </Button>
-                <Button component={Link} to='/calendar' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
-                    Calendar
-                </Button>
-                <Button component={Link} to='/notifications' onClick={handleDrawerToggle} variant='contained' startIcon={<Badge badgeContent={countNotifications} color="error" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><NotificationsIcon /></Badge>}>
-                    Notifications
-                </Button>
+                {
+                    user.username === 'Admin' ?
+                    '':
+                    <Button component={Link} onClick={handleDrawerToggle} to='/home' variant='contained' sx={{ mt: 2 }} startIcon={<HomeIcon />}>
+                        Home
+                    </Button>
+                }
+                {
+                    user.username === 'Admin' ? 
+                        <Button component={Link} onClick={handleDrawerToggle} to='/admin/admintrips' variant='contained' sx={{ mt: 2 }} startIcon={<CardTravelIcon />}>
+                            Trips (Admin)
+                        </Button>:
+                        <Button component={Link} onClick={handleDrawerToggle} to='/trips' variant='contained' startIcon={<CardTravelIcon />}>
+                            Trips
+                        </Button>
+                }
+                {
+                    user.username === 'Admin' ? 
+                        <Button component={Link} onClick={handleDrawerToggle} to='/admin/adminusers' variant='contained' startIcon={<PeopleIcon />}>
+                            Users (Admin)
+                        </Button>:
+                        <Button component={Link} onClick={handleDrawerToggle} to='/friends' variant='contained' startIcon={<PeopleIcon />}>
+                            Friends
+                        </Button>
+                }
+                {
+                    user.username === 'Admin' ? 
+                        <Button component={Link} onClick={handleDrawerToggle} to='/admin/map' variant='contained' startIcon={<LocationOnIcon />}>
+                            Map (Admin)
+                        </Button>:
+                        <Button component={Link} onClick={handleDrawerToggle} to='/map' variant='contained' startIcon={<LocationOnIcon />}>
+                            Map
+                        </Button>
+                }
+                {
+                    user.username === 'Admin' ?
+                        <Button component={Link} to='/admin/calendar' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
+                            Calendar (Admin)
+                        </Button>:
+                        <Button component={Link} to='/calendar' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
+                            Calendar
+                        </Button>
+                }
+                {
+                    user.username === 'Admin' ? 
+                        '':
+                        <Button component={Link} to='/notifications' onClick={handleDrawerToggle} variant='contained' startIcon={<Badge badgeContent={countNotifications} color="error" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><NotificationsIcon /></Badge>}>
+                            Notifications
+                        </Button>
+                }
                 <Divider />
                 <Button component={Link} to='/settings' onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
                     Settings
