@@ -125,7 +125,7 @@ const AdminTrip = (props) => {
                 </Grid>
                 <Grid item xs sm md lg>
                     <Button
-                        component={Link} to={`${trip.tripId}/map`}
+                        component={Link} to={`${trip.id}/map`}
                         size='medium'
                         startIcon={<MapIcon />}
                         color='secondary'
