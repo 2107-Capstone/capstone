@@ -20,10 +20,11 @@ import Notifications from './components/Notifications/Notifications'
 import Settings from './components/Settings/Settings';
 import Password from './components/Settings/Password';
 import AuthAvatar from './components/Settings/AuthAvatar';
+import AllAdminTrips from './components/Admin/AllAdminTrips';
 // import Dashboard from './components/Dashboard/Dashboard';
 
 ///////////// STORE /////////////////////
-import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses, getCategories, getUserFriends, getFriendsPendingSent, getFriendsPendingReceived, getUserDebts } from './store'
+import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses, getCategories, getUserFriends, getFriendsPendingSent, getFriendsPendingReceived, getUserDebts, getAdminTrips } from './store'
 
 //////////// MATERIAL UI /////////////////////////
 import { Avatar, Container } from '@mui/material';
@@ -75,6 +76,7 @@ class Routes extends Component {
                 <Route exact path="/settings" component={Settings} />
                 <Route exact path="/settings/password" component={Password} />
                 <Route exact path="/settings/authavatar" component={AuthAvatar} />
+                <Route exact path="/admin/admintrips" component={AllAdminTrips} />
                 <Redirect to="/home" />
               </Switch >
             ) : (
@@ -113,6 +115,7 @@ const mapDispatch = dispatch => {
       dispatch(getFriendsPendingSent())
       dispatch(getFriendsPendingReceived())
       dispatch(getUserDebts())
+      dispatch(getAdminTrips())
     }
   }
 }

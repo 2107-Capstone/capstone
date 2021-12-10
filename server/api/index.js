@@ -12,6 +12,7 @@ router.use('/categories', require('./categories'))
 router.use('/friendsPendingSent', require('./friendsPendingSent'))
 router.use('/friendsPendingReceived', require('./friendsPendingReceived'))
 router.use('/userDebts', require('./userDebts'))
+router.use('/admin', require('./admin'))
 
 
 router.use((req, res, next) => {
