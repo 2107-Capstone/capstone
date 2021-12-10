@@ -10,6 +10,7 @@ import CircularLoading from '../Loading/CircularLoading'
 import PieChart from '../Expenses/PieChart'
 import EventForm from '../Map/EventForm'
 import EventsTable from '../Events/EventsTable'
+import ExpensesTable from '../Expenses/ExpensesTable'
 import AddExpense from '../Expenses/AddExpense'
 import MessagesTable from '../Chat/MessagesTable'
 import InviteToTrip from './Form/InviteToTrip'
@@ -312,12 +313,14 @@ const Trip = (props) => {
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column', mx: 1, mb: 2 }}>
 
-                        <Typography>
+                        {/* <Typography>
                             Total Expenses: ${totalExpenses.toFixed(2)}
-                        </Typography>
+                        </Typography> */}
                         {
                             tripExpenses.length !== 0 ?
-                                <PieChart expenses={tripExpenses} users={users} categories={categories} /> :
+                                <ExpensesTable tripExpenses={tripExpenses} trip={trip} />
+                                // <PieChart expenses={tripExpenses} users={users} categories={categories} /> 
+                                :
                                 <Typography>
                                     No expenses yet.
                                 </Typography>
