@@ -22,6 +22,7 @@ import MyLocationIcon from '@mui/icons-material/MyLocation';
 import CloseIcon from '@mui/icons-material/Close';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
+import { handleFindMarker, handleFindTrackingMarker, DisplayMarkers, DisplayTrackingMarkers } from './Markers';
 
 import mapStyles from './mapStyles';
 
@@ -43,16 +44,6 @@ export default function TripMap({ match }) {
     const Alert = forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
     });
-
-    // useEffect(async () => {
-    //     try {
-    //         await dispatch(getTrips())
-    //         await dispatch(getEvents())
-    //     }
-    //     catch (error) {
-    //         console.log(error)
-    //     }
-    // }, [])
 
     const auth = useSelector(state => state.auth);
 
@@ -79,15 +70,14 @@ export default function TripMap({ match }) {
         mapRef.current.setZoom(tripZoom);
     }, []);
 
-    const userLocation = useRef(null);
     const [status, setStatus] = useState('initial')
-
-
+    
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
     const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
-
+    const [eventToEdit, setEventToEdit] = useState({});
+    
     const handleClose = () => {
         setOpen(false);
         setEventToEdit({})
@@ -97,56 +87,7 @@ export default function TripMap({ match }) {
         setUpdate(prevUpdate => prevUpdate + Math.random())
     }
     
-    const handleFindMarker = (id) => {
-        const marker = markers.find(marker => marker.id === id);
-        setSelected(marker);
-    }
-    const handleFindTrackingMarker = async (id, username) => {
-        const trackingMarker = trackingMarkers.find(marker => marker.id === id);
-        if (trackingMarker) {
-            setSelected(trackingMarker)
-        } else {
-            await setSelectedUser(username)
-            setOpenNoLocationAlert(true)
-        }
-    }
-    const [eventToEdit, setEventToEdit] = useState({});
-
-    const DisplayMarkers = () => {
-        console.log('markers', markers)
-        return markers.map((marker) => {
-            return (
-                <Marker
-                    key={marker.key}
-                    id={marker.id}
-                    position={{ lat: marker.lat, lng: marker.lng }}
-                    name={marker.name}
-                    icon={{ url: marker.url }}
-                    onClick={() => { setSelected(marker) }}
-                />
-            )
-        })
-    }
-    const DisplayTrackingMarkers = () => {
-        console.log('trackingmarkers', trackingMarkers)
-        return trackingMarkers.map((marker) => {
-            return (
-                <Marker
-                    key={marker.key}
-                    id={marker.id}
-                    position={{ lat: marker.lat, lng: marker.lng }}
-                    name={marker.name}
-                    onClick={() => { setSelected(marker) }}
-                    icon={{
-                        url: '/person.svg',
-
-                    }}
-                />
-            )
-        })
-    }
-
-
+    const userLocation = useRef(null);
     const handleLocate = async () => {
         if ('geolocation' in navigator === false) {
             Alert('Geolocation is not supported by your device.')
@@ -159,12 +100,6 @@ export default function TripMap({ match }) {
                     lng: position.coords.longitude
                 }
                 await setUpdate(prevUpdate => prevUpdate + Math.random())
-                // let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-
-                // usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
-                // const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
-
-                // await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
                 panTo({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -182,12 +117,6 @@ export default function TripMap({ match }) {
                 await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
                 await setUpdate(prevUpdate => prevUpdate + Math.random())
             }
-            // let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-
-            // usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
-            // const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
-
-            // await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
         }, null, {
             enableHighAccuracy: true,
             timeout: 5000,
@@ -195,6 +124,7 @@ export default function TripMap({ match }) {
         })
         setOpenAlert(true);
     }
+
     function Locate({ panTo }) {
         return (
 
@@ -210,12 +140,8 @@ export default function TripMap({ match }) {
             </Button>
         );
     }
-    // console.log(trip)
-    // console.log(users)
-    // let users = []
+    
     useEffect(() => {
-        // setMarkers(prevMarkers => []);
-        // setTrackingMarkers(prevTrackingMarkers => []);
         const createAllMarkers = async() => {
             await setMarkers([]);
             await setTrackingMarkers([]);
@@ -236,9 +162,6 @@ export default function TripMap({ match }) {
         () => setStatus('initial')
     }, [tripId, update])
 
-    
-    
-
     if (!trip || !events || !users) {
         return <CircularLoading />
     }
@@ -258,37 +181,7 @@ export default function TripMap({ match }) {
             accum += +event.lng
             return accum
         }, 0) / events.length;
-    // users = trip.trip.userTrips;
-
-    // if (trip && events.length === 0) return (
-    //     <>
-    //         <Dialog open={open} onClose={handleClose}>
-    //             <EventForm trip={trip} handleClose={handleClose} />
-    //         </Dialog>
-    //         <Box
-    //             className='linkToTrip'
-    //             display='flex'
-    //             justifyContent='center'
-    //             alignItems='center'
-    //             marginTop={1}
-    //         >
-    //             <CardTravelIcon fontSize='medium' />
-    //             <Box
-    //                 sx={{ color: 'inherit' }}
-    //                 component={Link}
-    //                 to={`/trips/${trip.tripId}`}
-    //             >
-    //                 <Typography variant='h5'>
-    //                     &nbsp;{trip.trip.name}
-    //                 </Typography>
-    //             </Box>
-    //         </Box>
-    //         <Button startIcon={<AddIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
-    //             Add Event
-    //         </Button>
-            
-    //     </>
-    // )
+    
 
     return (
         <>
@@ -420,7 +313,7 @@ export default function TripMap({ match }) {
                                     sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
                                     src={user.avatar}
                                     onClick={() => {
-                                        trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username) : ''
+                                        trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username, setSelectedUser, setOpenNoLocationAlert, trackingMarkers, setSelected) : ''
                                     }}
                                 >
                                     {user.firstName[0] + user.lastName[0]}
@@ -448,7 +341,7 @@ export default function TripMap({ match }) {
                                 border='1px solid lightgrey'
                                 borderRadius='7%'
                                 key={event.id}
-                                onClick={() => handleFindMarker(event.id)}
+                                onClick={() => handleFindMarker(setSelected, markers, event.id)}
                                 justifyContent='center'
                                 alignItems='center'
                                 marginRight={1}
@@ -544,18 +437,15 @@ export default function TripMap({ match }) {
                     options={options}
                     onLoad={onMapLoad}
                     zoom={tripZoom}
-                    // zoom={tripId ? 8 : 3}
                     mapContainerStyle={mapContainerStyle}
                     style={mapStyles}
-                    // center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
                     center={{lat, lng}}
-                    // center={events.length === 0 ? {lat: +trip.lat, lng: +trip.lng} : { lat: avgLat, lng: avgLng }}
                 >
                     {
-                        trip.trip.events.length ? <DisplayMarkers /> : ''
+                        trip.trip.events.length ? <DisplayMarkers markers={markers} /> : ''
                     }
                     {
-                        trip.trip.isOpen ? <DisplayTrackingMarkers /> : ''
+                        trip.trip.isOpen ? <DisplayTrackingMarkers trackingMarkers={trackingMarkers}/> : ''
                     }
                     {
                         selected ?
@@ -590,23 +480,3 @@ export default function TripMap({ match }) {
         </>
     );
 }
-
-// <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
-//                         {
-//                             users.map(user => (
-//                                 <Card className='card' key={user.userId} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
-
-//                                 >
-//                                     <CardContent sx={{ mb: 0 }} onClick={() => handleFindTrackingMarker(user.userId, user.user.username)}>
-//                                         {/* <CardContent sx={{ mb: 0}} > */}
-//                                         <Typography gutterBottom>
-//                                             {user.user.username}
-//                                         </Typography>
-//                                         <Typography color="text.secondary" variant="subtitle2" sx={{ mb: 0 }}>
-//                                             {format(parseISO(user.user.time), 'Pp')}
-//                                         </Typography>
-//                                     </CardContent>
-//                                 </Card>
-//                             ))
-//                         }
-// </Box>
