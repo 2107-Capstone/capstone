@@ -23,12 +23,12 @@ const Expenses = ({match}) => {
     const categories = useSelector(state => state.categories);
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId));
     const tableRowData = tripExpenses.map(expense => ({
-        id: expense.id,
-        description: expense.name,
-        amount: expense.amount,
-        category: expense.category.name,
-        paidby: expense.paidBy.username,
-        datepaid: expense.datePaid
+        id: expense.id || '',
+        description: expense.name || '',
+        amount: expense.amount || '',
+        category: expense.category.name || '',
+        paidby: expense.paidBy.username || '',
+        datepaid: expense.datePaid || ''
     }))
 
     ///////////// SORTING AND PAGINATION STATES /////////////////
@@ -86,18 +86,22 @@ const Expenses = ({match}) => {
     ///////////////// LOADING ///////////////////
     if (!trip) {
         return <CircularLoading />
-    } else {
-        if (tripExpenses.length === 0) return (
-            <Container>
-                <Dialog open={open} onClose={handleClose}>
-                    <AddExpense trip={trip} handleClose={handleClose}/>
-                </Dialog>
-                <Button sx={{ml: 1, mt: 1}} color='primary' variant='contained' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
-                    Add Expense
-                </Button>
-            </Container>
-        )
-    }
+    } 
+        // else {
+    //     if (tripExpenses.length === 0) return (
+    //         <Container>
+    //             <Dialog open={open} onClose={handleClose}>
+    //                 <AddExpense trip={trip} handleClose={handleClose}/>
+    //             </Dialog>
+    //             <Button sx={{ml: 1, mt: 1}} color='primary' variant='contained' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+    //                 Add Expense
+    //             </Button>
+    //             {/* <Typography>
+    //                 No expenses yet.
+    //             </Typography> */}
+    //         </Container>
+    //     )
+    // }
 
 
     return (

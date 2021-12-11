@@ -255,6 +255,96 @@ const Trip = (props) => {
             </Grid>
 
             <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={6} lg={6} >
+                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                        <Box >
+                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/chat`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                                Details
+                            </Button>
+                        </Box>
+                        <Box style={styles.headingIcon}>
+                            <ChatIcon fontSize='medium' />
+                            <Typography variant='h6'>
+                                &nbsp;Messages Snapshot
+                            </Typography>
+                        </Box>
+                    </Box>
+                    {
+                        messages.length !== 0 ?
+                            <Tooltip title='Last five messages' placement='top'>
+                                <Box>
+                                    <MessagesTable messages={recentMessages} />
+                                </Box>
+                            </Tooltip>
+                            :
+                            <Typography>
+                                No messages yet.
+                            </Typography>
+                    }
+                </Grid>
+                <Grid item xs={12} sm={12} md={6} lg={6} >
+                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                        <Box >
+                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/calendar`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                                Details
+                            </Button>
+                        </Box>
+                        <Box style={styles.headingIcon}>
+                            <DateRangeIcon fontSize='medium' />
+                            <Typography variant='h6'>
+                                &nbsp;Events Snapshot
+                            </Typography>
+                        </Box>
+                    </Box>
+                    {
+                        events.length !== 0 ?
+                            <Tooltip title='Next five events' placement='top'>
+                                <Box>
+                                    <EventsTable events={recentEvents} />
+                                </Box>
+                            </Tooltip>
+                            :
+                            <Typography>
+                                No events yet.
+                            </Typography>
+                    }
+                </Grid>
+                
+                <Grid item xs={12} sm={12} md={6} lg={6} >
+                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                        <Box >
+                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/expenses`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                                Details
+                            </Button>
+                        </Box>
+                        <Box style={styles.headingIcon}>
+                            <PaidIcon fontSize='medium' />
+                            <Typography variant='h6'>
+                                &nbsp;Expenses Snapshot
+                            </Typography>
+                        </Box>
+                    </Box>
+                            {
+                                expenses.length !== 0 ?
+                                <Tooltip title='Last five paid expenses' placement='top'>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', mx: 1, mb: 2 }}>
+                                        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, mb: 2, textAlign: 'center' }}>
+                                            <Typography variant='subtitle2'>
+                                                Total Expenses: ${totalExpenses.toFixed(2)}
+                                            </Typography>
+                                            <Typography variant='subtitle2'>
+                                                Each Person Owes: ${eachPersonOwes.toFixed(2)}
+                                            </Typography>
+                                        </Box>
+                                        <ExpensesTable expenses={recentExpenses} trip={trip} />
+                                    </Box>
+                                </Tooltip>
+                                    :
+                                    <Typography>
+                                        No expenses yet.
+                                    </Typography>
+                            }
+                </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
                     <Box style={styles.headingIcon} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <PeopleIcon fontSize='medium' />
@@ -281,85 +371,6 @@ const Trip = (props) => {
                             ))
                         }
                     </Box>
-                </Grid>
-                    <Grid item xs={12} sm={12} md={6} lg={6} >
-                        <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
-                            <Box >
-                                <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/expenses`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
-                                    Details
-                                </Button>
-                            </Box>
-                            <Box style={styles.headingIcon}>
-                                <PaidIcon fontSize='medium' />
-                                <Typography variant='h6'>
-                                    &nbsp;Expenses Snapshot
-                                </Typography>
-                            </Box>
-                        </Box>
-                                {
-                                    expenses.length !== 0 ?
-                                    <Tooltip title='Last five paid expenses' placement='top'>
-                                        <Box sx={{ display: 'flex', flexDirection: 'column', mx: 1, mb: 2 }}>
-                                            <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, mb: 2, textAlign: 'center' }}>
-                                                <Typography variant='subtitle2'>
-                                                    Total Expenses: ${totalExpenses.toFixed(2)}
-                                                </Typography>
-                                                <Typography variant='subtitle2'>
-                                                    Each Person Owes: ${eachPersonOwes.toFixed(2)}
-                                                </Typography>
-                                            </Box>
-                                            <ExpensesTable expenses={recentExpenses} trip={trip} />
-                                        </Box>
-                                    </Tooltip>
-                                        :
-                                        <Typography>
-                                            No expenses yet.
-                                        </Typography>
-                                }
-                    </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box bgcolor="primary.main" sx={{ display: 'flex' }}>
-                        <Box style={styles.headingIcon}>
-                            <ChatIcon fontSize='medium' />
-                            <Typography variant='h6'>
-                                &nbsp;Recent Messages
-                            </Typography>
-                        </Box>
-                    </Box>
-                    {
-                        messages.length !== 0 ?
-                            <Tooltip title='Last five messages' placement='top'>
-                                <Box>
-                                    <MessagesTable messages={recentMessages} />
-                                </Box>
-                            </Tooltip>
-                            :
-                            <Typography>
-                                No messages yet.
-                            </Typography>
-                    }
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box bgcolor="primary.main" sx={{ display: 'flex' }}>
-                        <Box style={styles.headingIcon}>
-                            <DateRangeIcon fontSize='medium' />
-                            <Typography variant='h6'>
-                                &nbsp;Upcoming Events
-                            </Typography>
-                        </Box>
-                    </Box>
-                    {
-                        events.length !== 0 ?
-                            <Tooltip title='Next five events' placement='top'>
-                                <Box>
-                                    <EventsTable events={recentEvents} />
-                                </Box>
-                            </Tooltip>
-                            :
-                            <Typography>
-                                No events yet.
-                            </Typography>
-                    }
                 </Grid>
             </Grid>
         </div>
