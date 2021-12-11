@@ -3,7 +3,6 @@ const { models: { User, Trip, UserTrip, Event } } = require('../db')
 const axios = require('axios')
 require('dotenv').config()
 
-
 const API_KEY = process.env.MAP_API
 
 module.exports = router
@@ -131,67 +130,3 @@ router.delete('/:eventId', async (req, res, next) => {
     next(err)
   }
 })
-/*
-router.get('/:eventId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
-  try {
-    const event = await Event.findOne({
-      where: {
-        id: req.params.eventId
-      },
-      include: [
-        {
-          mode: Trip
-        }
-      ]
-    })
-    res.json(event)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.post('/', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
-  try {
-    let event = await Event.create(req.body)
-    event = await Event.findByPk(event.id, {
-      include: [
-        {
-          model: Trip
-        }
-      ]
-    })
-    res.json(event)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.put('/:eventId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
-  try {
-    const { name, description, startTime, endTime, tripId } = req.body
-    let event = await Event.findByPk(req.params.eventId)
-    await event.update({...event, name, description, startTime, endTime, tripId})
-    event = await Event.findByPk(event.id, {
-      include: {
-        model: Trip
-      }
-    })
-    res.json(event)
-  } catch (err) {
-    next(err)
-  }
-})
-
-*/
