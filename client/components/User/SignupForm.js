@@ -22,7 +22,7 @@ const SignupForm = () => {
         email: '',
         phoneNumber: '',
         disabled: true,
-        error: '',
+        phoneError: '',
     })
 
     useEffect(() => {
@@ -37,7 +37,7 @@ const SignupForm = () => {
     const handleChange = (evt) => {
         if (!evt.target) {
           const err = evt.length < 17 ? 'Phone number must have 10 digits.' : '';
-          setinput({ ...input, phoneNumber: evt, disabled: evt.length < 17 ? true : false, error: err })
+          setinput({ ...input, phoneNumber: evt, disabled: evt.length < 17 ? true : false, phoneError: err })
         } else {
           const name = evt.target.name
           const value = evt.target.value
@@ -114,6 +114,7 @@ const SignupForm = () => {
                                 onChange={handleChange}
                             />
                         </Grid>
+                        
                         <Grid item xs={12}>
                             <TextField
                                 required
@@ -163,10 +164,10 @@ const SignupForm = () => {
                             />  
                         </Grid>
                         {
-                          input.error ?
+                          input.phoneError ?
                           <Grid item xs={12}>
                             <Typography variant='caption' sx={{color: 'red'}}>
-                              {input.error}
+                              {input.phoneError}
                             </Typography>  
                           </Grid>
                           : ''
