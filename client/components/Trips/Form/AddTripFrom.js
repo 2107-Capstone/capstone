@@ -6,7 +6,7 @@ import { DateTimePicker, LocalizationProvider } from "@mui/lab"
 import { Container, Box, TextField, Typography, Grid, Button } from "@mui/material"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import { addTrip } from "../../../store/trips"
-import { isAfter } from "date-fns";
+
 /////// IMPORT LOGO IMAGE //////////////////
 const airplane = '/images/airplane.png'
 
@@ -23,7 +23,7 @@ const AddTripFrom = () => {
         endTime: new Date(),
         lat: 40.7127753,
         lng: -74.0059728,
-        userId: auth.id
+        userId: auth.id,
     })
         
     let googlePlace;
@@ -111,7 +111,7 @@ const AddTripFrom = () => {
                 <Typography variant='h5' align='center'>
                     Add New Trip
                 </Typography>
-                <Box component="form"  sx={{ mt: 3 }}>
+                <Box component="form" noValidate sx={{ mt: 3 }}>
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
                             <TextField
@@ -173,7 +173,7 @@ const AddTripFrom = () => {
                     <Button
                         fullWidth
                         variant="contained"
-                        type='submit'
+                        onClick={handleSubmit}
                         sx={{ mt: 3, mb: 2 }}
                     >
                         Add New Trip

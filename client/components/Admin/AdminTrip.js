@@ -147,7 +147,7 @@ const AdminTrip = (props) => {
                 <Button
                     component={Link} to={`${trip.id}/chat`}
                     startIcon={<ChatIcon />}
-                    size='small'
+                    size='medium'
                     color='secondary'
                     variant='contained'
                 >
@@ -156,7 +156,7 @@ const AdminTrip = (props) => {
                 <Button
                     component={Link} to={`${trip.id}/calendar`}
                     startIcon={<DateRangeIcon />}
-                    size='small'
+                    size='medium'
                     color='secondary'
                     variant='contained'
                 >
@@ -165,7 +165,7 @@ const AdminTrip = (props) => {
                 <Button
                     component={Link} to={`${trip.id}/map`}
                     startIcon={<MapIcon />}
-                    size='small'
+                    size='medium'
                     color='secondary'
                     variant='contained'
                 >

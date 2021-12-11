@@ -33,9 +33,9 @@ const TripDebts = ({tripDebts}) => {
             
             <TableHead>
                 <TableRow >
-                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Debtor</TableCell>
+                    <TableCell align="center" sx={{fontWeight: 'bold', fontSize: 15}}>Debtor</TableCell>
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Amount</TableCell>
-                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Creditor</TableCell>
+                    <TableCell align="center" sx={{fontWeight: 'bold', fontSize: 15}}>Creditor</TableCell>
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Paid</TableCell>
                 </TableRow>
             </TableHead>
@@ -45,7 +45,7 @@ const TripDebts = ({tripDebts}) => {
                     key={row.id + Math.random().toString(16)}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                    <TableCell>
+                    <TableCell align="center">
                         <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
                             <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.payor.avatar} >
                                 {row.payor.firstName[0] + row.payor.lastName[0]}
@@ -58,7 +58,7 @@ const TripDebts = ({tripDebts}) => {
                     <TableCell>
                         ${(+row.amount).toFixed(2)}
                     </TableCell>
-                    <TableCell >
+                    <TableCell align="center">
                         <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
                             <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.payee.avatar} >
                                 {row.payee.firstName[0] + row.payee.lastName[0]}

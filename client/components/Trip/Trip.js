@@ -132,9 +132,13 @@ const Trip = (props) => {
             <Dialog open={form === 'event' && open} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} />
             </Dialog>
-            <Box sx={{marginBottom: -10, position: 'sticky', top: 5, right: 5, zIndex: 1}}>
-                <TripSpeedDial handleCloseMenu={handleCloseMenu} setOpen={setOpen} setForm={setForm}/>
-            </Box>
+            {
+                trip.trip.isOpen ? 
+                    <Box sx={{marginBottom: -10, position: 'sticky', top: 5, right: 5, zIndex: 1}}>
+                        <TripSpeedDial handleCloseMenu={handleCloseMenu} setOpen={setOpen} setForm={setForm}/>
+                    </Box>
+                : ''
+            }
             <Grid container rowSpacing={2} columnSpacing={2} >
                 <Grid item xs={12}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
@@ -187,7 +191,7 @@ const Trip = (props) => {
                 <Button
                     component={Link} to={`${trip.tripId}/chat`}
                     startIcon={<ChatIcon />}
-                    size='small'
+                    size='medium'
                     color='secondary'
                     variant='contained'
                 >
@@ -196,7 +200,7 @@ const Trip = (props) => {
                 <Button
                     component={Link} to={`${trip.tripId}/calendar`}
                     startIcon={<DateRangeIcon />}
-                    size='small'
+                    size='medium'
                     color='secondary'
                     variant='contained'
                 >
@@ -205,7 +209,7 @@ const Trip = (props) => {
                 <Button
                     component={Link} to={`${trip.tripId}/map`}
                     startIcon={<MapIcon />}
-                    size='small'
+                    size='medium'
                     color='secondary'
                     variant='contained'
                 >
