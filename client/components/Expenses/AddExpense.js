@@ -36,20 +36,8 @@ const AddExpense = ({trip, handleClose}) => {
         setInputs({description, amount, categoryId, paidById, ...change })
     }
     const hasErrors = () => {
-        if (amount === ''){
-            setInputs({...inputs, error: 'Please enter an amount.'})
-            return true
-        }
         if (!(+amount + 1)){
             setInputs({...inputs, error: 'Please enter a number (without a $).'})
-            return true
-        }
-        if (paidById === ''){
-            setInputs({...inputs, error: 'Please select the friend who paid.'})
-            return true
-        }
-        if (categoryId === ''){
-            setInputs({...inputs, error: 'Please select a category.'})
             return true
         }
         return false
@@ -61,7 +49,7 @@ const AddExpense = ({trip, handleClose}) => {
         }
         try {
             await dispatch(addExpense({name: description, amount, datePaid, paidById, categoryId, tripId: trip.tripId }));
-            setInputs({ description: '', amount: '', paidById: '', categoryId: ''});
+            setInputs({ description: '', amount: '', paidById: '', categoryId: '', error: ''});
             setDatePaid(new Date());
             handleClose();
         }
@@ -85,7 +73,7 @@ const AddExpense = ({trip, handleClose}) => {
                     &nbsp;Add Expense
                 </Typography>
             </Box>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ m: 3 }} >
+            <Box component="form" onSubmit={handleSubmit} sx={{ m: 3 }} >
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -112,7 +100,7 @@ const AddExpense = ({trip, handleClose}) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <FormControl fullWidth>
+                        <FormControl fullWidth required>
                             <InputLabel id="paidById-label">Paid By</InputLabel>
                             <Select
                                 id="paidById"
@@ -130,7 +118,7 @@ const AddExpense = ({trip, handleClose}) => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
-                        <FormControl fullWidth>
+                        <FormControl fullWidth required>
                             <InputLabel id="categoryId-label">Category</InputLabel>
                             <Select
                                 id="categoryId"
@@ -171,7 +159,7 @@ const AddExpense = ({trip, handleClose}) => {
                         type="submit"
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
-                        disabled={!description || !amount || !datePaid}
+                        disabled={!datePaid}
                     >
                         Add Expense
                     </Button>

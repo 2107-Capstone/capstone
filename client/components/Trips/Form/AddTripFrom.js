@@ -23,8 +23,7 @@ const AddTripFrom = () => {
         endTime: new Date(),
         lat: 40.7127753,
         lng: -74.0059728,
-        userId: auth.id,
-        error: ''
+        userId: auth.id
     })
         
     let googlePlace;
@@ -86,18 +85,7 @@ const AddTripFrom = () => {
         setinput({ ...input, [name]: value })
     }
 
-    const hasErrors = () => {
-        if (input.location === '') {
-            setinput({ ...input, error: 'Please enter a destination.'})
-            return true;
-        } 
-        return false;
-    }
-
     const handleSubmit = async () => {
-        if (hasErrors()){
-            return
-        }
         try {
             dispatch(addTrip({...input}))
             setinput({
@@ -123,7 +111,7 @@ const AddTripFrom = () => {
                 <Typography variant='h5' align='center'>
                     Add New Trip
                 </Typography>
-                <Box component="form" noValidate sx={{ mt: 3 }}>
+                <Box component="form"  sx={{ mt: 3 }}>
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
                             <TextField
@@ -156,11 +144,6 @@ const AddTripFrom = () => {
                                 name="location"
                                 inputRef={ref => googlePlace = ref}
                             />
-                            <Box fullWidth sx={{ml: 1, mt: 1, textAlign: 'left'}}>
-                                <Typography variant='caption' sx={{color: 'red'}}>
-                                    {input.error}
-                                </Typography>
-                            </Box>
                         </Grid>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <Grid item xs={12} sm={6}>
@@ -190,9 +173,8 @@ const AddTripFrom = () => {
                     <Button
                         fullWidth
                         variant="contained"
-                        onClick={handleSubmit}
+                        type='submit'
                         sx={{ mt: 3, mb: 2 }}
-                        disabled={input.name === ''}
                     >
                         Add New Trip
                     </Button>

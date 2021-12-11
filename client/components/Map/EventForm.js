@@ -70,10 +70,7 @@ const EventForm = (props) => {
     }
 
     const hasErrors = () => {
-        if (inputs.location === '') {
-            setInputs({ ...inputs, error: 'Please enter a location.'})
-            return true;
-        } else if (isAfter(new Date(trip.trip.startTime), new Date(startTime)) || isAfter(new Date(endTime), new Date(trip.trip.endTime))){
+        if (isAfter(new Date(trip.trip.startTime), new Date(startTime)) || isAfter(new Date(endTime), new Date(trip.trip.endTime))){
             setInputs({ ...inputs, error: 'Event must be within the trip period.'})
             return true;
         } else if (isAfter(new Date(startTime), new Date(endTime))){
@@ -115,7 +112,7 @@ const EventForm = (props) => {
                     &nbsp;{!event.id ? ("Add Event") : ("Edit Event")}
                 </Typography>
             </Box>
-            <Box component="form" sx={{ m: 3 }} >
+            <Box component="form" sx={{ m: 3 }} onSubmit={handleSubmit}>
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -181,10 +178,9 @@ const EventForm = (props) => {
                     </Box>
                     <Button
                         fullWidth
-                        onClick={handleSubmit}
+                        type='submit'
                         variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        disabled={inputs.name === ''}
+                        sx={{ mt: 3, mb: 2 }}                        
                     >
                         {!event.id ? ("Add Event") : ("Edit Event")}
                     </Button>
