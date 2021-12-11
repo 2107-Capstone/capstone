@@ -58,7 +58,7 @@ export const closeTrip = (trip) => {
     });
     // console.log(trip)
     dispatch(_closeTrip(closed));
-    history.push('/trips')
+    // history.push('/trips')
   };
 }
 

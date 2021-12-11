@@ -40,7 +40,7 @@ const ExpensesTable = ({expenses}) => {
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Date</TableCell>
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Amount</TableCell>
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Description</TableCell>
-                    {/* <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Paid By</TableCell> */}
+                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Paid By</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -58,9 +58,9 @@ const ExpensesTable = ({expenses}) => {
                     <TableCell >
                         {row.name}
                     </TableCell>
-                    {/* <TableCell >
+                    <TableCell >
                         {row.paidBy.username}
-                    </TableCell> */}
+                    </TableCell>
                 </TableRow>
             ))}
             </TableBody>

@@ -70,7 +70,8 @@ const Settings = () => {
         } else {
           const name = evt.target.name
           const value = evt.target.value
-          setinput({ ...input, [name]: value, disabled: input.phoneNumber.length < 17 ? true : false })
+
+          setinput({ ...input, [name]: value, disabled: input.error ? true : false })
         }
     }
 

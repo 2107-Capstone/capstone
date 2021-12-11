@@ -91,7 +91,7 @@ const Trip = (props) => {
     const handleCloseTrip = async () => {
         try {
             await dispatch(closeTrip({ ...trip }))
-            const debts = settleUp(tripExpenses, users)
+            const debts = settleUp(expenses, users)
             if (debts) {
                 debts.forEach(async(debt) => {
                     await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[1], payorId: debt[0], amount: +debt[2], status: 'pending'}))
@@ -273,9 +273,16 @@ const Trip = (props) => {
                                     </Typography>
                                 </Box>
                             </Box>
-                            <Box>
-                                <TripDebts tripDebts={tripDebts}/>
-                            </Box>
+                            {
+                                tripDebts.length !== 0 ?
+                                    <Box>
+                                        <TripDebts tripDebts={tripDebts}/>
+                                    </Box>
+                                    :
+                                    <Typography>
+                                        No one in this trip owes money.
+                                    </Typography>
+                            }
                         </Grid>
                     : ''
                 }
