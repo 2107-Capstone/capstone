@@ -83,10 +83,6 @@ const Trip = (props) => {
     
     const users = trip.trip.userTrips;
     const tripDebts = trip.trip.userDebts;
-    const findUsername = (userId) => {
-        const user = users.find(user => user.userId === userId);
-        return user.user.username
-    }
     
     const handleCloseTrip = async () => {
         try {
@@ -261,11 +257,6 @@ const Trip = (props) => {
                     !trip.trip.isOpen ?
                         <Grid item xs={12} sm={12} md={6} lg={6} >
                             <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
-                                {/* <Box >
-                                    <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/chat`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
-                                        Details
-                                    </Button>
-                                </Box> */}
                                 <Box style={styles.headingIcon}>
                                     <PaidIcon fontSize='medium' />
                                     <Typography variant='h6'>
@@ -367,7 +358,7 @@ const Trip = (props) => {
                                                 Each Person Owes: ${eachPersonOwes.toFixed(2)}
                                             </Typography>
                                         </Box>
-                                        <ExpensesTable expenses={recentExpenses} trip={trip} />
+                                        <ExpensesTable expenses={recentExpenses} />
                                     </Box>
                                 </Tooltip>
                                     :

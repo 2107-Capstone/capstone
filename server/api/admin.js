@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const isLoggedIn = require('../middleware/isLoggedIn')
-const { models: { User, Trip, UserTrip, Message, Event, Expense, Category } } = require('../db')
+const { models: { User, Trip, UserTrip, Message, Event, Expense, Category, UserDebt } } = require('../db')
 
 module.exports = router
 
@@ -41,6 +41,17 @@ router.get('/admintrips', async (req, res, next) => {
               },
               {
                 model: Expense
+              },
+              {
+                model: UserDebt,
+                include: [
+                  {
+                    model: User, as: 'payor', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
+                  },
+                  {
+                    model: User, as: 'payee', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
+                  }
+                ]
               }
             ]
       })
