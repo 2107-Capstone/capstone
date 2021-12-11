@@ -156,7 +156,12 @@ const AllTrips = ({ match }) => {
                                         />
                                     </Box>
                                     :
-                                    <Tooltip title="You can not leave a trip that already has expenses." >
+                                    <Tooltip 
+                                        title="You can not leave a trip that already has expenses."
+                                        placement='top'
+                                        enterTouchDelay={100}
+                                        leaveTouchDelay={1000}
+                                    >
                                         <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
                                             <Chip label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
                                                 disabled={!trip.trip.expenses.length ? false : true}

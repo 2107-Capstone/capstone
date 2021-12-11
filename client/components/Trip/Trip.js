@@ -245,9 +245,20 @@ const Trip = (props) => {
                                         <Button size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained' onClick={handleCloseTrip} >
                                             Mark Trip as Closed
                                         </Button>
-                                        : <Button startIcon={<AssignmentTurnedInIcon />} variant='contained' style={{ color: 'grey' }} disabled>
-                                            {trip.trip.user.username} can close this trip
-                                        </Button>
+                                        : 
+                                        <Tooltip
+                                            title={`Only ${trip.trip.user.username} can close this trip`}
+                                            placement='top'
+                                            enterNextDelay={100}
+                                            enterTouchDelay={300}
+                                            leaveTouchDelay={1000}
+                                        >
+                                            <Box>
+                                                <Button disabled size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained'>
+                                                    Mark Trip as Closed
+                                                </Button>
+                                            </Box>
+                                        </Tooltip>
                                 }
                             </MenuItem>
                             <Divider sx={{ my: 0.5 }} />
@@ -298,7 +309,13 @@ const Trip = (props) => {
                     </Box>
                     {
                         messages.length !== 0 ?
-                            <Tooltip title='Last five messages' placement='top'>
+                            <Tooltip 
+                                title='Last five messages' 
+                                placement='top'
+                                enterNextDelay={100}
+                                enterTouchDelay={300}
+                                leaveTouchDelay={500}
+                            >
                                 <Box>
                                     <MessagesTable messages={recentMessages} />
                                 </Box>
@@ -325,7 +342,13 @@ const Trip = (props) => {
                     </Box>
                     {
                         events.length !== 0 ?
-                            <Tooltip title='Next five events' placement='top'>
+                        <Tooltip 
+                            title='Next five events' 
+                            placement='top'
+                            enterNextDelay={100}
+                            enterTouchDelay={300}
+                            leaveTouchDelay={500}
+                        >
                                 <Box>
                                     <EventsTable events={recentEvents} />
                                 </Box>
@@ -353,7 +376,13 @@ const Trip = (props) => {
                     </Box>
                             {
                                 expenses.length !== 0 ?
-                                <Tooltip title='Last five paid expenses' placement='top'>
+                                <Tooltip 
+                                    title='Last five paid expenses' 
+                                    placement='top'
+                                    enterNextDelay={100}
+                                    enterTouchDelay={300}
+                                    leaveTouchDelay={500}
+                                >
                                     <Box sx={{ display: 'flex', flexDirection: 'column', mx: 1, mb: 2 }}>
                                         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, mb: 2, textAlign: 'center' }}>
                                             <Typography variant='subtitle2'>

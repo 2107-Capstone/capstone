@@ -185,7 +185,13 @@ const AdminTrip = (props) => {
                     </Box>
                     {
                         messages.length !== 0 ?
-                            <Tooltip title='Last five messages' placement='top'>
+                           <Tooltip 
+                                title='Last five messages' 
+                                placement='top'
+                                enterNextDelay={100}
+                                enterTouchDelay={300}
+                                leaveTouchDelay={500}
+                            >
                                 <Box>
                                     <MessagesTable messages={messages} />
                                 </Box>
@@ -212,7 +218,13 @@ const AdminTrip = (props) => {
                     </Box>
                     {
                         events.length !== 0 ?
-                            <Tooltip title='Next five events' placement='top'>
+                            <Tooltip 
+                                title='Next five events' 
+                                placement='top'
+                                enterNextDelay={100}
+                                enterTouchDelay={300}
+                                leaveTouchDelay={500}
+                            >
                                 <Box>
                                     <EventsTable events={events} />
                                 </Box>
@@ -240,7 +252,13 @@ const AdminTrip = (props) => {
                     </Box>
                             {
                                 tripExpenses.length !== 0 ?
-                                <Tooltip title='Last five paid expenses' placement='top'>
+                                <Tooltip 
+                                    title='Last five paid expenses' 
+                                    placement='top'
+                                    enterNextDelay={100}
+                                    enterTouchDelay={300}
+                                    leaveTouchDelay={500}
+                                >
                                     <Box sx={{ display: 'flex', flexDirection: 'column', mx: 1, mb: 2 }}>
                                         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, mb: 2, textAlign: 'center' }}>
                                             <Typography variant='subtitle2'>
