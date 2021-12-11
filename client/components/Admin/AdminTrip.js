@@ -92,7 +92,7 @@ const AdminTrip = (props) => {
                         </Box>
                         <Box display='flex' justifyContent='center' alignItems='center'>
                             <Typography >
-                                Trip Creator: {trip.user.username}
+                                Trip Creator:
                             </Typography>
                             <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
                                 <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={trip.user.avatar} >
