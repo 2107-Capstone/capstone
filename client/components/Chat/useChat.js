@@ -19,9 +19,6 @@ const useChat = (roomId) => {
       const incomingMessage = {
         ...message,
         ownedByCurrentUser: message.sentById === user.id,
-        avatar: message.avatar,
-        firstName: message.firstName,
-        lastName: message.lastName
       };
       setMessages((messages) => [...messages, incomingMessage]);
     });

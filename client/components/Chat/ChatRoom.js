@@ -12,6 +12,7 @@ import { Avatar, Box, Grid, Button, TextField, Tooltip, Typography, Dialog } fro
 // const ChatRoom = (props) => {
 //   const { id } = props.match.params;
 // const ChatRoom = ({trip, match}) => {
+import theme from '../../theme'
 const ChatRoom = ({match}) => {
   
   // const id = trip ? trip.tripId : match.params.id;
@@ -83,9 +84,14 @@ const ChatRoom = ({match}) => {
               ({format(Date.now(), 'Pp')})
             </Typography>
           <Box display='flex' alignItems='center'>
-            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.avatar} >
-                {message.firstName[0]+message.lastName[0]}
-            </Avatar>
+            <Box display='flex' flexDirection='column' alignItems='center'>
+              <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.avatar} >
+                  {message.firstName[0]+message.lastName[0]}
+              </Avatar>
+              <Typography variant='caption'>
+                {message.senderName}
+              </Typography> 
+            </Box>
             <Typography>
               {message.content}
             </Typography> 
@@ -214,8 +220,8 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'black',
-    backgroundColor: '#F7C409',
+    color: 'white',
+    backgroundColor: theme.palette.primary.main,
     marginLeft: 'auto'
   },
   messageItemMyMessageOld: {
@@ -224,8 +230,8 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'darkslategrey',
-    backgroundColor: '#F7C409',
+    color: 'white',
+    backgroundColor: theme.palette.primary.main,
     marginLeft: 'auto',
     fontStyle: 'italic'
   },
@@ -235,8 +241,8 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'black',
-    backgroundColor: '#3BBB67',
+    color: 'white',
+    backgroundColor: theme.palette.secondary.main,
     marginRight: 'auto'
   },
   messageItemReceivedMessageOld: {
@@ -245,8 +251,8 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'darkslategrey',
-    backgroundColor: '#3BBB67',
+    color: 'white',
+    backgroundColor: theme.palette.secondary.main,
     marginRight: 'auto',
     fontStyle: 'italic'
   },
@@ -254,7 +260,7 @@ const styles = {
     fontSize: 20,
     fontWeight: 200,
     color: 'white',
-    background: 'dodgerBlue',
+    backgroundColor: theme.palette.secondary.main,
     padding: '10px 5px',
     border: 'none',
     borderColor: '#9a9a9a',

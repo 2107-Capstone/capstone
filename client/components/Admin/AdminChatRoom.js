@@ -7,6 +7,7 @@ import useChat from "../Chat/useChat";
 import CircularLoading from '../Loading/CircularLoading'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import { Avatar, Box, Typography } from '@mui/material'
+import theme from '../../theme'
 const AdminChatRoom = ({trip, match}) => {
   
   const id = trip ? trip.id : match.params.id;
@@ -168,8 +169,8 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'black',
-    backgroundColor: '#F7C409',
+    color: 'white',
+    backgroundColor: theme.palette.primary.main,
     marginLeft: 'auto'
   },
   messageItemMyMessageOld: {
@@ -178,8 +179,8 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'darkslategrey',
-    backgroundColor: '#F7C409',
+    color: 'white',
+    backgroundColor: theme.palette.primary.main,
     marginLeft: 'auto',
     fontStyle: 'italic'
   },
@@ -189,8 +190,8 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'black',
-    backgroundColor: '#3BBB67',
+    color: 'white',
+    backgroundColor: theme.palette.secondary.main,
     marginRight: 'auto'
   },
   messageItemReceivedMessageOld: {
@@ -199,8 +200,8 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'darkslategrey',
-    backgroundColor: '#3BBB67',
+    color: 'white',
+    backgroundColor: theme.palette.secondary.main,
     marginRight: 'auto',
     fontStyle: 'italic'
   },

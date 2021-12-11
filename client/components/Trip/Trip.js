@@ -509,7 +509,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'darkslategrey',
+        backgroundColor: theme.palette.secondary.main,
         flexGrow: 1,
         color: 'white',
         borderRadius: 7
