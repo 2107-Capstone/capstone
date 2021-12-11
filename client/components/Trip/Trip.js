@@ -14,7 +14,6 @@ import ExpensesTable from '../Expenses/ExpensesTable'
 import AddExpense from '../Expenses/AddExpense'
 import MessagesTable from '../Chat/MessagesTable'
 import InviteToTrip from './Form/InviteToTrip'
-import StyledMenu from './StyledMenu'
 
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
@@ -25,6 +24,7 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 
 /////////////// ICONS /////////////////
@@ -282,39 +282,41 @@ const Trip = (props) => {
                         }
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
-                        <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/expenses`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
-                                Details
-                            </Button>
-                        </Box>
-                        <Box style={styles.headingIcon}>
-                            <PaidIcon fontSize='medium' />
-                            <Typography variant='h6'>
-                                &nbsp;Expenses Snapshot
-                            </Typography>
-                        </Box>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', mx: 1, mb: 2 }}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, mb: 2, textAlign: 'center' }}>
-                            <Typography variant='subtitle2'>
-                                Total Expenses: ${totalExpenses.toFixed(2)}
-                            </Typography>
-                            <Typography variant='subtitle2'>
-                                Each Person Owes: ${eachPersonOwes.toFixed(2)}
-                            </Typography>
-                        </Box>
-                        {
-                            expenses.length !== 0 ?
-                                <ExpensesTable expenses={recentExpenses} trip={trip} />
-                                :
-                                <Typography>
-                                    No expenses yet.
+                    <Grid item xs={12} sm={12} md={6} lg={6} >
+                        <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                            <Box >
+                                <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/expenses`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                                    Details
+                                </Button>
+                            </Box>
+                            <Box style={styles.headingIcon}>
+                                <PaidIcon fontSize='medium' />
+                                <Typography variant='h6'>
+                                    &nbsp;Expenses Snapshot
                                 </Typography>
-                        }
-                    </Box>
-                </Grid>
+                            </Box>
+                        </Box>
+                                {
+                                    expenses.length !== 0 ?
+                                    <Tooltip title='Last five paid expenses' placement='top'>
+                                        <Box sx={{ display: 'flex', flexDirection: 'column', mx: 1, mb: 2 }}>
+                                            <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, mb: 2, textAlign: 'center' }}>
+                                                <Typography variant='subtitle2'>
+                                                    Total Expenses: ${totalExpenses.toFixed(2)}
+                                                </Typography>
+                                                <Typography variant='subtitle2'>
+                                                    Each Person Owes: ${eachPersonOwes.toFixed(2)}
+                                                </Typography>
+                                            </Box>
+                                            <ExpensesTable expenses={recentExpenses} trip={trip} />
+                                        </Box>
+                                    </Tooltip>
+                                        :
+                                        <Typography>
+                                            No expenses yet.
+                                        </Typography>
+                                }
+                    </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
                     <Box bgcolor="primary.main" sx={{ display: 'flex' }}>
                         <Box style={styles.headingIcon}>
@@ -326,7 +328,11 @@ const Trip = (props) => {
                     </Box>
                     {
                         messages.length !== 0 ?
-                            <MessagesTable messages={recentMessages} />
+                            <Tooltip title='Last five messages' placement='top'>
+                                <Box>
+                                    <MessagesTable messages={recentMessages} />
+                                </Box>
+                            </Tooltip>
                             :
                             <Typography>
                                 No messages yet.
@@ -344,7 +350,11 @@ const Trip = (props) => {
                     </Box>
                     {
                         events.length !== 0 ?
-                            <EventsTable events={recentEvents} />
+                            <Tooltip title='Next five events' placement='top'>
+                                <Box>
+                                    <EventsTable events={recentEvents} />
+                                </Box>
+                            </Tooltip>
                             :
                             <Typography>
                                 No events yet.
