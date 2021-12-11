@@ -34,12 +34,13 @@ export const authenticate = (userInfo, method, type) => async dispatch => {
     window.localStorage.setItem(TOKEN, res.data.token)
     dispatch(me())
     console.log(userInfo.username)
+    console.log(type)
     if (userInfo.username === 'Admin') {
       history.push('/admin/admintrips')
     } else {
       history.push('/trips')
-    }
-    type === 'passwordChange' ? '' : history.push('/trips')
+    } 
+    // type === 'passwordChange' ? '' : history.push('/trips')
   } catch (authError) {
     return dispatch(setAuth({ error: authError }))
   }

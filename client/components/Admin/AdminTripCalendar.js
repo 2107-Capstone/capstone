@@ -31,19 +31,12 @@ const AdminTripCalendar = () => {
     const calendarEvents = adminEvents.map(adminEvent => { return { id: adminEvent.id, tripId: adminEvent.tripId, title: adminEvent.name, start: new Date(adminEvent.startTime), end: new Date(adminEvent.endTime) } })
 
     const handleSelect = (event) => {
-        history.push(`/trips/${event.tripId}`)
+        history.push(`/admin/admintrips/${event.tripId}`)
     }
 
     return (
         <div>
             <Calendar
-                // popup
-                // views={{
-                //     month: true,
-                //     week: true,
-
-                // }}
-                // selectable
                 localizer={localizer}
                 events={[...calendarTrips, ...calendarEvents]}
                 step={60}

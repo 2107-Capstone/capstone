@@ -10,7 +10,6 @@ import AddIcon from '@mui/icons-material/Add';
 import CircularLoading from '../Loading/CircularLoading'
 
 //////////////////////// STORE ///////////////////
-import { getAdminUserTrips } from "../../store";
 import { getAdminTrips } from "../../store";
 
 /////////////// DATE FORMATTER  ////////////////
@@ -19,7 +18,7 @@ import { format, parseISO, isAfter } from "date-fns";
 
 
 const AdminAllTrips = ({ match }) => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
     useEffect(async () => {
         await dispatch(getAdminTrips())
     }, [])
