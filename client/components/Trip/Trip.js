@@ -140,11 +140,16 @@ const Trip = (props) => {
                         </Box>
                         <Box display='flex' justifyContent='center' alignItems='center'>
                             <Typography >
-                                Trip Creator: {trip.trip.user.username}
+                                Trip Creator:
                             </Typography>
-                            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }} src={trip.trip.user.avatar} >
-                                {trip.trip.user.firstName[0] + trip.trip.user.lastName[0]}
-                            </Avatar>
+                            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                                <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={trip.trip.user.avatar} >
+                                    {trip.trip.user.firstName[0] + trip.trip.user.lastName[0]}
+                                </Avatar>
+                                <Typography variant='caption'>
+                                    {trip.trip.user.username}
+                                </Typography >
+                            </Box>
                         </Box>
                     </Box>
                 </Grid>

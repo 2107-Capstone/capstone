@@ -95,9 +95,13 @@ const AdminChatRoom = ({trip, match}) => {
         !trip ? <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                     <CardTravelIcon fontSize='medium' />
                     <Box sx={{ color: 'inherit' }} component={Link} to={`/admin/admintrips/${id}`}>
-                        <Typography variant='h5'>
-                            &nbsp;{thisTrip.name}
-                        </Typography>
+                    <Typography variant='h5'>
+                        &nbsp;{thisTrip.name}
+                        {
+                            thisTrip.isOpen ? "" :
+                                " (Closed)"
+                        }
+                    </Typography>
                     </Box>
                 </Box>
         : ''

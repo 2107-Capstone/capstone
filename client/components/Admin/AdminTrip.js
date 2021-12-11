@@ -94,9 +94,14 @@ const AdminTrip = (props) => {
                             <Typography >
                                 Trip Creator: {trip.user.username}
                             </Typography>
-                            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }} src={trip.user.avatar} >
-                                {trip.user.firstName[0] + trip.user.lastName[0]}
-                            </Avatar>
+                            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                                <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={trip.user.avatar} >
+                                    {trip.user.firstName[0] + trip.user.lastName[0]}
+                                </Avatar>
+                                <Typography variant='caption'>
+                                    {trip.user.username}
+                                </Typography >
+                            </Box>
                         </Box>
                     </Box>
                 </Grid>
