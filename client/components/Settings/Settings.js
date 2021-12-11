@@ -20,11 +20,11 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import MuiPhoneNumber from 'material-ui-phone-number';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import Badge from '@mui/material/Badge';
 import EditIcon from '@mui/icons-material/Edit';
 import { updateUser, me } from '../../store'
+import MuiPhoneNumber from 'material-ui-phone-number';
 
 const Settings = () => {
     const dispatch = useDispatch()

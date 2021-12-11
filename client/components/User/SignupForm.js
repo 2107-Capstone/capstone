@@ -1,17 +1,18 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import LockIcon from '@mui/icons-material/Lock';
 import { authenticate } from "../../store";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 ///////////////// MATERIAL UI ////////////////////////
 import { Box, Container, Avatar, Typography, Grid, TextField, Button, Link, SvgIcon } from '@mui/material';
-
+import MuiPhoneNumber from 'material-ui-phone-number';
 ///////////AIRPLANE LOGO //////////////
 import LogoIcon from '/public/tripIcon.svg'
 
 const SignupForm = () => {
     const dispatch = useDispatch()
+    const users = useSelector(state => state.users)
 
     const [input, setinput] = useState({
         username: '',
@@ -19,15 +20,29 @@ const SignupForm = () => {
         firstName: '',
         lastName: '',
         email: '',
-        phoneNumber: ''
+        phoneNumber: '',
+        disabled: true,
+        error: '',
     })
 
+    useEffect(() => {
+        if (input.phoneNumber.length === 17){
+          setinput({
+            ...input,
+            disabled: false
+          })
+        }
+      }, [input.phoneNumber])
+
     const handleChange = (evt) => {
-        const name = evt.target.name
-        const value = evt.target.value
-
-        setinput({ ...input, [name]: value })
-
+        if (!evt.target) {
+          const err = evt.length < 17 ? 'Phone number must have 10 digits.' : '';
+          setinput({ ...input, phoneNumber: evt, disabled: evt.length < 17 ? true : false, error: err })
+        } else {
+          const name = evt.target.name
+          const value = evt.target.value
+          setinput({ ...input, [name]: value, disabled: input.phoneNumber.length < 17 ? true : false })
+        }
     }
 
     const handleSubmit = (evt) => {
@@ -37,7 +52,7 @@ const SignupForm = () => {
             dispatch(authenticate(userInfo, 'signup'))
         }
         catch (error) {
-
+            console.log(error)
         }
     }
 
@@ -60,7 +75,7 @@ const SignupForm = () => {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Box component="form"  onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={1}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -103,18 +118,6 @@ const SignupForm = () => {
                             <TextField
                                 required
                                 fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                value={input.email}
-                                autoComplete="email"
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
                                 name="password"
                                 label="Password"
                                 type="password"
@@ -128,19 +131,53 @@ const SignupForm = () => {
                             <TextField
                                 required
                                 fullWidth
+                                type='email'
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                value={input.email}
+                                autoComplete="email"
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            {/* <TextField
+                                required
+                                fullWidth
                                 name="phoneNumber"
                                 label="Phone Number"
                                 value={input.phoneNumber}
                                 id="phoneNumber"
                                 onChange={handleChange}
-                            />
+                            /> */}
+                            <MuiPhoneNumber 
+                                onlyCountries={['us']}
+                                defaultCountry={'us'} 
+                                value={input.phoneNumber}
+                                id="phoneNumber" 
+                                onChange={handleChange} 
+                                variant='outlined' 
+                                fullWidth 
+                                disableAreaCodes
+                                label='Phone Number'
+                            />  
                         </Grid>
+                        {
+                          input.error ?
+                          <Grid item xs={12}>
+                            <Typography variant='caption' sx={{color: 'red'}}>
+                              {input.error}
+                            </Typography>  
+                          </Grid>
+                          : ''
+                        }
                     </Grid>
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        disabled={input.disabled}
                     >
                         Sign Up
                     </Button>
