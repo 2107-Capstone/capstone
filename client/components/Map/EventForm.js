@@ -15,6 +15,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import EventIcon from '@mui/icons-material/Event';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PaidIcon from '@mui/icons-material/Paid';
+import { format, parseISO, isAfter } from "date-fns";
 
 import CircularLoading from '../Loading/CircularLoading'
 
@@ -28,10 +29,11 @@ const EventForm = (props) => {
         name: event.name || '',
         location: event.location || '',
         description: event.description || '',
+        error: '',
     })
 
-    const [startTime, setStartTime] = useState(event.startTime || new Date());
-    const [endTime, setEndTime] = useState(event.endTime || startTime);
+    const [startTime, setStartTime] = useState(event.startTime || new Date(trip.trip.startTime));
+    const [endTime, setEndTime] = useState(event.endTime || new Date(trip.trip.endTime));
 
     let googlePlace;
 //TODO: Add trip location with search??
@@ -67,7 +69,23 @@ const EventForm = (props) => {
         setInputs({ ...inputs, [name]: value })
     }
 
+    const hasErrors = () => {
+        if (inputs.location === '') {
+            setInputs({ ...inputs, error: 'Please enter a location.'})
+            return true;
+        } else if (isAfter(new Date(trip.trip.startTime), new Date(startTime)) || isAfter(new Date(endTime), new Date(trip.trip.endTime))){
+            setInputs({ ...inputs, error: 'Event must be within the trip period.'})
+            return true;
+        } else if (isAfter(new Date(startTime), new Date(endTime))){
+            setInputs({ ...inputs, error: 'End time must be after start time.'})
+            return true;
+        }
+        return false;
+    }
     const handleSubmit = async () => {
+        if (hasErrors()) {
+            return
+        }
         try {
             if (event.id) {
                 await dispatch(editEvent({ ...inputs, trip, startTime, endTime }))
@@ -134,7 +152,6 @@ const EventForm = (props) => {
                         <Grid item xs={12} sm={6}>
                             <DateTimePicker
                                 label="Start Time"
-                                required
                                 name='startTime'
                                 value={startTime}
                                 onChange={handleStartChange}
@@ -157,11 +174,17 @@ const EventForm = (props) => {
                             />
                         </Grid>
                     </LocalizationProvider>
+                    <Box fullWidth sx={{ml: 1, mt: 1, textAlign: 'center'}}>
+                        <Typography variant='caption' sx={{color: 'red'}}>
+                            {inputs.error}
+                        </Typography>
+                    </Box>
                     <Button
                         fullWidth
                         onClick={handleSubmit}
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        disabled={inputs.name === ''}
                     >
                         {!event.id ? ("Add Event") : ("Edit Event")}
                     </Button>
