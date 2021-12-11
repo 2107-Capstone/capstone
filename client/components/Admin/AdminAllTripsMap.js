@@ -146,7 +146,7 @@ export default function AdminAllTripsMap() {
                                 checked={checked}
                                 onChange={handleChange}
                             />}
-                            label='Past Trips'
+                            label='Closed Trips'
                         />
                     </FormGroup>
                 </Box>
@@ -155,7 +155,7 @@ export default function AdminAllTripsMap() {
                     {
                         checked ?
                             <Typography variant='h5'>
-                                &nbsp;PAST TRIPS
+                                &nbsp;CLOSED TRIPS
                             </Typography>
                             :
                             <>

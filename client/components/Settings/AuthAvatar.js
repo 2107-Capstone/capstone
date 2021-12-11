@@ -12,6 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import Snackbar from '@mui/material/Snackbar';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Alert from '@mui/material/Alert';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Typography } from "@mui/material";
 
 class AuthAvatar extends Component {
@@ -89,7 +90,7 @@ class AuthAvatar extends Component {
         <Typography variant='h6' align='center'>
           Update Profile Image
         </Typography>
-        <Button component={Link} to='/settings' variant='outlined' color='info' startIcon={<SettingsIcon />}>
+        <Button component={Link} to='/settings' variant='outlined' startIcon={<ArrowBackIcon />}>
           Back
         </Button>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

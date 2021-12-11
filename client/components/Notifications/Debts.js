@@ -55,7 +55,7 @@ const Debts = () => {
     if (userDebts.length === 0) {
         return (
             <Typography align='center' variant='h6' sx={{ mt: 4, mb: 8 }}>
-                No unpaid expenses.
+                No unpaid debts
             </Typography>
         )
     }
@@ -87,9 +87,14 @@ const Debts = () => {
                                                             sx={{ m: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                                                         >
                                                             <Typography>
-                                                                {debt.payor.username === user.username ? 'You owe' : `${debt.payor.username} owes`}  {debt.payee.username === user.username ? ' you' : debt.payee.username} ${(+debt.amount).toFixed(2)}
+                                                                {debt.payor.username === user.username ? 'You owe' : 
+                                                                `${debt.payor.username} owes`}  {debt.payee.username === user.username ? ' you' : debt.payee.username} ${(+debt.amount).toFixed(2)}
                                                             </Typography>
-                                                            <Tooltip title={debt.payee.username !== user.username ? `Only ${debt.payee.username} can mark this as paid.` : ''}>
+                                                            <Tooltip 
+                                                                title={debt.payee.username !== user.username ? `Only ${debt.payee.username} can mark this as paid.` : ''}
+                                                                enterTouchDelay={100}
+                                                                leaveTouchDelay={900}
+                                                            >
                                                                 <FormGroup>
                                                                     <FormControlLabel
                                                                         control={

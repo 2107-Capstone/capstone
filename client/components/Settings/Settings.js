@@ -70,12 +70,13 @@ const Settings = () => {
         } else {
           const name = evt.target.name
           const value = evt.target.value
-          setinput({ ...input, [name]: value, disabled: input.phoneNumber.length < 17 ? true : false })
+
+          setinput({ ...input, [name]: value, disabled: input.error ? true : false })
         }
     }
 
     const handleSubmit = async (evt) => {
-      console.log(input)
+      // console.log(input)
         evt.preventDefault()
         try {
            await dispatch(updateUser({id: auth.id, ...input}));
@@ -115,7 +116,6 @@ const Settings = () => {
                     alignItems: 'center',
                 }}
             >
-                <Button>TODO: Location Settings</Button>
                 <IconButton component={Link} to='/settings/authavatar'>
                 <Badge badgeContent={<EditIcon sx={{ fontSize: 15 }}/>} color="primary" anchorOrigin={{vertical: 'bottom', horizontal: 'right',}} overlap="circular" >
                   <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={auth.avatar} >

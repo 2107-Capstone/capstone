@@ -54,7 +54,7 @@ const AllTrips = ({ match }) => {
                     {
                         checked ?
                             <Typography variant='h5'>
-                                &nbsp;PAST TRIPS
+                                &nbsp;CLOSED TRIPS
                             </Typography>
                             :
                             <Typography variant='h5'>
@@ -76,7 +76,7 @@ const AllTrips = ({ match }) => {
                             checked={checked}
                             onChange={handleChange}
                         />}
-                        label='Past Trips'
+                        label='Closed Trips'
                     />
                 </FormGroup>
                 <Box sx={{ display: 'flex', alignSelf: 'center' }}>
@@ -84,7 +84,7 @@ const AllTrips = ({ match }) => {
                     {
                         checked ?
                             <Typography variant='h5'>
-                                &nbsp;PAST TRIPS
+                                &nbsp;CLOSED TRIPS
                             </Typography>
                             :
                             <>
@@ -147,6 +147,8 @@ const AllTrips = ({ match }) => {
                                 </Box>
                             </Box>
                             {
+                                !trip.trip.isOpen ? ''
+                                    :
                                 !trip.trip.expenses.length ?
                                     <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
                                         <Chip onClick={() => handleLeaveTrip(trip.id)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
@@ -154,7 +156,12 @@ const AllTrips = ({ match }) => {
                                         />
                                     </Box>
                                     :
-                                    <Tooltip title="You can not leave a trip that already has expenses." >
+                                    <Tooltip 
+                                        title="You can not leave a trip that already has expenses."
+                                        placement='top'
+                                        enterTouchDelay={100}
+                                        leaveTouchDelay={1000}
+                                    >
                                         <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
                                             <Chip label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
                                                 disabled={!trip.trip.expenses.length ? false : true}

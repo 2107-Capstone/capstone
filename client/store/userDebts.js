@@ -23,6 +23,7 @@ export const getUserDebts = () => {
         dispatch(_getUserDebts(userDebts));
     };
 }
+
 export const addUserDebt = (userDebt) => {
     const token = window.localStorage.getItem(TOKEN)
 

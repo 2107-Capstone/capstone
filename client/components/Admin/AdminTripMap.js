@@ -257,6 +257,10 @@ export default function TripMap({ match }) {
                 >
                     <Typography variant='h5'>
                         &nbsp;{trip.name}
+                        {
+                            trip.isOpen ? "" :
+                                " (Closed)"
+                        }
                     </Typography>
                 </Box>
             </Box>

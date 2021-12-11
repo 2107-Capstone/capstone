@@ -31,6 +31,7 @@
  transform: scale(1.1);
  color: rgb(61, 220, 231);
 }
+
 @media screen and (max-width: 575px) {
  #singleTrip {
   display: flex;
