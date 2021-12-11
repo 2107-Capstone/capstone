@@ -399,6 +399,7 @@ export default function TripMap({ match }) {
                     justifyContent='center'
                     marginTop={.5}
                     marginBottom={.5}
+                    flexWrap='wrap'
                 >
 
                     {

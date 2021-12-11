@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////////// STORE /////////////////
-import { closeTrip, getTrips, addUserDebt } from '../../store'
+import { editTrip, getTrips, addUserDebt } from '../../store'
 
 /////////////// COMPONENTS /////////////////
 import CircularLoading from '../Loading/CircularLoading'
@@ -16,7 +16,7 @@ import MessagesTable from '../Chat/MessagesTable'
 import InviteToTrip from './Form/InviteToTrip'
 import TripDebts from '../Expenses/TripDebts'
 import TripSpeedDial from './TripSpeedDial'
-
+import AddTripForm from '../Trips/Form/AddTripForm'
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -93,7 +93,7 @@ const Trip = (props) => {
     
     const handleCloseTrip = async () => {
         try {
-            await dispatch(closeTrip({ ...trip }))
+            await dispatch(editTrip({ ...trip}))
             const debts = settleUp(expenses, users)
             if (debts) {
                 debts.forEach(async(debt) => {
@@ -104,6 +104,7 @@ const Trip = (props) => {
             console.log(error)
         }
     }
+
     
     const totalExpenses = expenses.reduce((total, expense) => {
         return total + +expense.amount
@@ -131,6 +132,9 @@ const Trip = (props) => {
             </Dialog>
             <Dialog open={form === 'event' && open} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} />
+            </Dialog>
+            <Dialog open={form === 'trip' && open} onClose={handleClose}>
+                <AddTripForm trip={trip} handleClose={handleClose} />
             </Dialog>
             {
                 trip.trip.isOpen ? 
@@ -167,6 +171,7 @@ const Trip = (props) => {
                             <Box>
                                 {
                                     trip.trip.isOpen ? 
+                                        <>
                                         <Tooltip 
                                             title={trip.trip.user.id !== auth.id ? `Only ${trip.trip.user.username} can close this trip` : ''}
                                             placement='top'
@@ -180,6 +185,25 @@ const Trip = (props) => {
                                                 </Button>
                                             </Box>
                                         </Tooltip>
+                                        <Tooltip 
+                                            title={trip.trip.user.id !== auth.id ? `Only ${trip.trip.user.username} can edit this trip` : ''}
+                                            placement='top'
+                                            enterNextDelay={100}
+                                            enterTouchDelay={300}
+                                            leaveTouchDelay={1000}
+                                        >
+                                            <Box>
+                                                <Button size='small' startIcon={<WorkOffOutlinedIcon />} variant='outlined' onClick={() => {
+                                                    setForm('trip');
+                                                    setOpen(true)
+                                                }} 
+                                                disabled={trip.trip.user.id !== auth.id}
+                                                >
+                                                    Edit Trip
+                                                </Button>
+                                            </Box>
+                                        </Tooltip>
+                                        </>
                                     : ''
                                 }
                             </Box>

@@ -11,7 +11,7 @@ import LoginForm from './components/User/LoginForm';
 import SignupForm from './components/User/SignupForm';
 import AllTrips from './components/Trips/AllTrips';
 import AllFriends from './components/Friendship/AllFriends';
-import AddTripFrom from './components/Trips/Form/AddTripFrom';
+import AddTripForm from './components/Trips/Form/AddTripForm';
 import TripCalendar from './components/Calendar/TripCalendar';
 import SingleTripCalendar from './components/Calendar/SingleTripCalendar';
 import Expenses from './components/Expenses/Expenses';
@@ -71,7 +71,7 @@ class Routes extends Component {
               <Switch>
                 {/* <Route exact path="/dashboard" component={Dashboard} /> */}
                 <Route exact path="/trips" component={AllTrips} />
-                <Route exact path="/trips/add" component={AddTripFrom} />
+                <Route exact path="/trips/add" component={AddTripForm} />
                 <Route exact path="/trips/:id" component={Trip} />
                 <Route exact path="/friends" component={AllFriends} />
                 <Route exact path="/trips/:id/chat" component={ChatRoom} />
