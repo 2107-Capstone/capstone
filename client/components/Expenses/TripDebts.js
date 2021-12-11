@@ -28,15 +28,9 @@ const TripDebts = ({tripDebts}) => {
     const rows = tripDebts
     return (
     <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="expenses table">
-            <colgroup>
-                <col style={{width: 50}} />
-                <col style={{width: 50}} />
-                <col style={{width: 50}} />
-                <col style={{width: 50}} />
-                {/* <col style={{width: '35%'}} />
-                <col style={{width: 'auto'}} /> */}
-            </colgroup>
+        {/* <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="debt table"> */}
+        <Table size='small' aria-label="debt table">
+            
             <TableHead>
                 <TableRow >
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Debtor</TableCell>

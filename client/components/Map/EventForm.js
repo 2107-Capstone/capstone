@@ -10,8 +10,12 @@ import './style.css'
 ////////////// MATERIAL UI ///////////////////////////////
 import { LocalizationProvider, DateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { Box, Grid, Button, TextField, IconButton } from '@mui/material'
+import { Box, Grid, Button, TextField, Typography, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
+import EventIcon from '@mui/icons-material/Event';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PaidIcon from '@mui/icons-material/Paid';
+
 import CircularLoading from '../Loading/CircularLoading'
 
 const EventForm = (props) => {
@@ -87,7 +91,13 @@ const EventForm = (props) => {
     return (
         <>
             <CloseIcon onClick={handleClose} />
-            <Box component="form" noValidate sx={{ m: 3 }} >
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+                <EventIcon fontSize='medium' />
+                <Typography variant='h5'>
+                    &nbsp;{!event.id ? ("Add Event") : ("Edit Event")}
+                </Typography>
+            </Box>
+            <Box component="form" sx={{ m: 3 }} >
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -124,6 +134,7 @@ const EventForm = (props) => {
                         <Grid item xs={12} sm={6}>
                             <DateTimePicker
                                 label="Start Time"
+                                required
                                 name='startTime'
                                 value={startTime}
                                 onChange={handleStartChange}

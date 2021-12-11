@@ -8,8 +8,9 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import DatePicker from '@mui/lab/DatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { Box, Grid, Button, TextField, FormControl, InputLabel, Select, Menu, MenuItem } from '@mui/material'
+import { Box, Grid, Button, TextField, FormControl, InputLabel, Select, Menu, Typography, MenuItem } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
+import PaidIcon from '@mui/icons-material/Paid';
 const AddExpense = ({trip, handleClose}) => {      
     const dispatch = useDispatch()
     const categories = useSelector(state => state.categories)
@@ -52,6 +53,12 @@ const AddExpense = ({trip, handleClose}) => {
     return (
         <>
             <CloseIcon onClick={handleClose}/>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+                <PaidIcon fontSize='medium' />
+                <Typography variant='h5'>
+                    &nbsp;Add Expense
+                </Typography>
+            </Box>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ m: 3 }} >
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>

@@ -26,16 +26,11 @@ const ExpensesTable = ({expenses}) => {
         return <CircularLoading />
     } 
     const rows = expenses
-    console.log(rows)
+    // console.log(rows)
     return (
     <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="expenses table">
-            <colgroup>
-                <col style={{width: '10%'}} />
-                <col style={{width: '10%'}} />
-                <col style={{width: 'auto'}} />
-                {/* <col style={{width: 'auto'}} /> */}
-            </colgroup>
+        {/* <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="expenses table"> */}
+        <Table size='small' aria-label="expenses table">
             <TableHead>
                 <TableRow >
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Date</TableCell>

@@ -16,12 +16,13 @@ const EventsTable = ({events}) => {
     const rows = events
     return (
     <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="events table">
-            <colgroup>
+        {/* <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="events table"> */}
+        <Table size='small' aria-label="events table">
+            {/* <colgroup>
                 <col style={{width: '10%'}} />
                 <col style={{width: '10%'}} />
                 <col style={{width: '80%'}} />
-            </colgroup>
+            </colgroup> */}
             <TableHead>
                 <TableRow >
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Date</TableCell>

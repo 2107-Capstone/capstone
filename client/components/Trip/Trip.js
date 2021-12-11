@@ -15,6 +15,7 @@ import AddExpense from '../Expenses/AddExpense'
 import MessagesTable from '../Chat/MessagesTable'
 import InviteToTrip from './Form/InviteToTrip'
 import TripDebts from '../Expenses/TripDebts'
+import TripSpeedDial from './TripSpeedDial'
 
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
@@ -25,6 +26,8 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 
@@ -34,11 +37,14 @@ import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import ChatIcon from '@mui/icons-material/Chat';
 import DateRangeIcon from '@mui/icons-material/DateRange';
+import EventIcon from '@mui/icons-material/Event';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MapIcon from '@mui/icons-material/Map';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PaidIcon from '@mui/icons-material/Paid';
 import PeopleIcon from '@mui/icons-material/People'
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 
 import { format, formatISO, parseISO, isAfter, isBefore } from "date-fns";
 import theme from '../../theme'
@@ -125,6 +131,9 @@ const Trip = (props) => {
             <Dialog open={form === 'event' && open} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} />
             </Dialog>
+            <Box sx={{marginBottom: -10, position: 'sticky', top: 5, right: 5, zIndex: 1}}>
+                <TripSpeedDial handleCloseMenu={handleCloseMenu} setOpen={setOpen} setForm={setForm}/>
+            </Box>
             <Grid container rowSpacing={2} columnSpacing={2} >
                 <Grid item xs={12}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
@@ -154,126 +163,154 @@ const Trip = (props) => {
                     </Box>
                 </Grid>
             </Grid>
-            <Grid container spacing={2} marginBottom={2}>
-                <Grid item xs={12} sm={12} md={2} lg={2}>
-                    <Button
-                        className='tripButton'
-                        style={styles.tripButton}
-                        component={Link} to={`${trip.tripId}/chat`}
-                        startIcon={<ChatIcon />}
-                        size='medium'
-                        color='secondary'
-                        variant='contained'
-                    >
-                        CHAT
-                    </Button>
-                </Grid>
-                <Grid item xs sm md lg>
-                    <Button
-                        component={Link} to={`${trip.tripId}/calendar`}
-                        size='medium'
-                        startIcon={<DateRangeIcon />}
-                        color='secondary'
-                        variant='contained'
-                    >
-                        CALENDAR
-                    </Button>
-                </Grid>
-                <Grid item xs sm md lg>
-                    <Button
-                        component={Link} to={`${trip.tripId}/map`}
-                        size='medium'
-                        startIcon={<MapIcon />}
-                        color='secondary'
-                        variant='contained'
-                    >
-                        MAP
-                    </Button>
-                </Grid>
-                {/* </Box> */}
-                <Grid item xs sm md lg>
-                    <Box style={{ alignSelf: 'right' }}>
+            <Box display='flex' justifyContent='space-evenly' flexWrap='wrap' sx={{marginBottom: 2}}>
+                <Button
+                    component={Link} to={`${trip.tripId}/chat`}
+                    startIcon={<ChatIcon />}
+                    size='small'
+                    color='secondary'
+                    variant='contained'
+                >
+                    CHAT
+                </Button>
+                <Button
+                    component={Link} to={`${trip.tripId}/calendar`}
+                    startIcon={<DateRangeIcon />}
+                    size='small'
+                    color='secondary'
+                    variant='contained'
+                >
+                    CALENDAR
+                </Button>
+                <Button
+                    component={Link} to={`${trip.tripId}/map`}
+                    startIcon={<MapIcon />}
+                    size='small'
+                    color='secondary'
+                    variant='contained'
+                >
+                    MAP
+                </Button>
+            </Box>
+            {/* <Grid container spacing={1} marginBottom={2}>
+                <Box display='flex' justifyContent='space-evenly'>
+                    <Grid item xs={4}  sm={4}>
                         <Button
-                            aria-expanded={openMenu ? 'true' : undefined}
-                            variant="contained"
-                            onClick={handleClick}
-                            disabled={!trip.trip.isOpen}
-                            endIcon={<KeyboardArrowDownIcon />}
-                            size='medium'
+                            component={Link} to={`${trip.tripId}/chat`}
+                            startIcon={<ChatIcon />}
+                            size='small'
+                            color='secondary'
+                            variant='contained'
                         >
-                            EDIT TRIP
+                            CHAT
                         </Button>
-                        <Menu
-                            anchorEl={anchorEl}
-                            open={openMenu}
-                            onClose={handleCloseMenu}
+                    </Grid>
+                    <Grid item xs={4}  sm={4}>
+                        <Button
+                            component={Link} to={`${trip.tripId}/calendar`}
+                            startIcon={<DateRangeIcon />}
+                            size='small'
+                            color='secondary'
+                            variant='contained'
                         >
-                            <MenuItem>
-                                <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
-                                    handleCloseMenu();
-                                    setOpen(true);
-                                    setForm('event')
-                                }} >
-                                    Add Event
-                                </Button>
-                            </MenuItem>
-                            <Divider sx={{ my: 0.5 }} />
-                            <MenuItem>
-                                <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
-                                    handleCloseMenu();
-                                    setOpen(true);
-                                    setForm('expense')
-                                }} >
-                                    Add Expense
-                                </Button>
-                            </MenuItem>
-                            <Divider sx={{ my: 0.5 }} />
-                            <MenuItem>
-                                <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
-                                    handleCloseMenu();
-                                    setOpen(true);
-                                    setForm('invitefriend')
-                                }} >
-                                    Invite Friend
-                                </Button>
-                            </MenuItem>
-                            <Divider sx={{ my: 0.5 }} />
+                            CALENDAR
+                        </Button>
+                    </Grid>
+                    <Grid item xs={4}  sm={4}>
+                        <Button
+                            component={Link} to={`${trip.tripId}/map`}
+                            startIcon={<MapIcon />}
+                            size='small'
+                            color='secondary'
+                            variant='contained'
+                        >
+                            MAP
+                        </Button>
+                    </Grid>
+                    <Grid item xs sm md lg>
+                        <Box >
+                            
+                            <Button
+                                aria-expanded={openMenu ? 'true' : undefined}
+                                variant="contained"
+                                onClick={handleClick}
+                                disabled={!trip.trip.isOpen}
+                                endIcon={<KeyboardArrowDownIcon />}
+                                size='medium'
+                            >
+                                EDIT TRIP
+                            </Button>
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={openMenu}
+                                onClose={handleCloseMenu}
+                            >
+                                <MenuItem>
+                                    <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
+                                        handleCloseMenu();
+                                        setOpen(true);
+                                        setForm('event')
+                                    }} >
+                                        Add Event
+                                    </Button>
+                                </MenuItem>
+                                <Divider sx={{ my: 0.5 }} />
+                                <MenuItem>
+                                    <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
+                                        handleCloseMenu();
+                                        setOpen(true);
+                                        setForm('expense')
+                                    }} >
+                                        Add Expense
+                                    </Button>
+                                </MenuItem>
+                                <Divider sx={{ my: 0.5 }} />
+                                <MenuItem>
+                                    <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
+                                        handleCloseMenu();
+                                        setOpen(true);
+                                        setForm('invitefriend')
+                                    }} >
+                                        Invite Friend
+                                    </Button>
+                                </MenuItem>
+                                <Divider sx={{ my: 0.5 }} />
 
-                            <MenuItem>
-                                {
-                                    trip.trip.userId === auth.id ?
-                                        <Button size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained' onClick={handleCloseTrip} >
-                                            Mark Trip as Closed
-                                        </Button>
-                                        : 
-                                        <Tooltip
-                                            title={`Only ${trip.trip.user.username} can close this trip`}
-                                            placement='top'
-                                            enterNextDelay={100}
-                                            enterTouchDelay={300}
-                                            leaveTouchDelay={1000}
-                                        >
-                                            <Box>
-                                                <Button disabled size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained'>
-                                                    Mark Trip as Closed
-                                                </Button>
-                                            </Box>
-                                        </Tooltip>
-                                }
-                            </MenuItem>
-                            <Divider sx={{ my: 0.5 }} />
-                        </Menu>
-                    </Box>
-                    {/* </Box> */}
-                </Grid>
-            </Grid>
+                                <MenuItem>
+                                    {
+                                        trip.trip.userId === auth.id ?
+                                            <Button size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained' onClick={handleCloseTrip} >
+                                                Mark Trip as Closed
+                                            </Button>
+                                            : 
+                                            <Tooltip
+                                                title={`Only ${trip.trip.user.username} can close this trip`}
+                                                placement='top'
+                                                enterNextDelay={100}
+                                                enterTouchDelay={300}
+                                                leaveTouchDelay={1000}
+                                            >
+                                                <Box>
+                                                    <Button disabled size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained'>
+                                                        Mark Trip as Closed
+                                                    </Button>
+                                                </Box>
+                                            </Tooltip>
+                                    }
+                                </MenuItem>
+                                <Divider sx={{ my: 0.5 }} />
+                            </Menu>
+                        </Box>
+                    </Grid>
+                </Box>
+            </Grid> */}
 
             <Grid container spacing={2}>
                 {
                     !trip.trip.isOpen ?
                         <Grid item xs={12} sm={12} md={6} lg={6} >
-                            <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
-                                <Box style={styles.headingIcon}>
+                            <Box style={styles.debtHeadingIcon} sx={{ display: 'flex' }}>
+                                <Box style={styles.debtHeadingIcon}>
                                     <PaidIcon fontSize='medium' />
                                     <Typography variant='h6'>
                                         &nbsp;Debt Summary
@@ -440,6 +477,14 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: theme.palette.primary.main,
+        flexGrow: 1,
+        color: 'white'
+    },
+    debtHeadingIcon: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'darkslategrey',
         flexGrow: 1,
         color: 'white'
     },
