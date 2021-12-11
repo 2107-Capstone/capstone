@@ -40,6 +40,7 @@ import DateRangeIcon from '@mui/icons-material/DateRange';
 import EventIcon from '@mui/icons-material/Event';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MapIcon from '@mui/icons-material/Map';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PaidIcon from '@mui/icons-material/Paid';
 import PeopleIcon from '@mui/icons-material/People'
@@ -179,7 +180,7 @@ const Trip = (props) => {
                                             enterTouchDelay={300}
                                             leaveTouchDelay={1000}
                                         >
-                                            <Box>
+                                            <Box sx={{ml: 2, mb: 1}}>
                                                 <Button size='small' startIcon={<WorkOffOutlinedIcon />} variant='outlined' onClick={handleCloseTrip} disabled={trip.trip.user.id !== auth.id}>
                                                     Close Trip
                                                 </Button>
@@ -192,8 +193,8 @@ const Trip = (props) => {
                                             enterTouchDelay={300}
                                             leaveTouchDelay={1000}
                                         >
-                                            <Box>
-                                                <Button size='small' startIcon={<WorkOffOutlinedIcon />} variant='outlined' onClick={() => {
+                                            <Box sx={{ml: 2}}>
+                                                <Button size='small' startIcon={<ModeEditIcon />} variant='outlined' onClick={() => {
                                                     setForm('trip');
                                                     setOpen(true)
                                                 }} 
