@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from "react-redux"
 import { connect } from 'react-redux'
 import { getAdminUsers } from '../../store'
 
@@ -9,10 +8,9 @@ import PeopleIcon from '@mui/icons-material/People'
 import CircularLoading from '../Loading/CircularLoading'
 
 
-export const AdminAllUsers = ({ adminUsers, loadUserData }) => {
-    const dispatch = useDispatch()
+export const AdminAllUsers = ({ adminUsers, loadAdminUsers }) => {
     useEffect(async () => {
-        await dispatch(loadUserData())
+        await loadAdminUsers()
     }, [])
     
     if (!adminUsers) {
@@ -98,9 +96,7 @@ const mapState = state => {
 
 const mapDispatch = (dispatch) => {
     return {
-        loadUserData() {
-            dispatch(getAdminUsers())
-        }
+        loadAdminUsers: () => dispatch(getAdminUsers())
     }
 }
 
