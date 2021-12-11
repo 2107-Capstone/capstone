@@ -7,11 +7,11 @@ import { DateTimePicker, LocalizationProvider } from "@mui/lab"
 import { Container, Box, TextField, Typography, Grid, Button } from "@mui/material"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import CardTravelIcon from '@mui/icons-material/CardTravel';
-
+import CloseIcon from "@mui/icons-material/Close";
 /////// IMPORT LOGO IMAGE //////////////////
 const airplane = '/images/airplane.png'
 
-const AddTripForm = ({trip}) => {
+const AddTripForm = ({trip, handleClose}) => {
     const auth = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
@@ -115,9 +115,13 @@ const AddTripForm = ({trip}) => {
     }
 
     return (
+        <>
+        {
+            trip?.id ? <CloseIcon onClick={handleClose}/> : ''
+        }
         <Container>
             <Box>
-                <Typography sx={{mt: 2}} align='center' variant='h5' gutterBottom>
+                <Typography sx={{mt: 1}} align='center' variant='h5' gutterBottom>
                     <CardTravelIcon />&nbsp;{trip?.id ? 'Edit Trip' : 'Add New Trip'}
                 </Typography>
                 {/* <Typography variant='h5' align='center'>
@@ -193,6 +197,7 @@ const AddTripForm = ({trip}) => {
                 </Box>
             </Box>
         </Container>
+        </>
     )
 }
 

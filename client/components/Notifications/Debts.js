@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 
 /////////////// MATERIAL UI ///////////////////////
-import { Box, Checkbox, Avatar, Button, Tooltip, FormGroup, FormControlLabel, Divider, List, Typography, useMediaQuery } from '@mui/material'
+import { Box, Checkbox, Avatar, Button, Tooltip, FormGroup, IconButton, FormControlLabel, Divider, List, Snackbar, Typography, useMediaQuery } from '@mui/material'
 import { useTheme } from "@emotion/react";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -51,6 +51,11 @@ const Debts = () => {
     const handleClick = async (userDebt) => {
         dispatch(editUserDebt(userDebt))
     }
+    const [checked, setChecked] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const handleClose = () => {
+        setOpenSnackbar(false)
+    }
 
     if (userDebts.length === 0) {
         return (
@@ -90,6 +95,39 @@ const Debts = () => {
                                                                 {debt.payor.username === user.username ? 'You owe' : 
                                                                 `${debt.payor.username} owes`}  {debt.payee.username === user.username ? ' you' : debt.payee.username} ${(+debt.amount).toFixed(2)}
                                                             </Typography>
+                                                            <Snackbar
+                                                                sx={{ mt: 9 }}
+                                                                open={openSnackbar}
+                                                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                                                autoHideDuration={6000}
+                                                                onClose={handleClose}
+                                                                message={'Are you sure you want to mark this as paid?'}
+                                                                action={
+                                                                    <>
+                                                                        <Button color="secondary" size="small" onClick={() => handleClick(debt)}>
+                                                                            YES
+                                                                        </Button>
+                                                                        <Button color="secondary" size="small" onClick={() => {
+                                                                            setChecked(!checked)
+                                                                            handleClose()
+                                                                            }}
+                                                                        >
+                                                                            NO
+                                                                        </Button>
+                                                                        <IconButton
+                                                                            size="small"
+                                                                            aria-label="close"
+                                                                            color="inherit"
+                                                                            onClick={() => {
+                                                                                setChecked(!checked)
+                                                                                handleClose()
+                                                                            }}
+                                                                        >
+                                                                            <CloseIcon fontSize="small" />
+                                                                        </IconButton>
+                                                                    </>
+                                                                }
+                                                            />
                                                             <Tooltip 
                                                                 title={debt.payee.username !== user.username ? `Only ${debt.payee.username} can mark this as paid.` : ''}
                                                                 enterTouchDelay={100}
@@ -101,7 +139,11 @@ const Debts = () => {
                                                                             <Checkbox
                                                                                 sx={{ ml: 1 }}
                                                                                 disabled={debt.payee.username !== user.username}
-                                                                                onChange={() => handleClick(debt)}
+                                                                                checked={checked}
+                                                                                onChange={() => {
+                                                                                    setChecked(true)
+                                                                                    setOpenSnackbar(true)
+                                                                                }}
                                                                                 inputProps={{ 'aria-label': 'controlled' }}
                                                                                 color="success"
                                                                             />}

@@ -24,8 +24,10 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Snackbar from '@mui/material/Snackbar';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import Tooltip from '@mui/material/Tooltip'
@@ -36,6 +38,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import ChatIcon from '@mui/icons-material/Chat';
+import CloseIcon from '@mui/icons-material/Close';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import EventIcon from '@mui/icons-material/Event';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -71,9 +74,11 @@ const Trip = (props) => {
     
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
+    const [openSnackbar, setOpenSnackbar] = useState(false);
     const handleClose = () => {
         setOpen(false);
         setForm('')
+        setOpenSnackbar(false)
     }
     
     const [anchorEl, setAnchorEl] = useState(null);
@@ -137,6 +142,32 @@ const Trip = (props) => {
             <Dialog open={form === 'trip' && open} onClose={handleClose}>
                 <AddTripForm trip={trip} handleClose={handleClose} />
             </Dialog>
+            <Snackbar
+                sx={{ mt: 9 }}
+                open={openSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                message={'Are you sure you want to close this trip?'}
+                action={
+                    <>
+                        <Button color="secondary" size="small" onClick={handleCloseTrip}>
+                            YES
+                        </Button>
+                        <Button color="secondary" size="small" onClick={handleClose}>
+                            NO
+                        </Button>
+                        <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={handleClose}
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </>
+                }
+            />
             {
                 trip.trip.isOpen ? 
                     <Box sx={{marginBottom: -10, position: 'sticky', top: 5, right: 5, zIndex: 1}}>
@@ -181,7 +212,7 @@ const Trip = (props) => {
                                             leaveTouchDelay={1000}
                                         >
                                             <Box sx={{ml: 2, mb: 1}}>
-                                                <Button size='small' startIcon={<WorkOffOutlinedIcon />} variant='outlined' onClick={handleCloseTrip} disabled={trip.trip.user.id !== auth.id}>
+                                                <Button size='small' startIcon={<WorkOffOutlinedIcon />} variant='outlined' onClick={() => setOpenSnackbar(true)} disabled={trip.trip.user.id !== auth.id}>
                                                     Close Trip
                                                 </Button>
                                             </Box>
