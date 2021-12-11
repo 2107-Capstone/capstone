@@ -61,7 +61,7 @@ export const AddFriend = ({auth, users, friends, createUserFriend, friendsPendin
         </Box>
         <List>
             {users
-            .filter(user => user.id != auth.id)
+            .filter(user => user.id !== auth.id && user.username !== 'Admin')
             .filter(user => {
                 if (query === '') {
                     return ''
