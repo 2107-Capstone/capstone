@@ -238,13 +238,15 @@ export default function TripMap({ match }) {
             await setTrackingMarkers([]);
     
             events.forEach(async (event) => {
-                await setMarkers(() => [...markers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
+                await setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
             });
-            users.forEach(async (user) => {
-                if (user.lat) {
-                    await setTrackingMarkers(() => [...trackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/images/person.jpg', firstName: user.firstName, lastName: user.lastName }])
-                }
-            })
+            if (trip.trip.isOpen){
+                users.forEach(async (user) => {
+                    if (user.lat) {
+                        await setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/images/person.jpg', firstName: user.firstName, lastName: user.lastName }])
+                    }
+                })
+            }
         }
         createAllMarkers();
     }, [tripId, update])
@@ -335,47 +337,61 @@ export default function TripMap({ match }) {
                 marginTop={1}
             >
                 <CardTravelIcon fontSize='medium' />
-                <Box
-                    sx={{ color: 'inherit' }}
-                    component={Link}
-                    to={`/trips/${trip.tripId}`}
-                >
+                <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
                     <Typography variant='h5'>
                         &nbsp;{trip.trip.name}
+                        {
+                            trip.trip.isOpen ? "" :
+                                " (Closed)"
+                        }
                     </Typography>
                 </Box>
             </Box>
-            <Box
-                display='flex'
-                justifyContent='center'
-            >
-                <Box marginRight={3}>
-                    <Locate panTo={panTo} />
-                </Box>
-                <Box marginBottom={.5} marginRight={3} >
-                    <Button
-                        startIcon={<AddIcon />}
-                        variant='contained'
-                        color='primary'
-                        onClick={() => setOpen(true)}
-                        size='small'
+            {
+                trip.trip.isOpen ? 
+                    <Box
+                        display='flex'
+                        justifyContent='center'
                     >
-                        Add Event
-                    </Button>
-                </Box>
-                <Box >
-                    {/* </Tooltip> */}
-                    <Tooltip title='Refresh Markers'>
-                        <Button
-                            startIcon={<RefreshIcon />}
-                            variant='contained'
-                            color='primary'
-                            size='small'
-                            onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
-                        />
-                    </Tooltip>
-                </Box>
-            </Box>
+                        <Box marginRight={3}>
+                            <Locate panTo={panTo} />
+                        </Box>
+                        <Box marginBottom={.5} marginRight={3} >
+                            <Button
+                                startIcon={<AddIcon />}
+                                variant='contained'
+                                color='primary'
+                                onClick={() => setOpen(true)}
+                                size='small'
+                            >
+                                Add Event
+                            </Button>
+                        </Box>
+                        <Box >
+                            <Tooltip title='Refresh Markers'>
+                                <Button
+                                    startIcon={<RefreshIcon />}
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
+                                    onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
+                                />
+                            </Tooltip>
+                        </Box>
+                    </Box>
+                    :
+                    <Box textAlign='center'>
+                        <Tooltip title='Refresh Markers'>
+                            <Button
+                                startIcon={<RefreshIcon />}
+                                variant='contained'
+                                color='primary'
+                                size='small'
+                                onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
+                            />
+                        </Tooltip>
+                    </Box>
+            }
 
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <Box
@@ -401,7 +417,9 @@ export default function TripMap({ match }) {
                                 <Avatar
                                     sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
                                     src={user.avatar}
-                                    onClick={() => handleFindTrackingMarker(user.id, user.username)}
+                                    onClick={() => {
+                                        trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username) : ''
+                                    }}
                                 >
                                     {user.firstName[0] + user.lastName[0]}
                                 </Avatar>
@@ -449,34 +467,38 @@ export default function TripMap({ match }) {
                                         {format(parseISO(event.startTime), 'Pp')}
                                     </Typography>
                                 </Box>
-                                <Box
-                                    display='flex'
-                                    justifyContent='space-evenly'
-                                >
-                                    <Button
-                                        startIcon={<ModeEditIcon />} color='info'
-                                        size='small'
-                                        onClick={() => {
-                                            setEventToEdit(event);
-                                            setOpen(true);
-                                        }}
-                                    >
-                                        Edit
-                                    </Button>
-                                    <Button
-                                        startIcon={<DeleteForeverIcon />} color='error'
-                                        size='small'
-                                        onClick={async () => {
-                                            try {
-                                                await dispatch(deleteEvent(event.id))
-                                            } catch (err) {
-                                                console.log(err)
-                                            }
-                                        }}
-                                    >
-                                        Delete
-                                    </Button>
-                                </Box>
+                                {
+                                    trip.trip.isOpen ? 
+                                        <Box
+                                            display='flex'
+                                            justifyContent='space-evenly'
+                                        >
+                                            <Button
+                                                startIcon={<ModeEditIcon />} color='info'
+                                                size='small'
+                                                onClick={() => {
+                                                    setEventToEdit(event);
+                                                    setOpen(true);
+                                                }}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                startIcon={<DeleteForeverIcon />} color='error'
+                                                size='small'
+                                                onClick={async () => {
+                                                    try {
+                                                        await dispatch(deleteEvent(event.id))
+                                                    } catch (err) {
+                                                        console.log(err)
+                                                    }
+                                                }}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </Box>
+                                    : ''
+                                }
                             </Box>
                         ))
                     }
@@ -495,7 +517,9 @@ export default function TripMap({ match }) {
                     {
                         trip.trip.events.length ? <DisplayMarkers /> : ''
                     }
-                    <DisplayTrackingMarkers />
+                    {
+                        trip.trip.isOpen ? <DisplayTrackingMarkers /> : ''
+                    }
                     {
                         selected ?
                             (
