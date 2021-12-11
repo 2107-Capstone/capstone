@@ -28,10 +28,11 @@ import AdminSingleTripCalendar from './components/Admin/AdminSingleTripCalendar'
 import AdminTripMap from './components/Admin/AdminTripMap'
 import AdminTripCalendar from './components/Admin/AdminTripCalendar';
 import AdminAllTripsMap from './components/Admin/AdminAllTripsMap';
+import AdminAllUsers from './components/Admin/AdminAllUsers';
 // import Dashboard from './components/Dashboard/Dashboard';
 
 ///////////// STORE /////////////////////
-import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses, getCategories, getUserFriends, getFriendsPendingSent, getFriendsPendingReceived, getUserDebts, getAdminTrips, getAdminUserTrips, getAdminMessages, getAdminEvents, getAdminExpenses } from './store'
+import { me, getUsers, getTrips, getMessages, getFriends, getEvents, getExpenses, getCategories, getUserFriends, getFriendsPendingSent, getFriendsPendingReceived, getUserDebts, getAdminTrips, getAdminUserTrips, getAdminMessages, getAdminEvents, getAdminExpenses, getAdminUsers } from './store'
 
 //////////// MATERIAL UI /////////////////////////
 import { Avatar, Container } from '@mui/material';
@@ -91,6 +92,7 @@ class Routes extends Component {
                 <Route exact path="/admin/admintrips/:id/map" component={AdminTripMap} />
                 <Route exact path="/admin/calendar" component={AdminTripCalendar} />
                 <Route exact path="/admin/map" component={AdminAllTripsMap} />
+                <Route exact path="/admin/adminusers" component={AdminAllUsers} />
                 <Redirect to="/home" />
               </Switch >
             ) : (
@@ -109,6 +111,7 @@ class Routes extends Component {
 const mapState = state => {
   return {
     isLoggedIn: !!state.auth.id
+    // isAdmin: (state.auth.username === 'Admin')
   }
 }
 
@@ -134,6 +137,7 @@ const mapDispatch = dispatch => {
       dispatch(getAdminMessages())
       dispatch(getAdminEvents())
       dispatch(getAdminExpenses())
+      dispatch(getAdminUsers())
     }
   }
 }
