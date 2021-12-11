@@ -174,6 +174,9 @@ export default function TripMap({ match }) {
 
 
     const handleLocate = async () => {
+        if ('geolocation' in navigator === false) {
+            Alert('Geolocation is not supported by your device.')
+        }
         await navigator.geolocation.getCurrentPosition(
             async (position) => {
                 await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
@@ -201,14 +204,20 @@ export default function TripMap({ match }) {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             }
-            await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
-            await setUpdate(prevUpdate => prevUpdate + Math.random())
+            if (status === 'watching'){
+                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
+                await setUpdate(prevUpdate => prevUpdate + Math.random())
+            }
             // let usersMarker = trackingMarkers.find(m => m.id === auth.id);
 
             // usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
             // const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
 
             // await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
+        }, null, {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
         })
         setOpenAlert(true);
     }
@@ -228,7 +237,7 @@ export default function TripMap({ match }) {
         );
     }
     // console.log(trip)
-    console.log(users)
+    // console.log(users)
     // let users = []
     useEffect(() => {
         // setMarkers(prevMarkers => []);
@@ -248,7 +257,9 @@ export default function TripMap({ match }) {
                 })
             }
         }
+        console.log(status)
         createAllMarkers();
+        () => setStatus('initial')
     }, [tripId, update])
 
 
