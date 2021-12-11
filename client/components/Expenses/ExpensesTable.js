@@ -9,7 +9,7 @@ import AddExpense from "./AddExpense";
 import { format, parseISO } from "date-fns";
 
 ////////////////// MATERIAL UI /////////////////
-import { Box, Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Typography, Tooltip } from "@mui/material";
+import { Avatar, Box, Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Typography, Tooltip } from "@mui/material";
 
 import { FaFileInvoiceDollar } from 'react-icons/fa'
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -26,6 +26,7 @@ const ExpensesTable = ({expenses}) => {
         return <CircularLoading />
     } 
     const rows = expenses
+    console.log(rows)
     return (
     <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="expenses table">
@@ -40,7 +41,7 @@ const ExpensesTable = ({expenses}) => {
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Date</TableCell>
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Amount</TableCell>
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Description</TableCell>
-                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Paid By</TableCell>
+                    <TableCell align='center' sx={{fontWeight: 'bold', fontSize: 15}}>Paid By</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -58,8 +59,15 @@ const ExpensesTable = ({expenses}) => {
                     <TableCell >
                         {row.name}
                     </TableCell>
-                    <TableCell >
-                        {row.paidBy.username}
+                    <TableCell align='center'>
+                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.paidBy.avatar} >
+                                {row.paidBy.firstName[0] + row.paidBy.lastName[0]}
+                            </Avatar>
+                            <Typography variant='caption'>
+                                {row.paidBy.username}
+                            </Typography >
+                        </Box>
                     </TableCell>
                 </TableRow>
             ))}

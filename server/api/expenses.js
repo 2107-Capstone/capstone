@@ -34,7 +34,7 @@ router.get('/', async (req, res, next) => {
           {
             model: User,
             as: 'paidBy',
-            attributes: ['id', 'username']
+            attributes: ['id', 'username', 'firstName', 'lastName', 'avatar']
           },
           {
             model: Category
@@ -92,7 +92,7 @@ router.post('/', async (req, res, next) => {
         {
           model: User,
           as: 'paidBy',
-          attributes: ['id', 'username']
+          attributes: ['id', 'username', 'firstName', 'lastName', 'avatar']
         },
         {
           model: Category

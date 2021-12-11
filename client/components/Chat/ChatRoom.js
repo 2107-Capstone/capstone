@@ -141,19 +141,23 @@ const ChatRoom = ({match}) => {
           <div ref={messagesEndRef} />
         </ol>
       </div>
-      <textarea
-        value={newMessage}
-        onChange={handleNewMessageChange}
-        placeholder="Write message..."
-        style={styles.newMessageInputField}
-        disabled={!trip.trip.isOpen} 
-      />
-      <Button onClick={handleSendMessage} 
-        style={styles.sendMessageButton}
-        disabled={!trip.trip.isOpen} 
-      >
-        Send
-      </Button>
+      {
+        trip.trip.isOpen ?
+          <>
+            <textarea
+              value={newMessage}
+              onChange={handleNewMessageChange}
+              placeholder="Write message..."
+              style={styles.newMessageInputField}
+            />
+            <Button onClick={handleSendMessage} 
+              style={styles.sendMessageButton}
+            >
+              Send
+            </Button>
+          </>
+        : ''
+      }
     </div>
     </>
   );

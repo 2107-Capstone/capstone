@@ -221,7 +221,7 @@ router.get('/adminexpenses', async (req, res, next) => {
           {
             model: User,
             as: 'paidBy',
-            attributes: ['id', 'username']
+            attributes: ['id', 'username', 'firstName', 'lastName', 'avatar']
           },
           {
             model: Category

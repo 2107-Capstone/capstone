@@ -6,7 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Box, Divider, Grid, Button, Paper, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import { Avatar, Box, Divider, Grid, Button, Paper, TextField, Tooltip, Typography, Dialog } from '@mui/material'
 import CircularLoading from '../Loading/CircularLoading';
 import { format, formatISO, parseISO, isAfter } from "date-fns";
 
@@ -25,7 +25,7 @@ const MessagesTable = ({messages}) => {
                 <TableRow>
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Date</TableCell>
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Time</TableCell>
-                    <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Sender</TableCell>
+                    <TableCell align='center' sx={{fontWeight: 'bold', fontSize: 15}}>Sender</TableCell>
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Message</TableCell>
                 </TableRow>
             </TableHead>
@@ -41,7 +41,16 @@ const MessagesTable = ({messages}) => {
                     <TableCell >
                         {format(parseISO(row.dateSent), 'p')}
                     </TableCell>
-                    <TableCell >{row.sentBy.username}</TableCell>
+                    <TableCell align='center' >
+                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.sentBy.avatar} >
+                                {row.sentBy.firstName[0] + row.sentBy.lastName[0]}
+                            </Avatar>
+                            <Typography variant='caption'>
+                                {row.sentBy.username}
+                            </Typography >
+                        </Box>
+                    </TableCell>
                     <TableCell >{row.content}</TableCell>
                 </TableRow>
             ))}
