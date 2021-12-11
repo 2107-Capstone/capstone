@@ -1,40 +1,29 @@
 import React, { useEffect, useState, useRef, forwardRef, useCallback } from 'react'
 import { connect, useSelector, useDispatch } from 'react-redux'
 import { Link } from "react-router-dom";
-
-////////// STORE ///////////////
-import { updateUser, deleteEvent, getTrips, getEvents } from '../../store';
-
-////////// MUI ///////////////
+import { parseISO, format } from 'date-fns';
 import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
+import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MuiAlert from '@mui/material/Alert';
-
-////////// MATERIAL ICONS ///////////////
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
+import EventForm from './EventForm'
+import CircularLoading from '../Loading/CircularLoading'
+import { updateUser, deleteEvent, getTrips, getEvents } from '../../store';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
-import CloseIcon from '@mui/icons-material/Close'
-
-////////// DATE FNS ///////////////
-import { parseISO, format } from 'date-fns';
-////////// GOOGLE MAPS ///////////////
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
-import EventForm from './EventForm'
-import CircularLoading from '../Loading/CircularLoading'
 
-////////// Map Styling ///////////////
 import mapStyles from './mapStyles';
+
 const mapContainerStyle = {
     height: "50vh",
 };
@@ -49,14 +38,30 @@ const tripZoom = 12;
 export default function TripMap({ match }) {
     const dispatch = useDispatch();
     const tripId = match.params.id;
-    
-    const auth = useSelector(state => state.auth);
-    let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
-    let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
 
     const Alert = forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
     });
+
+    // useEffect(async () => {
+    //     try {
+    //         await dispatch(getTrips())
+    //         await dispatch(getEvents())
+    //     }
+    //     catch (error) {
+    //         console.log(error)
+    //     }
+    // }, [])
+
+    const auth = useSelector(state => state.auth);
+
+    let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
+    let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
+    let users = useSelector(state => state.users.filter(
+        user => {
+             if (user.userTrips.filter(userTrip => (userTrip.tripId === tripId)).length > 0) return true;
+        }
+    ));
 
     const avgLat = events.reduce((accum, event) => {
         accum += +event.lat
@@ -91,23 +96,25 @@ export default function TripMap({ match }) {
     const [openAlert, setOpenAlert] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
     const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleClose = () => {
         setOpen(false);
         setEventToEdit({})
         setOpenAlert(false);
         setOpenNoLocationAlert(false);
-        setOpenSnackbar(false);
         setUpdate(prevUpdate => prevUpdate + Math.random())
     }
-    
+    //TODO: rename these
     const handleFindMarker = (id) => {
+        // setUpdate(prevUpdate => prevUpdate + Math.random())
         const marker = markers.find(marker => marker.id === id);
+        // ev.stopPropagation()
         setSelected(marker);
     }
     const handleFindTrackingMarker = async (id, username) => {
+        // setUpdate(prevUpdate => prevUpdate + Math.random())
         const trackingMarker = trackingMarkers.find(marker => marker.id === id);
+        // ev.stopPropagation()
         if (trackingMarker) {
             setSelected(trackingMarker)
         } else {
@@ -174,13 +181,13 @@ export default function TripMap({ match }) {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 }
-                // await setTrackingMarkers(trackingMarkers.filter(marker => marker.id !== auth.id), { key: auth.id + Math.random().toString(16), id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') });
-                let usersMarker = trackingMarkers.find(m => m.id === auth.id);
+                await setUpdate(prevUpdate => prevUpdate + Math.random())
+                // let usersMarker = trackingMarkers.find(m => m.id === auth.id);
 
-                usersMarker = { ...usersMarker, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
-                const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
+                // usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
+                // const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
 
-                await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
+                // await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
                 panTo({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -195,12 +202,13 @@ export default function TripMap({ match }) {
                 lng: position.coords.longitude
             }
             await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
-            let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-console.log('usersmarker', usersMarker)
-            usersMarker = { ...usersMarker,  lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
-            const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
+            await setUpdate(prevUpdate => prevUpdate + Math.random())
+            // let usersMarker = trackingMarkers.find(m => m.id === auth.id);
 
-            await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
+            // usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
+            // const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
+
+            // await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
         })
         setOpenAlert(true);
     }
@@ -220,41 +228,64 @@ console.log('usersmarker', usersMarker)
         );
     }
     // console.log(trip)
-    let users = []
+    console.log(users)
+    // let users = []
     useEffect(() => {
-        // const users = trip.trip.userTrips
-        setMarkers(prevMarkers => []);
-        setTrackingMarkers(prevTrackingMarkers => []);
-
-        events.forEach(event => {
-            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
-        });
-
-        users.forEach(user => {
-            if (user.user.lat) {
-                setTrackingMarkers(prevTrackingMarkers => [...prevTrackingMarkers, { name: user.user.username, time: format(parseISO(user.user.time), 'Pp'), key: user.userId, id: user.userId, lat: +user.user.lat, lng: +user.user.lng, avatar: user.user.avatar ? user.user.avatar : '/images/person.jpg', firstName: user.user.firstName, lastName: user.user.lastName }])
-            }
-        })
+        // setMarkers(prevMarkers => []);
+        // setTrackingMarkers(prevTrackingMarkers => []);
+        const createAllMarkers = async() => {
+            await setMarkers([]);
+            await setTrackingMarkers([]);
+    
+            events.forEach(async (event) => {
+                await setMarkers(() => [...markers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
+            });
+            users.forEach(async (user) => {
+                if (user.lat) {
+                    await setTrackingMarkers(() => [...trackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/images/person.jpg', firstName: user.firstName, lastName: user.lastName }])
+                }
+            })
+        }
+        createAllMarkers();
     }, [tripId, update])
 
 
 
-    if (!trip || !events) {
+    if (!trip || !events || !users) {
         return <CircularLoading />
     }
 
-    users = trip.trip.userTrips;
+    // users = trip.trip.userTrips;
 
-    if (trip && events.length === 0) return (
-        <>
-            <Dialog open={open} onClose={handleClose}>
-                <EventForm trip={trip} handleClose={handleClose} />
-            </Dialog>
-            <Button startIcon={<AddIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
-                Add Event
-            </Button>
-        </>
-    )
+    // if (trip && events.length === 0) return (
+    //     <>
+    //         <Dialog open={open} onClose={handleClose}>
+    //             <EventForm trip={trip} handleClose={handleClose} />
+    //         </Dialog>
+    //         <Box
+    //             className='linkToTrip'
+    //             display='flex'
+    //             justifyContent='center'
+    //             alignItems='center'
+    //             marginTop={1}
+    //         >
+    //             <CardTravelIcon fontSize='medium' />
+    //             <Box
+    //                 sx={{ color: 'inherit' }}
+    //                 component={Link}
+    //                 to={`/trips/${trip.tripId}`}
+    //             >
+    //                 <Typography variant='h5'>
+    //                     &nbsp;{trip.trip.name}
+    //                 </Typography>
+    //             </Box>
+    //         </Box>
+    //         <Button startIcon={<AddIcon />} variant='contained' color='info' onClick={() => setOpen(true)}>
+    //             Add Event
+    //         </Button>
+            
+    //     </>
+    // )
 
     return (
         <>
@@ -263,9 +294,6 @@ console.log('usersmarker', usersMarker)
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 autoHideDuration={2000}
                 onClose={handleClose}
-                title='Location pinned!'
-                severity='success'
-                sx={{width: '100%'}}
             >
                 <Alert
                     onClose={handleClose}
@@ -314,58 +342,40 @@ console.log('usersmarker', usersMarker)
                 >
                     <Typography variant='h5'>
                         &nbsp;{trip.trip.name}
-                        {
-                            trip.trip.isOpen ? "" :
-                                " (Closed)"
-                        }
                     </Typography>
                 </Box>
             </Box>
-            {
-                trip.trip.isOpen ?
-                    <Box
-                        display='flex'
-                        justifyContent='center'
+            <Box
+                display='flex'
+                justifyContent='center'
+            >
+                <Box marginRight={3}>
+                    <Locate panTo={panTo} />
+                </Box>
+                <Box marginBottom={.5} marginRight={3} >
+                    <Button
+                        startIcon={<AddIcon />}
+                        variant='contained'
+                        color='primary'
+                        onClick={() => setOpen(true)}
+                        size='small'
                     >
-                        <Box marginRight={3}>
-                            <Locate panTo={panTo} />
-                        </Box>
-                        <Box marginBottom={.5} marginRight={3} >
-                            <Button
-                                startIcon={<AddIcon />}
-                                variant='contained'
-                                color='primary'
-                                onClick={() => setOpen(true)}
-                                size='small'
-                            >
-                                Add Event
-                            </Button>
-                        </Box>
-                        <Box >
-                            <Tooltip title='Refresh Markers'>
-                                <Button
-                                    startIcon={<RefreshIcon />}
-                                    variant='contained'
-                                    color='primary'
-                                    size='small'
-                                    onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
-                                />
-                            </Tooltip>
-                        </Box>
-                    </Box>
-                : 
-                    <Box >
-                        <Tooltip title='Refresh Markers'>
-                            <Button
-                                startIcon={<RefreshIcon />}
-                                variant='contained'
-                                color='primary'
-                                size='small'
-                                onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
-                            />
-                        </Tooltip>
-                    </Box>
-            }
+                        Add Event
+                    </Button>
+                </Box>
+                <Box >
+                    {/* </Tooltip> */}
+                    <Tooltip title='Refresh Markers'>
+                        <Button
+                            startIcon={<RefreshIcon />}
+                            variant='contained'
+                            color='primary'
+                            size='small'
+                            onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
+                        />
+                    </Tooltip>
+                </Box>
+            </Box>
 
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <Box
@@ -378,7 +388,7 @@ console.log('usersmarker', usersMarker)
                     {
                         users.map(user => (
                             <Box
-                                key={user.userId}
+                                key={user.id}
                                 marginRight={1}
                                 padding={.25}
                                 border='1px solid lightgrey'
@@ -390,17 +400,13 @@ console.log('usersmarker', usersMarker)
                             >
                                 <Avatar
                                     sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
-                                    src={user.user.avatar}
-                                    onClick={
-                                        () => {
-                                            trip.trip.isOpen ? handleFindTrackingMarker(user.userId, user.user.username) : ''
-                                        }
-                                    }
+                                    src={user.avatar}
+                                    onClick={() => handleFindTrackingMarker(user.id, user.username)}
                                 >
-                                    {user.user.firstName[0] + user.user.lastName[0]}
+                                    {user.firstName[0] + user.lastName[0]}
                                 </Avatar>
                                 <Typography variant='caption'>
-                                    {user.user.username}
+                                    {user.username}
                                 </Typography>
                             </Box>
                         ))
@@ -443,64 +449,34 @@ console.log('usersmarker', usersMarker)
                                         {format(parseISO(event.startTime), 'Pp')}
                                     </Typography>
                                 </Box>
-                                {
-                                    trip.trip.isOpen ? 
-                                        <Box
-                                            display='flex'
-                                            justifyContent='space-evenly'
-                                        >
-                                            <Button
-                                                startIcon={<ModeEditIcon />} color='info'
-                                                size='small'
-                                                onClick={() => {
-                                                    setEventToEdit(event);
-                                                    setOpen(true);
-                                                }}
-                                            >
-                                                Edit
-                                            </Button>
-                                            <Snackbar
-                                                sx={{ mt: 9 }}
-                                                open={openSnackbar}
-                                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                                                autoHideDuration={6000}
-                                                onClose={handleClose}
-                                                message={`Are you sure you wish to delete this event? (${event.name})`}
-                                                action={
-                                                    <>
-                                                        <Button color="secondary" size="small" onClick={async() => {
-                                                            try {
-                                                                await dispatch(deleteEvent(event.id))
-                                                            } catch (err) {
-                                                                console.log(err)
-                                                            }
-                                                        }}>
-                                                            YES
-                                                        </Button>
-                                                        <Button color="secondary" size="small" onClick={handleClose}>
-                                                            NO
-                                                        </Button>
-                                                        <IconButton
-                                                            size="small"
-                                                            aria-label="close"
-                                                            color="inherit"
-                                                            onClick={handleClose}
-                                                        >
-                                                            <CloseIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </>
-                                                }
-                                            />
-                                            <Button
-                                                startIcon={<DeleteForeverIcon />} color='error'
-                                                size='small'
-                                                onClick={() => {setOpenSnackbar(true)}}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </Box>
-                                    : ''
-                                }
+                                <Box
+                                    display='flex'
+                                    justifyContent='space-evenly'
+                                >
+                                    <Button
+                                        startIcon={<ModeEditIcon />} color='info'
+                                        size='small'
+                                        onClick={() => {
+                                            setEventToEdit(event);
+                                            setOpen(true);
+                                        }}
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        startIcon={<DeleteForeverIcon />} color='error'
+                                        size='small'
+                                        onClick={async () => {
+                                            try {
+                                                await dispatch(deleteEvent(event.id))
+                                            } catch (err) {
+                                                console.log(err)
+                                            }
+                                        }}
+                                    >
+                                        Delete
+                                    </Button>
+                                </Box>
                             </Box>
                         ))
                     }
@@ -514,7 +490,7 @@ console.log('usersmarker', usersMarker)
                     mapContainerStyle={mapContainerStyle}
                     style={mapStyles}
                     // center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
-                    center={{ lat: avgLat, lng: avgLng }}
+                    center={events.length !== 0 ? { lat: avgLat, lng: avgLng } : {lat: trip.lat, lng: trip.lng}}
                 >
                     {
                         trip.trip.events.length ? <DisplayMarkers /> : ''
