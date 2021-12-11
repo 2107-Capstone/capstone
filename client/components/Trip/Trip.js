@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////////// STORE /////////////////
-import { closeTrip, getTrips, addUserDebt, getTripDebts } from '../../store'
+import { closeTrip, getTrips, addUserDebt } from '../../store'
 
 /////////////// COMPONENTS /////////////////
 import CircularLoading from '../Loading/CircularLoading'
@@ -14,6 +14,7 @@ import ExpensesTable from '../Expenses/ExpensesTable'
 import AddExpense from '../Expenses/AddExpense'
 import MessagesTable from '../Chat/MessagesTable'
 import InviteToTrip from './Form/InviteToTrip'
+import TripDebts from '../Expenses/TripDebts'
 
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
@@ -51,16 +52,14 @@ const Trip = (props) => {
     
     const { auth, categories } = useSelector(state => state);
     
-    let trip = {}
-    trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
+    const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
     const events = useSelector(state => state.events.filter(event => event.tripId === id));
     const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
     const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
-    
+
     useEffect(async () => {
         await dispatch(getTrips())
     }, [])
-    
     
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
@@ -83,6 +82,7 @@ const Trip = (props) => {
     }
     
     const users = trip.trip.userTrips;
+    const tripDebts = trip.trip.userDebts;
     const findUsername = (userId) => {
         const user = users.find(user => user.userId === userId);
         return user.user.username
@@ -273,18 +273,9 @@ const Trip = (props) => {
                                     </Typography>
                                 </Box>
                             </Box>
-                            {
-                                tripDebts.length !== 0 ?
-                                    
-                                        <Box>
-                                            <MessagesTable messages={recentMessages} />
-                                        </Box>
-                                    
-                                    :
-                                    <Typography>
-                                        This trip had no expenses.
-                                    </Typography>
-                            }
+                            <Box>
+                                <TripDebts tripDebts={tripDebts}/>
+                            </Box>
                         </Grid>
                     : ''
                 }
