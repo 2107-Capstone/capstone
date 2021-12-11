@@ -96,7 +96,7 @@ const Password = () => {
 
     return (
         <Container component="main" maxWidth="xs">
-          <Button component={Link} to='/settings' variant='contained' startIcon={<ArrowBackIcon />}>
+          <Button component={Link} to='/settings' variant='outlined' startIcon={<ArrowBackIcon />}>
             Back
           </Button>
           <Snackbar open={openAlert} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
