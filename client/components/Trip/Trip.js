@@ -469,7 +469,7 @@ const Trip = (props) => {
                             &nbsp;Trip Friends
                         </Typography>
                     </Box>
-                    <Box display='flex' justifyContent='center'>
+                    <Box display='flex' justifyContent='center' flexWrap='wrap'>
                         {
                             trip.trip.userTrips.map(user => (
                                 <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
