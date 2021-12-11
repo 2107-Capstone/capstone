@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, forwardRef, useCallback } from 'rea
 import { connect, useSelector, useDispatch } from 'react-redux'
 import { Link } from "react-router-dom";
 import { parseISO, format } from 'date-fns';
-import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
+import { Box, Grid, Button, TextField, Tooltip, IconButton, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -19,6 +19,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import CloseIcon from '@mui/icons-material/Close';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
 
@@ -63,21 +64,11 @@ export default function TripMap({ match }) {
         }
     ));
 
-    const avgLat = events.reduce((accum, event) => {
-        accum += +event.lat
-        return accum
-    }, 0) / events.length;
-
-    const avgLng = events.reduce((accum, event) => {
-        accum += +event.lng
-        return accum
-    }, 0) / events.length;
-
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
     const [selected, setSelected] = useState(null);
     const [update, setUpdate] = useState(0);
-
+    const [openSnackbar, setOpenSnackbar] = useState(false);
     const mapRef = useRef();
     const onMapLoad = useCallback((map) => {
         mapRef.current = map;
@@ -102,19 +93,16 @@ export default function TripMap({ match }) {
         setEventToEdit({})
         setOpenAlert(false);
         setOpenNoLocationAlert(false);
+        setOpenSnackbar(false)
         setUpdate(prevUpdate => prevUpdate + Math.random())
     }
-    //TODO: rename these
+    
     const handleFindMarker = (id) => {
-        // setUpdate(prevUpdate => prevUpdate + Math.random())
         const marker = markers.find(marker => marker.id === id);
-        // ev.stopPropagation()
         setSelected(marker);
     }
     const handleFindTrackingMarker = async (id, username) => {
-        // setUpdate(prevUpdate => prevUpdate + Math.random())
         const trackingMarker = trackingMarkers.find(marker => marker.id === id);
-        // ev.stopPropagation()
         if (trackingMarker) {
             setSelected(trackingMarker)
         } else {
@@ -149,20 +137,6 @@ export default function TripMap({ match }) {
                     position={{ lat: marker.lat, lng: marker.lng }}
                     name={marker.name}
                     onClick={() => { setSelected(marker) }}
-                    // icon={{
-                    //     url: marker.avatar,
-                    //     origin: new google.maps.Point(0,0),
-                    //     size: new google.maps.Size(20,32),
-                    //     anchor: new google.maps.Point(0, 32)
-                    // }}
-                    // icon={
-                    //     <Avatar 
-                    //         sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
-                    //         src={marker.avatar}
-                    //         >
-                    //         {marker.firstName[0]+marker.lastName[0]}
-                    //     </Avatar>
-                    // }
                     icon={{
                         url: '/person.svg',
 
@@ -249,7 +223,7 @@ export default function TripMap({ match }) {
             events.forEach(async (event) => {
                 await setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
             });
-            if (trip.trip.isOpen){
+            if (trip?.trip.isOpen){
                 users.forEach(async (user) => {
                     if (user.lat) {
                         await setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/images/person.jpg', firstName: user.firstName, lastName: user.lastName }])
@@ -262,12 +236,28 @@ export default function TripMap({ match }) {
         () => setStatus('initial')
     }, [tripId, update])
 
-
+    
+    
 
     if (!trip || !events || !users) {
         return <CircularLoading />
     }
 
+    const lat = events.length === 0 ? 
+        +trip.trip.lat
+        :
+        events.reduce((accum, event) => {
+            accum += +event.lat
+            return accum
+        }, 0) / events.length
+
+    const lng = events.length === 0 ?
+        +trip.trip.lng
+        :
+        events.reduce((accum, event) => {
+            accum += +event.lng
+            return accum
+        }, 0) / events.length;
     // users = trip.trip.userTrips;
 
     // if (trip && events.length === 0) return (
@@ -465,7 +455,7 @@ export default function TripMap({ match }) {
                                 padding={.5}
                                 sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}
                             >
-                                <Box>
+                                
                                     <Typography
                                         sx={{ m: 0 }}
                                         variant='subtitle2'
@@ -476,9 +466,15 @@ export default function TripMap({ match }) {
                                         color="text.secondary" variant="caption"
                                         sx={{ m: 0 }}
                                     >
-                                        {format(parseISO(event.startTime), 'Pp')}
+                                        {event.description}
                                     </Typography>
-                                </Box>
+                                    <Typography
+                                        color="text.secondary" variant="caption"
+                                        sx={{ m: 0 }}
+                                    >
+                                        {format(parseISO(event.startTime), 'P')}
+                                    </Typography>
+                                
                                 {
                                     trip.trip.isOpen ? 
                                         <Box
@@ -495,16 +491,44 @@ export default function TripMap({ match }) {
                                             >
                                                 Edit
                                             </Button>
+                                            <Snackbar
+                                                sx={{ mt: 9 }}
+                                                open={openSnackbar}
+                                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                                autoHideDuration={6000}
+                                                onClose={handleClose}
+                                                message={'Are you sure you want to delete this event?'}
+                                                action={
+                                                    <>
+                                                        <Button color="secondary" size="small" 
+                                                            onClick={async () => {
+                                                                try {
+                                                                    await dispatch(deleteEvent(event.id))
+                                                                } catch (err) {
+                                                                    console.log(err)
+                                                                }
+                                                            }}
+                                                        >
+                                                            YES
+                                                        </Button>
+                                                        <Button color="secondary" size="small" onClick={handleClose}>
+                                                            NO
+                                                        </Button>
+                                                        <IconButton
+                                                            size="small"
+                                                            aria-label="close"
+                                                            color="inherit"
+                                                            onClick={handleClose}
+                                                        >
+                                                            <CloseIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </>
+                                                }
+                                            />
                                             <Button
                                                 startIcon={<DeleteForeverIcon />} color='error'
                                                 size='small'
-                                                onClick={async () => {
-                                                    try {
-                                                        await dispatch(deleteEvent(event.id))
-                                                    } catch (err) {
-                                                        console.log(err)
-                                                    }
-                                                }}
+                                                onClick={() => setOpenSnackbar(true)}
                                             >
                                                 Delete
                                             </Button>
@@ -524,7 +548,8 @@ export default function TripMap({ match }) {
                     mapContainerStyle={mapContainerStyle}
                     style={mapStyles}
                     // center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
-                    center={events.length !== 0 ? { lat: avgLat, lng: avgLng } : {lat: trip.lat, lng: trip.lng}}
+                    center={{lat, lng}}
+                    // center={events.length === 0 ? {lat: +trip.lat, lng: +trip.lng} : { lat: avgLat, lng: avgLng }}
                 >
                     {
                         trip.trip.events.length ? <DisplayMarkers /> : ''
