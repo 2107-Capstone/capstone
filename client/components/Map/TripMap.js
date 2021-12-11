@@ -1,29 +1,40 @@
 import React, { useEffect, useState, useRef, forwardRef, useCallback } from 'react'
 import { connect, useSelector, useDispatch } from 'react-redux'
 import { Link } from "react-router-dom";
-import { parseISO, format } from 'date-fns';
+
+////////// STORE ///////////////
+import { updateUser, deleteEvent, getTrips, getEvents } from '../../store';
+
+////////// MUI ///////////////
 import { Box, Grid, Button, TextField, Tooltip, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
 import Avatar from '@mui/material/Avatar';
-import Card from '@mui/material/Card';
+import IconButton from '@mui/material/IconButton';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MuiAlert from '@mui/material/Alert';
+
+////////// MATERIAL ICONS ///////////////
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
-import EventForm from './EventForm'
-import CircularLoading from '../Loading/CircularLoading'
-import { updateUser, deleteEvent, getTrips, getEvents } from '../../store';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import CloseIcon from '@mui/icons-material/Close'
+
+////////// DATE FNS ///////////////
+import { parseISO, format } from 'date-fns';
+////////// GOOGLE MAPS ///////////////
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
+import EventForm from './EventForm'
+import CircularLoading from '../Loading/CircularLoading'
 
+////////// Map Styling ///////////////
 import mapStyles from './mapStyles';
-
 const mapContainerStyle = {
     height: "50vh",
 };
@@ -38,25 +49,14 @@ const tripZoom = 12;
 export default function TripMap({ match }) {
     const dispatch = useDispatch();
     const tripId = match.params.id;
+    
+    const auth = useSelector(state => state.auth);
+    let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
+    let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
 
     const Alert = forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
     });
-
-    // useEffect(async () => {
-    //     try {
-    //         await dispatch(getTrips())
-    //         await dispatch(getEvents())
-    //     }
-    //     catch (error) {
-    //         console.log(error)
-    //     }
-    // }, [])
-
-    const auth = useSelector(state => state.auth);
-
-    let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
-    let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
 
     const avgLat = events.reduce((accum, event) => {
         accum += +event.lat
@@ -91,25 +91,23 @@ export default function TripMap({ match }) {
     const [openAlert, setOpenAlert] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
     const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleClose = () => {
         setOpen(false);
         setEventToEdit({})
         setOpenAlert(false);
         setOpenNoLocationAlert(false);
+        setOpenSnackbar(false);
         setUpdate(prevUpdate => prevUpdate + Math.random())
     }
-    //TODO: rename these
-    const handleClick = (id) => {
-        // setUpdate(prevUpdate => prevUpdate + Math.random())
+    
+    const handleFindMarker = (id) => {
         const marker = markers.find(marker => marker.id === id);
-        // ev.stopPropagation()
         setSelected(marker);
     }
-    const handleClick2 = async (id, username) => {
-        // setUpdate(prevUpdate => prevUpdate + Math.random())
+    const handleFindTrackingMarker = async (id, username) => {
         const trackingMarker = trackingMarkers.find(marker => marker.id === id);
-        // ev.stopPropagation()
         if (trackingMarker) {
             setSelected(trackingMarker)
         } else {
@@ -221,7 +219,7 @@ export default function TripMap({ match }) {
             </Button>
         );
     }
-    console.log(trip)
+    // console.log(trip)
     let users = []
     useEffect(() => {
         // const users = trip.trip.userTrips
@@ -265,6 +263,9 @@ export default function TripMap({ match }) {
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 autoHideDuration={2000}
                 onClose={handleClose}
+                title='Location pinned!'
+                severity='success'
+                sx={{width: '100%'}}
             >
                 <Alert
                     onClose={handleClose}
@@ -372,7 +373,7 @@ export default function TripMap({ match }) {
                                 <Avatar
                                     sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
                                     src={user.user.avatar}
-                                    onClick={() => handleClick2(user.userId, user.user.username)}
+                                    onClick={() => handleFindTrackingMarker(user.userId, user.user.username)}
                                 >
                                     {user.user.firstName[0] + user.user.lastName[0]}
                                 </Avatar>
@@ -399,7 +400,7 @@ export default function TripMap({ match }) {
                                 border='1px solid lightgrey'
                                 borderRadius='7%'
                                 key={event.id}
-                                onClick={() => handleClick(event.id)}
+                                onClick={() => handleFindMarker(event.id)}
                                 justifyContent='center'
                                 alignItems='center'
                                 marginRight={1}
@@ -434,16 +435,42 @@ export default function TripMap({ match }) {
                                     >
                                         Edit
                                     </Button>
+                                    <Snackbar
+                                        sx={{ mt: 9 }}
+                                        open={openSnackbar}
+                                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                        autoHideDuration={6000}
+                                        onClose={handleClose}
+                                        message={`Are you sure you wish to delete this event? (${event.name})`}
+                                        action={
+                                            <>
+                                                <Button color="secondary" size="small" onClick={async() => {
+                                                    try {
+                                                        await dispatch(deleteEvent(event.id))
+                                                    } catch (err) {
+                                                        console.log(err)
+                                                    }
+                                                }}>
+                                                    YES
+                                                </Button>
+                                                <Button color="secondary" size="small" onClick={handleClose}>
+                                                    NO
+                                                </Button>
+                                                <IconButton
+                                                    size="small"
+                                                    aria-label="close"
+                                                    color="inherit"
+                                                    onClick={handleClose}
+                                                >
+                                                    <CloseIcon fontSize="small" />
+                                                </IconButton>
+                                            </>
+                                        }
+                                    />
                                     <Button
                                         startIcon={<DeleteForeverIcon />} color='error'
                                         size='small'
-                                        onClick={async () => {
-                                            try {
-                                                await dispatch(deleteEvent(event.id))
-                                            } catch (err) {
-                                                console.log(err)
-                                            }
-                                        }}
+                                        onClick={() => {setOpenSnackbar(true)}}
                                     >
                                         Delete
                                     </Button>
@@ -507,7 +534,7 @@ export default function TripMap({ match }) {
 //                                 <Card className='card' key={user.userId} sx={{ minWidth: '100%', mb: 1, mt: 1 }}
 
 //                                 >
-//                                     <CardContent sx={{ mb: 0 }} onClick={() => handleClick2(user.userId, user.user.username)}>
+//                                     <CardContent sx={{ mb: 0 }} onClick={() => handleFindTrackingMarker(user.userId, user.user.username)}>
 //                                         {/* <CardContent sx={{ mb: 0}} > */}
 //                                         <Typography gutterBottom>
 //                                             {user.user.username}

@@ -20,7 +20,7 @@ import CircularLoading from '../Loading/CircularLoading'
 
 const SingleTripCalendar = ({ match }) => {
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === match.params.id))
-    
+    let events = useSelector(state => state.events.filter(event => event.tripId === match.params.id));
     ////////// DIALOG TO OPEN EVENT FORM ////////////////
     const [open, setOpen] = useState(false);
     const [tripEvent, setTripEvent] = useState({});
@@ -49,7 +49,7 @@ const SingleTripCalendar = ({ match }) => {
     const calendarTrip = { ...trip.trip, isTrip: true, id: trip.tripId, tripId: trip.tripId, title: `${trip.trip.name} - ${trip.trip.location}`, start: new Date(trip.trip.startTime), end: new Date(trip.trip.endTime) } 
     
     ////////// EVENTS ////////////////
-    const calendarEvents = trip.trip.events.map(event => { return { ...event, isTrip: false, title: `${event.name} - ${event.location}`, start: new Date(event.startTime), end: new Date(event.endTime) } })
+    const calendarEvents = events.map(event => { return { ...event, isTrip: false, title: `${event.name} - ${event.location}`, start: new Date(event.startTime), end: new Date(event.endTime) } })
     
 
     // const handleSubmitToPassToForm = async (ev, inputs, trip, startTime, endTime) => {
