@@ -19,14 +19,13 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 
 
 // const ExpensesTable = ({tripExpenses, trip}) => {
-const ExpensesTable = ({tripExpenses}) => {
+const ExpensesTable = ({expenses}) => {
 
-    console.log(tripExpenses)
     ///////////////// LOADING ///////////////////
-    if (!tripExpenses) {
+    if (!expenses) {
         return <CircularLoading />
     } 
-    const rows = tripExpenses
+    const rows = expenses
     return (
     <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="expenses table">

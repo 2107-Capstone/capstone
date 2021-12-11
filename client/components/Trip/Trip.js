@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////////// STORE /////////////////
-import { closeTrip, getTrips, addUserDebt, leaveTrip } from '../../store'
+import { closeTrip, getTrips, addUserDebt } from '../../store'
 
 /////////////// COMPONENTS /////////////////
 import CircularLoading from '../Loading/CircularLoading'
@@ -55,10 +55,9 @@ const Trip = (props) => {
     const { auth, categories } = useSelector(state => state);
 
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
-    let events = useSelector(state => state.events.filter(event => event.tripId === id));
-    let messages = useSelector(state => state.messages.filter(message => message.tripId === id));
-
-    const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
+    const events = useSelector(state => state.events.filter(event => event.tripId === id));
+    const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
+    const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
     
     
     const [open, setOpen] = useState(false);
@@ -77,7 +76,7 @@ const Trip = (props) => {
         setAnchorEl(null);
     };
     
-    if (!trip || !events || !messages || !tripExpenses) {
+    if (!trip || !events || !messages || !expenses) {
         return <CircularLoading />
     }
     
@@ -101,19 +100,21 @@ const Trip = (props) => {
         }
     }
     
-    let totalExpenses = tripExpenses.reduce((total, expense) => {
+    const totalExpenses = expenses.reduce((total, expense) => {
         return total + +expense.amount
     }, 0);
     const eachPersonOwes = totalExpenses / users.length;
-    
+    let recentExpenses = expenses.sort((a, b) => isBefore(new Date(a.datePaid), new Date(b.datePaid)) ? 1 : -1);
+    recentExpenses.length > 5 ? recentExpenses.length = 5 : ''
+    recentExpenses = recentExpenses.sort((a,b) => isAfter(new Date(a.datePaid), new Date(b.datePaid)) ? 1 : -1);
 
-    events = events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
-    events.length > 5 ? events.length = 5 : ''
+    let recentEvents = events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
+    recentEvents.length > 5 ? recentEvents.length = 5 : ''
 
 
-    messages = messages.sort((a, b) => isBefore(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
-    messages.length > 5 ? messages.length = 5 : ''
-    messages = messages.sort((a, b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    let recentMessages = messages.sort((a, b) => isBefore(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    recentMessages.length > 5 ? recentMessages.length = 5 : ''
+    recentMessages = recentMessages.sort((a, b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
 
     return (
         <div>
@@ -152,7 +153,6 @@ const Trip = (props) => {
             </Grid>
             <Grid container spacing={2} marginBottom={2}>
                 <Grid item xs={12} sm={12} md={2} lg={2}>
-                    {/* <Box style={{display: 'flex', justifyContent:'space-around', alignItems: 'center'}} > */}
                     <Button
                         className='tripButton'
                         style={styles.tripButton}
@@ -306,8 +306,8 @@ const Trip = (props) => {
                             </Typography>
                         </Box>
                         {
-                            tripExpenses.length !== 0 ?
-                                <ExpensesTable tripExpenses={tripExpenses} trip={trip} />
+                            expenses.length !== 0 ?
+                                <ExpensesTable expenses={recentExpenses} trip={trip} />
                                 :
                                 <Typography>
                                     No expenses yet.
@@ -324,7 +324,14 @@ const Trip = (props) => {
                             </Typography>
                         </Box>
                     </Box>
-                    <MessagesTable messages={messages} />
+                    {
+                        messages.length !== 0 ?
+                            <MessagesTable messages={recentMessages} />
+                            :
+                            <Typography>
+                                No messages yet.
+                            </Typography>
+                    }
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
                     <Box bgcolor="primary.main" sx={{ display: 'flex' }}>
@@ -335,7 +342,14 @@ const Trip = (props) => {
                             </Typography>
                         </Box>
                     </Box>
-                    <EventsTable events={events} />
+                    {
+                        events.length !== 0 ?
+                            <EventsTable events={recentEvents} />
+                            :
+                            <Typography>
+                                No events yet.
+                            </Typography>
+                    }
                 </Grid>
             </Grid>
         </div>
