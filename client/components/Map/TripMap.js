@@ -177,7 +177,7 @@ export default function TripMap({ match }) {
                 // await setTrackingMarkers(trackingMarkers.filter(marker => marker.id !== auth.id), { key: auth.id + Math.random().toString(16), id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') });
                 let usersMarker = trackingMarkers.find(m => m.id === auth.id);
 
-                usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
+                usersMarker = { ...usersMarker, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
                 const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
 
                 await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
@@ -196,8 +196,8 @@ export default function TripMap({ match }) {
             }
             await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
             let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-
-            usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
+console.log('usersmarker', usersMarker)
+            usersMarker = { ...usersMarker,  lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
             const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
 
             await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
