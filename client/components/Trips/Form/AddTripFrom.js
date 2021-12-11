@@ -6,7 +6,7 @@ import { DateTimePicker, LocalizationProvider } from "@mui/lab"
 import { Container, Box, TextField, Typography, Grid, Button } from "@mui/material"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import { addTrip } from "../../../store/trips"
-
+import { isAfter } from "date-fns";
 /////// IMPORT LOGO IMAGE //////////////////
 const airplane = '/images/airplane.png'
 
@@ -24,6 +24,7 @@ const AddTripFrom = () => {
         lat: 40.7127753,
         lng: -74.0059728,
         userId: auth.id,
+        error: ''
     })
         
     let googlePlace;
@@ -85,7 +86,18 @@ const AddTripFrom = () => {
         setinput({ ...input, [name]: value })
     }
 
+    const hasErrors = () => {
+        if (input.location === '') {
+            setinput({ ...input, error: 'Please enter a destination.'})
+            return true;
+        } 
+        return false;
+    }
+
     const handleSubmit = async () => {
+        if (hasErrors()){
+            return
+        }
         try {
             dispatch(addTrip({...input}))
             setinput({
@@ -144,6 +156,11 @@ const AddTripFrom = () => {
                                 name="location"
                                 inputRef={ref => googlePlace = ref}
                             />
+                            <Box fullWidth sx={{ml: 1, mt: 1, textAlign: 'left'}}>
+                                <Typography variant='caption' sx={{color: 'red'}}>
+                                    {input.error}
+                                </Typography>
+                            </Box>
                         </Grid>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <Grid item xs={12} sm={6}>
@@ -175,6 +192,7 @@ const AddTripFrom = () => {
                         variant="contained"
                         onClick={handleSubmit}
                         sx={{ mt: 3, mb: 2 }}
+                        disabled={input.name === ''}
                     >
                         Add New Trip
                     </Button>

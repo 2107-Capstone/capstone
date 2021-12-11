@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { addExpense } from '../../store';
-
+import CircularLoading from '../Loading/CircularLoading'
 ////////////////// MATERIAL UI /////////////////
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
@@ -19,9 +19,10 @@ const AddExpense = ({trip, handleClose}) => {
         description: '',
         amount: '',
         categoryId: '',
-        paidById: ''
+        paidById: '',
+        error: ''
     })
-    const { description, amount, categoryId, paidById  } = inputs;
+    const { description, amount, categoryId, paidById, error  } = inputs;
     
     const [datePaid, setDatePaid] = useState(new Date());
     
@@ -34,9 +35,30 @@ const AddExpense = ({trip, handleClose}) => {
         change[ev.target.name] = ev.target.value;
         setInputs({description, amount, categoryId, paidById, ...change })
     }
-    
+    const hasErrors = () => {
+        if (amount === ''){
+            setInputs({...inputs, error: 'Please enter an amount.'})
+            return true
+        }
+        if (!(+amount + 1)){
+            setInputs({...inputs, error: 'Please enter a number (without a $).'})
+            return true
+        }
+        if (paidById === ''){
+            setInputs({...inputs, error: 'Please select the friend who paid.'})
+            return true
+        }
+        if (categoryId === ''){
+            setInputs({...inputs, error: 'Please select a category.'})
+            return true
+        }
+        return false
+    }
     const handleSubmit = async (ev) => {
         ev.preventDefault();
+        if (hasErrors()) {
+            return
+        }
         try {
             await dispatch(addExpense({name: description, amount, datePaid, paidById, categoryId, tripId: trip.tripId }));
             setInputs({ description: '', amount: '', paidById: '', categoryId: ''});
@@ -48,7 +70,11 @@ const AddExpense = ({trip, handleClose}) => {
         }
     }
 
-    if (!trip) return '...loading'
+    if (!trip) {
+        return (
+            <CircularLoading />
+        )
+    }
     
     return (
         <>
@@ -133,11 +159,19 @@ const AddExpense = ({trip, handleClose}) => {
                             />
                         </Grid>
                     </LocalizationProvider>
+                    <Grid item xs={12}>
+                        <Box sx={{ml: 1, textAlign: 'left'}}>
+                            <Typography variant='caption' sx={{color: 'red'}}>
+                                {error}
+                            </Typography>
+                        </Box>
+                    </Grid>
                     <Button
                         fullWidth
                         type="submit"
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        disabled={!description || !amount || !datePaid}
                     >
                         Add Expense
                     </Button>
