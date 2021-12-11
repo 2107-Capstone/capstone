@@ -13,8 +13,6 @@ import { format, formatISO, parseISO, isAfter } from "date-fns";
 const EventsTable = ({events}) => {
     if (!events) return <CircularLoading />
     
-    
-
     const rows = events
     return (
     <TableContainer component={Paper}>

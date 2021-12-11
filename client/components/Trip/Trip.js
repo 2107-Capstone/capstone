@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////////// STORE /////////////////
-import { closeTrip, getTrips, addUserDebt } from '../../store'
+import { closeTrip, getTrips, addUserDebt, leaveTrip } from '../../store'
 
 /////////////// COMPONENTS /////////////////
 import CircularLoading from '../Loading/CircularLoading'
@@ -59,10 +59,7 @@ const Trip = (props) => {
     let messages = useSelector(state => state.messages.filter(message => message.tripId === id));
 
     const tripExpenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
-    const totalExpenses = tripExpenses.reduce((total, expense) => {
-        return total + +expense.amount
-    }, 0);
-
+    
     
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
@@ -70,45 +67,44 @@ const Trip = (props) => {
         setOpen(false);
         setForm('')
     }
-    // if (!trip || !events || !messages || !tripExpenses) {
-        //     return <CircularLoading />
-        // }
-        const [anchorEl, setAnchorEl] = useState(null);
-        const openMenu = Boolean(anchorEl);
-        const handleClick = (event) => {
-            setAnchorEl(event.currentTarget);
-        };
-        const handleCloseMenu = () => {
-            setAnchorEl(null);
-        };
-        
-        if (!trip || !events || !messages || !tripExpenses) {
-            return <CircularLoading />
-        }
-        
-        const users = trip.trip.userTrips;
-        const findUsername = (userId) => {
-            const user = users.find(user => user.userId === userId);
-            return user.user.username
-        }
-        
-        const handleCloseTrip = async () => {
-            try {
-                console.log(trip)
-                await dispatch(closeTrip({ ...trip }))
-                const debts = settleUp(tripExpenses, users)
-                if (debts) {
-                    debts.forEach(async(debt) => {
-                        await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[1], payorId: debt[0], amount: +debt[2], status: 'pending'}))
-                    })
-                }
-                //
-                //    await dispatch(addUserDebt({}))
-            } catch (error) {
-                console.log(error)
+    
+    const [anchorEl, setAnchorEl] = useState(null);
+    const openMenu = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
+    
+    if (!trip || !events || !messages || !tripExpenses) {
+        return <CircularLoading />
+    }
+    
+    const users = trip.trip.userTrips;
+    const findUsername = (userId) => {
+        const user = users.find(user => user.userId === userId);
+        return user.user.username
+    }
+    
+    const handleCloseTrip = async () => {
+        try {
+            await dispatch(closeTrip({ ...trip }))
+            const debts = settleUp(tripExpenses, users)
+            if (debts) {
+                debts.forEach(async(debt) => {
+                    await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[1], payorId: debt[0], amount: +debt[2], status: 'pending'}))
+                })
             }
+        } catch (error) {
+            console.log(error)
         }
-        
+    }
+    
+    let totalExpenses = tripExpenses.reduce((total, expense) => {
+        return total + +expense.amount
+    }, 0);
+    const eachPersonOwes = totalExpenses / users.length;
     
 
     events = events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
@@ -121,17 +117,6 @@ const Trip = (props) => {
 
     return (
         <div>
-            {/* <InviteToTrip /> */}
-            {/* <Button
-  variant="contained"
-  component="label"
->
-  Upload File
-  <input
-    type="file"
-    hidden
-  />
-</Button> */}
             <Dialog fullWidth maxWidth="md" open={form === 'invitefriend' && open} onClose={handleClose}>
                 <InviteToTrip handleClose={handleClose} />
             </Dialog>
@@ -312,14 +297,17 @@ const Trip = (props) => {
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column', mx: 1, mb: 2 }}>
-
-                        {/* <Typography>
-                            Total Expenses: ${totalExpenses.toFixed(2)}
-                        </Typography> */}
+                        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, mb: 2, textAlign: 'center' }}>
+                            <Typography variant='subtitle2'>
+                                Total Expenses: ${totalExpenses.toFixed(2)}
+                            </Typography>
+                            <Typography variant='subtitle2'>
+                                Each Person Owes: ${eachPersonOwes.toFixed(2)}
+                            </Typography>
+                        </Box>
                         {
                             tripExpenses.length !== 0 ?
                                 <ExpensesTable tripExpenses={tripExpenses} trip={trip} />
-                                // <PieChart expenses={tripExpenses} users={users} categories={categories} /> 
                                 :
                                 <Typography>
                                     No expenses yet.
