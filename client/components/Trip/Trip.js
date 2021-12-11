@@ -328,8 +328,8 @@ const Trip = (props) => {
             <Grid container spacing={2}>
                 {
                     !trip.trip.isOpen ?
-                        <Grid item xs={12} sm={12} md={12} lg={12} >
-                            <Box style={styles.debtHeadingIcon} sx={{ display: 'flex' }}>
+                        <Grid item xs={12} sm={12} md={12} lg={12}>
+                            <Box style={styles.debtHeadingIcon} sx={{ display: 'flex'}}>
                                 <Box style={styles.debtHeadingIcon}>
                                     <PaidIcon fontSize='medium' />
                                     <Typography variant='h6'>
@@ -498,7 +498,8 @@ const styles = {
         alignItems: 'center',
         backgroundColor: theme.palette.primary.main,
         flexGrow: 1,
-        color: 'white'
+        color: 'white',
+        borderRadius: 7
     },
     debtHeadingIcon: {
         display: 'flex',
@@ -506,7 +507,8 @@ const styles = {
         alignItems: 'center',
         backgroundColor: 'darkslategrey',
         flexGrow: 1,
-        color: 'white'
+        color: 'white',
+        borderRadius: 7
     },
 
 }

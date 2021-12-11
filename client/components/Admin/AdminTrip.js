@@ -345,7 +345,8 @@ const styles = {
         alignItems: 'center',
         backgroundColor: theme.palette.primary.main,
         flexGrow: 1,
-        color: 'white'
+        color: 'white',
+        borderRadius: 7
     },
     debtHeadingIcon: {
         display: 'flex',
@@ -353,7 +354,8 @@ const styles = {
         alignItems: 'center',
         backgroundColor: 'darkslategrey',
         flexGrow: 1,
-        color: 'white'
+        color: 'white',
+        borderRadius: 7
     },
 
 }
