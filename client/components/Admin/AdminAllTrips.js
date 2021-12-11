@@ -44,7 +44,7 @@ const AdminAllTrips = ({ match }) => {
                     {
                         checked ?
                             <Typography variant='h5'>
-                                &nbsp;PAST TRIPS
+                                &nbsp;CLOSED TRIPS
                             </Typography>
                             :
                             <Typography variant='h5'>
@@ -66,7 +66,7 @@ const AdminAllTrips = ({ match }) => {
                             checked={checked}
                             onChange={handleChange}
                         />}
-                        label='Past Trips'
+                        label='Closed Trips'
                     />
                 </FormGroup>
                 <Box sx={{ display: 'flex', alignSelf: 'center' }}>
@@ -74,7 +74,7 @@ const AdminAllTrips = ({ match }) => {
                     {
                         checked ?
                             <Typography variant='h5'>
-                                &nbsp;PAST TRIPS
+                                &nbsp;CLOSED TRIPS
                             </Typography>
                             :
                             <>

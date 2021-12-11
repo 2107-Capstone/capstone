@@ -26,7 +26,7 @@ const SingleTripCalendar = ({ match }) => {
     const [tripEvent, setTripEvent] = useState({});
     
     const handleSelect = (event) => {
-        if (!event.isTrip){ //event is actual event, not trip
+        if (!event.isTrip && trip.trip.isOpen){ //event is actual event, not trip
             setTripEvent(() => event);
             setOpen(() => true);
         }
@@ -73,12 +73,20 @@ const SingleTripCalendar = ({ match }) => {
                 <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
                     <Typography variant='h5'>
                         &nbsp;{trip.trip.name}
+                        {
+                            trip.trip.isOpen ? "" :
+                                " (Closed)"
+                        }
                     </Typography>
                 </Box>
             </Box>
-            <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
-                Add Event
-            </Button>
+            {
+                trip.trip.isOpen ?
+                    <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+                        Add Event
+                    </Button>
+                : ''
+            }
             <Calendar
                 // popup
                 // views={{

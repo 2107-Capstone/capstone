@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////////// STORE /////////////////
-import { closeTrip, getTrips, addUserDebt } from '../../store'
+import { closeTrip, getTrips, addUserDebt, getTripDebts } from '../../store'
 
 /////////////// COMPONENTS /////////////////
 import CircularLoading from '../Loading/CircularLoading'
@@ -48,16 +48,18 @@ const Trip = (props) => {
     const id = props.match.params.id
 
     const dispatch = useDispatch();
-    useEffect(async () => {
-        await dispatch(getTrips())
-    }, [])
-
+    
     const { auth, categories } = useSelector(state => state);
-
-    const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
+    
+    let trip = {}
+    trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
     const events = useSelector(state => state.events.filter(event => event.tripId === id));
     const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
     const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
+    
+    useEffect(async () => {
+        await dispatch(getTrips())
+    }, [])
     
     
     const [open, setOpen] = useState(false);
@@ -136,7 +138,7 @@ const Trip = (props) => {
                                 &nbsp;{trip.trip.name}
                                 {
                                     trip.trip.isOpen ? "" :
-                                        " (Trip Closed)"
+                                        " (Closed)"
                                 }
                             </Typography>
                         </Box>
@@ -255,7 +257,38 @@ const Trip = (props) => {
             </Grid>
 
             <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={6} lg={6} >
+                {
+                    !trip.trip.isOpen ?
+                        <Grid item xs={12} sm={12} md={6} lg={6} >
+                            <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                                {/* <Box >
+                                    <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/chat`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                                        Details
+                                    </Button>
+                                </Box> */}
+                                <Box style={styles.headingIcon}>
+                                    <PaidIcon fontSize='medium' />
+                                    <Typography variant='h6'>
+                                        &nbsp;Debt Summary
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            {
+                                tripDebts.length !== 0 ?
+                                    
+                                        <Box>
+                                            <MessagesTable messages={recentMessages} />
+                                        </Box>
+                                    
+                                    :
+                                    <Typography>
+                                        This trip had no expenses.
+                                    </Typography>
+                            }
+                        </Grid>
+                    : ''
+                }
+                <Grid item xs={12} sm={12} md={6} lg={6} >
                     <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
                         <Box >
                             <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/chat`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>

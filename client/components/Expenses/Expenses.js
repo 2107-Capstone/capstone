@@ -111,15 +111,24 @@ const Expenses = ({match}) => {
                 <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
                     <Typography variant='h5'>
                         &nbsp;{trip.trip.name}
+                        {
+                            trip.trip.isOpen ? "" :
+                                " (Closed)"
+                        }
                     </Typography>
                 </Box>
             </Box>
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
-            <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
-                Add Expense
-            </Button>
+            {
+                trip.trip.isOpen ? 
+                    <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+                        Add Expense
+                    </Button>
+                : ''
+
+            }
             <TableContainer component={Paper} sx={{border: '1px solid darkgrey'}}>
                 <Table aria-label="trip expenses table">
                     <TableHead>

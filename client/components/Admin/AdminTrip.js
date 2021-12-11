@@ -83,7 +83,7 @@ const AdminTrip = (props) => {
                                 &nbsp;{trip.name}
                                 {
                                     trip.isOpen ? "" :
-                                        " (Trip Closed)"
+                                        " (Closed)"
                                 }
                             </Typography>
                         </Box>

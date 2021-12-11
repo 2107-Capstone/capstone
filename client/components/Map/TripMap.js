@@ -314,40 +314,58 @@ export default function TripMap({ match }) {
                 >
                     <Typography variant='h5'>
                         &nbsp;{trip.trip.name}
+                        {
+                            trip.trip.isOpen ? "" :
+                                " (Closed)"
+                        }
                     </Typography>
                 </Box>
             </Box>
-            <Box
-                display='flex'
-                justifyContent='center'
-            >
-                <Box marginRight={3}>
-                    <Locate panTo={panTo} />
-                </Box>
-                <Box marginBottom={.5} marginRight={3} >
-                    <Button
-                        startIcon={<AddIcon />}
-                        variant='contained'
-                        color='primary'
-                        onClick={() => setOpen(true)}
-                        size='small'
+            {
+                trip.trip.isOpen ?
+                    <Box
+                        display='flex'
+                        justifyContent='center'
                     >
-                        Add Event
-                    </Button>
-                </Box>
-                <Box >
-                    {/* </Tooltip> */}
-                    <Tooltip title='Refresh Markers'>
-                        <Button
-                            startIcon={<RefreshIcon />}
-                            variant='contained'
-                            color='primary'
-                            size='small'
-                            onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
-                        />
-                    </Tooltip>
-                </Box>
-            </Box>
+                        <Box marginRight={3}>
+                            <Locate panTo={panTo} />
+                        </Box>
+                        <Box marginBottom={.5} marginRight={3} >
+                            <Button
+                                startIcon={<AddIcon />}
+                                variant='contained'
+                                color='primary'
+                                onClick={() => setOpen(true)}
+                                size='small'
+                            >
+                                Add Event
+                            </Button>
+                        </Box>
+                        <Box >
+                            <Tooltip title='Refresh Markers'>
+                                <Button
+                                    startIcon={<RefreshIcon />}
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
+                                    onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
+                                />
+                            </Tooltip>
+                        </Box>
+                    </Box>
+                : 
+                    <Box >
+                        <Tooltip title='Refresh Markers'>
+                            <Button
+                                startIcon={<RefreshIcon />}
+                                variant='contained'
+                                color='primary'
+                                size='small'
+                                onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
+                            />
+                        </Tooltip>
+                    </Box>
+            }
 
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <Box
@@ -373,7 +391,11 @@ export default function TripMap({ match }) {
                                 <Avatar
                                     sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
                                     src={user.user.avatar}
-                                    onClick={() => handleFindTrackingMarker(user.userId, user.user.username)}
+                                    onClick={
+                                        () => {
+                                            trip.trip.isOpen ? handleFindTrackingMarker(user.userId, user.user.username) : ''
+                                        }
+                                    }
                                 >
                                     {user.user.firstName[0] + user.user.lastName[0]}
                                 </Avatar>
@@ -421,60 +443,64 @@ export default function TripMap({ match }) {
                                         {format(parseISO(event.startTime), 'Pp')}
                                     </Typography>
                                 </Box>
-                                <Box
-                                    display='flex'
-                                    justifyContent='space-evenly'
-                                >
-                                    <Button
-                                        startIcon={<ModeEditIcon />} color='info'
-                                        size='small'
-                                        onClick={() => {
-                                            setEventToEdit(event);
-                                            setOpen(true);
-                                        }}
-                                    >
-                                        Edit
-                                    </Button>
-                                    <Snackbar
-                                        sx={{ mt: 9 }}
-                                        open={openSnackbar}
-                                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                                        autoHideDuration={6000}
-                                        onClose={handleClose}
-                                        message={`Are you sure you wish to delete this event? (${event.name})`}
-                                        action={
-                                            <>
-                                                <Button color="secondary" size="small" onClick={async() => {
-                                                    try {
-                                                        await dispatch(deleteEvent(event.id))
-                                                    } catch (err) {
-                                                        console.log(err)
-                                                    }
-                                                }}>
-                                                    YES
-                                                </Button>
-                                                <Button color="secondary" size="small" onClick={handleClose}>
-                                                    NO
-                                                </Button>
-                                                <IconButton
-                                                    size="small"
-                                                    aria-label="close"
-                                                    color="inherit"
-                                                    onClick={handleClose}
-                                                >
-                                                    <CloseIcon fontSize="small" />
-                                                </IconButton>
-                                            </>
-                                        }
-                                    />
-                                    <Button
-                                        startIcon={<DeleteForeverIcon />} color='error'
-                                        size='small'
-                                        onClick={() => {setOpenSnackbar(true)}}
-                                    >
-                                        Delete
-                                    </Button>
-                                </Box>
+                                {
+                                    trip.trip.isOpen ? 
+                                        <Box
+                                            display='flex'
+                                            justifyContent='space-evenly'
+                                        >
+                                            <Button
+                                                startIcon={<ModeEditIcon />} color='info'
+                                                size='small'
+                                                onClick={() => {
+                                                    setEventToEdit(event);
+                                                    setOpen(true);
+                                                }}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Snackbar
+                                                sx={{ mt: 9 }}
+                                                open={openSnackbar}
+                                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                                autoHideDuration={6000}
+                                                onClose={handleClose}
+                                                message={`Are you sure you wish to delete this event? (${event.name})`}
+                                                action={
+                                                    <>
+                                                        <Button color="secondary" size="small" onClick={async() => {
+                                                            try {
+                                                                await dispatch(deleteEvent(event.id))
+                                                            } catch (err) {
+                                                                console.log(err)
+                                                            }
+                                                        }}>
+                                                            YES
+                                                        </Button>
+                                                        <Button color="secondary" size="small" onClick={handleClose}>
+                                                            NO
+                                                        </Button>
+                                                        <IconButton
+                                                            size="small"
+                                                            aria-label="close"
+                                                            color="inherit"
+                                                            onClick={handleClose}
+                                                        >
+                                                            <CloseIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </>
+                                                }
+                                            />
+                                            <Button
+                                                startIcon={<DeleteForeverIcon />} color='error'
+                                                size='small'
+                                                onClick={() => {setOpenSnackbar(true)}}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </Box>
+                                    : ''
+                                }
                             </Box>
                         ))
                     }

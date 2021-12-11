@@ -11,13 +11,15 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 import { Avatar, Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
 // const ChatRoom = (props) => {
 //   const { id } = props.match.params;
-const ChatRoom = ({trip, match}) => {
+// const ChatRoom = ({trip, match}) => {
+const ChatRoom = ({match}) => {
   
-  const id = trip ? trip.tripId : match.params.id;
+  // const id = trip ? trip.tripId : match.params.id;
+  const id = match.params.id;
   const dispatch = useDispatch();
 
   const auth = useSelector(state => state.auth);
-  const thisTrip = trip ? trip : useSelector(state => state.trips.find(trip => trip.tripId === id))
+  const trip = useSelector(state => state.trips.find(trip => trip.tripId === id))
 
   const { messages, sendMessage } = useChat(id);
   
@@ -104,28 +106,34 @@ const ChatRoom = ({trip, match}) => {
     setNewMessage("");
   };
 
-  if (!thisTrip) return <CircularLoading />
+  if (!trip) return <CircularLoading />
 
   return (
+    <>
+    <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
+        <CardTravelIcon fontSize='medium' />
+        <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
+          <Typography variant='h5'>
+            &nbsp;{trip.trip.name}
+            {
+                trip.trip.isOpen ? "" :
+                    " (Closed)"
+            }
+          </Typography>
+        </Box>
+    </Box>
     <div style={styles.chatRoomContainer}>
       {
         !trip ? <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                     <CardTravelIcon fontSize='medium' />
                     <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${id}`}>
                         <Typography variant='h5'>
-                            &nbsp;{thisTrip.trip.name}
+                            &nbsp;{trip.trip.name}
                         </Typography>
                     </Box>
                 </Box>
         : ''
       }
-      {/* <h1 style={styles.roomName}>
-        <Link to={`/trip/${id}`}>
-          Chat: {thisTrip.trip.name}
-        </Link>
-      </h1> */}
-      {/* Trip Friends */}
-      {/* <Participants trip={thisTrip} auth={auth}/> */}
       <div style={styles.messagesContainer} >
         <ol key={Math.random().toString(16)} style={styles.messagesList}>
           <DisplayStoreMessages />
@@ -138,11 +146,16 @@ const ChatRoom = ({trip, match}) => {
         onChange={handleNewMessageChange}
         placeholder="Write message..."
         style={styles.newMessageInputField}
+        disabled={!trip.trip.isOpen} 
       />
-      <button onClick={handleSendMessage} style={styles.sendMessageButton}>
+      <Button onClick={handleSendMessage} 
+        style={styles.sendMessageButton}
+        disabled={!trip.trip.isOpen} 
+      >
         Send
-      </button>
+      </Button>
     </div>
+    </>
   );
 };
 
@@ -244,6 +257,10 @@ const styles = {
     width: '30%',
     alignSelf: 'center',
     borderRadius: '4px',
+    ':disabled': {
+      backgroundColor: 'grey'
+    }
   },
-
+  
 }
+// style={{ ':disabled': {backgroundColor: 'grey' } }}
