@@ -74,7 +74,8 @@ const TripInvite = () => {
     if (invites.length === 0) {
         return (
             <Typography align='center' variant='h6' sx={{ mt: 4, mb: 8 }}>
-                You do not have any trip invites at this moment!
+                No pending trip invites
+                {/* You do not have any trip invites at this moment! */}
             </Typography>
         )
     }

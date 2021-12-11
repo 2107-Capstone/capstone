@@ -120,7 +120,7 @@ const MenuBar = (props) => {
                     user.username === 'Admin' ? 
                         '':
                         <Button component={Link} to='/settings' onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
-                            Settings
+                            Profile
                         </Button>
                 }
                 <Button onClick={handleDrawerToggle} variant='outlined' onClick={handleLogout}>

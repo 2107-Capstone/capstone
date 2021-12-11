@@ -96,6 +96,10 @@ const AdminExpenses = ({match}) => {
                 <Box sx={{ color: 'inherit' }} component={Link} to={`/admin/admintrips/${trip.id}`}>
                     <Typography variant='h5'>
                         &nbsp;{trip.name}
+                        {
+                            trip.isOpen ? "" :
+                                " (Closed)"
+                        }
                     </Typography>
                 </Box>
             </Box>
@@ -173,7 +177,7 @@ const AdminExpenses = ({match}) => {
                     <TableBody>
                         {tableRowData.sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((expense) => (
                             <TableRow key={expense.id}>
-                                <TableCell aligna="center"> {expense.description}</TableCell>
+                                <TableCell align="center"> {expense.description}</TableCell>
                                 <TableCell align="center">${expense.amount}</TableCell>
                                 <TableCell align="center">{expense.category}</TableCell>
                                 <TableCell align="center">{expense.paidby}</TableCell>

@@ -1,8 +1,11 @@
 import React from 'react';
+import CircularLoading from '../Loading/CircularLoading'
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Box, Grid, Button, Paper, TextField, Typography, Dialog } from '@mui/material'
+
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
+
 const PieChart = ({expenses, users, categories}) => {
    
     const usersLabels = users.map(user => user.user.username);
@@ -32,7 +35,12 @@ const datasets2 = [
             borderWidth: 1
         }
     ]
-    if (users.length === 0 || expenses.length === 0) return '...loading'
+    if (!users || !expenses || !categories) {
+        return <CircularLoading />
+    } else if (expenses.length === 0) {
+        return ''
+    } 
+    
     return (
     // <div style={{display: 'flex', justifyContent: 'space-around'}}>
     //     <div>

@@ -56,13 +56,6 @@ Trip.hasMany(Message)
 Message.belongsTo(User, { as: "sentBy" })
 User.hasMany(Message, { foreignKey: "sentById" })
 
-// Debt.belongsTo(User, { as: 'debtor' })
-// User.hasMany(Debt, { as: 'debtorId' })
-// Debt.belongsTo(User, { as: 'payee' })
-// User.hasMany(Debt, { as: 'payeeId' })
-// Debt.belongsTo(Trip)
-// Trip.hasMany(Debt)
-
 UserDebt.belongsTo(User, { as: 'payor'})
 UserDebt.belongsTo(User, { as: 'payee'})
 User.hasMany(UserDebt)

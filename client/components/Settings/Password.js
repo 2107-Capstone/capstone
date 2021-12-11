@@ -62,7 +62,7 @@ const Password = () => {
       evt.preventDefault()
       const userInfo = { username: auth.username, password: input.password }
       try {
-        await dispatch(authenticate(userInfo, 'login'))
+        await dispatch(authenticate(userInfo, 'login', 'passwordChange'))
         setinput(() => ({ ...input, password: '' }))
         setOldPasswordCorrect(() => true)
       } catch (err) {
@@ -73,11 +73,11 @@ const Password = () => {
     const handleSubmit = async (evt) => {
         evt.preventDefault()
         try {
-           await dispatch(updateUser({...input, id: auth.id, password: input.newPassword }));
-           await dispatch(me({...input, id: auth.id, password: input.newPassword}));
-           setOpenAlert(true)
-           setOldPasswordCorrect(() => false)
-           history.push('/settings')
+          await dispatch(updateUser({...input, id: auth.id, password: input.newPassword }));
+          await dispatch(me({...input, id: auth.id, password: input.newPassword}));
+          setOldPasswordCorrect(() => false)
+          setOpenAlert(true)
+          //  history.push('/settings')
         }
         catch (error) {
           console.log(error)
@@ -96,7 +96,7 @@ const Password = () => {
 
     return (
         <Container component="main" maxWidth="xs">
-          <Button component={Link} to='/settings' variant='contained' startIcon={<ArrowBackIcon />}>
+          <Button component={Link} to='/settings' variant='outlined' startIcon={<ArrowBackIcon />}>
             Back
           </Button>
           <Snackbar open={openAlert} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
@@ -118,38 +118,39 @@ const Password = () => {
                 <Typography component="h1" variant="h5">
                     Change Your Password
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmitOldPassword} sx={{ mt: 3 }}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={12} >
-                          
-                            <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Current Password"
-                            type="password"
-                            id="password"
-                            value={input.password}
-                            autoComplete="password"
-                            onChange={handleChange}
-                            />
-                            
-                          
+                {
+                  oldPasswordCorrect ? '' : 
+                    <Box component="form" onSubmit={handleSubmitOldPassword} sx={{ mt: 3 }}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12} >
+                              
+                                <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Current Password"
+                                type="password"
+                                id="password"
+                                value={input.password}
+                                autoComplete="password"
+                                onChange={handleChange}
+                                />
+                                
+                              
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    {
-                      oldPasswordCorrect ? '' : 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Submit
-                        </Button>
-                    }
-                </Box>
+                        
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Submit
+                            </Button>
+                    </Box>
+                }
                 {
                   oldPasswordCorrect ? (
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -184,7 +185,7 @@ const Password = () => {
                                 <FormControl variant="outlined" fullWidth>
                                   <InputLabel htmlFor="outlined-adornment-password">Please Enter New Password Again</InputLabel>
                                   <OutlinedInput
-                                    id="outlined-adornment-password"
+                                    id="outlined-adornment-password-2"
                                     type={input.showPassword ? 'text' : 'password'}
                                     value={input.newPasswordCheck|| ''}
                                     name="newPasswordCheck"

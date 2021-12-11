@@ -3,7 +3,6 @@ const { models: { User, Trip, UserTrip, Event } } = require('../db')
 const axios = require('axios')
 require('dotenv').config()
 
-
 const API_KEY = process.env.MAP_API
 
 module.exports = router

@@ -19,7 +19,7 @@ export const Notifications = () => {
       <TripInvite />
       <Divider />
       <Typography sx={{ mt: 4 }} align='center' variant='h5' gutterBottom>
-        <PaidIcon />&nbsp;Unpaid Expenses from Closed Trips
+        <PaidIcon />&nbsp;Unpaid Debts from Closed Trips
       </Typography>
       <Debts />
       
