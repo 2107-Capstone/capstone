@@ -106,7 +106,7 @@ const AdminTrip = (props) => {
                     </Box>
                 </Grid>
             </Grid>
-            <Grid container spacing={2} marginBottom={2}>
+            {/* <Grid container spacing={2} marginBottom={2}>
                 <Grid item xs={12} sm={12} md={2} lg={2}>
                     <Button
                         className='tripButton'
@@ -142,14 +142,42 @@ const AdminTrip = (props) => {
                         MAP
                     </Button>
                 </Grid>
-            </Grid>
-
+            </Grid> */}
+            <Box display='flex' justifyContent='space-evenly' flexWrap='wrap' sx={{mb: 2, mt: 2}}>
+                <Button
+                    component={Link} to={`${trip.id}/chat`}
+                    startIcon={<ChatIcon />}
+                    size='small'
+                    color='secondary'
+                    variant='contained'
+                >
+                    CHAT
+                </Button>
+                <Button
+                    component={Link} to={`${trip.id}/calendar`}
+                    startIcon={<DateRangeIcon />}
+                    size='small'
+                    color='secondary'
+                    variant='contained'
+                >
+                    CALENDAR
+                </Button>
+                <Button
+                    component={Link} to={`${trip.id}/map`}
+                    startIcon={<MapIcon />}
+                    size='small'
+                    color='secondary'
+                    variant='contained'
+                >
+                    MAP
+                </Button>
+            </Box>
             <Grid container spacing={2}>
                 {
                     !trip.isOpen ?
-                        <Grid item xs={12} sm={12} md={6} lg={6} >
-                            <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
-                                <Box style={styles.headingIcon}>
+                        <Grid item xs={12} sm={12} md={12} lg={12} >
+                            <Box style={styles.debtHeadingIcon} sx={{ display: 'flex' }}>
+                                <Box style={styles.debtHeadingIcon}>
                                     <PaidIcon fontSize='medium' />
                                     <Typography variant='h6'>
                                         &nbsp;Debt Summary
@@ -316,6 +344,14 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: theme.palette.primary.main,
+        flexGrow: 1,
+        color: 'white'
+    },
+    debtHeadingIcon: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'darkslategrey',
         flexGrow: 1,
         color: 'white'
     },

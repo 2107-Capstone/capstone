@@ -45,6 +45,7 @@ import PaidIcon from '@mui/icons-material/Paid';
 import PeopleIcon from '@mui/icons-material/People'
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import WorkOffOutlinedIcon from '@mui/icons-material/WorkOffOutlined';
 
 import { format, formatISO, parseISO, isAfter, isBefore } from "date-fns";
 import theme from '../../theme'
@@ -159,11 +160,30 @@ const Trip = (props) => {
                                     {trip.trip.user.username}
                                 </Typography >
                             </Box>
+                            <Box>
+                                {
+                                    trip.trip.isOpen ? 
+                                        <Tooltip 
+                                            title={trip.trip.user.id !== auth.id ? `Only ${trip.trip.user.username} can close this trip` : ''}
+                                            placement='top'
+                                            enterNextDelay={100}
+                                            enterTouchDelay={300}
+                                            leaveTouchDelay={1000}
+                                        >
+                                            <Box>
+                                                <Button size='small' startIcon={<WorkOffOutlinedIcon />} variant='outlined' onClick={handleCloseTrip} disabled={trip.trip.user.id !== auth.id}>
+                                                    Close Trip
+                                                </Button>
+                                            </Box>
+                                        </Tooltip>
+                                    : ''
+                                }
+                            </Box>
                         </Box>
                     </Box>
                 </Grid>
             </Grid>
-            <Box display='flex' justifyContent='space-evenly' flexWrap='wrap' sx={{marginBottom: 2}}>
+            <Box display='flex' justifyContent='space-evenly' flexWrap='wrap' sx={{mb: 2, mt: 2}}>
                 <Button
                     component={Link} to={`${trip.tripId}/chat`}
                     startIcon={<ChatIcon />}
@@ -308,7 +328,7 @@ const Trip = (props) => {
             <Grid container spacing={2}>
                 {
                     !trip.trip.isOpen ?
-                        <Grid item xs={12} sm={12} md={6} lg={6} >
+                        <Grid item xs={12} sm={12} md={12} lg={12} >
                             <Box style={styles.debtHeadingIcon} sx={{ display: 'flex' }}>
                                 <Box style={styles.debtHeadingIcon}>
                                     <PaidIcon fontSize='medium' />

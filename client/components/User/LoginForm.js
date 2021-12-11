@@ -28,7 +28,11 @@ const LoginForm = () => {
     const handleSubmit = (evt) => {
         evt.preventDefault()
         const userInfo = input
-        dispatch(authenticate(userInfo, 'login'))
+        if (input.username === 'Admin') {
+            dispatch(authenticate(userInfo, 'login', 'admin'))
+        } else {
+            dispatch(authenticate(userInfo, 'login'))
+        }
     }
 
     return (

@@ -9,7 +9,7 @@ import AddExpense from "./AddExpense";
 import { format, parseISO } from "date-fns";
 
 ////////////////// MATERIAL UI /////////////////
-import { Box, Button, Container, Checkbox, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Typography, Tooltip } from "@mui/material";
+import { Avatar, Box, Button, Container, Checkbox, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Typography, Tooltip } from "@mui/material";
 
 import { FaFileInvoiceDollar } from 'react-icons/fa'
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -46,13 +46,27 @@ const TripDebts = ({tripDebts}) => {
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                     <TableCell>
-                        {row.payor.username}
+                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.payor.avatar} >
+                                {row.payor.firstName[0] + row.payor.lastName[0]}
+                            </Avatar>
+                            <Typography variant='caption'>
+                                {row.payor.username}
+                            </Typography >
+                        </Box>
                     </TableCell>
                     <TableCell>
                         ${(+row.amount).toFixed(2)}
                     </TableCell>
                     <TableCell >
-                        {row.payee.username}
+                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.payee.avatar} >
+                                {row.payee.firstName[0] + row.payee.lastName[0]}
+                            </Avatar>
+                            <Typography variant='caption'>
+                                {row.payee.username}
+                            </Typography >
+                        </Box>
                     </TableCell>
                     <TableCell >
                         <Checkbox checked={row.status !== 'pending'} disabled/>

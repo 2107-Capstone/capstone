@@ -76,7 +76,7 @@ const Settings = () => {
     }
 
     const handleSubmit = async (evt) => {
-      console.log(input)
+      // console.log(input)
         evt.preventDefault()
         try {
            await dispatch(updateUser({id: auth.id, ...input}));
