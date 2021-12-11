@@ -33,6 +33,12 @@ export const authenticate = (userInfo, method, type) => async dispatch => {
     const res = await axios.post(`/auth/${method}`, userInfo)
     window.localStorage.setItem(TOKEN, res.data.token)
     dispatch(me())
+    console.log(userInfo.username)
+    if (userInfo.username === 'Admin') {
+      history.push('/admin/admintrips')
+    } else {
+      history.push('/trips')
+    }
     type === 'passwordChange' ? '' : history.push('/trips')
   } catch (authError) {
     return dispatch(setAuth({ error: authError }))

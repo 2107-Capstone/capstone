@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const isLoggedIn = require('../middleware/isLoggedIn')
-const { models: { User, Trip, UserTrip, Message, Event, Expense, Category, UserDebt } } = require('../db')
+const { models: { User, Trip, UserTrip, Message, Event, Expense, Category, UserFriend, UserDebt } } = require('../db')
 
 module.exports = router
 
@@ -58,7 +58,7 @@ router.get('/admintrips', async (req, res, next) => {
 
       res.json(trips)
     } else {
-      res.send('No current user found via token')
+      res.send('No admin user found via token')
     }
   } catch (err) {
     next(err)
@@ -103,7 +103,7 @@ router.get('/adminusertrips', isLoggedIn, async (req, res, next) => {
         })
         res.json(usertrips)
       } else {
-      res.send('No current user found via token')
+      res.send('No admin user found via token')
       }
   }
   catch (error) {
@@ -148,7 +148,7 @@ router.get('/adminmessages', async (req, res, next) => {
       res.send(messages)
     } else {
       //TODO Avoid an error message in our console if we can't find a user.
-      res.send('No current user found via token.')
+      res.send('No admin user found via token.')
     }
   } catch (err) {
     next(err)
@@ -187,7 +187,7 @@ router.get('/adminevents', async (req, res, next) => {
       })
       res.send(events)
     } else {
-      res.send('No current user found via token')
+      res.send('No admin user found via token')
     }
   } catch (err) {
     next(err)
@@ -234,8 +234,39 @@ router.get('/adminexpenses', async (req, res, next) => {
 
       res.json(expenses)
     } else {
-      res.send('No current user found via token')
+      res.send('No admin user found via token')
     }
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/adminusers', async (req, res, next) => {
+  if(req.headers.authorization === 'null') {
+    console.log('YOU SHALL NOT PASS!')
+    return res.json([])
+  }
+  
+  try {
+    const user = await User.findByToken(req.headers.authorization)
+    if (user && user.username === 'Admin') {
+    const users = await User.findAll({
+      attributes: ['id', 'username', 'password', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar'],
+      include: [
+        {
+          model: UserTrip,
+          include: [Trip]
+        },
+        {
+          model: UserFriend,
+          include: [{ model: User, as: 'friend', attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar'] }]
+        }
+      ]
+    })
+    res.json(users)
+  } else {
+    res.send('No admin user found via token')
+  }
   } catch (err) {
     next(err)
   }
