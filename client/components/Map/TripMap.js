@@ -106,7 +106,6 @@ export default function TripMap({ match }) {
             setOpenNoLocationAlert(true)
         }
     }
-    const [eventToEdit, setEventToEdit] = useState({});
 
     const DisplayMarkers = () => {
         console.log('markers', markers)
