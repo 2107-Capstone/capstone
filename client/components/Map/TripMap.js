@@ -70,8 +70,10 @@ export default function TripMap({ match }) {
         mapRef.current.setZoom(tripZoom);
     }, []);
 
+    const userLocation = useRef(null);
     // const [status, setStatus] = useState('initial')
-    
+
+
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
@@ -86,12 +88,64 @@ export default function TripMap({ match }) {
         setOpenSnackbar(false)
         setUpdate(prevUpdate => prevUpdate + Math.random())
     }
-    
-    const userLocation = useRef(null);
-    const handleLocate = async () => {
-        if ('geolocation' in navigator === false) {
-            Alert('Geolocation is not supported by your device.')
+    //TODO: rename these
+    const handleFindMarker = (id) => {
+        // setUpdate(prevUpdate => prevUpdate + Math.random())
+        const marker = markers.find(marker => marker.id === id);
+        // ev.stopPropagation()
+        setSelected(marker);
+    }
+    const handleFindTrackingMarker = async (id, username) => {
+        // setUpdate(prevUpdate => prevUpdate + Math.random())
+        const trackingMarker = trackingMarkers.find(marker => marker.id === id);
+        // ev.stopPropagation()
+        if (trackingMarker) {
+            setSelected(trackingMarker)
+        } else {
+            await setSelectedUser(username)
+            setOpenNoLocationAlert(true)
         }
+    }
+    const [eventToEdit, setEventToEdit] = useState({});
+
+    const DisplayMarkers = () => {
+        console.log('markers', markers)
+        return markers.map((marker) => {
+            return (
+                <Marker
+                    key={marker.key}
+                    id={marker.id}
+                    position={{ lat: marker.lat, lng: marker.lng }}
+                    name={marker.name}
+                    icon={{ url: marker.url }}
+                    onClick={() => { setSelected(marker) }}
+                />
+            )
+        })
+    }
+    const DisplayTrackingMarkers = () => {
+        console.log('trackingmarkers', trackingMarkers)
+        return trackingMarkers.map((marker) => {
+            return (
+                <Marker
+                    key={marker.key}
+                    id={marker.id}
+                    position={{ lat: marker.lat, lng: marker.lng }}
+                    name={marker.name}
+                    onClick={() => { setSelected(marker) }}
+                    icon={{
+                        url: '/person.svg',
+
+                    }}
+                />
+            )
+        })
+    }
+
+    const handleLocate = async () => {
+        // if ('geolocation' in navigator === false) {
+        //     Alert('Geolocation is not supported by your device.')
+        // }
         await navigator.geolocation.getCurrentPosition(
             async (position) => {
                 await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
@@ -117,6 +171,12 @@ export default function TripMap({ match }) {
         //         await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
         //         await setUpdate(prevUpdate => prevUpdate + Math.random())
         //     }
+            // let usersMarker = trackingMarkers.find(m => m.id === auth.id);
+
+            // usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
+            // const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
+
+            // await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
         // }, null, {
         //     enableHighAccuracy: true,
         //     timeout: 5000,
@@ -152,7 +212,7 @@ export default function TripMap({ match }) {
             if (trip?.trip.isOpen){
                 users.forEach(async (user) => {
                     if (user.lat) {
-                        await setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng }])
+                        await setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/person.svg', firstName: user.firstName, lastName: user.lastName }])
                     }
                 })
             }
