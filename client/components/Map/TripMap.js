@@ -70,7 +70,7 @@ export default function TripMap({ match }) {
         mapRef.current.setZoom(tripZoom);
     }, []);
 
-    const [status, setStatus] = useState('initial')
+    // const [status, setStatus] = useState('initial')
     
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
@@ -107,22 +107,22 @@ export default function TripMap({ match }) {
             },
             () => null
         );
-        setStatus('watching');
-        navigator.geolocation.watchPosition(async position => {
-            userLocation.current = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            }
-            if (status === 'watching'){
-                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
-                await setUpdate(prevUpdate => prevUpdate + Math.random())
-            }
-        }, null, {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0
-        })
-        setOpenAlert(true);
+        // setStatus('watching');
+        // navigator.geolocation.watchPosition(async position => {
+        //     userLocation.current = {
+        //         lat: position.coords.latitude,
+        //         lng: position.coords.longitude
+        //     }
+        //     if (status === 'watching'){
+        //         await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
+        //         await setUpdate(prevUpdate => prevUpdate + Math.random())
+        //     }
+        // }, null, {
+        //     enableHighAccuracy: true,
+        //     timeout: 5000,
+        //     maximumAge: 0
+        // })
+        // setOpenAlert(true);
     }
 
     function Locate({ panTo }) {
@@ -152,14 +152,14 @@ export default function TripMap({ match }) {
             if (trip?.trip.isOpen){
                 users.forEach(async (user) => {
                     if (user.lat) {
-                        await setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/images/person.jpg', firstName: user.firstName, lastName: user.lastName }])
+                        await setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng }])
                     }
                 })
             }
         }
-        console.log(status)
+        // console.log(status)
         createAllMarkers();
-        () => setStatus('initial')
+        // () => setStatus('initial')
     }, [tripId, update])
 
     if (!trip || !events || !users) {
