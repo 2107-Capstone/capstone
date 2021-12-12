@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////////// STORE /////////////////
-import { closeTrip, getTrips, addUserDebt } from '../../store'
+import { editTrip, getTrips, addUserDebt } from '../../store'
 
 /////////////// COMPONENTS /////////////////
 import CircularLoading from '../Loading/CircularLoading'
@@ -16,7 +16,7 @@ import MessagesTable from '../Chat/MessagesTable'
 import InviteToTrip from './Form/InviteToTrip'
 import TripDebts from '../Expenses/TripDebts'
 import TripSpeedDial from './TripSpeedDial'
-
+import AddTripForm from '../Trips/Form/AddTripForm'
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -24,8 +24,10 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Snackbar from '@mui/material/Snackbar';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import Tooltip from '@mui/material/Tooltip'
@@ -36,10 +38,12 @@ import AddIcon from '@mui/icons-material/Add';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import ChatIcon from '@mui/icons-material/Chat';
+import CloseIcon from '@mui/icons-material/Close';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import EventIcon from '@mui/icons-material/Event';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MapIcon from '@mui/icons-material/Map';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PaidIcon from '@mui/icons-material/Paid';
 import PeopleIcon from '@mui/icons-material/People'
@@ -70,9 +74,11 @@ const Trip = (props) => {
     
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
+    const [openSnackbar, setOpenSnackbar] = useState(false);
     const handleClose = () => {
         setOpen(false);
         setForm('')
+        setOpenSnackbar(false)
     }
     
     const [anchorEl, setAnchorEl] = useState(null);
@@ -93,7 +99,7 @@ const Trip = (props) => {
     
     const handleCloseTrip = async () => {
         try {
-            await dispatch(closeTrip({ ...trip }))
+            await dispatch(editTrip({ ...trip}))
             const debts = settleUp(expenses, users)
             if (debts) {
                 debts.forEach(async(debt) => {
@@ -104,6 +110,7 @@ const Trip = (props) => {
             console.log(error)
         }
     }
+
     
     const totalExpenses = expenses.reduce((total, expense) => {
         return total + +expense.amount
@@ -132,6 +139,35 @@ const Trip = (props) => {
             <Dialog open={form === 'event' && open} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} />
             </Dialog>
+            <Dialog open={form === 'trip' && open} onClose={handleClose}>
+                <AddTripForm trip={trip} handleClose={handleClose} />
+            </Dialog>
+            <Snackbar
+                sx={{ mt: 9 }}
+                open={openSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                message={'Are you sure you want to close this trip?'}
+                action={
+                    <>
+                        <Button color="secondary" size="small" onClick={handleCloseTrip}>
+                            YES
+                        </Button>
+                        <Button color="secondary" size="small" onClick={handleClose}>
+                            NO
+                        </Button>
+                        <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={handleClose}
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </>
+                }
+            />
             {
                 trip.trip.isOpen ? 
                     <Box sx={{marginBottom: -10, position: 'sticky', top: 5, right: 5, zIndex: 1}}>
@@ -167,6 +203,7 @@ const Trip = (props) => {
                             <Box>
                                 {
                                     trip.trip.isOpen ? 
+                                        <>
                                         <Tooltip 
                                             title={trip.trip.user.id !== auth.id ? `Only ${trip.trip.user.username} can close this trip` : ''}
                                             placement='top'
@@ -174,12 +211,31 @@ const Trip = (props) => {
                                             enterTouchDelay={300}
                                             leaveTouchDelay={1000}
                                         >
-                                            <Box>
-                                                <Button size='small' startIcon={<WorkOffOutlinedIcon />} variant='outlined' onClick={handleCloseTrip} disabled={trip.trip.user.id !== auth.id}>
+                                            <Box sx={{ml: 2, mb: 1}}>
+                                                <Button size='small' startIcon={<WorkOffOutlinedIcon />} variant='outlined' onClick={() => setOpenSnackbar(true)} disabled={trip.trip.user.id !== auth.id}>
                                                     Close Trip
                                                 </Button>
                                             </Box>
                                         </Tooltip>
+                                        <Tooltip 
+                                            title={trip.trip.user.id !== auth.id ? `Only ${trip.trip.user.username} can edit this trip` : ''}
+                                            placement='top'
+                                            enterNextDelay={100}
+                                            enterTouchDelay={300}
+                                            leaveTouchDelay={1000}
+                                        >
+                                            <Box sx={{ml: 2}}>
+                                                <Button size='small' startIcon={<ModeEditIcon />} variant='outlined' onClick={() => {
+                                                    setForm('trip');
+                                                    setOpen(true)
+                                                }} 
+                                                disabled={trip.trip.user.id !== auth.id}
+                                                >
+                                                    Edit Trip
+                                                </Button>
+                                            </Box>
+                                        </Tooltip>
+                                        </>
                                     : ''
                                 }
                             </Box>

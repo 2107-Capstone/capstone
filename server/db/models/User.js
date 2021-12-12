@@ -30,11 +30,11 @@ const User = db.define('user', {
   },
   email: {
     type: STRING,
-    unique: true,
+    // unique: true,
   },
   phoneNumber: {
     type: STRING,
-    unique: true
+    // unique: true
   },
   lat: {
     type: DECIMAL,

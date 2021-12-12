@@ -8,6 +8,7 @@ const GET_TRIPS = 'GET_TRIPS'
 const ADD_TRIP = 'ADD_TRIP'
 const CLOSE_TRIP = 'CLOSE_TRIP'
 const LEAVE_TRIP = 'LEAVE_TRIP'
+const EDIT_TRIP = 'EDIT_TRIP'
 
 //////////// ACTION CREATORS ////////////
 const _getTrips = trips => ({ type: GET_TRIPS, trips })
@@ -15,6 +16,7 @@ const _getTrips = trips => ({ type: GET_TRIPS, trips })
 const _addTrip = trip => ({ type: ADD_TRIP, trip })
 const _closeTrip = trip => ({ type: CLOSE_TRIP, trip })
 const _leaveTrip = trip => ({ type: LEAVE_TRIP, trip })
+const _editTrip = trip => ({ type: EDIT_TRIP, trip })
 
 //////////////////// THUNK CREATORS  //////////////
 export const getTrips = () => {
@@ -45,19 +47,36 @@ export const addTrip = (tripToAdd) => {
   };
 }
 
-export const closeTrip = (trip) => {
+// export const closeTrip = (trip) => {
+//   const token = window.localStorage.getItem(TOKEN)
+
+//   return async (dispatch) => {
+//     console.log(trip)
+
+//     const { data: closed } = await axios.put(`/api/trips/${trip.id}`, {
+//       headers: {
+//         authorization: token
+//       }
+//     });
+//     // console.log(trip)
+//     dispatch(_closeTrip(closed));
+//     history.push('/trips')
+//   };
+// }
+
+export const editTrip = (trip) => {
   const token = window.localStorage.getItem(TOKEN)
-
+  
+  const id = trip.userTripId ? trip.userTripId : trip.id;
   return async (dispatch) => {
-    console.log(trip)
 
-    const { data: closed } = await axios.put(`/api/trips/${trip.id}`, {
+    const { data: edited } = await axios.put(`/api/trips/${id}`, trip, {
       headers: {
         authorization: token
       }
     });
     // console.log(trip)
-    dispatch(_closeTrip(closed));
+    dispatch(_editTrip(edited));
     history.push('/trips')
   };
 }
@@ -88,6 +107,8 @@ export default function (state = [], action) {
       return [action.trip, ...state]
     case CLOSE_TRIP:
       return state.map(trip => trip.tripId === action.id ? action.trip : trip)
+    case EDIT_TRIP:
+      return state.map(trip => trip.tripId === action.trip.id ? action.trip : trip)
     case LEAVE_TRIP:
       return state.filter(trip => trip.id !== action.trip.id)
     default:
