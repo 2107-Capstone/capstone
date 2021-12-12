@@ -89,7 +89,7 @@ export default function TripMap({ match }) {
     }, []);
 
     const userLocation = useRef(null);
-    const [status, setStatus] = useState('initial')
+    // const [status, setStatus] = useState('initial')
 
 
     const [open, setOpen] = useState(false);
@@ -150,7 +150,7 @@ export default function TripMap({ match }) {
                     name={marker.name}
                     onClick={() => { setSelected(marker) }}
                     icon={{
-                        url: '/person2.svg',
+                        url: '/person.svg',
 
                     }}
                 />
@@ -231,14 +231,14 @@ export default function TripMap({ match }) {
             if (trip.trip.isOpen){
                 users.forEach(async (user) => {
                     if (user.lat) {
-                        await setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/images/person.jpg', firstName: user.firstName, lastName: user.lastName }])
+                        await setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/person.svg', firstName: user.firstName, lastName: user.lastName }])
                     }
                 })
             }
         }
-        console.log(status)
+        // console.log(status)
         createAllMarkers();
-        () => setStatus('initial')
+        // () => setStatus('initial')
     }, [tripId, update])
 
 
