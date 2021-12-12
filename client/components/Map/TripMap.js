@@ -150,7 +150,7 @@ export default function TripMap({ match }) {
                     name={marker.name}
                     onClick={() => { setSelected(marker) }}
                     icon={{
-                        url: '/person.svg',
+                        url: '/person2.svg',
 
                     }}
                 />
