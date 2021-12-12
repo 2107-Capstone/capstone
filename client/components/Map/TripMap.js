@@ -149,20 +149,6 @@ export default function TripMap({ match }) {
                     position={{ lat: marker.lat, lng: marker.lng }}
                     name={marker.name}
                     onClick={() => { setSelected(marker) }}
-                    // icon={{
-                    //     url: marker.avatar,
-                    //     origin: new google.maps.Point(0,0),
-                    //     size: new google.maps.Size(20,32),
-                    //     anchor: new google.maps.Point(0, 32)
-                    // }}
-                    // icon={
-                    //     <Avatar 
-                    //         sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} 
-                    //         src={marker.avatar}
-                    //         >
-                    //         {marker.firstName[0]+marker.lastName[0]}
-                    //     </Avatar>
-                    // }
                     icon={{
                         url: '/person.svg',
 
@@ -172,11 +158,10 @@ export default function TripMap({ match }) {
         })
     }
 
-
     const handleLocate = async () => {
-        if ('geolocation' in navigator === false) {
-            Alert('Geolocation is not supported by your device.')
-        }
+        // if ('geolocation' in navigator === false) {
+        //     Alert('Geolocation is not supported by your device.')
+        // }
         await navigator.geolocation.getCurrentPosition(
             async (position) => {
                 await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
@@ -185,12 +170,6 @@ export default function TripMap({ match }) {
                     lng: position.coords.longitude
                 }
                 await setUpdate(prevUpdate => prevUpdate + Math.random())
-                // let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-
-                // usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
-                // const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
-
-                // await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
                 panTo({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -198,28 +177,28 @@ export default function TripMap({ match }) {
             },
             () => null
         );
-        setStatus('watching');
-        navigator.geolocation.watchPosition(async position => {
-            userLocation.current = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            }
-            if (status === 'watching'){
-                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
-                await setUpdate(prevUpdate => prevUpdate + Math.random())
-            }
+        // setStatus('watching');
+        // navigator.geolocation.watchPosition(async position => {
+        //     userLocation.current = {
+        //         lat: position.coords.latitude,
+        //         lng: position.coords.longitude
+        //     }
+        //     if (status === 'watching'){
+        //         await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
+        //         await setUpdate(prevUpdate => prevUpdate + Math.random())
+        //     }
             // let usersMarker = trackingMarkers.find(m => m.id === auth.id);
 
             // usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
             // const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
 
             // await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
-        }, null, {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0
-        })
-        setOpenAlert(true);
+        // }, null, {
+        //     enableHighAccuracy: true,
+        //     timeout: 5000,
+        //     maximumAge: 0
+        // })
+        // setOpenAlert(true);
     }
     function Locate({ panTo }) {
         return (
