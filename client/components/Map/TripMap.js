@@ -442,7 +442,7 @@ export default function TripMap({ match }) {
                     center={{lat, lng}}
                 >
                     {
-                        trip.trip.events.length ? <DisplayMarkers markers={markers} /> : ''
+                        trip.trip.events.length ? <DisplayMarkers markers={markers} setSelected={setSelected}/> : ''
                     }
                     {
                         trip.trip.isOpen ? <DisplayTrackingMarkers trackingMarkers={trackingMarkers}/> : ''
@@ -452,7 +452,7 @@ export default function TripMap({ match }) {
                             (
                                 <InfoWindow
                                     open={open}
-                                    position={{ lat: +selected.lat, lng: +selected.lng }}
+                                    position={{ lat: +selected.lat+.001, lng: +selected.lng }}
                                     onCloseClick={() => {
                                         setSelected(null);
                                     }}

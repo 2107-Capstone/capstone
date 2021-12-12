@@ -16,7 +16,7 @@ export const handleFindTrackingMarker = async (id, username, setSelectedUser, se
     }
 }
 
-export const DisplayMarkers = ({markers}) => {
+export const DisplayMarkers = ({markers, setSelected}) => {
     console.log('markers', markers)
     return markers.map((marker) => {
         return (
