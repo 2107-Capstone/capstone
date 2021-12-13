@@ -60,7 +60,7 @@ const Debts = () => {
     if (userDebts.length === 0) {
         return (
             <Typography align='center' variant='h6' sx={{ mt: 4, mb: 8 }}>
-                No unpaid debts
+                No money owed
             </Typography>
         )
     }

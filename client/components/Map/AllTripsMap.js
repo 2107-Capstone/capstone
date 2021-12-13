@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { parseISO, format } from 'date-fns';
+import { parseISO, format, isAfter } from 'date-fns';
 
 import CircularLoading from '../Loading/CircularLoading'
 import { findZoom, findCenter } from './mapFunctions'
@@ -249,11 +249,11 @@ export default function AllTripsMap() {
                                     </AccordionSummary>
                                     <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
                                         {
-                                            trip.trip.events.map(event => (
-                                                <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
+                                            trip.trip.events.sort((a,b) => isAfter(new Date(a.startTime),new Date(b.startTime)) ? 1 : -1).map(event => (
+                                                <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, pb: 0}}
 
                                                 >
-                                                    <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>
+                                                    <CardContent sx={{ mb: 0 , paddingBottom: 0}} onClick={() => handleClick(event.id)}>
                                                         <Box 
                                                             display='flex'
                                                             justifyContent='space-between'
@@ -265,11 +265,11 @@ export default function AllTripsMap() {
                                                                 <Typography variant='subtitle2' gutterBottom>
                                                                     {event.description}
                                                                 </Typography>
-                                                                <Typography color="text.secondary" variant="subtitle2">
+                                                                <Typography color="text.secondary" variant="subtitle2" >
                                                                     {format(parseISO(event.startTime), 'Pp')}
                                                                 </Typography>
                                                             </Box>
-                                                            {
+                                                            {/* {
                                                             trip.trip.isOpen ? 
                                                                 <Box
                                                                     display='flex'
@@ -338,7 +338,7 @@ export default function AllTripsMap() {
                                                                     </Button>
                                                                 </Box>
                                                             : ''
-                                                            }
+                                                            } */}
 
 
                                                         </Box>
