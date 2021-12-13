@@ -6,6 +6,7 @@ import moment from 'moment'
 const localizer = momentLocalizer(moment)
 
 import EventForm from '../Map/EventForm';
+import AddTripForm from '../Trips/Form/AddTripForm';
 import {TripTitle} from '../Trip/TripComponents';
 ////////// MUI ///////////////
 import { Box, Button, Dialog, Typography } from '@mui/material'
@@ -23,16 +24,21 @@ const SingleTripCalendar = ({ match }) => {
     let events = useSelector(state => state.events.filter(event => event.tripId === match.params.id));
     ////////// DIALOG TO OPEN EVENT FORM ////////////////
     const [open, setOpen] = useState(false);
+    const [form, setForm] = useState('');
     const [tripEvent, setTripEvent] = useState({});
     
     const handleSelect = (event) => {
         if (!event.isTrip && trip.trip.isOpen){ //event is actual event, not trip
+            setForm('event')
             setTripEvent(() => event);
-            setOpen(() => true);
+        } else if (trip.trip.isOpen){
+            setForm('trip')
         }
+        setOpen(() => true);
     }
     const handleClose = () => {
         setOpen(false);
+        setForm('');
         setTripEvent({})
     }
     
@@ -64,8 +70,11 @@ const SingleTripCalendar = ({ match }) => {
 
     return (
         <div>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open && form === 'event'} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} event={tripEvent} />
+            </Dialog>
+            <Dialog open={open && form === 'trip'} onClose={handleClose}>
+                <AddTripForm trip={trip} handleClose={handleClose} />
             </Dialog>
             <TripTitle trip={trip} />
             {
