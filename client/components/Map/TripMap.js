@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef, forwardRef, useCallback } from 'react'
 import { connect, useSelector, useDispatch } from 'react-redux'
 import { Link } from "react-router-dom";
-import { parseISO, format } from 'date-fns';
-import { Box, Grid, Button, TextField, Tooltip, IconButton, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
+import { parseISO, format, isAfter } from 'date-fns';
+import { Alert, Box, Grid, Button, TextField, Tooltip, IconButton, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import MuiAlert from '@mui/material/Alert';
+// import MuiAlert from '@mui/material/Alert';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 import EventForm from './EventForm'
@@ -22,7 +22,7 @@ import MyLocationIcon from '@mui/icons-material/MyLocation';
 import CloseIcon from '@mui/icons-material/Close';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
-import { handleFindMarker, handleFindTrackingMarker, DisplayMarkers, DisplayTrackingMarkers } from './Markers';
+// import { handleFindMarker, handleFindTrackingMarker, DisplayMarkers, DisplayTrackingMarkers } from './Markers';
 
 import mapStyles from './mapStyles';
 
@@ -41,10 +41,6 @@ export default function TripMap({ match }) {
     const dispatch = useDispatch();
     const tripId = match.params.id;
 
-    const Alert = forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
-    });
-
     const auth = useSelector(state => state.auth);
 
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
@@ -57,7 +53,7 @@ export default function TripMap({ match }) {
 
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
-    const [selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState('');
     const [update, setUpdate] = useState(0);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const mapRef = useRef();
@@ -71,9 +67,7 @@ export default function TripMap({ match }) {
     }, []);
 
     const userLocation = useRef(null);
-    // const [status, setStatus] = useState('initial')
-
-
+    
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
@@ -86,13 +80,11 @@ export default function TripMap({ match }) {
         setOpenAlert(false);
         setOpenNoLocationAlert(false);
         setOpenSnackbar(false)
-        setUpdate(prevUpdate => prevUpdate + Math.random())
+        // setUpdate(prevUpdate => prevUpdate + Math.random())
     }
     //TODO: rename these
     const handleFindMarker = (id) => {
-        // setUpdate(prevUpdate => prevUpdate + Math.random())
         const marker = markers.find(marker => marker.id === id);
-        // ev.stopPropagation()
         setSelected(marker);
     }
     const handleFindTrackingMarker = async (id, username) => {
@@ -160,28 +152,7 @@ export default function TripMap({ match }) {
             },
             () => null
         );
-        // setStatus('watching');
-        // navigator.geolocation.watchPosition(async position => {
-        //     userLocation.current = {
-        //         lat: position.coords.latitude,
-        //         lng: position.coords.longitude
-        //     }
-        //     if (status === 'watching'){
-        //         await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
-        //         await setUpdate(prevUpdate => prevUpdate + Math.random())
-        //     }
-            // let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-
-            // usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
-            // const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
-
-            // await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
-        // }, null, {
-        //     enableHighAccuracy: true,
-        //     timeout: 5000,
-        //     maximumAge: 0
-        // })
-        // setOpenAlert(true);
+        setOpenAlert(true);
     }
 
     function Locate({ panTo }) {
@@ -206,7 +177,7 @@ export default function TripMap({ match }) {
             await setTrackingMarkers([]);
     
             events.forEach(async (event) => {
-                await setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
+                await setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: event.name, location: event.location, url: `/pin-10.svg` }])
             });
             if (trip?.trip.isOpen){
                 users.forEach(async (user) => {
@@ -225,6 +196,8 @@ export default function TripMap({ match }) {
         return <CircularLoading />
     }
 
+    events = events.sort((a,b) => isAfter(a.startTime, b.startTime) ? 1 : -1)
+    
     const lat = events.length === 0 ? 
         +trip.trip.lat
         :
@@ -372,8 +345,11 @@ export default function TripMap({ match }) {
                                     sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
                                     src={user.avatar}
                                     onClick={() => {
-                                        trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username, setSelectedUser, setOpenNoLocationAlert, trackingMarkers, setSelected) : ''
+                                        trip.trip.isOpen ? handleFindTrackingMarker(user.id) : ''
                                     }}
+                                    // onClick={() => {
+                                    //     trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username, setSelectedUser, setOpenNoLocationAlert, trackingMarkers, setSelected) : ''
+                                    // }}
                                 >
                                     {user.firstName[0] + user.lastName[0]}
                                 </Avatar>
@@ -400,7 +376,7 @@ export default function TripMap({ match }) {
                                 border='1px solid lightgrey'
                                 borderRadius='7%'
                                 key={event.id}
-                                onClick={() => handleFindMarker(setSelected, markers, event.id)}
+                                onClick={() => handleFindMarker(event.id)}
                                 justifyContent='center'
                                 alignItems='center'
                                 marginRight={1}
@@ -525,6 +501,17 @@ export default function TripMap({ match }) {
                                         <Typography variant={'subtitle2'}>
                                             {selected.name}
                                         </Typography>
+                                        {
+                                            selected.url ?
+                                                <Typography variant={'caption'}>
+                                                    {selected.location}
+                                                </Typography>
+                                            : 
+                                            <Typography variant={'caption'}>
+                                                        pinned at
+                                                </Typography>
+                                        }
+                                        <br></br>
                                         <Typography variant={'caption'}>
                                             {selected.time}
                                         </Typography>
