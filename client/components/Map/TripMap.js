@@ -197,7 +197,7 @@ export default function TripMap({ match }) {
     }
 
     events = events.sort((a,b) => isAfter(a.startTime, b.startTime) ? 1 : -1)
-    
+
     const lat = events.length === 0 ? 
         +trip.trip.lat
         :
@@ -278,6 +278,7 @@ export default function TripMap({ match }) {
                     <Box
                         display='flex'
                         justifyContent='center'
+                        flexWrap='wrap'
                     >
                         <Box marginRight={3}>
                             <Locate panTo={panTo} />
@@ -294,28 +295,32 @@ export default function TripMap({ match }) {
                             </Button>
                         </Box>
                         <Box >
-                            <Tooltip title='Refresh Markers'>
+                            {/* <Tooltip title='Refresh Event Markers'> */}
                                 <Button
                                     startIcon={<RefreshIcon />}
-                                    variant='contained'
+                                    variant='outlined'
                                     color='primary'
                                     size='small'
                                     onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
-                                />
-                            </Tooltip>
+                                >
+                                    Refresh Event Markers
+                                </Button>
+                            {/* </Tooltip> */}
                         </Box>
                     </Box>
                     :
                     <Box textAlign='center'>
-                        <Tooltip title='Refresh Markers'>
+                        {/* <Tooltip title='Refresh Markers'> */}
                             <Button
                                 startIcon={<RefreshIcon />}
-                                variant='contained'
+                                variant='outlined'
                                 color='primary'
                                 size='small'
                                 onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
-                            />
-                        </Tooltip>
+                            >
+                                Refresh Event Markers
+                            </Button>
+                        {/* </Tooltip> */}
                     </Box>
             }
 

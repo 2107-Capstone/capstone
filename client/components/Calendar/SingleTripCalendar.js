@@ -41,8 +41,7 @@ const SingleTripCalendar = ({ match }) => {
             <CircularLoading />
             )
         }
-//TODO: have event info refresh on edit
-//TODO: not be able to edit Trip from here
+//TODO: edit trip from here
     ///////////// TRIP ////////////////
     // trip = trip.trip;
     // const calendarTrip = { isTrip: true, id: trip.id, tripId: trip.id, name: trip.name, description: trip.description, location: trip.location, title: `${trip.name} - ${trip.location}`, start: new Date(trip.startTime), end: new Date(trip.endTime) } 
@@ -101,7 +100,7 @@ const SingleTripCalendar = ({ match }) => {
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: 600 }}
-                defaultDate={new Date()}
+                defaultDate={calendarTrip.startTime}
                 showMultiDayTimes
                 onSelectEvent={event => handleSelect(event)}
             />
