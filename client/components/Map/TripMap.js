@@ -480,21 +480,21 @@ export default function TripMap({ match }) {
                                         marginBottom={.5}
                                         marginLeft={.5}
                                     >
-                                        <Typography variant={'subtitle2'}>
+                                        <Typography variant={'subtitle2'} color={'text.dark.primary'}>
                                             {selected.name}
                                         </Typography>
                                         {
                                             selected.url ?
-                                                <Typography variant={'caption'}>
+                                                <Typography variant={'caption'} color={'text.dark.primary'}>
                                                     {selected.location}
                                                 </Typography>
                                             : 
-                                            <Typography variant={'caption'}>
+                                            <Typography variant={'caption'} color={'text.dark.secondary'}>
                                                         pinned at
                                                 </Typography>
                                         }
                                         <br></br>
-                                        <Typography variant={'caption'}>
+                                        <Typography variant={'caption'} color={'text.dark.secondary'}>
                                             {selected.time}
                                         </Typography>
                                     </Box>
