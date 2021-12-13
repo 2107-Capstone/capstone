@@ -1,49 +1,35 @@
 import React, { useEffect, useState, useRef, forwardRef, useCallback } from 'react'
-import { connect, useSelector, useDispatch } from 'react-redux'
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
+import { updateUser, deleteEvent } from '../../store';
 import { parseISO, format, isAfter } from 'date-fns';
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
-import { Alert, Box, Grid, Button, TextField, Tooltip, IconButton, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
-import Avatar from '@mui/material/Avatar';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-// import MuiAlert from '@mui/material/Alert';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import AddAlarmIcon from '@mui/icons-material/AddAlarm';
+////////////////// COMPONENTS /////////////////
+import {TripTitle} from '../Trip/TripComponents';
 import EventForm from './EventForm'
 import CircularLoading from '../Loading/CircularLoading'
-import { updateUser, deleteEvent, getTrips, getEvents } from '../../store';
-import PersonPinIcon from '@mui/icons-material/PersonPin';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import CardTravelIcon from '@mui/icons-material/CardTravel';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
-import CloseIcon from '@mui/icons-material/Close';
-import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
-import {TripTitle} from '../Trip/TripComponents';
-// import { handleFindMarker, handleFindTrackingMarker, DisplayMarkers, DisplayTrackingMarkers } from './Markers';
 
 import mapStyles from './mapStyles';
 
-const mapContainerStyle = {
-    height: "50vh",
-};
+////////////////// MATERIAL UI /////////////////
+import { Alert, Box, Button, IconButton, Typography, Dialog, Snackbar } from '@mui/material'
+import Avatar from '@mui/material/Avatar';
 
-const options = {
-    styles: mapStyles,
-    disableDefaultUI: true,
-    zoomControl: true,
-};
-const tripZoom = 12;
+////////////////// MATERIAL ICONS /////////////////
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
+import RefreshIcon from '@mui/icons-material/Refresh';
+
 
 export default function TripMap({ match }) {
     const dispatch = useDispatch();
     const tripId = match.params.id;
-
+    
     const auth = useSelector(state => state.auth);
-
+    
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
     let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
     let users = useSelector(state => state.users.filter(
@@ -51,6 +37,18 @@ export default function TripMap({ match }) {
              if (user.userTrips.filter(userTrip => (userTrip.tripId === tripId)).length > 0) return true;
         }
     ));
+    
+    const mapContainerStyle = {
+        height: "50vh",
+    };
+    
+    const options = {
+        styles: mapStyles,
+        disableDefaultUI: true,
+        zoomControl: true,
+    };
+
+    const tripZoom = 12;
 
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
@@ -81,7 +79,6 @@ export default function TripMap({ match }) {
         setOpenAlert(false);
         setOpenNoLocationAlert(false);
         setOpenSnackbar(false)
-        // setUpdate(prevUpdate => prevUpdate + Math.random())
     }
     //TODO: rename these
     const handleFindMarker = (id) => {
@@ -89,9 +86,7 @@ export default function TripMap({ match }) {
         setSelected(marker);
     }
     const handleFindTrackingMarker = async (id, username) => {
-        // setUpdate(prevUpdate => prevUpdate + Math.random())
         const trackingMarker = trackingMarkers.find(marker => marker.id === id);
-        // ev.stopPropagation()
         if (trackingMarker) {
             setSelected(trackingMarker)
         } else {
@@ -164,7 +159,6 @@ export default function TripMap({ match }) {
                 variant='outlined'
                 className="locate"
                 size='small'
-                //TODO: USE WATCH POSITION AND SET TIMEOUT LATER TO CONTINUALLY UPDATE POSITION
                 onClick={handleLocate}
             >
                 PIN LOCATION
@@ -188,9 +182,7 @@ export default function TripMap({ match }) {
                 })
             }
         }
-        // console.log(status)
         createAllMarkers();
-        // () => setStatus('initial')
     }, [tripId, update])
 
     if (!trip || !events || !users) {
