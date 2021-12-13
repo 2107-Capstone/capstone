@@ -19,7 +19,6 @@ const Home = () => {
   const dataLen = data.length;
   const references = new Array(dataLen + 1).fill('').map(_ => useInView({
     triggerOnce: true,
-    // rootMargin: '-250px 0px',
     // threshold: 1
   })
   )
