@@ -13,15 +13,18 @@ import { overlappingCircles } from 'hero-patterns'
 
 /////// Check if element is in view //////////////////
 import { useInView } from 'react-intersection-observer';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
   const dataLen = data.length;
-  const references = new Array(dataLen).fill('').map(_ => useInView({
+  const references = new Array(dataLen + 1).fill('').map(_ => useInView({
     triggerOnce: true,
     // rootMargin: '-250px 0px',
     // threshold: 1
   })
   )
+
+  const user = useSelector(state => state.auth)
 
   useEffect(() => {
     window.onbeforeunload = function () {
@@ -71,21 +74,35 @@ const Home = () => {
                       {info.description}
                     </Typography>
                   </Box>
-                  {info.image ? (
-                    <Box>
-                      <img src={info.image} height={530} />
-                    </Box>
-                  ) : (
-                    <Box>
-                      <Button color='secondary' variant='contained' component={Link} to='/signup'>
-                        {info.buttonTitle}
-                      </Button>
-                    </Box>
-                  )}
+                  <Box>
+                    <img src={info.image} height={530} />
+                  </Box>
                 </Box>
               </Grid>
             </Zoom>
           ))
+        }
+        {!user.id && (
+          <Zoom in={references[dataLen - 1][1]} timeout={1200}>
+            <Grid item xs={12} md={6} >
+              <Box ref={references[dataLen - 1][0]} sx={{ minHeight: 700, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                <Box>
+                  <Typography variant='h5' align='center'>
+                    Sign Up
+                  </Typography>
+                  <Typography align='center' gutterBottom>
+                    Are you ready to take your trip to the next level?
+                  </Typography>
+                </Box>
+                <Box>
+                  <Button color='secondary' variant='contained' component={Link} to='/signup'>
+                    Sing Up
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+          </Zoom>
+        )
         }
       </Grid >
     </>
