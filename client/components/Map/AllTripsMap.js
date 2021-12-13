@@ -241,7 +241,8 @@ export default function AllTripsMap() {
                                         <Button 
                                             component={Link}
                                             to={`/trips/${trip.tripId}`}
-                                            variant='outlined'
+                                            variant='contained'
+                                            color='secondary'
                                         >
                                         
                                             {trip.trip.name}
@@ -263,14 +264,14 @@ export default function AllTripsMap() {
                                                                 <Typography gutterBottom color='text.primary' variant="subtitle1">
                                                                     {event.name} - {event.location}
                                                                 </Typography>
-                                                                <Divider sx={{color: 'text.secondary', mt: 0}}/>
-                                                                <Typography variant='subtitle2' color='text.primary' gutterBottom sx={{fontStyle: 'italic'}}>
-                                                                    {event.description}
-                                                                </Typography>
-                                                                <Divider style={{color: 'text.secondary', mt: 0}}/>
                                                                 <Typography color='text.secondary' variant="caption" >
                                                                     {format(parseISO(event.startTime), 'Pp')}
                                                                 </Typography>
+                                                                <Divider sx={{color: 'text.secondary'}}/>
+                                                                <Typography variant='subtitle2' color='text.primary'  sx={{mt: 1, fontStyle: 'italic'}}>
+                                                                    {event.description}
+                                                                </Typography>
+                                                                
                                                             </Box>
                                                             {/* {
                                                             trip.trip.isOpen ? 

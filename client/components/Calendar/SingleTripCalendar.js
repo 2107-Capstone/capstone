@@ -88,11 +88,12 @@ const SingleTripCalendar = ({ match }) => {
             }
             <Calendar
                 // popup
-                // views={{
-                //     month: true,
-                //     week: true,
+                views={{
+                    month: true,
+                    // week: true,
+                    agenda: true
 
-                // }}
+                }}
                 // selectable
                 localizer={localizer}
                 events={[calendarTrip, ...calendarEvents]}
