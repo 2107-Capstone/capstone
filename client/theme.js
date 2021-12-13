@@ -37,12 +37,12 @@ const theme = createTheme({
         },
         text: {
             light: {
-                primary: "#000000",
-                secondary: '#908D8D'
+                primary: "#FFFFFF",
+                secondary: '#CECECE'
             },
             dark: {
-                primary: '#FFFFFF',
-                secondary: '#CECECE'
+                primary: '#000000',
+                secondary: '#908D8D'
             }
         }
     },

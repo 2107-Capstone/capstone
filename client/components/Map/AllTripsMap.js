@@ -23,7 +23,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CloseIcon from '@mui/icons-material/Close';
 
 import mapStyles from './mapStyles';
-
+import theme from '../../theme';
 
 export default function AllTripsMap() {
     const dispatch = useDispatch();
@@ -77,8 +77,11 @@ export default function AllTripsMap() {
         setMarkers(() => []);
         trips.forEach((trip, idx) => {
             trip.trip.events.map(event => {
+                trip.color = idx > 10 ? colors[idx % 10] : colors[idx]
+                event.color = trip.color
                 setMarkers(prevMarkers => [...prevMarkers,
                 {
+                    color: trip.color,
                     time: format(parseISO(event.startTime), 'Pp'),
                     key: event.id,
                     id: event.id,
@@ -89,7 +92,6 @@ export default function AllTripsMap() {
                     location: event.location,
                     url: idx > 10 ? `/pin-${idx % 10}.svg` : `/pin-${idx}.svg`
                 }]);
-                trip.color = idx > 10 ? colors[idx % 10] : colors[idx]
             })
         });
         
@@ -172,7 +174,7 @@ export default function AllTripsMap() {
     const lng = +center.lng;
     console.log(eventToEdit)
     console.log(selectedTrip)
-    
+    console.log('selected, ', selected)
     return (
         <>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
@@ -267,7 +269,7 @@ export default function AllTripsMap() {
                                                                 <Typography color='text.secondary' variant="caption" >
                                                                     {format(parseISO(event.startTime), 'Pp')}
                                                                 </Typography>
-                                                                <Divider sx={{color: 'text.secondary'}}/>
+                                                                <Divider color={event.color}/>
                                                                 <Typography variant='subtitle2' color='text.primary'  sx={{mt: 1, fontStyle: 'italic'}}>
                                                                     {event.description}
                                                                 </Typography>
@@ -383,14 +385,14 @@ export default function AllTripsMap() {
                                         }}
                                     >
                                         <div style={{ margin: '0 1rem .5rem 1rem' }}>
-                                            <Typography gutterBottom variant={'subtitle1'} color='text.primary'>
+                                            <Typography gutterBottom variant={'subtitle1'} color={'text.dark.primary'}>
                                                 {selected.trip}
                                             </Typography>
-                                            <Divider sx={{color: trip.color}}/>
-                                            <Typography variant={'subtitle2'} color='text.primary'>
+                                            <Divider color={selected.color}/>
+                                            <Typography variant={'subtitle2'} color={'text.dark.primary'}>
                                                 {selected.name}
                                             </Typography>
-                                            <Typography variant={'caption'} color='text.secondary'>
+                                            <Typography variant={'caption'} color={'text.dark.secondary'}>
                                                 {selected.time}
                                             </Typography>
                                         </div>
