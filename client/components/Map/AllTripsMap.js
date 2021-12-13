@@ -217,12 +217,12 @@ export default function AllTripsMap() {
                 </Button>
             </Box>
             <Grid container columnSpacing={2} rowSpacing={2} >
-                <Grid item xs={12} >
-                    {/* <Box style={{margin: 1}}> */}
+                <Grid item xs={12} sx={{ maxHeight: 400, overflow: 'auto' }}>
+                    <Box >
                     {
                         trips.map(trip => (
                             <Box display='flex' flexWrap='wrap' key={trip.id}>
-                                <Accordion sx={{ margin: 1, minWidth: '100%' }} 
+                                <Accordion sx={{ margin: 1, minWidth: '100%'}} 
                                     expanded={expanded === trip.id}
                                     onChange={handleAccordionChange(trip.id)}
                                 >
@@ -247,7 +247,7 @@ export default function AllTripsMap() {
                                             {trip.trip.name}
                                         </Button>
                                     </AccordionSummary>
-                                    <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
+                                    <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
                                         {
                                             trip.trip.events.sort((a,b) => isAfter(new Date(a.startTime),new Date(b.startTime)) ? 1 : -1).map(event => (
                                                 <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, pb: 0}}
@@ -351,6 +351,7 @@ export default function AllTripsMap() {
                             </Box>
                         ))
                     }
+                    </Box>
                 </Grid>
                 {/* <Box style={{ margin: 1}}> */}
                 <Grid item xs={12} >
