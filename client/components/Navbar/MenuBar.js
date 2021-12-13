@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -21,7 +21,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 // import LogoIcon from '/public/tripIcon.svg'
 import { getUserTrips } from '../../store/usertrips';
-
 
 const MenuBar = (props) => {
     const { mobileOpen, handleDrawerToggle, drawerWidth } = props
