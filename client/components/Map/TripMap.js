@@ -369,18 +369,18 @@ export default function TripMap({ match }) {
                                     <Typography
                                         sx={{ m: 0 }}
                                         variant='subtitle2'
-                                        color={'text.dark.primary'}
+                                        color='text.light.primary'
                                     >
                                         {event.name}
                                     </Typography>
                                     <Typography
-                                        color={'text.dark.secondary'}variant="caption"
+                                        color='text.dark.secondary' variant="caption"
                                         sx={{ m: 0 }}
                                     >
                                         {event.description}
                                     </Typography>
                                     <Typography
-                                        color={'text.dark.secondary'}variant="caption"
+                                        color='text.dark.secondary' variant="caption"
                                         sx={{ m: 0 }}
                                     >
                                         {format(parseISO(event.startTime), 'P')}
@@ -481,25 +481,25 @@ export default function TripMap({ match }) {
                                         marginBottom={.5}
                                         marginLeft={.5}
                                     >
-                                        <Typography variant={'subtitle2'}
-                                        color={'text.dark.primary'}
+                                        <Typography variant='subtitle2'
+                                        color='text.dark.primary'
                                         >
                                             {selected.name}
                                         </Typography>
                                         {
                                             selected.url ?
-                                                <Typography variant={'caption'}
-                                                color={'text.dark.primary'}
+                                                <Typography variant='caption'
+                                                color='text.dark.primary'
                                                 >
                                                     {selected.location}
                                                 </Typography>
                                             : 
-                                            <Typography variant={'caption'} color={'text.dark.secondary'}>
+                                            <Typography variant='caption' color='text.dark.secondary'>
                                                         pinned at
                                                 </Typography>
                                         }
                                         <br></br>
-                                        <Typography variant={'caption'} color={'text.dark.secondary'}>
+                                        <Typography variant='caption' color='text.dark.secondary'>
                                             {selected.time}
                                         </Typography>
                                     </Box>
