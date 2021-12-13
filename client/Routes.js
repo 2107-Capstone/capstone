@@ -82,7 +82,9 @@ class Routes extends Component {
                 <Route exact path="/calendar" component={TripCalendar} />
                 <Route exact path="/notifications" component={Notifications} />
                 <Route exact path="/settings" component={Settings} />
-                <Route exact path="/settings/password" component={Password} />
+                <Route exact path="/settings/password" render={(props) => (
+                  <Password {...props} history={history} />
+                )}/>
                 <Route exact path="/settings/authavatar" component={AuthAvatar} />
                 <Route exact path="/admin/admintrips" component={AdminAllTrips} />
                 <Route exact path="/admin/admintrips/:id" component={AdminTrip} />

@@ -40,6 +40,8 @@ export const updateUser = (user) => {
      }
    });
     dispatch(_updateUser(updated));
+    setTimeout(() => history.push('/settings'), 2000)
+    
   };
 }
 /**
