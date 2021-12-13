@@ -1,13 +1,10 @@
 const router = require('express').Router()
+const isLoggedIn = require('../middleware/isLoggedIn');
 const { models: { User, UserDebt, Trip } } = require('../db')
 const { Op } = require("sequelize")
 module.exports = router
 
 router.get('/', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
@@ -36,44 +33,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-// router.get('/:tripId', async (req, res, next) => {
-//   if (req.headers.authorization === 'null') {
-//     console.log('YOU SHALL NOT PASS!')
-//     return res.json([])
-//   }
-//   try {
-//     const user = await User.findByToken(req.headers.authorization)
-//     if (user) {
-//       const tripDebts = await UserDebt.findAll({
-//         where: {
-//           tripId: req.params.tripId
-//         },
-//         include: [
-//           {
-//             model: User, as: 'payor', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
-//           },
-//           {
-//             model: User, as: 'payee', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
-//           },
-//           {
-//             model: Trip
-//           },
-//         ]
-//       })
-//       res.json(tripDebts)
-//     } else {
-//       res.send('No current user found via token')
-//     }
-//   } catch (err) {
-//     next(err)
-//   }
-// })
-
-router.post('/', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.post('/', isLoggedIn, async (req, res, next) => {
   try {
     const { userDebt } = req.body
     const created = await UserDebt.create(userDebt)
@@ -100,12 +60,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.put('/:userDebtId', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
-
+router.put('/:userDebtId', isLoggedIn, async (req, res, next) => {
   try {
     let userDebt = await UserDebt.findByPk(req.params.userDebtId)
     await userDebt.update({ ...userDebt, status: 'paid' })

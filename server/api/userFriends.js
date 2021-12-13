@@ -1,14 +1,10 @@
 const router = require('express').Router()
+const isLoggedIn = require('../middleware/isLoggedIn');
 const { models: { User, UserFriend }} = require('../db')
 const { Op } = require("sequelize")
 module.exports = router
 
-router.get('/', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
-
+router.get('/', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
@@ -34,11 +30,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:userFriendId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.get('/:userFriendId', isLoggedIn, async (req, res, next) => {
   try {
     const userFriend = await UserFriend.findByPk(req.params.userFriendId)
     res.json(userFriend)
@@ -47,11 +39,7 @@ router.get('/:userFriendId', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.post('/', isLoggedIn, async (req, res, next) => {
   try {
     const userFriend = await UserFriend.create(req.body)
     res.json(userFriend)
@@ -60,11 +48,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.put('/:userFriendId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.put('/:userFriendId', isLoggedIn, async (req, res, next) => {
   const { status } = req.body
   try {
     const userFriend = await UserFriend.findByPk(req.params.userFriendId)
@@ -75,11 +59,7 @@ router.put('/:userFriendId', async (req, res, next) => {
   }
 })
 
-router.delete('/:userFriendId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.delete('/:userFriendId', isLoggedIn, async (req, res, next) => {
   try {
     const userFriend = await UserFriend.findByPk(req.params.userFriendId)
     await userFriend.destroy()

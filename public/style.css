@@ -8,12 +8,12 @@
 }
 .headingButton:hover {
  color: white;
- transform: scale(1.1);
+ transform: scale(1.05);
  border-radius: 5px;
 }
+
 .linkToTrip:hover {
- transform: scale(1.1);
- color: rgb(61, 220, 231);
+ transform: scale(1.05);
 }
 
 @media screen and (max-width: 575px) {

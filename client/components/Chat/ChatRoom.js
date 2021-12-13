@@ -4,6 +4,7 @@ import { format, formatISO, parseISO, isAfter } from "date-fns";
 import { Link } from "react-router-dom";
 
 import { createMessage } from "../../store";
+import {TripTitle, UserAvatar} from '../Trip/TripComponents';
 // import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import CircularLoading from '../Loading/CircularLoading'
@@ -57,14 +58,15 @@ const ChatRoom = ({match}) => {
               {format(parseISO(message.dateSent), 'Pp')}
             </Typography>
           <Box display='flex' alignItems='center'>
-            <Box display='flex' flexDirection='column' alignItems='center'>
+            <UserAvatar user={message.sentBy} />
+            {/* <Box display='flex' flexDirection='column' alignItems='center'>
               <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0}} src={message.sentBy.avatar} >
                   {message.sentBy.firstName[0]+message.sentBy.lastName[0]}
               </Avatar>
               <Typography variant='caption'>
                 {message.sentBy.username}
               </Typography> 
-            </Box>
+            </Box> */}
             <Typography marginLeft={1}>
               {message.content}
             </Typography> 
@@ -85,14 +87,7 @@ const ChatRoom = ({match}) => {
               ({format(Date.now(), 'Pp')})
             </Typography>
           <Box display='flex' alignItems='center'>
-            <Box display='flex' flexDirection='column' alignItems='center'>
-              <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.avatar} >
-                  {message.firstName[0]+message.lastName[0]}
-              </Avatar>
-              <Typography variant='caption'>
-                {message.senderName}
-              </Typography> 
-            </Box>
+            <UserAvatar user={message} />
             <Typography>
               {message.content}
             </Typography> 
@@ -118,18 +113,7 @@ const ChatRoom = ({match}) => {
 
   return (
     <>
-    <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
-        <CardTravelIcon fontSize='medium' />
-        <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
-          <Typography variant='h5'>
-            &nbsp;{trip.trip.name}
-            {
-                trip.trip.isOpen ? "" :
-                    " (Closed)"
-            }
-          </Typography>
-        </Box>
-    </Box>
+    <TripTitle trip={trip} />
     <div style={styles.chatRoomContainer}>
       {
         !trip ? <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
@@ -198,7 +182,7 @@ const styles = {
     overflow: 'auto',
     border: '1px solid black',
     borderRadius: '7px 7px 0 0',
-    borderColor: '#9a9a9a'
+    borderColor: theme.palette.primary.main
   },
 
   messagesList: {
@@ -207,12 +191,13 @@ const styles = {
   },
 
   newMessageInputField: {
-    height: '200px',
+    height: '100px',
     maxHeight: '50%',
-    fontSize: '20px',
+    fontSize: '16px',
     padding: '8px 12px',
     resize: 'none',
-    borderColor: '#9a9a9a',
+    borderColor: theme.palette.primary.main,
+    borderRadius: '0 0 7px 7px',
     fontFamily: 'verdana'
   },
 
@@ -222,8 +207,8 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
     backgroundColor: theme.palette.primary.main,
+    color: theme.palette.text.primary,
     marginLeft: 'auto'
   },
   messageItemMyMessageOld: {
@@ -232,8 +217,9 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
     backgroundColor: theme.palette.primary.main,
+    color: theme.palette.text.secondary,
+    opacity: .85,
     marginLeft: 'auto',
     fontStyle: 'italic'
   },
@@ -243,7 +229,7 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
+    color: theme.palette.text.primary,
     backgroundColor: theme.palette.secondary.main,
     marginRight: 'auto'
   },
@@ -253,8 +239,9 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
+    color: theme.palette.text.secondary,
     backgroundColor: theme.palette.secondary.main,
+    opacity: .85,
     marginRight: 'auto',
     fontStyle: 'italic'
   },

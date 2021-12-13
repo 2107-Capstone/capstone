@@ -6,7 +6,8 @@ import moment from 'moment'
 const localizer = momentLocalizer(moment)
 
 import EventForm from '../Map/EventForm';
-import { updateUser, deleteEvent, editEvent } from '../../store';
+import AddTripForm from '../Trips/Form/AddTripForm';
+import {TripTitle} from '../Trip/TripComponents';
 ////////// MUI ///////////////
 import { Box, Button, Dialog, Typography } from '@mui/material'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
@@ -23,16 +24,21 @@ const SingleTripCalendar = ({ match }) => {
     let events = useSelector(state => state.events.filter(event => event.tripId === match.params.id));
     ////////// DIALOG TO OPEN EVENT FORM ////////////////
     const [open, setOpen] = useState(false);
+    const [form, setForm] = useState('');
     const [tripEvent, setTripEvent] = useState({});
     
     const handleSelect = (event) => {
         if (!event.isTrip && trip.trip.isOpen){ //event is actual event, not trip
+            setForm('event')
             setTripEvent(() => event);
-            setOpen(() => true);
+        } else if (trip.trip.isOpen){
+            setForm('trip')
         }
+        setOpen(() => true);
     }
     const handleClose = () => {
         setOpen(false);
+        setForm('');
         setTripEvent({})
     }
     
@@ -41,8 +47,7 @@ const SingleTripCalendar = ({ match }) => {
             <CircularLoading />
             )
         }
-//TODO: have event info refresh on edit
-//TODO: not be able to edit Trip from here
+//TODO: edit trip from here
     ///////////// TRIP ////////////////
     // trip = trip.trip;
     // const calendarTrip = { isTrip: true, id: trip.id, tripId: trip.id, name: trip.name, description: trip.description, location: trip.location, title: `${trip.name} - ${trip.location}`, start: new Date(trip.startTime), end: new Date(trip.endTime) } 
@@ -65,26 +70,20 @@ const SingleTripCalendar = ({ match }) => {
 
     return (
         <div>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open && form === 'event'} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} event={tripEvent} />
             </Dialog>
-            <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
-                <CardTravelIcon fontSize='medium' />
-                <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
-                    <Typography variant='h5'>
-                        &nbsp;{trip.trip.name}
-                        {
-                            trip.trip.isOpen ? "" :
-                                " (Closed)"
-                        }
-                    </Typography>
-                </Box>
-            </Box>
+            <Dialog open={open && form === 'trip'} onClose={handleClose}>
+                <AddTripForm trip={trip} handleClose={handleClose} />
+            </Dialog>
+            <TripTitle trip={trip} />
             {
                 trip.trip.isOpen ?
+                <Box textAlign='center'>
                     <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
                         Add Event
                     </Button>
+                </Box>
                 : ''
             }
             <Calendar
@@ -101,7 +100,7 @@ const SingleTripCalendar = ({ match }) => {
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: 600 }}
-                defaultDate={new Date()}
+                defaultDate={calendarTrip.startTime}
                 showMultiDayTimes
                 onSelectEvent={event => handleSelect(event)}
             />

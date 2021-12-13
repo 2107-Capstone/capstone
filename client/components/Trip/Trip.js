@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 /////////////// STORE /////////////////
@@ -7,7 +7,6 @@ import { editTrip, getTrips, addUserDebt } from '../../store'
 
 /////////////// COMPONENTS /////////////////
 import CircularLoading from '../Loading/CircularLoading'
-import PieChart from '../Expenses/PieChart'
 import EventForm from '../Map/EventForm'
 import EventsTable from '../Events/EventsTable'
 import ExpensesTable from '../Expenses/ExpensesTable'
@@ -17,41 +16,31 @@ import InviteToTrip from './Form/InviteToTrip'
 import TripDebts from '../Expenses/TripDebts'
 import TripSpeedDial from './TripSpeedDial'
 import AddTripForm from '../Trips/Form/AddTripForm'
+import {TripTitle, UserAvatar, Users} from './TripComponents';
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 import Dialog from '@mui/material/Dialog';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Snackbar from '@mui/material/Snackbar';
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 
 /////////////// ICONS /////////////////
-import AddIcon from '@mui/icons-material/Add';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import CardTravelIcon from '@mui/icons-material/CardTravel';
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 import DateRangeIcon from '@mui/icons-material/DateRange';
-import EventIcon from '@mui/icons-material/Event';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MapIcon from '@mui/icons-material/Map';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PaidIcon from '@mui/icons-material/Paid';
 import PeopleIcon from '@mui/icons-material/People'
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import WorkOffOutlinedIcon from '@mui/icons-material/WorkOffOutlined';
 
-import { format, formatISO, parseISO, isAfter, isBefore } from "date-fns";
+import { isAfter, isBefore } from "date-fns";
 import theme from '../../theme'
 
 import { settleUp } from '../Expenses/SettleUp'
@@ -62,11 +51,15 @@ const Trip = (props) => {
     const dispatch = useDispatch();
     
     const { auth, categories } = useSelector(state => state);
-    
+
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
     const events = useSelector(state => state.events.filter(event => event.tripId === id));
     const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
     const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
+    const users = useSelector(state => state.users.filter(user => {
+        if(user.userTrips.find(userTrip => userTrip.tripId === id)) return true;
+    }))
+    const tripDebts = useSelector(state => state.userDebts.filter(userDebt => userDebt.tripId === id))
 
     useEffect(async () => {
         await dispatch(getTrips())
@@ -93,14 +86,16 @@ const Trip = (props) => {
     if (!trip || !events || !messages || !expenses) {
         return <CircularLoading />
     }
-    
-    const users = trip.trip.userTrips;
-    const tripDebts = trip.trip.userDebts;
+    // console.log(users)
+    // const users = trip.trip.userTrips;
+    // const tripDebts = trip.trip.userDebts;
     
     const handleCloseTrip = async () => {
         try {
             await dispatch(editTrip({ ...trip}))
+            
             const debts = settleUp(expenses, users)
+            console.log('debts', debts)
             if (debts) {
                 debts.forEach(async(debt) => {
                     await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[1], payorId: debt[0], amount: +debt[2], status: 'pending'}))
@@ -111,7 +106,6 @@ const Trip = (props) => {
         }
     }
 
-    
     const totalExpenses = expenses.reduce((total, expense) => {
         return total + +expense.amount
     }, 0);
@@ -122,7 +116,6 @@ const Trip = (props) => {
 
     let recentEvents = events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
     recentEvents.length > 5 ? recentEvents.length = 5 : ''
-
 
     let recentMessages = messages.sort((a, b) => isBefore(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     recentMessages.length > 5 ? recentMessages.length = 5 : ''
@@ -178,28 +171,12 @@ const Trip = (props) => {
             <Grid container rowSpacing={2} columnSpacing={2} >
                 <Grid item xs={12}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
-                        <Box sx={{ display: 'flex', alignSelf: 'center', margin: 2, marginBottom: 0 }}>
-                            <CardTravelIcon fontSize='medium' />
-                            <Typography variant='h5'>
-                                &nbsp;{trip.trip.name}
-                                {
-                                    trip.trip.isOpen ? "" :
-                                        " (Closed)"
-                                }
-                            </Typography>
-                        </Box>
+                        <TripTitle trip={trip} type={'main'} />
                         <Box display='flex' justifyContent='center' alignItems='center'>
                             <Typography >
                                 Trip Creator:
                             </Typography>
-                            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                                <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={trip.trip.user.avatar} >
-                                    {trip.trip.user.firstName[0] + trip.trip.user.lastName[0]}
-                                </Avatar>
-                                <Typography variant='caption'>
-                                    {trip.trip.user.username}
-                                </Typography >
-                            </Box>
+                            <UserAvatar user={trip.trip.user} />
                             <Box>
                                 {
                                     trip.trip.isOpen ? 
@@ -212,9 +189,14 @@ const Trip = (props) => {
                                             leaveTouchDelay={1000}
                                         >
                                             <Box sx={{ml: 2, mb: 1}}>
-                                                <Button size='small' startIcon={<WorkOffOutlinedIcon />} variant='outlined' onClick={() => setOpenSnackbar(true)} disabled={trip.trip.user.id !== auth.id}>
-                                                    Close Trip
-                                                </Button>
+                                                <Chip 
+                                                    size='small' 
+                                                    icon={<WorkOffOutlinedIcon fontSize='small' />} variant='outlined' 
+                                                    label='Close trip' 
+                                                    color='warning' 
+                                                    onClick={() => setOpenSnackbar(true)} 
+                                                    disabled={trip.trip.user.id !== auth.id}
+                                                />
                                             </Box>
                                         </Tooltip>
                                         <Tooltip 
@@ -225,14 +207,17 @@ const Trip = (props) => {
                                             leaveTouchDelay={1000}
                                         >
                                             <Box sx={{ml: 2}}>
-                                                <Button size='small' startIcon={<ModeEditIcon />} variant='outlined' onClick={() => {
-                                                    setForm('trip');
-                                                    setOpen(true)
-                                                }} 
-                                                disabled={trip.trip.user.id !== auth.id}
-                                                >
-                                                    Edit Trip
-                                                </Button>
+                                                <Chip 
+                                                    size='small' 
+                                                    icon={<ModeEditIcon fontSize='small'/>} color='warning' 
+                                                    label="Edit trip" 
+                                                    variant='outlined' 
+                                                    onClick={() => {
+                                                        setForm('trip');
+                                                        setOpen(true)
+                                                    }} 
+                                                    disabled={trip.trip.user.id !== auth.id}
+                                                />
                                             </Box>
                                         </Tooltip>
                                         </>
@@ -272,118 +257,6 @@ const Trip = (props) => {
                     MAP
                 </Button>
             </Box>
-            {/* <Grid container spacing={1} marginBottom={2}>
-                <Box display='flex' justifyContent='space-evenly'>
-                    <Grid item xs={4}  sm={4}>
-                        <Button
-                            component={Link} to={`${trip.tripId}/chat`}
-                            startIcon={<ChatIcon />}
-                            size='small'
-                            color='secondary'
-                            variant='contained'
-                        >
-                            CHAT
-                        </Button>
-                    </Grid>
-                    <Grid item xs={4}  sm={4}>
-                        <Button
-                            component={Link} to={`${trip.tripId}/calendar`}
-                            startIcon={<DateRangeIcon />}
-                            size='small'
-                            color='secondary'
-                            variant='contained'
-                        >
-                            CALENDAR
-                        </Button>
-                    </Grid>
-                    <Grid item xs={4}  sm={4}>
-                        <Button
-                            component={Link} to={`${trip.tripId}/map`}
-                            startIcon={<MapIcon />}
-                            size='small'
-                            color='secondary'
-                            variant='contained'
-                        >
-                            MAP
-                        </Button>
-                    </Grid>
-                    <Grid item xs sm md lg>
-                        <Box >
-                            
-                            <Button
-                                aria-expanded={openMenu ? 'true' : undefined}
-                                variant="contained"
-                                onClick={handleClick}
-                                disabled={!trip.trip.isOpen}
-                                endIcon={<KeyboardArrowDownIcon />}
-                                size='medium'
-                            >
-                                EDIT TRIP
-                            </Button>
-                            <Menu
-                                anchorEl={anchorEl}
-                                open={openMenu}
-                                onClose={handleCloseMenu}
-                            >
-                                <MenuItem>
-                                    <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
-                                        handleCloseMenu();
-                                        setOpen(true);
-                                        setForm('event')
-                                    }} >
-                                        Add Event
-                                    </Button>
-                                </MenuItem>
-                                <Divider sx={{ my: 0.5 }} />
-                                <MenuItem>
-                                    <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
-                                        handleCloseMenu();
-                                        setOpen(true);
-                                        setForm('expense')
-                                    }} >
-                                        Add Expense
-                                    </Button>
-                                </MenuItem>
-                                <Divider sx={{ my: 0.5 }} />
-                                <MenuItem>
-                                    <Button size='small' startIcon={<AddIcon />} variant='contained' onClick={() => {
-                                        handleCloseMenu();
-                                        setOpen(true);
-                                        setForm('invitefriend')
-                                    }} >
-                                        Invite Friend
-                                    </Button>
-                                </MenuItem>
-                                <Divider sx={{ my: 0.5 }} />
-
-                                <MenuItem>
-                                    {
-                                        trip.trip.userId === auth.id ?
-                                            <Button size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained' onClick={handleCloseTrip} >
-                                                Mark Trip as Closed
-                                            </Button>
-                                            : 
-                                            <Tooltip
-                                                title={`Only ${trip.trip.user.username} can close this trip`}
-                                                placement='top'
-                                                enterNextDelay={100}
-                                                enterTouchDelay={300}
-                                                leaveTouchDelay={1000}
-                                            >
-                                                <Box>
-                                                    <Button disabled size='small' startIcon={<AssignmentTurnedInIcon />} variant='contained'>
-                                                        Mark Trip as Closed
-                                                    </Button>
-                                                </Box>
-                                            </Tooltip>
-                                    }
-                                </MenuItem>
-                                <Divider sx={{ my: 0.5 }} />
-                            </Menu>
-                        </Box>
-                    </Grid>
-                </Box>
-            </Grid> */}
 
             <Grid container spacing={2}>
                 {
@@ -411,9 +284,9 @@ const Trip = (props) => {
                     : ''
                 }
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                    <Box style={styles.heading} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/chat`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                            <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }}  component={Link} to={`${trip.tripId}/chat`} startIcon={<OpenInNewIcon />} >
                                 Details
                             </Button>
                         </Box>
@@ -444,9 +317,9 @@ const Trip = (props) => {
                     }
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                    <Box style={styles.heading} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/calendar`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                            <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/calendar`} startIcon={<OpenInNewIcon />} >
                                 Details
                             </Button>
                         </Box>
@@ -478,9 +351,9 @@ const Trip = (props) => {
                 </Grid>
                 
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                    <Box style={styles.heading} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/expenses`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                            <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }}  component={Link} to={`${trip.tripId}/expenses`} startIcon={<OpenInNewIcon />} >
                                 Details
                             </Button>
                         </Box>
@@ -519,31 +392,32 @@ const Trip = (props) => {
                             }
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Box style={styles.heading} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <PeopleIcon fontSize='medium' />
                         <Typography variant='h6'>
                             &nbsp;Trip Friends
                         </Typography>
                     </Box>
-                    <Box display='flex' justifyContent='center' flexWrap='wrap'>
+                    <Users users={users} />
+                    {/* <Box display='flex' justifyContent='center' flexWrap='wrap'>
                         {
-                            trip.trip.userTrips.map(user => (
-                                <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
+                            users.map(user => (
+                                <Box key={user.id} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
                                     sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}
                                 >
                                     <Avatar
                                         sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
-                                        src={user.user.avatar}
+                                        src={user.avatar}
                                     >
-                                        {user.user.firstName[0] + user.user.lastName[0]}
+                                        {user.firstName[0] + user.lastName[0]}
                                     </Avatar>
                                     <Typography variant='caption'>
-                                        {user.user.username}
+                                        {user.username}
                                     </Typography>
                                 </Box>
                             ))
                         }
-                    </Box>
+                    </Box> */}
                 </Grid>
             </Grid>
         </div>
@@ -556,19 +430,28 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.palette.primary.main,
+        // backgroundColor: theme.palette.primary.main,
+        // border: `2px solid ${theme.palette.primary.main}`,
         flexGrow: 1,
-        color: 'white',
+        // color: 'white',
+        borderRadius: 7
+    },
+    heading: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        border: `3px solid ${theme.palette.primary.main}`,
+        flexGrow: 1,
+        // color: 'white',
         borderRadius: 7
     },
     debtHeadingIcon: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.main,
         flexGrow: 1,
         color: 'white',
         borderRadius: 7
     },
-
 }

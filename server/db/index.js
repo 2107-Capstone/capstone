@@ -11,19 +11,8 @@ const Trip = require('./models/Trip')
 const UserTrip = require('./models/UserTrip')
 const UserFriend = require('./models/UserFriend')
 const UserDebt = require('./models/UserDebt')
-// const { debuggerStatement } = require('@babel/types')
-// const { defaultValueSchemable } = require('sequelize/types/lib/utils')
 
-//associations could go here!
-
-// User.belongsToMany(User, {as: "user", foreignKey: "userId", through: "UserFriend"})
-// User.belongsToMany(User, {as: "friend", foreignKey: "friendId", through: "UserFriend"})
-
-// User.belongsToMany(Trip, {as: "user", foreignKey: "userId", through: "UserTrip"})
-// Trip.belongsToMany(User, {as: "trip", foreignKey: "tripId", through: "UserTrip"})
-
-// User.belongsTo(Trip)
-// Trip.hasMany(User)
+//associations
 
 UserFriend.belongsTo(User, { as: 'friend' })
 UserFriend.belongsTo(User, { as: 'user' })
@@ -61,9 +50,6 @@ UserDebt.belongsTo(User, { as: 'payee'})
 User.hasMany(UserDebt)
 UserDebt.belongsTo(Trip)
 Trip.hasMany(UserDebt)
-
-
-
 
 module.exports = {
   db,

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PieChart from "./PieChart";
 import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
-// import SettleUp from './SettleUp';
+import { UserAvatar } from "../Trip/TripComponents";
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";
 
@@ -55,14 +55,7 @@ const ExpensesTable = ({expenses}) => {
                         {row.name}
                     </TableCell>
                     <TableCell align='center'>
-                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.paidBy.avatar} >
-                                {row.paidBy.firstName[0] + row.paidBy.lastName[0]}
-                            </Avatar>
-                            <Typography variant='caption'>
-                                {row.paidBy.username}
-                            </Typography >
-                        </Box>
+                        <UserAvatar user={row.paidBy} />
                     </TableCell>
                 </TableRow>
             ))}
@@ -70,129 +63,7 @@ const ExpensesTable = ({expenses}) => {
         </Table>
     </TableContainer>
     )
-    // return (
-    //     <Container>
-    //         <TableContainer component={Paper} sx={{border: '1px solid darkgrey'}}>
-    //             <Table aria-label="trip expenses table">
-    //                 <TableHead>
-                 
-    //                     <TableRow>
-    //                         <TableCell
-    //                             align="center"
-    //                             sortDirection={orderBy === "description" ? order : false}
-    //                         >
-    //                             <TableSortLabel
-    //                                 active={orderBy === "description"}
-    //                                 direction={orderBy === "description" ? order : "asc"}
-    //                                 onClick={createSortHandler("description")}
-    //                             >
-    //                                 Description
-    //                             </TableSortLabel>
-    //                         </TableCell>
-
-    //                         <TableCell
-    //                             align="center"
-    //                             sortDirection={orderBy === "amount" ? order : false}
-    //                         >
-    //                             <TableSortLabel
-    //                                 active={orderBy === "amount"}
-    //                                 direction={orderBy === "amount" ? order : "asc"}
-    //                                 onClick={createSortHandler("amount")}
-    //                             >
-    //                                 Amount
-    //                             </TableSortLabel>
-    //                         </TableCell>
-
-    //                         <TableCell
-    //                             align="center"
-    //                             sortDirection={orderBy === "category" ? order : false}
-    //                         >
-    //                             <TableSortLabel
-    //                                 active={orderBy === "category"}
-    //                                 direction={orderBy === "category" ? order : "asc"}
-    //                                 onClick={createSortHandler("category")}
-    //                             >
-    //                                 Category
-    //                             </TableSortLabel>
-    //                         </TableCell>
-
-    //                         <TableCell
-    //                             align="center"
-    //                             sortDirection={orderBy === "paidby" ? order : false}
-    //                         >
-    //                             <TableSortLabel
-    //                                 active={orderBy === "paidby"}
-    //                                 direction={orderBy === "paidby" ? order : "asc"}
-    //                                 onClick={createSortHandler("paidby")}
-    //                             >
-    //                                 Paid By
-    //                             </TableSortLabel>
-    //                         </TableCell>
-
-    //                         <TableCell
-    //                             align="center"
-    //                             sortDirection={orderBy === "datepaid" ? order : false}
-    //                         >
-    //                             <TableSortLabel
-    //                                 active={orderBy === "datepaid"}
-    //                                 direction={orderBy === "datepaid" ? order : "asc"}
-    //                                 onClick={createSortHandler("datepaid")}
-    //                             >
-    //                                 Date Paid
-    //                             </TableSortLabel>
-    //                         </TableCell>
-
-    //                     </TableRow>
-    //                 </TableHead>
-    //                 <TableBody>
-    //                     {tableRowData.sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((expense) => (
-    //                         <TableRow key={expense.id}>
-    //                             <TableCell aligna="center"> {expense.description}</TableCell>
-    //                             <TableCell align="center">${expense.amount}</TableCell>
-    //                             <TableCell align="center">{expense.category}</TableCell>
-    //                             <TableCell align="center">{expense.paidby}</TableCell>
-    //                             <TableCell align="center">{format(parseISO(expense.datepaid), 'P')}</TableCell>
-    //                         </TableRow>
-    //                     ))}
-    //                     {emptyRows > 0 && (
-    //                         <TableRow
-    //                             style={{
-    //                                 height: 53 * emptyRows,
-    //                             }}
-    //                         >
-    //                             <TableCell colSpan={5} />
-    //                         </TableRow>
-    //                     )}
-    //                     <TableRow>
-    //                         <TableCell align='right' sx={{fontWeight: 'bold'}}>Total:</TableCell>
-    //                         <TableCell align='center' sx={{fontWeight: 'bold'}}>${tripExpenses.reduce((total, expense) => (total + +expense.amount), 0).toFixed(2)}</TableCell>
-    //                         <TableCell/>
-    //                         <TableCell/>
-    //                         <TableCell/>
-    //                     </TableRow>
-    //                     <TableRow>
-    //                         <TableCell align='right' sx={{fontWeight: 'bold'}}>Each Person Owes:</TableCell>
-    //                         <TableCell align='center' sx={{fontWeight: 'bold'}}>${(tripExpenses.reduce((total, expense) => (total + +expense.amount), 0)/trip.trip.userTrips.length).toFixed(2)}</TableCell>
-    //                         <TableCell/>
-    //                         <TableCell/>
-    //                         <TableCell/>
-    //                     </TableRow>
-    //                     {/* <SettleUp expenses={tripExpenses} users={trip.trip.userTrips} /> */}
-    //                 </TableBody>
-    //             </Table>
-    //         </TableContainer>
-    //         <TablePagination
-    //             rowsPerPageOptions={[5, 10, 25]}
-    //             component="div"
-    //             count={tripExpenses.length}
-    //             rowsPerPage={rowsPerPage}
-    //             page={page}
-    //             onPageChange={handleChangePage}
-    //             onRowsPerPageChange={handleChangeRowsPerPage}
-    //         />
-    //         {/* <PieChart expenses={tripExpenses} users={trip.trip.userTrips} categories={categories}/> */}
-    //     </Container>
-    // )
+    
 }
 
 export default ExpensesTable

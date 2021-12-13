@@ -79,13 +79,15 @@ const EventForm = (props) => {
         }
         return false;
     }
-    const handleSubmit = async () => {
+    const handleSubmit = async (evt) => {
+        evt.preventDefault();
         if (hasErrors()) {
             return
         }
         try {
             if (event.id) {
                 await dispatch(editEvent({ ...inputs, trip, startTime, endTime }))
+                await dispatch(getTrips())
             }
             else {
                 await dispatch(addEvent({ ...inputs, trip, startTime, endTime }))

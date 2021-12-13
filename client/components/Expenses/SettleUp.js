@@ -4,7 +4,8 @@ import DoubleArrowRoundedIcon from '@mui/icons-material/DoubleArrowRounded';
 
 export const settleUp = (expenses, users) => {
 //TODO: rounding error
-
+    console.log(expenses)
+    console.log(users)
     const payments = {};
     const findTotal = (userId) => expenses.reduce((total, expense) => {
         if (expense.paidById === userId) {
@@ -13,7 +14,7 @@ export const settleUp = (expenses, users) => {
         return total;
     }, 0)
 
-    users.forEach(user => payments[user.userId] = findTotal(user.userId));
+    users.forEach(user => payments[user.id] = findTotal(user.id));
     
     const payors = Object.keys(payments);
     const paid = Object.values(payments);
