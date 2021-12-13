@@ -241,7 +241,8 @@ export default function AllTripsMap() {
                                         <Button 
                                             component={Link}
                                             to={`/trips/${trip.tripId}`}
-                                            variant='outlined'
+                                            variant='contained'
+                                            color='secondary'
                                         >
                                         
                                             {trip.trip.name}
@@ -257,17 +258,20 @@ export default function AllTripsMap() {
                                                         <Box 
                                                             display='flex'
                                                             justifyContent='space-between'
+                                                            sx={{backgroundColor: 'inherit'}}
                                                         >
                                                             <Box display='flex' flexDirection='column'>
-                                                                <Typography gutterBottom>
+                                                                <Typography gutterBottom color='text.primary' variant="subtitle1">
                                                                     {event.name} - {event.location}
                                                                 </Typography>
-                                                                <Typography variant='subtitle2' gutterBottom>
-                                                                    {event.description}
-                                                                </Typography>
-                                                                <Typography color="text.secondary" variant="subtitle2" >
+                                                                <Typography color='text.secondary' variant="caption" >
                                                                     {format(parseISO(event.startTime), 'Pp')}
                                                                 </Typography>
+                                                                <Divider sx={{color: 'text.secondary'}}/>
+                                                                <Typography variant='subtitle2' color='text.primary'  sx={{mt: 1, fontStyle: 'italic'}}>
+                                                                    {event.description}
+                                                                </Typography>
+                                                                
                                                             </Box>
                                                             {/* {
                                                             trip.trip.isOpen ? 
@@ -379,14 +383,14 @@ export default function AllTripsMap() {
                                         }}
                                     >
                                         <div style={{ margin: '0 1rem .5rem 1rem' }}>
-                                            <Typography variant={'subtitle1'}>
+                                            <Typography gutterBottom variant={'subtitle1'} color='text.primary'>
                                                 {selected.trip}
                                             </Typography>
-                                            <Divider />
-                                            <Typography variant={'subtitle2'}>
+                                            <Divider sx={{color: trip.color}}/>
+                                            <Typography variant={'subtitle2'} color='text.primary'>
                                                 {selected.name}
                                             </Typography>
-                                            <Typography variant={'caption'}>
+                                            <Typography variant={'caption'} color='text.secondary'>
                                                 {selected.time}
                                             </Typography>
                                         </div>

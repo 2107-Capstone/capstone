@@ -31,12 +31,11 @@ const AdminAllTrips = ({ match }) => {
         setChecked(event.target.checked)
     };
     // const { trips } = useSelector(state => state)
-    let adminTrips = checked ? useSelector(state => state.adminTrips.filter(adminTrip => !adminTrip.isOpen && adminTrip.userTrips[0].tripInvite === 'accepted')) : useSelector(state => state.adminTrips.filter(adminTrip => adminTrip.isOpen && adminTrip.userTrips[0].tripInvite === 'accepted'))
-    adminTrips = adminTrips.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
+    const trips = useSelector(state => state.adminTrips)
 
     const user = useSelector(state => state.auth)
 
-    if (!adminTrips) {
+    if (!Array.isArray(trips)) {
         return (
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
@@ -56,6 +55,10 @@ const AdminAllTrips = ({ match }) => {
             </Box>
         )
     }
+
+    let adminTrips = checked ? trips.filter(adminTrip => !adminTrip.isOpen && adminTrip.userTrips[0].tripInvite === 'accepted') : trips.filter(adminTrip => adminTrip.isOpen && adminTrip.userTrips[0].tripInvite === 'accepted')
+    adminTrips = adminTrips.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
+
 
     return (
         <>

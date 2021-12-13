@@ -19,40 +19,53 @@ export const TripTitle = ({trip, type}) => {
             sx={{ 
                 display: 'flex', 
                 justifyContent: 'center', 
-                alignItems: 'center', 
+                alignItems:'flex-start', 
                 mb: 1,
                 mt: 1 }}
         >
-                <CardTravelIcon fontSize='large' />
+                <CardTravelIcon fontSize='large'/>
                 {
                     type === 'main' ?
                     <Box display='flex' flexDirection='column' alignItems='center'>
-                        <Typography variant='h4'>
-                        &nbsp;{trip.trip.name}
-                            {
-                                trip.trip.isOpen ? "" :
-                                    " (Closed)"
-                            }
-                        </Typography>
-                        <Typography variant='subtitle2'>
+                        <Box display='flex' alignItems='center'>
+                            <Typography variant='h4'>
+                            &nbsp;{trip.trip.name}
+                            </Typography>
+                                {
+                                    trip.trip.isOpen ? "" :
+                                    <Typography variant='h6' display='inline' color='text.secondary'>
+                                        &nbsp;{'(Closed)'}
+                                    </Typography>
+                                }
+                        </Box>
+                        <Typography variant='subtitle2' color='text.secondary'>
                             {format(parseISO(trip.trip.startTime), 'P')} to {format(parseISO(trip.trip.endTime), 'P')}
                         </Typography>
                     </Box>
                     :
-                        <Box
-                            className='linkToTrip' 
-                            sx={{ color: 'inherit' }} 
-                            component={Link} 
-                            to={`/trips/${trip.tripId}`}
-                        >
-                            <Typography variant='h4'>
+                    <Box
+                        className='linkToTrip' 
+                        component={Link} 
+                        to={`/trips/${trip.tripId}`}
+                        sx={{textDecoration: 'none'}}
+                    >
+                        <Box display='flex' flexDirection='column' alignItems='center'>
+                            <Box display='flex' alignItems='center'>
+                                <Typography variant='h4' color='text.primary'>
                                 &nbsp;{trip.trip.name}
-                                {
-                                    trip.trip.isOpen ? "" :
-                                        " (Closed)"
-                                }
+                                </Typography>
+                                    {
+                                        trip.trip.isOpen ? "" :
+                                        <Typography variant='h6' display='inline' color='text.secondary'>
+                                            &nbsp;{'(Closed)'}
+                                        </Typography>
+                                    }
+                            </Box>
+                            <Typography variant='subtitle2' color='text.secondary'>
+                                {format(parseISO(trip.trip.startTime), 'P')} to {format(parseISO(trip.trip.endTime), 'P')}
                             </Typography>
                         </Box>
+                    </Box>
                 }
         </Box>
         
