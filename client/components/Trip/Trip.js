@@ -17,6 +17,7 @@ import InviteToTrip from './Form/InviteToTrip'
 import TripDebts from '../Expenses/TripDebts'
 import TripSpeedDial from './TripSpeedDial'
 import AddTripForm from '../Trips/Form/AddTripForm'
+import TripTitle from './TripTitle';
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -62,7 +63,7 @@ const Trip = (props) => {
     const dispatch = useDispatch();
     
     const { auth, categories } = useSelector(state => state);
-    
+
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
     const events = useSelector(state => state.events.filter(event => event.tripId === id));
     const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
@@ -111,7 +112,6 @@ const Trip = (props) => {
         }
     }
 
-    
     const totalExpenses = expenses.reduce((total, expense) => {
         return total + +expense.amount
     }, 0);
@@ -122,7 +122,6 @@ const Trip = (props) => {
 
     let recentEvents = events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
     recentEvents.length > 5 ? recentEvents.length = 5 : ''
-
 
     let recentMessages = messages.sort((a, b) => isBefore(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
     recentMessages.length > 5 ? recentMessages.length = 5 : ''
@@ -178,16 +177,17 @@ const Trip = (props) => {
             <Grid container rowSpacing={2} columnSpacing={2} >
                 <Grid item xs={12}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
-                        <Box sx={{ display: 'flex', alignSelf: 'center', margin: 2, marginBottom: 0 }}>
+                        <TripTitle trip={trip} type={'main'} />
+                        {/* <Box sx={{ display: 'flex', alignSelf: 'center', margin: 2, marginBottom: 0 }}>
                             <CardTravelIcon fontSize='medium' />
-                            <Typography variant='h5'>
+                            <Typography variant='h4'>
                                 &nbsp;{trip.trip.name}
                                 {
                                     trip.trip.isOpen ? "" :
                                         " (Closed)"
                                 }
                             </Typography>
-                        </Box>
+                        </Box> */}
                         <Box display='flex' justifyContent='center' alignItems='center'>
                             <Typography >
                                 Trip Creator:

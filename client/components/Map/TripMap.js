@@ -21,7 +21,7 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import CloseIcon from '@mui/icons-material/Close';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
-
+import TripTitle from '../Trip/TripTitle';
 // import { handleFindMarker, handleFindTrackingMarker, DisplayMarkers, DisplayTrackingMarkers } from './Markers';
 
 import mapStyles from './mapStyles';
@@ -255,24 +255,7 @@ export default function TripMap({ match }) {
                 />
             </Dialog>
             {/* <Tooltip title='Add Event'> */}
-            <Box
-                className='linkToTrip'
-                display='flex'
-                justifyContent='center'
-                alignItems='center'
-                marginTop={1}
-            >
-                <CardTravelIcon fontSize='medium' />
-                <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
-                    <Typography variant='h5'>
-                        &nbsp;{trip.trip.name}
-                        {
-                            trip.trip.isOpen ? "" :
-                                " (Closed)"
-                        }
-                    </Typography>
-                </Box>
-            </Box>
+            <TripTitle trip={trip} />
             {
                 trip.trip.isOpen ? 
                     <Box

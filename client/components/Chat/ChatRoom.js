@@ -4,6 +4,7 @@ import { format, formatISO, parseISO, isAfter } from "date-fns";
 import { Link } from "react-router-dom";
 
 import { createMessage } from "../../store";
+import TripTitle from '../Trip/TripTitle';
 // import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import CircularLoading from '../Loading/CircularLoading'
@@ -118,18 +119,7 @@ const ChatRoom = ({match}) => {
 
   return (
     <>
-    <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
-        <CardTravelIcon fontSize='medium' />
-        <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
-          <Typography variant='h5'>
-            &nbsp;{trip.trip.name}
-            {
-                trip.trip.isOpen ? "" :
-                    " (Closed)"
-            }
-          </Typography>
-        </Box>
-    </Box>
+    <TripTitle trip={trip} />
     <div style={styles.chatRoomContainer}>
       {
         !trip ? <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>

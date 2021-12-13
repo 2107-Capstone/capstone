@@ -6,7 +6,7 @@ import moment from 'moment'
 const localizer = momentLocalizer(moment)
 
 import EventForm from '../Map/EventForm';
-import { updateUser, deleteEvent, editEvent } from '../../store';
+import TripTitle from '../Trip/TripTitle';
 ////////// MUI ///////////////
 import { Box, Button, Dialog, Typography } from '@mui/material'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
@@ -67,18 +67,7 @@ const SingleTripCalendar = ({ match }) => {
             <Dialog open={open} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} event={tripEvent} />
             </Dialog>
-            <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
-                <CardTravelIcon fontSize='medium' />
-                <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
-                    <Typography variant='h5'>
-                        &nbsp;{trip.trip.name}
-                        {
-                            trip.trip.isOpen ? "" :
-                                " (Closed)"
-                        }
-                    </Typography>
-                </Box>
-            </Box>
+            <TripTitle trip={trip} />
             {
                 trip.trip.isOpen ?
                     <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >

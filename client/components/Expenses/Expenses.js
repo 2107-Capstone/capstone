@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import PieChart from "./PieChart";
 import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
+import TripTitle from '../Trip/TripTitle';
 // import SettleUp from './SettleUp';
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";
@@ -106,18 +107,7 @@ const Expenses = ({match}) => {
 
     return (
         <Container>
-            <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
-                <CardTravelIcon fontSize='medium' />
-                <Box sx={{ color: 'inherit' }} component={Link} to={`/trips/${trip.tripId}`}>
-                    <Typography variant='h5'>
-                        &nbsp;{trip.trip.name}
-                        {
-                            trip.trip.isOpen ? "" :
-                                " (Closed)"
-                        }
-                    </Typography>
-                </Box>
-            </Box>
+            <TripTitle trip={trip} />
             <Dialog open={open} onClose={handleClose}>
                 <AddExpense trip={trip} handleClose={handleClose}/>
             </Dialog>
