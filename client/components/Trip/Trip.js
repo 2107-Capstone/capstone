@@ -16,7 +16,7 @@ import InviteToTrip from './Form/InviteToTrip'
 import TripDebts from '../Expenses/TripDebts'
 import TripSpeedDial from './TripSpeedDial'
 import AddTripForm from '../Trips/Form/AddTripForm'
-import {TripTitle, UserAvatar} from './TripComponents';
+import {TripTitle, UserAvatar, Users} from './TripComponents';
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -55,6 +55,10 @@ const Trip = (props) => {
     const events = useSelector(state => state.events.filter(event => event.tripId === id));
     const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
     const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
+    const users = useSelector(state => state.users.filter(user => {
+        if(user.userTrips.find(userTrip => userTrip.tripId === id)) return true;
+    }))
+    const tripDebts = useSelector(state => state.userDebts.filter(userDebt => userDebt.tripId === id))
 
     useEffect(async () => {
         await dispatch(getTrips())
@@ -81,14 +85,16 @@ const Trip = (props) => {
     if (!trip || !events || !messages || !expenses) {
         return <CircularLoading />
     }
-    
-    const users = trip.trip.userTrips;
-    const tripDebts = trip.trip.userDebts;
+    // console.log(users)
+    // const users = trip.trip.userTrips;
+    // const tripDebts = trip.trip.userDebts;
     
     const handleCloseTrip = async () => {
         try {
             await dispatch(editTrip({ ...trip}))
+            
             const debts = settleUp(expenses, users)
+            console.log('debts', debts)
             if (debts) {
                 debts.forEach(async(debt) => {
                     await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[1], payorId: debt[0], amount: +debt[2], status: 'pending'}))
@@ -383,25 +389,26 @@ const Trip = (props) => {
                             &nbsp;Trip Friends
                         </Typography>
                     </Box>
-                    <Box display='flex' justifyContent='center' flexWrap='wrap'>
+                    <Users users={users} />
+                    {/* <Box display='flex' justifyContent='center' flexWrap='wrap'>
                         {
-                            trip.trip.userTrips.map(user => (
-                                <Box key={user.userId} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
+                            users.map(user => (
+                                <Box key={user.id} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
                                     sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}
                                 >
                                     <Avatar
                                         sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
-                                        src={user.user.avatar}
+                                        src={user.avatar}
                                     >
-                                        {user.user.firstName[0] + user.user.lastName[0]}
+                                        {user.firstName[0] + user.lastName[0]}
                                     </Avatar>
                                     <Typography variant='caption'>
-                                        {user.user.username}
+                                        {user.username}
                                     </Typography>
                                 </Box>
                             ))
                         }
-                    </Box>
+                    </Box> */}
                 </Grid>
             </Grid>
         </div>

@@ -39,6 +39,7 @@ export const updateUser = (user) => {
        authorization: token
      }
    });
+   window.socket.send(JSON.stringify(_updateUser(updated)))
     dispatch(_updateUser(updated));
   };
 }

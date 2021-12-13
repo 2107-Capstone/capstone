@@ -33,6 +33,7 @@ export const addUserDebt = (userDebt) => {
                 authorization: token
             }
         });
+        window.socket.send(JSON.stringify(_addUserDebt(added)))
         dispatch(_addUserDebt(added));
     };
 }
@@ -45,6 +46,7 @@ export const editUserDebt = (userDebt) => {
                 authorization: token
             }
         });
+        window.socket.send(JSON.stringify(_editUserDebt(edited)))
         dispatch(_editUserDebt(edited));
     };
 }
