@@ -62,14 +62,14 @@ const data = [
         image: 'images/manageFriends.png',
         timeout: Math.floor(Math.random() * 1500)
     },
-    {
-        id: 10,
-        title: 'Sign Up',
-        description: 'Are you ready to take your trip to the next level?',
-        image: false,
-        buttonTitle: 'Sign Up',
-        timeout: Math.floor(Math.random() * 1500)
-    },
+    // {
+    //     id: 10,
+    //     title: 'Sign Up',
+    //     description: 'Are you ready to take your trip to the next level?',
+    //     image: false,
+    //     buttonTitle: 'Sign Up',
+    //     timeout: Math.floor(Math.random() * 1500)
+    // },
 ]
 
 export default data;
