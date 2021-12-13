@@ -1,12 +1,9 @@
 const router = require('express').Router()
+const isLoggedIn = require('../middleware/isLoggedIn');
 const { models: { Trip, User, Message, UserTrip }} = require('../db')
 module.exports = router
 
-router.get('/', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.send([])
-  }
+router.get('/', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
@@ -48,11 +45,7 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
-router.post('/', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.send([])
-  }
+router.post('/', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {

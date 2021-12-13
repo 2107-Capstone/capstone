@@ -1,8 +1,9 @@
 const router = require('express').Router()
+const isLoggedIn = require('../middleware/isLoggedIn');
 const { models: { User, Trip, UserTrip, UserFriend } } = require('../db')
 module.exports = router
 
-router.get('/', async (req, res, next) => {
+router.get('/', isLoggedIn, async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and username fields - even though
@@ -26,7 +27,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:userId', async (req, res, next) => {
+router.get('/:userId', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: {
@@ -50,11 +51,7 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
-router.put('/:userId', async (req, res, next) => {
-    if (req.headers.authorization === 'null') {
-      console.log('YOU SHALL NOT PASS!')
-      return res.send([])
-    }
+router.put('/:userId', isLoggedIn, async (req, res, next) => {
     try {
       const { lat, lng, time, username, firstName, lastName, email, phoneNumber, password, avatar } = req.body;
       let user = await User.findByPk(req.params.userId)

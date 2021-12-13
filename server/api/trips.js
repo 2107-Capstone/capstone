@@ -5,11 +5,7 @@ const { models: { User, Trip, UserTrip, Message, Event, Expense, UserDebt } } = 
 
 module.exports = router
 
-router.get('/', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.get('/', isLoggedIn, async (req, res, next) => {
   try {
     //should be able to simply this given now there is a store for trips
     const user = await User.findByToken(req.headers.authorization)
@@ -73,7 +69,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:tripId', async (req, res, next) => {
+router.get('/:tripId', isLoggedIn, async (req, res, next) => {
   if (req.headers.authorization === 'null') {
     console.log('YOU SHALL NOT PASS!')
     return res.json([])
@@ -91,10 +87,6 @@ router.get('/:tripId', async (req, res, next) => {
 })
 
 router.post('/', isLoggedIn, async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
   try {
     const user = await User.findByToken(req.headers.authorization)
     
@@ -102,7 +94,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     const trip = await Trip.create({description, endTime, imageUrl, lat, lng, location, name, startTime, userId: user.id})
 
     const adduserTrip = await UserTrip.create({ userId: user.id, tripId: trip.id, tripInvite: "accepted" })
-console.log('addusertrip', adduserTrip)
+
     const userTrip = await UserTrip.findByPk(adduserTrip.id, {
       include: [
         {
@@ -190,12 +182,7 @@ console.log('addusertrip', adduserTrip)
 //     next(err)
 //   }
 // })
-router.put('/:tripId', async (req, res, next) => {
-  // console.log(req.body)
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.put('/:tripId', isLoggedIn, async (req, res, next) => {
   try {
     let userTrip = await UserTrip.findByPk(req.params.tripId)
     const trip = await Trip.findByPk(userTrip.tripId);
@@ -248,11 +235,7 @@ router.put('/:tripId', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.delete('/:id', isLoggedIn, async (req, res, next) => {
   try {
     const { id } = req.params
     const trip = await UserTrip.findByPk(id)
