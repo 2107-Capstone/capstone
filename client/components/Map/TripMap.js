@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, forwardRef, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateUser, deleteEvent } from '../../store';
+import { updateUser, deleteEvent, getTrips } from '../../store';
 import { parseISO, format, isAfter } from 'date-fns';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
@@ -30,6 +30,13 @@ export default function TripMap({ match }) {
     
     const auth = useSelector(state => state.auth);
     
+    useEffect(() => {
+        async function loadTrips(){
+            await dispatch(getTrips())
+        }
+        loadTrips();
+    }, [])
+
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
     let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
     let users = useSelector(state => state.users.filter(
@@ -47,8 +54,6 @@ export default function TripMap({ match }) {
         disableDefaultUI: true,
         zoomControl: true,
     };
-
-    const tripZoom = 12;
 
     const [markers, setMarkers] = useState([]);
     const [trackingMarkers, setTrackingMarkers] = useState([]);
@@ -171,30 +176,27 @@ export default function TripMap({ match }) {
     }
 
     const [zoom, setZoom] = useState(3);
-    const [center, setCenter] = useState({lat: defaultCoords.lat, lng: defaultCoords.lng});
+    const [center, setCenter] = useState(defaultCoords);
 
     useEffect(() => {
-        const createAllMarkers = async() => {
-            await setMarkers([]);
-            await setTrackingMarkers([]);
-    
-            events.forEach(async (event) => {
-                await setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: event.name, location: event.location, url: `/pin-10.svg` }])
-            });
-            if (trip.trip.isOpen){
-                users.forEach(async (user) => {
-                    if (user.lat) {
-                        await setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/person.svg', firstName: user.firstName, lastName: user.lastName }])
-                    }
-                })
-            }
+        setMarkers(() => []);
+        setTrackingMarkers(() => []);
+
+        events.map( (event) => {
+                setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: event.name, location: event.location, url: `/pin-10.svg` }])
+        });
+        if (trip?.trip.isOpen){
+            users.map( (user) => {
+                if (user.lat) {
+                        setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/person.svg', firstName: user.firstName, lastName: user.lastName }])
+                }
+            })
         }
-        createAllMarkers();
-        if (markers.length > 0) {
+        if (markers.length !== 0) {
             setZoom(() => findZoom(events))
             setCenter(() => findCenter(events))
-        }
-    }, [tripId, update])
+        } 
+    }, [tripId, update, markers.length])
 
     if (!trip || !events || !users) {
         return <CircularLoading />
@@ -202,11 +204,10 @@ export default function TripMap({ match }) {
 
     events = events.sort((a,b) => isAfter(parseISO(a.startTime), parseISO(b.startTime)) ? 1 : -1)
 
-
     const lat = +center.lat;
     const lng = +center.lng;
     
-
+console.log(lat,lng)
     return (
         <>
             <Snackbar

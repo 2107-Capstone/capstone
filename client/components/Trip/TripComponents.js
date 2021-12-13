@@ -20,7 +20,7 @@ export const TripTitle = ({trip, type}) => {
                 mb: 1,
                 mt: 1 }}
         >
-                <CardTravelIcon fontSize='medium' />
+                <CardTravelIcon fontSize='large' />
                 {
                     type === 'main' ?
                         <Typography variant='h4'>
