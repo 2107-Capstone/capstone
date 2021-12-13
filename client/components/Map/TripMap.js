@@ -369,17 +369,18 @@ export default function TripMap({ match }) {
                                     <Typography
                                         sx={{ m: 0 }}
                                         variant='subtitle2'
+                                        color={'text.dark.primary'}
                                     >
                                         {event.name}
                                     </Typography>
                                     <Typography
-                                        color="text.secondary" variant="caption"
+                                        color={'text.dark.primary'}variant="caption"
                                         sx={{ m: 0 }}
                                     >
                                         {event.description}
                                     </Typography>
                                     <Typography
-                                        color="text.secondary" variant="caption"
+                                        color={'text.dark.secondary'}variant="caption"
                                         sx={{ m: 0 }}
                                     >
                                         {format(parseISO(event.startTime), 'P')}
