@@ -71,28 +71,41 @@ export default function AllTripsMap() {
     const [zoom, setZoom] = useState(1);
     const [center, setCenter] = useState({defaultCoords});
 
-    
+    const colors = {
+        0: '#F70909',
+        1: `#3470E7`,
+        2: '#F78E09',
+        3: `#077D2C`,
+        4: `#6C3AFC`,
+        5: `#EC5B02`,
+        6: `#0DEDFF`,
+        7: `#04B93D`,
+        8: `#C4BB00`,
+        9: `#363B3D`,
+        10: `#180195`,
+    }
 
     useEffect(() => {
         setMarkers(() => []);
         trips.forEach((trip, idx) => {
             trip.color = idx > 10 ? colors[idx % 10] : colors[idx]
-            trip.trip.events.map(event => {
-                event.color = trip.color;
-                setMarkers(prevMarkers => [...prevMarkers,
-                {
-                    color: event.color,
-                    time: format(parseISO(event.startTime), 'Pp'),
-                    key: event.id,
-                    id: event.id,
-                    lat: +event.lat,
-                    lng: +event.lng,
-                    name: event.name,
-                    trip: trip.trip.name,
-                    location: event.location,
-                    url: idx > 10 ? `/pin-${idx % 10}.svg` : `/pin-${idx}.svg`
-                }]);
-            })
+            if (trip.trip.events.length > 0){
+                trip.trip.events.map(event => {
+                    setMarkers(prevMarkers => [...prevMarkers,
+                    {
+                        color: trip.color,
+                        time: format(parseISO(event.startTime), 'Pp'),
+                        key: event.id,
+                        id: event.id,
+                        lat: +event.lat,
+                        lng: +event.lng,
+                        name: event.name,
+                        trip: trip.trip.name,
+                        location: event.location,
+                        url: idx > 10 ? `/pin-${idx % 10}.svg` : `/pin-${idx}.svg`
+                    }]);
+                })
+            }
         });
         
         if (selectedTrip.id !== 0){
@@ -115,22 +128,9 @@ export default function AllTripsMap() {
       
     }, [update, checked, selectedTrip.id, markers.length])
 
-    const colors = {
-        0: '#F70909',
-        1: `#3470E7`,
-        2: '#F78E09',
-        3: `#077D2C`,
-        4: `#6C3AFC`,
-        5: `#EC5B02`,
-        6: `#0DEDFF`,
-        7: `#04B93D`,
-        8: `#C4BB00`,
-        9: `#363B3D`,
-        10: `#180195`,
-    }
+    
 
     const displayMarkers = () => {
-        // console.log('markers', markers)
         return markers.map((marker) => {
             return (
                 <Marker
@@ -172,8 +172,6 @@ export default function AllTripsMap() {
 
     const lat = +center.lat;
     const lng = +center.lng;
-    console.log(eventToEdit)
-    console.log(selectedTrip)
     
     return (
         <>
@@ -256,98 +254,20 @@ export default function AllTripsMap() {
                                                 <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, pb: 0}}
 
                                                 >
-                                                    <CardContent sx={{ mb: 0 , paddingBottom: 0}} onClick={() => handleClick(event.id)}>
-                                                        <Box 
-                                                            display='flex'
-                                                            justifyContent='space-between'
-                                                            sx={{backgroundColor: 'inherit'}}
-                                                        >
-                                                            <Box display='flex' flexDirection='column'>
+                                                    <CardContent sx={{ minWidth: '100%', mb: 0 , paddingBottom: 0}} onClick={() => handleClick(event.id)}>
+                                                        
+                                                            <Box display='flex' flexDirection='column' >
                                                                 <Typography gutterBottom color='text.primary' variant="subtitle1">
                                                                     {event.name} - {event.location}
                                                                 </Typography>
                                                                 <Typography color='text.secondary' variant="caption" >
                                                                     {format(parseISO(event.startTime), 'Pp')}
                                                                 </Typography>
-                                                                <Divider sx={{color: event.color}}/>
+                                                                <Divider color={trip.color} fullWidth/>
                                                                 <Typography variant='subtitle2' color='text.primary'  sx={{mt: 1, fontStyle: 'italic'}}>
                                                                     {event.description}
                                                                 </Typography>
-                                                                
                                                             </Box>
-                                                            {/* {
-                                                            trip.trip.isOpen ? 
-                                                                <Box
-                                                                    display='flex'
-                                                                    justifyContent='space-evenly'
-                                                                >
-                                                                    <Button
-                                                                        startIcon={<ModeEditIcon />} color='info'
-                                                                        size='small'
-                                                                        onClick={() => {
-                                                                            setEventToEdit(event);
-                                                                            setOpen(true);
-                                                                        }}
-                                                                    >
-                                                                        Edit
-                                                                    </Button>
-                                                                    <Snackbar
-                                                                        sx={{ mt: 9 }}
-                                                                        open={openSnackbar}
-                                                                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                                                                        autoHideDuration={6000}
-                                                                        onClose={handleClose}
-                                                                        message={'Are you sure you want to delete this event?'}
-                                                                        action={
-                                                                            <>
-                                                                                <Button color="secondary" size="small" 
-                                                                                    onClick={async () => {
-                                                                                        try {
-                                                                                            await dispatch(deleteEvent(eventToEdit.id))
-                                                                                            await dispatch(getTrips())
-                                                                                            // handleAccordionChange(selectedTrip.id)
-                                                                                            setExpanded(false)
-                                                                                            setSelectedTrip({id: 0})
-                                                                                            setUpdate(prevUpdate => prevUpdate + Math.random())
-                                                                                        } catch (err) {
-                                                                                            console.log(err)
-                                                                                        }
-                                                                                    }}
-                                                                                >
-                                                                                    YES
-                                                                                </Button>
-                                                                                <Button color="secondary" size="small" onClick={handleClose}>
-                                                                                    NO
-                                                                                </Button>
-                                                                                <IconButton
-                                                                                    size="small"
-                                                                                    aria-label="close"
-                                                                                    color="inherit"
-                                                                                    onClick={handleClose}
-                                                                                >
-                                                                                    <CloseIcon fontSize="small" />
-                                                                                </IconButton>
-                                                                            </>
-                                                                        }
-                                                                    />
-                                                                    <Button
-                                                                        startIcon={<DeleteForeverIcon />} color='error'
-                                                                        size='small'
-                                                                        onClick={() => {
-                                                                            console.log(event)
-                                                                            setEventToEdit(event)
-
-                                                                            setOpenSnackbar(true)
-                                                                        }}
-                                                                    >
-                                                                        Delete
-                                                                    </Button>
-                                                                </Box>
-                                                            : ''
-                                                            } */}
-
-
-                                                        </Box>
                                                     </CardContent>
                                                 </Card>
                                             ))
@@ -384,18 +304,20 @@ export default function AllTripsMap() {
                                             setSelected(null);
                                         }}
                                     >
-                                        <div style={{ margin: '0 1rem .5rem 1rem' }}>
-                                            <Typography gutterBottom variant={'subtitle1'} color='text.primary'>
-                                                {selected.trip}
-                                            </Typography>
-                                            <Divider sx={{color: selected.color}}/>
-                                            <Typography variant={'subtitle2'} color='text.primary'>
+                                        <Box display='flex' flexDirection='column' alignItems='center' style={{ margin: '0 1rem .5rem 1rem' }}>
+                                            <Box border={`1px solid ${selected.color}`} padding={'2px 2px 2px 2px'} borderRadius={2}>
+                                                <Typography variant='subtitle1' color='text.dark.primary'>
+                                                    {selected.trip}
+                                                </Typography>
+                                            </Box>
+                                            <Typography variant='subtitle2' color='text.dark.primary'>
                                                 {selected.name}
                                             </Typography>
-                                            <Typography variant={'caption'} color='text.secondary'>
+                                            <Typography variant='caption' color='text.dark.secondary'>
                                                 {selected.time}
                                             </Typography>
-                                        </div>
+                                            
+                                        </Box>
                                     </InfoWindow>)
                                     : null
                             }

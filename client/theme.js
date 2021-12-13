@@ -38,11 +38,11 @@ const theme = createTheme({
         text: {
             light: {
                 primary: "#FFFFFF",
-                secondary: '#908D8D'
+                secondary: '#C1BEBE'
             },
             dark: {
                 primary: '#000000',
-                secondary: '#908D8D'
+                secondary: '#565454'
             }
         }
     },
