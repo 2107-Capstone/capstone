@@ -80,7 +80,11 @@ const SingleTripCalendar = ({ match }) => {
             {
                 trip.trip.isOpen ?
                 <Box textAlign='center'>
-                    <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+                    <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => {
+                        setOpen(true)
+                        setForm('event')
+                    }} 
+                    >
                         Add Event
                     </Button>
                 </Box>
@@ -88,11 +92,12 @@ const SingleTripCalendar = ({ match }) => {
             }
             <Calendar
                 // popup
-                // views={{
-                //     month: true,
-                //     week: true,
+                views={{
+                    month: true,
+                    // week: true,
+                    agenda: true
 
-                // }}
+                }}
                 // selectable
                 localizer={localizer}
                 events={[calendarTrip, ...calendarEvents]}

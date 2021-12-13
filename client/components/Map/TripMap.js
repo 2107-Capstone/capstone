@@ -10,7 +10,7 @@ import EventForm from './EventForm'
 import CircularLoading from '../Loading/CircularLoading'
 import { findZoom, findCenter } from './mapFunctions';
 import mapStyles from './mapStyles';
-
+import theme from '../../theme';
 ////////////////// MATERIAL UI /////////////////
 import { Alert, Box, Button, IconButton, Typography, Dialog, Snackbar } from '@mui/material'
 import Avatar from '@mui/material/Avatar';
@@ -369,17 +369,18 @@ export default function TripMap({ match }) {
                                     <Typography
                                         sx={{ m: 0 }}
                                         variant='subtitle2'
+                                        color={'text.dark.primary'}
                                     >
                                         {event.name}
                                     </Typography>
                                     <Typography
-                                        color="text.secondary" variant="caption"
+                                        color={'text.dark.secondary'}variant="caption"
                                         sx={{ m: 0 }}
                                     >
                                         {event.description}
                                     </Typography>
                                     <Typography
-                                        color="text.secondary" variant="caption"
+                                        color={'text.dark.secondary'}variant="caption"
                                         sx={{ m: 0 }}
                                     >
                                         {format(parseISO(event.startTime), 'P')}
@@ -480,21 +481,25 @@ export default function TripMap({ match }) {
                                         marginBottom={.5}
                                         marginLeft={.5}
                                     >
-                                        <Typography variant={'subtitle2'}>
+                                        <Typography variant={'subtitle2'}
+                                        color={'text.dark.primary'}
+                                        >
                                             {selected.name}
                                         </Typography>
                                         {
                                             selected.url ?
-                                                <Typography variant={'caption'}>
+                                                <Typography variant={'caption'}
+                                                color={'text.dark.primary'}
+                                                >
                                                     {selected.location}
                                                 </Typography>
                                             : 
-                                            <Typography variant={'caption'}>
+                                            <Typography variant={'caption'} color={'text.dark.secondary'}>
                                                         pinned at
                                                 </Typography>
                                         }
                                         <br></br>
-                                        <Typography variant={'caption'}>
+                                        <Typography variant={'caption'} color={'text.dark.secondary'}>
                                             {selected.time}
                                         </Typography>
                                     </Box>

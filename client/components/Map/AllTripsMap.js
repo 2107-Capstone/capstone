@@ -76,9 +76,12 @@ export default function AllTripsMap() {
     useEffect(() => {
         setMarkers(() => []);
         trips.forEach((trip, idx) => {
+            trip.color = idx > 10 ? colors[idx % 10] : colors[idx]
             trip.trip.events.map(event => {
+                event.color = trip.color;
                 setMarkers(prevMarkers => [...prevMarkers,
                 {
+                    color: event.color,
                     time: format(parseISO(event.startTime), 'Pp'),
                     key: event.id,
                     id: event.id,
@@ -89,7 +92,6 @@ export default function AllTripsMap() {
                     location: event.location,
                     url: idx > 10 ? `/pin-${idx % 10}.svg` : `/pin-${idx}.svg`
                 }]);
-                trip.color = idx > 10 ? colors[idx % 10] : colors[idx]
             })
         });
         
@@ -241,7 +243,8 @@ export default function AllTripsMap() {
                                         <Button 
                                             component={Link}
                                             to={`/trips/${trip.tripId}`}
-                                            variant='outlined'
+                                            variant='contained'
+                                            color='secondary'
                                         >
                                         
                                             {trip.trip.name}
@@ -263,14 +266,14 @@ export default function AllTripsMap() {
                                                                 <Typography gutterBottom color='text.primary' variant="subtitle1">
                                                                     {event.name} - {event.location}
                                                                 </Typography>
-                                                                <Divider sx={{color: 'text.secondary', mt: 0}}/>
-                                                                <Typography variant='subtitle2' color='text.primary' gutterBottom sx={{fontStyle: 'italic'}}>
-                                                                    {event.description}
-                                                                </Typography>
-                                                                <Divider style={{color: 'text.secondary', mt: 0}}/>
                                                                 <Typography color='text.secondary' variant="caption" >
                                                                     {format(parseISO(event.startTime), 'Pp')}
                                                                 </Typography>
+                                                                <Divider sx={{color: event.color}}/>
+                                                                <Typography variant='subtitle2' color='text.primary'  sx={{mt: 1, fontStyle: 'italic'}}>
+                                                                    {event.description}
+                                                                </Typography>
+                                                                
                                                             </Box>
                                                             {/* {
                                                             trip.trip.isOpen ? 
@@ -385,7 +388,7 @@ export default function AllTripsMap() {
                                             <Typography gutterBottom variant={'subtitle1'} color='text.primary'>
                                                 {selected.trip}
                                             </Typography>
-                                            <Divider sx={{color: trip.color}}/>
+                                            <Divider sx={{color: selected.color}}/>
                                             <Typography variant={'subtitle2'} color='text.primary'>
                                                 {selected.name}
                                             </Typography>
