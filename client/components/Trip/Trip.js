@@ -55,7 +55,7 @@ const Trip = (props) => {
     const events = useSelector(state => state.events.filter(event => event.tripId === id));
     const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
     const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
-
+    
     useEffect(async () => {
         await dispatch(getTrips())
     }, [])
