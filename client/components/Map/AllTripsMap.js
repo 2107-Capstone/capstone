@@ -257,15 +257,18 @@ export default function AllTripsMap() {
                                                         <Box 
                                                             display='flex'
                                                             justifyContent='space-between'
+                                                            sx={{backgroundColor: 'inherit'}}
                                                         >
                                                             <Box display='flex' flexDirection='column'>
-                                                                <Typography gutterBottom>
+                                                                <Typography gutterBottom color='text.primary' variant="subtitle1">
                                                                     {event.name} - {event.location}
                                                                 </Typography>
-                                                                <Typography variant='subtitle2' gutterBottom>
+                                                                <Divider sx={{color: 'text.secondary', mt: 0}}/>
+                                                                <Typography variant='subtitle2' color='text.primary' gutterBottom sx={{fontStyle: 'italic'}}>
                                                                     {event.description}
                                                                 </Typography>
-                                                                <Typography color="text.secondary" variant="subtitle2" >
+                                                                <Divider style={{color: 'text.secondary', mt: 0}}/>
+                                                                <Typography color='text.secondary' variant="caption" >
                                                                     {format(parseISO(event.startTime), 'Pp')}
                                                                 </Typography>
                                                             </Box>
@@ -379,14 +382,14 @@ export default function AllTripsMap() {
                                         }}
                                     >
                                         <div style={{ margin: '0 1rem .5rem 1rem' }}>
-                                            <Typography variant={'subtitle1'}>
+                                            <Typography gutterBottom variant={'subtitle1'} color='text.primary'>
                                                 {selected.trip}
                                             </Typography>
-                                            <Divider />
-                                            <Typography variant={'subtitle2'}>
+                                            <Divider sx={{color: trip.color}}/>
+                                            <Typography variant={'subtitle2'} color='text.primary'>
                                                 {selected.name}
                                             </Typography>
-                                            <Typography variant={'caption'}>
+                                            <Typography variant={'caption'} color='text.secondary'>
                                                 {selected.time}
                                             </Typography>
                                         </div>

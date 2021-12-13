@@ -182,7 +182,7 @@ const styles = {
     overflow: 'auto',
     border: '1px solid black',
     borderRadius: '7px 7px 0 0',
-    borderColor: '#9a9a9a'
+    borderColor: theme.palette.primary.main
   },
 
   messagesList: {
@@ -191,12 +191,13 @@ const styles = {
   },
 
   newMessageInputField: {
-    height: '200px',
+    height: '100px',
     maxHeight: '50%',
-    fontSize: '20px',
+    fontSize: '16px',
     padding: '8px 12px',
     resize: 'none',
-    borderColor: '#9a9a9a',
+    borderColor: theme.palette.primary.main,
+    borderRadius: '0 0 7px 7px',
     fontFamily: 'verdana'
   },
 
@@ -206,8 +207,8 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
     backgroundColor: theme.palette.primary.main,
+    color: theme.palette.text.primary,
     marginLeft: 'auto'
   },
   messageItemMyMessageOld: {
@@ -216,8 +217,9 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
     backgroundColor: theme.palette.primary.main,
+    color: theme.palette.text.secondary,
+    opacity: .85,
     marginLeft: 'auto',
     fontStyle: 'italic'
   },
@@ -227,7 +229,7 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
+    color: theme.palette.text.primary,
     backgroundColor: theme.palette.secondary.main,
     marginRight: 'auto'
   },
@@ -237,8 +239,9 @@ const styles = {
     padding: '12px 8px',
     wordBreak: 'break-word',
     borderRadius: '4px',
-    color: 'white',
+    color: theme.palette.text.secondary,
     backgroundColor: theme.palette.secondary.main,
+    opacity: .85,
     marginRight: 'auto',
     fontStyle: 'italic'
   },

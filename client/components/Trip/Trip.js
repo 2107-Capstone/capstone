@@ -21,6 +21,7 @@ import {TripTitle, UserAvatar, Users} from './TripComponents';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 import Dialog from '@mui/material/Dialog';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -188,9 +189,14 @@ const Trip = (props) => {
                                             leaveTouchDelay={1000}
                                         >
                                             <Box sx={{ml: 2, mb: 1}}>
-                                                <Button size='small' startIcon={<WorkOffOutlinedIcon fontSize='small' />} variant='contained' onClick={() => setOpenSnackbar(true)} disabled={trip.trip.user.id !== auth.id}>
-                                                    Close Trip
-                                                </Button>
+                                                <Chip 
+                                                    size='small' 
+                                                    icon={<WorkOffOutlinedIcon fontSize='small' />} variant='outlined' 
+                                                    label='Close trip' 
+                                                    color='warning' 
+                                                    onClick={() => setOpenSnackbar(true)} 
+                                                    disabled={trip.trip.user.id !== auth.id}
+                                                />
                                             </Box>
                                         </Tooltip>
                                         <Tooltip 
@@ -201,14 +207,17 @@ const Trip = (props) => {
                                             leaveTouchDelay={1000}
                                         >
                                             <Box sx={{ml: 2}}>
-                                                <Button size='small' startIcon={<ModeEditIcon fontSize='small'/>} variant='contained' onClick={() => {
-                                                    setForm('trip');
-                                                    setOpen(true)
-                                                }} 
-                                                disabled={trip.trip.user.id !== auth.id}
-                                                >
-                                                    Edit Trip
-                                                </Button>
+                                                <Chip 
+                                                    size='small' 
+                                                    icon={<ModeEditIcon fontSize='small'/>} color='warning' 
+                                                    label="Edit trip" 
+                                                    variant='outlined' 
+                                                    onClick={() => {
+                                                        setForm('trip');
+                                                        setOpen(true)
+                                                    }} 
+                                                    disabled={trip.trip.user.id !== auth.id}
+                                                />
                                             </Box>
                                         </Tooltip>
                                         </>
@@ -277,7 +286,7 @@ const Trip = (props) => {
                 <Grid item xs={12} sm={12} md={6} lg={6} >
                     <Box style={styles.heading} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/chat`} startIcon={<OpenInNewIcon />} >
+                            <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }}  component={Link} to={`${trip.tripId}/chat`} startIcon={<OpenInNewIcon />} >
                                 Details
                             </Button>
                         </Box>
@@ -310,7 +319,7 @@ const Trip = (props) => {
                 <Grid item xs={12} sm={12} md={6} lg={6} >
                     <Box style={styles.heading} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/calendar`} startIcon={<OpenInNewIcon />} >
+                            <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/calendar`} startIcon={<OpenInNewIcon />} >
                                 Details
                             </Button>
                         </Box>
@@ -344,7 +353,7 @@ const Trip = (props) => {
                 <Grid item xs={12} sm={12} md={6} lg={6} >
                     <Box style={styles.heading} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/expenses`} startIcon={<OpenInNewIcon />} >
+                            <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }}  component={Link} to={`${trip.tripId}/expenses`} startIcon={<OpenInNewIcon />} >
                                 Details
                             </Button>
                         </Box>
@@ -445,5 +454,4 @@ const styles = {
         color: 'white',
         borderRadius: 7
     },
-
 }
