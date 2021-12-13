@@ -80,3 +80,27 @@ export const UserAvatar = ({user}) => {
         </Box>
     )
 }
+
+export const Users = ({users}) => {
+    return (
+        <Box display='flex' justifyContent='center' flexWrap='wrap'>
+            {
+                users.map(user => (
+                    <Box key={user.id} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
+                        sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}
+                    >
+                        <Avatar
+                            sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
+                            src={user.avatar}
+                        >
+                            {user.firstName[0] + user.lastName[0]}
+                        </Avatar>
+                        <Typography variant='caption'>
+                            {user.username}
+                        </Typography>
+                    </Box>
+                ))
+            }
+        </Box>
+    )
+}
