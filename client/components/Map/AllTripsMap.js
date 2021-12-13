@@ -262,6 +262,9 @@ export default function AllTripsMap() {
                                                                 <Typography gutterBottom>
                                                                     {event.name} - {event.location}
                                                                 </Typography>
+                                                                <Typography variant='subtitle2' gutterBottom>
+                                                                    {event.description}
+                                                                </Typography>
                                                                 <Typography color="text.secondary" variant="subtitle2">
                                                                     {format(parseISO(event.startTime), 'Pp')}
                                                                 </Typography>
