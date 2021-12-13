@@ -182,7 +182,7 @@ const Trip = (props) => {
                                             leaveTouchDelay={1000}
                                         >
                                             <Box sx={{ml: 2, mb: 1}}>
-                                                <Button size='small' startIcon={<WorkOffOutlinedIcon />} variant='outlined' onClick={() => setOpenSnackbar(true)} disabled={trip.trip.user.id !== auth.id}>
+                                                <Button size='small' startIcon={<WorkOffOutlinedIcon fontSize='small' />} variant='contained' onClick={() => setOpenSnackbar(true)} disabled={trip.trip.user.id !== auth.id}>
                                                     Close Trip
                                                 </Button>
                                             </Box>
@@ -195,7 +195,7 @@ const Trip = (props) => {
                                             leaveTouchDelay={1000}
                                         >
                                             <Box sx={{ml: 2}}>
-                                                <Button size='small' startIcon={<ModeEditIcon />} variant='outlined' onClick={() => {
+                                                <Button size='small' startIcon={<ModeEditIcon fontSize='small'/>} variant='contained' onClick={() => {
                                                     setForm('trip');
                                                     setOpen(true)
                                                 }} 
@@ -269,9 +269,9 @@ const Trip = (props) => {
                     : ''
                 }
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                    <Box style={styles.heading} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/chat`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/chat`} startIcon={<OpenInNewIcon />} >
                                 Details
                             </Button>
                         </Box>
@@ -302,9 +302,9 @@ const Trip = (props) => {
                     }
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                    <Box style={styles.heading} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/calendar`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/calendar`} startIcon={<OpenInNewIcon />} >
                                 Details
                             </Button>
                         </Box>
@@ -336,9 +336,9 @@ const Trip = (props) => {
                 </Grid>
                 
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{ display: 'flex' }}>
+                    <Box style={styles.heading} sx={{ display: 'flex' }}>
                         <Box >
-                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/expenses`} variant='outlined' startIcon={<OpenInNewIcon />} style={{ color: 'white', }}>
+                            <Button sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/expenses`} startIcon={<OpenInNewIcon />} >
                                 Details
                             </Button>
                         </Box>
@@ -377,7 +377,7 @@ const Trip = (props) => {
                             }
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.headingIcon} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Box style={styles.heading} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <PeopleIcon fontSize='medium' />
                         <Typography variant='h6'>
                             &nbsp;Trip Friends
@@ -414,16 +414,26 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.palette.primary.main,
+        // backgroundColor: theme.palette.primary.main,
+        // border: `2px solid ${theme.palette.primary.main}`,
         flexGrow: 1,
-        color: 'white',
+        // color: 'white',
+        borderRadius: 7
+    },
+    heading: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        border: `3px solid ${theme.palette.primary.main}`,
+        flexGrow: 1,
+        // color: 'white',
         borderRadius: 7
     },
     debtHeadingIcon: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.main,
         flexGrow: 1,
         color: 'white',
         borderRadius: 7

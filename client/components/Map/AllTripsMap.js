@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
 import { parseISO, format } from 'date-fns';
 
 import CircularLoading from '../Loading/CircularLoading'
 import { findZoom, findCenter } from './mapFunctions'
-
-import { Box, FormGroup, FormControlLabel, Switch, Grid, Button, Tooltip, Divider } from '@mui/material'
-
+import EventForm from './EventForm';
+import { Box, FormGroup, FormControlLabel, Dialog, Switch, IconButton, Grid, Button, Tooltip, Divider, Snackbar, } from '@mui/material'
+import { deleteEvent, getTrips } from '../../store';
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -17,11 +18,15 @@ import CardContent from '@mui/material/CardContent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import CloseIcon from '@mui/icons-material/Close';
 
 import mapStyles from './mapStyles';
 
 
 export default function AllTripsMap() {
+    const dispatch = useDispatch();
     
     ///////////  Trip View Selection //////////
     const [checked, setChecked] = useState(false);
@@ -89,12 +94,12 @@ export default function AllTripsMap() {
         });
         
         if (selectedTrip.id !== 0){
-            if (selectedTrip.events.length === 0) {
+            if (selectedTrip.trip.events.length === 0) {
                 setZoom(() => 8)
-                setCenter(() => ({lat: +selectedTrip.lat, lng: +selectedTrip.lng}))
+                setCenter(() => ({lat: +selectedTrip.trip.lat, lng: +selectedTrip.trip.lng}))
             } else {
-                setCenter(() => findCenter(selectedTrip.events))
-                setZoom(() => findZoom(selectedTrip.events))
+                setCenter(() => findCenter(selectedTrip.trip.events))
+                setZoom(() => findZoom(selectedTrip.trip.events))
             }
         } else if (selectedTrip.id === 0){
             if (markers.length === 0){
@@ -123,7 +128,7 @@ export default function AllTripsMap() {
     }
 
     const displayMarkers = () => {
-        console.log('markers', markers)
+        // console.log('markers', markers)
         return markers.map((marker) => {
             return (
                 <Marker
@@ -147,16 +152,40 @@ export default function AllTripsMap() {
     const [expanded, setExpanded] = useState(false);
 
     const handleAccordionChange = panel => (evt, isExpanded) => {
+        
         setExpanded(isExpanded ? panel : false)
     }
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [eventToEdit, setEventToEdit] = useState({});
+
+    const handleClose = () => {
+        setOpen(false);
+        setEventToEdit({})
+        setOpenSnackbar(false)
+    }
+
     if (!trips) return <CircularLoading />
 
     const lat = +center.lat;
     const lng = +center.lng;
+    console.log(eventToEdit)
+    console.log(selectedTrip)
     
     return (
         <>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                >
+                    <EventForm
+                        trip={selectedTrip}
+                        event={eventToEdit}
+                        handleClose={handleClose}
+                    />
+                </Dialog>
                 <Box>
                     <FormGroup>
                         <FormControlLabel
@@ -204,14 +233,19 @@ export default function AllTripsMap() {
                                             if (selectedTrip.id === trip.trip.id){
                                                 setSelectedTrip({id: 0})
                                             } else {
-                                                setSelectedTrip(trip.trip)
+                                                setSelectedTrip(trip)
                                             }
                                         }}
                                         sx={{ borderRight: `4px solid ${trip.color}` }}
                                     >
-                                        <Typography>
+                                        <Button 
+                                            component={Link}
+                                            to={`/trips/${trip.tripId}`}
+                                            variant='outlined'
+                                        >
+                                        
                                             {trip.trip.name}
-                                        </Typography>
+                                        </Button>
                                     </AccordionSummary>
                                     <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
                                         {
@@ -220,12 +254,91 @@ export default function AllTripsMap() {
 
                                                 >
                                                     <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>
-                                                        <Typography gutterBottom>
-                                                            {event.name} - {event.location}
-                                                        </Typography>
-                                                        <Typography color="text.secondary" variant="subtitle2">
-                                                            {format(parseISO(event.startTime), 'Pp')}
-                                                        </Typography>
+                                                        <Box 
+                                                            display='flex'
+                                                            justifyContent='space-between'
+                                                        >
+                                                            <Box display='flex' flexDirection='column'>
+                                                                <Typography gutterBottom>
+                                                                    {event.name} - {event.location}
+                                                                </Typography>
+                                                                <Typography color="text.secondary" variant="subtitle2">
+                                                                    {format(parseISO(event.startTime), 'Pp')}
+                                                                </Typography>
+                                                            </Box>
+                                                            {
+                                                            trip.trip.isOpen ? 
+                                                                <Box
+                                                                    display='flex'
+                                                                    justifyContent='space-evenly'
+                                                                >
+                                                                    <Button
+                                                                        startIcon={<ModeEditIcon />} color='info'
+                                                                        size='small'
+                                                                        onClick={() => {
+                                                                            setEventToEdit(event);
+                                                                            setOpen(true);
+                                                                        }}
+                                                                    >
+                                                                        Edit
+                                                                    </Button>
+                                                                    <Snackbar
+                                                                        sx={{ mt: 9 }}
+                                                                        open={openSnackbar}
+                                                                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                                                        autoHideDuration={6000}
+                                                                        onClose={handleClose}
+                                                                        message={'Are you sure you want to delete this event?'}
+                                                                        action={
+                                                                            <>
+                                                                                <Button color="secondary" size="small" 
+                                                                                    onClick={async () => {
+                                                                                        try {
+                                                                                            await dispatch(deleteEvent(eventToEdit.id))
+                                                                                            await dispatch(getTrips())
+                                                                                            // handleAccordionChange(selectedTrip.id)
+                                                                                            setExpanded(false)
+                                                                                            setSelectedTrip({id: 0})
+                                                                                            setUpdate(prevUpdate => prevUpdate + Math.random())
+                                                                                        } catch (err) {
+                                                                                            console.log(err)
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    YES
+                                                                                </Button>
+                                                                                <Button color="secondary" size="small" onClick={handleClose}>
+                                                                                    NO
+                                                                                </Button>
+                                                                                <IconButton
+                                                                                    size="small"
+                                                                                    aria-label="close"
+                                                                                    color="inherit"
+                                                                                    onClick={handleClose}
+                                                                                >
+                                                                                    <CloseIcon fontSize="small" />
+                                                                                </IconButton>
+                                                                            </>
+                                                                        }
+                                                                    />
+                                                                    <Button
+                                                                        startIcon={<DeleteForeverIcon />} color='error'
+                                                                        size='small'
+                                                                        onClick={() => {
+                                                                            console.log(event)
+                                                                            setEventToEdit(event)
+
+                                                                            setOpenSnackbar(true)
+                                                                        }}
+                                                                    >
+                                                                        Delete
+                                                                    </Button>
+                                                                </Box>
+                                                            : ''
+                                                            }
+
+
+                                                        </Box>
                                                     </CardContent>
                                                 </Card>
                                             ))

@@ -1,11 +1,11 @@
 export function findZoom (markers){
-    console.log('markers', markers)
+    
     const markersLat = markers.map(marker => +marker.lat)
     const markersLng = markers.map(marker => +marker.lng)
     const maxDiffLat = Math.max(...markersLat) - Math.min(...markersLat)
     const maxDiffLng = Math.max(...markersLng) - Math.min(...markersLng)
     const maxDiff = Math.max(maxDiffLat, maxDiffLng)
-    console.log('maxDiff', maxDiff)
+    
     if (maxDiff > 75) return 2
     if (maxDiff > 30) return 3
     if (maxDiff > 14) return 4

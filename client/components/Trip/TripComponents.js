@@ -9,9 +9,12 @@ import Typography from '@mui/material/Typography'
 /////////////// ICONS /////////////////
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 
+import { parseISO, format } from 'date-fns';
+
 export const TripTitle = ({trip, type}) => {
     
     return (
+        <>
         <Box 
             sx={{ 
                 display: 'flex', 
@@ -23,6 +26,7 @@ export const TripTitle = ({trip, type}) => {
                 <CardTravelIcon fontSize='large' />
                 {
                     type === 'main' ?
+                    <Box display='flex' flexDirection='column' alignItems='center'>
                         <Typography variant='h4'>
                         &nbsp;{trip.trip.name}
                             {
@@ -30,6 +34,10 @@ export const TripTitle = ({trip, type}) => {
                                     " (Closed)"
                             }
                         </Typography>
+                        <Typography variant='subtitle2'>
+                            {format(parseISO(trip.trip.startTime), 'P')} to {format(parseISO(trip.trip.endTime), 'P')}
+                        </Typography>
+                    </Box>
                     :
                         <Box
                             className='linkToTrip' 
@@ -46,7 +54,9 @@ export const TripTitle = ({trip, type}) => {
                             </Typography>
                         </Box>
                 }
-            </Box>
+        </Box>
+        
+        </>
     )
 }
 

@@ -207,7 +207,6 @@ export default function TripMap({ match }) {
     const lat = +center.lat;
     const lng = +center.lng;
     
-console.log(lat,lng)
     return (
         <>
             <Snackbar
