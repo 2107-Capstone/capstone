@@ -17,7 +17,7 @@ import InviteToTrip from './Form/InviteToTrip'
 import TripDebts from '../Expenses/TripDebts'
 import TripSpeedDial from './TripSpeedDial'
 import AddTripForm from '../Trips/Form/AddTripForm'
-import TripTitle from './TripTitle';
+import {TripTitle, UserAvatar} from './TripComponents';
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -178,28 +178,19 @@ const Trip = (props) => {
                 <Grid item xs={12}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
                         <TripTitle trip={trip} type={'main'} />
-                        {/* <Box sx={{ display: 'flex', alignSelf: 'center', margin: 2, marginBottom: 0 }}>
-                            <CardTravelIcon fontSize='medium' />
-                            <Typography variant='h4'>
-                                &nbsp;{trip.trip.name}
-                                {
-                                    trip.trip.isOpen ? "" :
-                                        " (Closed)"
-                                }
-                            </Typography>
-                        </Box> */}
                         <Box display='flex' justifyContent='center' alignItems='center'>
                             <Typography >
                                 Trip Creator:
                             </Typography>
-                            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                            <UserAvatar user={trip.trip.user} />
+                            {/* <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
                                 <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={trip.trip.user.avatar} >
                                     {trip.trip.user.firstName[0] + trip.trip.user.lastName[0]}
                                 </Avatar>
                                 <Typography variant='caption'>
                                     {trip.trip.user.username}
                                 </Typography >
-                            </Box>
+                            </Box> */}
                             <Box>
                                 {
                                     trip.trip.isOpen ? 

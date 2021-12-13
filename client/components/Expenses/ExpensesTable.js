@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PieChart from "./PieChart";
 import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
-// import SettleUp from './SettleUp';
+import { UserAvatar } from "../Trip/TripComponents";
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";
 
@@ -55,14 +55,7 @@ const ExpensesTable = ({expenses}) => {
                         {row.name}
                     </TableCell>
                     <TableCell align='center'>
-                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.paidBy.avatar} >
-                                {row.paidBy.firstName[0] + row.paidBy.lastName[0]}
-                            </Avatar>
-                            <Typography variant='caption'>
-                                {row.paidBy.username}
-                            </Typography >
-                        </Box>
+                        <UserAvatar user={row.paidBy} />
                     </TableCell>
                 </TableRow>
             ))}

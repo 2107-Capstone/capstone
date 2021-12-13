@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import { Avatar, Box, Divider, Grid, Button, Paper, TextField, Tooltip, Typography, Dialog } from '@mui/material'
 import CircularLoading from '../Loading/CircularLoading';
 import { format, formatISO, parseISO, isAfter } from "date-fns";
-
+import { UserAvatar } from '../Trip/TripComponents';
 const MessagesTable = ({messages}) => {
     const rows = messages
     return (
@@ -43,14 +43,7 @@ const MessagesTable = ({messages}) => {
                         {format(parseISO(row.dateSent), 'p')}
                     </TableCell>
                     <TableCell align='center' >
-                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.sentBy.avatar} >
-                                {row.sentBy.firstName[0] + row.sentBy.lastName[0]}
-                            </Avatar>
-                            <Typography variant='caption'>
-                                {row.sentBy.username}
-                            </Typography >
-                        </Box>
+                        <UserAvatar user={row.sentBy} />
                     </TableCell>
                     <TableCell >{row.content}</TableCell>
                 </TableRow>

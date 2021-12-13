@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, forwardRef, useCallback } from 'rea
 import { connect, useSelector, useDispatch } from 'react-redux'
 import { Link } from "react-router-dom";
 import { parseISO, format, isAfter } from 'date-fns';
+
 import { Alert, Box, Grid, Button, TextField, Tooltip, IconButton, Typography, Dialog, CardActionArea, Snackbar } from '@mui/material'
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
@@ -21,7 +22,7 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import CloseIcon from '@mui/icons-material/Close';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
-import TripTitle from '../Trip/TripTitle';
+import {TripTitle} from '../Trip/TripComponents';
 // import { handleFindMarker, handleFindTrackingMarker, DisplayMarkers, DisplayTrackingMarkers } from './Markers';
 
 import mapStyles from './mapStyles';

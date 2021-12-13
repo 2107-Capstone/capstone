@@ -4,7 +4,7 @@ import { format, formatISO, parseISO, isAfter } from "date-fns";
 import { Link } from "react-router-dom";
 
 import { createMessage } from "../../store";
-import TripTitle from '../Trip/TripTitle';
+import {TripTitle, UserAvatar} from '../Trip/TripComponents';
 // import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import CircularLoading from '../Loading/CircularLoading'
@@ -58,14 +58,15 @@ const ChatRoom = ({match}) => {
               {format(parseISO(message.dateSent), 'Pp')}
             </Typography>
           <Box display='flex' alignItems='center'>
-            <Box display='flex' flexDirection='column' alignItems='center'>
+            <UserAvatar user={message.sentBy} />
+            {/* <Box display='flex' flexDirection='column' alignItems='center'>
               <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0}} src={message.sentBy.avatar} >
                   {message.sentBy.firstName[0]+message.sentBy.lastName[0]}
               </Avatar>
               <Typography variant='caption'>
                 {message.sentBy.username}
               </Typography> 
-            </Box>
+            </Box> */}
             <Typography marginLeft={1}>
               {message.content}
             </Typography> 
@@ -86,14 +87,7 @@ const ChatRoom = ({match}) => {
               ({format(Date.now(), 'Pp')})
             </Typography>
           <Box display='flex' alignItems='center'>
-            <Box display='flex' flexDirection='column' alignItems='center'>
-              <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.avatar} >
-                  {message.firstName[0]+message.lastName[0]}
-              </Avatar>
-              <Typography variant='caption'>
-                {message.senderName}
-              </Typography> 
-            </Box>
+            <UserAvatar user={message} />
             <Typography>
               {message.content}
             </Typography> 

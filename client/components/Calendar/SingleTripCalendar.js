@@ -6,7 +6,7 @@ import moment from 'moment'
 const localizer = momentLocalizer(moment)
 
 import EventForm from '../Map/EventForm';
-import TripTitle from '../Trip/TripTitle';
+import {TripTitle} from '../Trip/TripComponents';
 ////////// MUI ///////////////
 import { Box, Button, Dialog, Typography } from '@mui/material'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
