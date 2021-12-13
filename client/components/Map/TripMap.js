@@ -8,7 +8,7 @@ import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps
 import {TripTitle} from '../Trip/TripComponents';
 import EventForm from './EventForm'
 import CircularLoading from '../Loading/CircularLoading'
-
+import { findZoom, findCenter } from './mapFunctions';
 import mapStyles from './mapStyles';
 
 ////////////////// MATERIAL UI /////////////////
@@ -80,7 +80,7 @@ export default function TripMap({ match }) {
         setOpenNoLocationAlert(false);
         setOpenSnackbar(false)
     }
-    //TODO: rename these
+    
     const handleFindMarker = (id) => {
         const marker = markers.find(marker => marker.id === id);
         setSelected(marker);
@@ -165,7 +165,14 @@ export default function TripMap({ match }) {
             </Button>
         );
     }
-    
+    const defaultCoords = {
+        lat: 34.456748,
+        lng: -75.462405
+    }
+
+    const [zoom, setZoom] = useState(3);
+    const [center, setCenter] = useState({lat: defaultCoords.lat, lng: defaultCoords.lng});
+
     useEffect(() => {
         const createAllMarkers = async() => {
             await setMarkers([]);
@@ -174,7 +181,7 @@ export default function TripMap({ match }) {
             events.forEach(async (event) => {
                 await setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: event.name, location: event.location, url: `/pin-10.svg` }])
             });
-            if (trip?.trip.isOpen){
+            if (trip.trip.isOpen){
                 users.forEach(async (user) => {
                     if (user.lat) {
                         await setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/person.svg', firstName: user.firstName, lastName: user.lastName }])
@@ -183,29 +190,21 @@ export default function TripMap({ match }) {
             }
         }
         createAllMarkers();
+        if (markers.length > 0) {
+            setZoom(() => findZoom(events))
+            setCenter(() => findCenter(events))
+        }
     }, [tripId, update])
 
     if (!trip || !events || !users) {
         return <CircularLoading />
     }
 
-    events = events.sort((a,b) => isAfter(a.startTime, b.startTime) ? 1 : -1)
+    events = events.sort((a,b) => isAfter(parseISO(a.startTime), parseISO(b.startTime)) ? 1 : -1)
 
-    const lat = events.length === 0 ? 
-        +trip.trip.lat
-        :
-        events.reduce((accum, event) => {
-            accum += +event.lat
-            return accum
-        }, 0) / events.length
 
-    const lng = events.length === 0 ?
-        +trip.trip.lng
-        :
-        events.reduce((accum, event) => {
-            accum += +event.lng
-            return accum
-        }, 0) / events.length;
+    const lat = +center.lat;
+    const lng = +center.lng;
     
 
     return (
@@ -307,6 +306,7 @@ export default function TripMap({ match }) {
                     marginTop={.5}
                     marginBottom={.5}
                     flexWrap='wrap'
+                    sx={{ maxHeight: 200, overflow: 'auto' }}
                 >
 
                     {
@@ -346,6 +346,7 @@ export default function TripMap({ match }) {
                     justifyContent='center'
                     marginBottom={.5}
                     flexWrap='wrap'
+                    sx={{ maxHeight: 200, overflow: 'auto' }}
                 >
                     {
                         events.map(event => (
@@ -452,7 +453,7 @@ export default function TripMap({ match }) {
                     id='map'
                     options={options}
                     onLoad={onMapLoad}
-                    zoom={tripZoom}
+                    zoom={zoom}
                     mapContainerStyle={mapContainerStyle}
                     style={mapStyles}
                     center={{lat, lng}}

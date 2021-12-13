@@ -1,63 +1,51 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { parseISO, format } from 'date-fns';
 
 import CircularLoading from '../Loading/CircularLoading'
+import { findZoom, findCenter } from './mapFunctions'
 
-import { Box, Container, FormGroup, FormControlLabel, Switch, Grid, Button, Tooltip, Divider } from '@mui/material'
+import { Box, FormGroup, FormControlLabel, Switch, Grid, Button, Tooltip, Divider } from '@mui/material'
 
-import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
-import FaMapMarkerAlt from 'react-icons/fa'
-import { getTrips } from '../../store';
 
 import mapStyles from './mapStyles';
 
-const mapContainerStyle = {
-    height: "50vh",
-};
-
-const options = {
-    styles: mapStyles,
-    disableDefaultUI: true,
-    zoomControl: true,
-};
-
-const tripZoom = 12;
 
 export default function AllTripsMap() {
-    // const { isLoaded, loadError } = useLoadScript({
-    //     googleMapsApiKey: process.env.MAP_API
-    // });
-    const dispatch = useDispatch()
-    const auth = useSelector(state => state.auth);
-
+    
     ///////////  Trip View Selection //////////
-    // const [showTrips, setshowTrips] = useState('all');
     const [checked, setChecked] = useState(false);
-
     const handleChange = (event) => {
         setChecked(event.target.checked)
+        setSelectedTrip({id: 0})
     };
-    // const { trips } = useSelector(state => state)
     const trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
-
-    // let trips = useSelector(state => state.trips);
-
+    
     const [markers, setMarkers] = useState([]);
-    const [trackingMarkers, setTrackingMarkers] = useState([]);
     const [selected, setSelected] = useState(null);
     const [update, setUpdate] = useState(0);
-
+    
+    const mapContainerStyle = {
+        height: "50vh",
+    };
+    
+    const options = {
+        styles: mapStyles,
+        disableDefaultUI: true,
+        zoomControl: true,
+    };
+    
+    const tripZoom = 12;
 
     const mapRef = useRef();
     const onMapLoad = useCallback((map) => {
@@ -68,10 +56,20 @@ export default function AllTripsMap() {
         mapRef.current.panTo({ lat, lng });
         mapRef.current.setZoom(tripZoom);
     }, []);
+    
+    const defaultCoords = {
+        lat: 34.456748,
+        lng: -75.462405
+    }
+
+    const [selectedTrip, setSelectedTrip] = useState({id: 0});
+    const [zoom, setZoom] = useState(1);
+    const [center, setCenter] = useState({defaultCoords});
+
+    
 
     useEffect(() => {
-        // dispatch(getTrips());
-        setMarkers(prevMarkers => []);
+        setMarkers(() => []);
         trips.forEach((trip, idx) => {
             trip.trip.events.map(event => {
                 setMarkers(prevMarkers => [...prevMarkers,
@@ -81,18 +79,34 @@ export default function AllTripsMap() {
                     id: event.id,
                     lat: +event.lat,
                     lng: +event.lng,
-                    name: `${event.name} - ${event.location}`,
+                    name: event.name,
                     trip: trip.trip.name,
                     location: event.location,
-                    // url: idx > 9 ? `http://labs.google.com/ridefinder/images/mm_20_${urls[idx % 9]}.png` : `http://labs.google.com/ridefinder/images/mm_20_${urls[idx]}.png` 
                     url: idx > 10 ? `/pin-${idx % 10}.svg` : `/pin-${idx}.svg`
                 }]);
                 trip.color = idx > 10 ? colors[idx % 10] : colors[idx]
             })
         });
-    }, [update, checked])
-
-    //TODO: Add form to add new event after clicking on map and getting lat/lng
+        
+        if (selectedTrip.id !== 0){
+            if (selectedTrip.events.length === 0) {
+                setZoom(() => 8)
+                setCenter(() => ({lat: +selectedTrip.lat, lng: +selectedTrip.lng}))
+            } else {
+                setCenter(() => findCenter(selectedTrip.events))
+                setZoom(() => findZoom(selectedTrip.events))
+            }
+        } else if (selectedTrip.id === 0){
+            if (markers.length === 0){
+                setZoom(() => 3)
+                setCenter(() => ({lat: defaultCoords.lat, lng: defaultCoords.lng}))
+            } else {
+                setCenter(() => findCenter(markers))
+                setZoom(() => findZoom(markers))
+            }
+        }
+      
+    }, [update, checked, selectedTrip.id, markers.length])
 
     const colors = {
         0: '#F70909',
@@ -127,15 +141,19 @@ export default function AllTripsMap() {
     const handleClick = (id) => {
         setUpdate(prevUpdate => prevUpdate + Math.random())
         const marker = markers.find(marker => marker.id === id);
-        // ev.stopPropagation()
         setSelected(marker);
     }
 
-    const [selectedTrip, setSelectedTrip] = useState({ id: 0, lat: 34.456748, lng: -75.462405 });
+    const [expanded, setExpanded] = useState(false);
 
-    // if (loadError) return "Error";
-    // if (!isLoaded || !trips) return <CircularLoading />
+    const handleAccordionChange = panel => (evt, isExpanded) => {
+        setExpanded(isExpanded ? panel : false)
+    }
     if (!trips) return <CircularLoading />
+
+    const lat = +center.lat;
+    const lng = +center.lng;
+    
     return (
         <>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
@@ -175,11 +193,20 @@ export default function AllTripsMap() {
                     {
                         trips.map(trip => (
                             <Box display='flex' flexWrap='wrap' key={trip.id}>
-                                <Accordion sx={{ margin: 1, minWidth: '100%' }} >
+                                <Accordion sx={{ margin: 1, minWidth: '100%' }} 
+                                    expanded={expanded === trip.id}
+                                    onChange={handleAccordionChange(trip.id)}
+                                >
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
                                         id="trip-header"
-                                        onClick={() => setSelectedTrip(trip.trip)}
+                                        onClick={() => {
+                                            if (selectedTrip.id === trip.trip.id){
+                                                setSelectedTrip({id: 0})
+                                            } else {
+                                                setSelectedTrip(trip.trip)
+                                            }
+                                        }}
                                         sx={{ borderRight: `4px solid ${trip.color}` }}
                                     >
                                         <Typography>
@@ -216,11 +243,13 @@ export default function AllTripsMap() {
                             id='map'
                             options={options}
                             onLoad={onMapLoad}
-                            zoom={selectedTrip.id === 0 ? 2 : tripZoom}
+                            // zoom={selectedTrip.id === 0 ? findZoom(markers) : tripZoom}
+                            zoom={zoom}
                             // zoom={tripId ? 8 : 3}
                             mapContainerStyle={mapContainerStyle}
                             style={mapStyles}
-                            center={{ lat: +selectedTrip.lat, lng: +selectedTrip.lng }}
+                            // center={{ lat: +selectedTrip.lat, lng: +selectedTrip.lng}}
+                            center={{ lat, lng }}
                         >
                             {displayMarkers()}
                             {
