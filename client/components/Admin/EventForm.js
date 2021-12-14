@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { addEvent, getTrips, editEvent } from '../../store'
 
 //////////////// STYLE FOR GOOGLE AUTOCOMPLETE ///////////////////
-import './style.css'
+// import './style.css'
 
 ////////////// MATERIAL UI ///////////////////////////////
 import { LocalizationProvider, DateTimePicker } from '@mui/lab';

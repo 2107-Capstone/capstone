@@ -27,7 +27,7 @@ const Footer = () => {
                 bottom: 0,
                 height: 'auto',
                 width: '100%',
-                borderTop: 'solid 1px black'
+                // borderTop: 'solid 1px black'
             }}
         >
             <Grid container justifyContent="space-around" alignItems='center'>
