@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react"
 import LockIcon from '@mui/icons-material/Lock';
 import { authenticate } from "../../store";
-<<<<<<< HEAD
-import { useDispatch, connect } from "react-redux";
-=======
-import { useDispatch, useSelector } from "react-redux";
->>>>>>> main
+import { useDispatch, useSelector, connect } from "react-redux";
 
 
 ///////////////// MATERIAL UI ////////////////////////
