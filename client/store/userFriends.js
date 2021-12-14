@@ -45,7 +45,7 @@ export const createUserFriend = (userFriend) => {
         authorization: token
       }
     })
-    window.socket.send(JSON.stringify(_createUserFriend(created)))
+    // window.socket.send(JSON.stringify(_createUserFriend(created)))
     dispatch(_createUserFriend(created))
   }
 }
@@ -59,7 +59,7 @@ export const deleteUserFriend = (id) => {
         authorization: token
       }
     })
-    window.socket.send(JSON.stringify(_deleteUserFriend(id)))
+    // window.socket.send(JSON.stringify(_deleteUserFriend(id)))
     dispatch(_deleteUserFriend(id))
   }
 }
@@ -73,7 +73,7 @@ export const approveUserFriend = (userFriend) => {
         authorization: token
       }
     })
-    window.socket.send(JSON.stringify(_approveUserFriend(approved)))
+    // window.socket.send(JSON.stringify(_approveUserFriend(approved)))
     dispatch(_approveUserFriend(approved))
   }
 }
