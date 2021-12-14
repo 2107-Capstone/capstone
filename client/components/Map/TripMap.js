@@ -10,7 +10,7 @@ import EventForm from './EventForm'
 import CircularLoading from '../Loading/CircularLoading'
 import { findZoom, findCenter } from './mapFunctions';
 import mapStyles from './mapStyles';
-
+import theme from '../../theme';
 ////////////////// MATERIAL UI /////////////////
 import { Alert, Box, Button, IconButton, Typography, Dialog, Snackbar } from '@mui/material'
 import Avatar from '@mui/material/Avatar';
@@ -60,23 +60,23 @@ export default function TripMap({ match }) {
     const [selected, setSelected] = useState('');
     const [update, setUpdate] = useState(0);
     const [openSnackbar, setOpenSnackbar] = useState(false);
-    const mapRef = useRef();
-    const onMapLoad = useCallback((map) => {
-        mapRef.current = map;
-    }, []);
-
-    const panTo = useCallback(({ lat, lng }) => {
-        mapRef.current.panTo({ lat, lng });
-        mapRef.current.setZoom(tripZoom);
-    }, []);
-
-    const userLocation = useRef(null);
-    
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
     const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
     const [eventToEdit, setEventToEdit] = useState({});
+    
+    const mapRef = useRef();
+    
+    const onMapLoad = useCallback((map) => {
+        mapRef.current = map;
+    }, []);
+
+    // const panTo = useCallback(({ lat, lng }) => {
+    //     mapRef.current.panTo({ lat, lng });
+    //     mapRef.current.setZoom(zoom);
+    // }, []);
+    
     
     const handleClose = () => {
         setOpen(false);
@@ -84,6 +84,8 @@ export default function TripMap({ match }) {
         setOpenAlert(false);
         setOpenNoLocationAlert(false);
         setOpenSnackbar(false)
+        setSelectedUser('')
+        setSelected('')
     }
     
     const handleFindMarker = (id) => {
@@ -133,30 +135,31 @@ export default function TripMap({ match }) {
             )
         })
     }
-
+    const userLocation = useRef(null);
     const handleLocate = async () => {
         // if ('geolocation' in navigator === false) {
         //     Alert('Geolocation is not supported by your device.')
         // }
         await navigator.geolocation.getCurrentPosition(
             async (position) => {
-                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
+                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }, 'geolocation'));
                 userLocation.current = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 }
                 await setUpdate(prevUpdate => prevUpdate + Math.random())
-                panTo({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                });
+                // panTo({
+                //     lat: position.coords.latitude,
+                //     lng: position.coords.longitude,
+                // });
             },
             () => null
         );
         setOpenAlert(true);
     }
 
-    function Locate({ panTo }) {
+    // function Locate({ panTo }) {
+    function Locate() {
         return (
 
             <Button
@@ -181,7 +184,6 @@ export default function TripMap({ match }) {
     useEffect(() => {
         setMarkers(() => []);
         setTrackingMarkers(() => []);
-
         events.map( (event) => {
                 setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: event.name, location: event.location, url: `/pin-10.svg` }])
         });
@@ -191,8 +193,8 @@ export default function TripMap({ match }) {
                         setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/person.svg', firstName: user.firstName, lastName: user.lastName }])
                 }
             })
-        }
-        if (markers.length !== 0) {
+        } 
+        if (markers.length !== 0 && !selected && !selectedUser) {
             setZoom(() => findZoom(events))
             setCenter(() => findCenter(events))
         } 
@@ -256,7 +258,8 @@ export default function TripMap({ match }) {
                         flexWrap='wrap'
                     >
                         <Box marginRight={3}>
-                            <Locate panTo={panTo} />
+                            {/* <Locate panTo={panTo} /> */}
+                            <Locate  />
                         </Box>
                         <Box marginBottom={.5} marginRight={3} >
                             <Button
@@ -369,18 +372,18 @@ export default function TripMap({ match }) {
                                     <Typography
                                         sx={{ m: 0 }}
                                         variant='subtitle2'
-                                        color={'text.dark.primary'}
+                                        color='text.light.primary'
                                     >
                                         {event.name}
                                     </Typography>
                                     <Typography
-                                        color={'text.dark.primary'}variant="caption"
+                                        color='text.light.secondary' variant="caption"
                                         sx={{ m: 0 }}
                                     >
                                         {event.description}
                                     </Typography>
                                     <Typography
-                                        color={'text.dark.secondary'}variant="caption"
+                                        color='text.light.secondary' variant="caption"
                                         sx={{ m: 0 }}
                                     >
                                         {format(parseISO(event.startTime), 'P')}
@@ -480,22 +483,29 @@ export default function TripMap({ match }) {
                                         marginRight={1}
                                         marginBottom={.5}
                                         marginLeft={.5}
+                                        textAlign='center'
                                     >
-                                        <Typography variant={'subtitle2'} color={'text.dark.primary'}>
+                                        <Typography variant='subtitle2'
+                                        color='text.dark.primary'
+                                        >
                                             {selected.name}
                                         </Typography>
+                                        <Box textAlign='center'>
                                         {
                                             selected.url ?
-                                                <Typography variant={'caption'} color={'text.dark.primary'}>
+                                            <Typography variant='caption'
+                                            color='text.dark.primary'
+                                            >
                                                     {selected.location}
                                                 </Typography>
                                             : 
-                                            <Typography variant={'caption'} color={'text.dark.secondary'}>
+                                            <Typography variant='caption' color='text.dark.secondary'>
                                                         pinned at
-                                                </Typography>
+                                            </Typography>
                                         }
+                                        </Box>
                                         <br></br>
-                                        <Typography variant={'caption'} color={'text.dark.secondary'}>
+                                        <Typography variant='caption' color='text.dark.secondary'>
                                             {selected.time}
                                         </Typography>
                                     </Box>

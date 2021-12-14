@@ -27,7 +27,7 @@ const Footer = () => {
                 bottom: 0,
                 height: 'auto',
                 width: '100%',
-                borderTop: 'solid 1px black'
+                // borderTop: 'solid 1px black'
             }}
         >
             <Grid container justifyContent="space-around" alignItems='center'>
@@ -37,19 +37,19 @@ const Footer = () => {
                     </Typography>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant="body1">
-                            <IconButton size="small">
+                            <IconButton size="small" href="https://github.com/andygao1990" target="_blank">
                                 <AccountCircleIcon />
                             </IconButton>
                             Andy
                         </Typography>
                         <Typography variant="body1">
-                            <IconButton size="small">
+                            <IconButton size="small" href="https://github.com/nightsandwich" target="_blank">
                                 <AccountCircleIcon />
                             </IconButton>
                             Corinne
                         </Typography>
                         <Typography variant="body1">
-                            <IconButton size="small">
+                            <IconButton size="small" href="https://github.com/jmartin-code" target="_blank">
                                 <AccountCircleIcon />
                             </IconButton>
                             Jonathan

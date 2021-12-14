@@ -1,4 +1,4 @@
-import React, { createRef, Fragment, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 ///////////////////// UI ///////////////////////
 import { Box, Grid, Grow, IconButton, Slide, Typography, Divider, Button, Zoom, Collapse, Fade } from '@mui/material'
@@ -14,17 +14,19 @@ import { overlappingCircles } from 'hero-patterns'
 /////// Check if element is in view //////////////////
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
+import { useTheme } from '@emotion/react'
 
 const Home = () => {
   const dataLen = data.length;
   const references = new Array(dataLen + 1).fill('').map(_ => useInView({
     triggerOnce: true,
-    // rootMargin: '-250px 0px',
     // threshold: 1
   })
   )
 
   const user = useSelector(state => state.auth)
+
+  const theme = useTheme()
 
   useEffect(() => {
     window.onbeforeunload = function () {
@@ -37,6 +39,8 @@ const Home = () => {
   const handleScroll = () => {
     scroll.current.scrollIntoView({ behavior: "smooth" })
   }
+
+  // console.log(theme)
 
   return (
     <>
@@ -60,7 +64,7 @@ const Home = () => {
           Functionalities
         </Typography>
       </Divider>
-      <Grid container justifyContent='space-around' sx={{ background: overlappingCircles('#a2cf6e', .3), backgroundAttachment: 'fixed' }}>
+      <Grid container justifyContent='space-around' sx={{ background: overlappingCircles(theme.palette.success.main, .3), backgroundAttachment: 'fixed' }}>
         {
           data.map((info, idx) => (
             <Zoom in={references[idx][1]} timeout={1200} key={info.id}>
@@ -83,9 +87,9 @@ const Home = () => {
           ))
         }
         {!user.id && (
-          <Zoom in={references[dataLen - 1][1]} timeout={1200}>
+          <Zoom in={references[dataLen][1]} timeout={1200}>
             <Grid item xs={12} md={6} >
-              <Box ref={references[dataLen - 1][0]} sx={{ minHeight: 700, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+              <Box ref={references[dataLen][0]} sx={{ minHeight: 700, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
                 <Box>
                   <Typography variant='h5' align='center'>
                     Sign Up

@@ -118,7 +118,80 @@ const Password = () => {
                 <Typography component="h1" variant="h5">
                     Change Your Password
                 </Typography>
-                {
+                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12} >
+                                <FormControl variant="outlined" fullWidth>
+                                  <InputLabel htmlFor="outlined-adornment-password">New Password</InputLabel>
+                                  <OutlinedInput
+                                    id="outlined-adornment-password"
+                                    type={input.showPassword ? 'text' : 'password'}
+                                    value={input.newPassword || ''}
+                                    name="newPassword"
+                                    onChange={handleChange}
+                                    autoComplete="new-password"
+                                    endAdornment={
+                                      <InputAdornment position="end">
+                                        <IconButton
+                                          aria-label="toggle password visibility"
+                                          onClick={handleClickShowPassword}
+                                          onMouseDown={handleMouseDownPassword}
+                                          edge="end"
+                                        >
+                                          {input.showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                      </InputAdornment>
+                                    }
+                                    label="New Password"
+                                  />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} >
+                                <FormControl variant="outlined" fullWidth>
+                                  <InputLabel htmlFor="outlined-adornment-password">Please Enter New Password Again</InputLabel>
+                                  <OutlinedInput
+                                    id="outlined-adornment-password-2"
+                                    type={input.showPassword ? 'text' : 'password'}
+                                    value={input.newPasswordCheck|| ''}
+                                    name="newPasswordCheck"
+                                    onChange={handleChange}
+                                    autoComplete="new-password-check"
+                                    endAdornment={
+                                      <InputAdornment position="end">
+                                        <IconButton
+                                          aria-label="toggle password visibility"
+                                          onClick={handleClickShowPassword}
+                                          onMouseDown={handleMouseDownPassword}
+                                          edge="end"
+                                        >
+                                          {input.showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                      </InputAdornment>
+                                    }
+                                    label="Please Enter New Password Again"
+                                  />
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+                        
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                            disabled={input.newPassword !== input.newPasswordCheck}
+                        >
+                            Update Password
+                        </Button>
+                        {
+                          input.newPassword !== input.newPasswordCheck ?
+                            <Typography sx={{color: 'red'}} variation='caption'>
+                              New passwords must match!
+                            </Typography>
+                            : ''
+                        }
+                    </Box>
+                {/* {
                   oldPasswordCorrect ? '' : 
                     <Box component="form" onSubmit={handleSubmitOldPassword} sx={{ mt: 3 }}>
                         <Grid container spacing={1}>
@@ -150,8 +223,8 @@ const Password = () => {
                                 Submit
                             </Button>
                     </Box>
-                }
-                {
+                } */}
+                {/* {
                   oldPasswordCorrect ? (
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={1}>
@@ -228,7 +301,7 @@ const Password = () => {
                     </Box>
                   )
                   : ''
-                }
+                } */}
             </Box>
         </Container>
     )
