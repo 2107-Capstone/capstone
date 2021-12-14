@@ -18,9 +18,10 @@ import { FormControlLabel, FormGroup, Switch } from '@mui/material'
 
 
 const TripCalendar = () => {
+    const theme = useTheme()
     const [checked, setchecked] = useState(false)
     const { trips } = useSelector(state => state)
-
+    
     const handleCheked = (evt) => {
         setchecked(evt.target.checked)
     }
@@ -55,7 +56,6 @@ const TripCalendar = () => {
         history.push(`/trips/${event.tripId}`)
     }
 
-    const theme = useTheme()
     const eventStyles = (event) => {
         const style = {
             backgroundColor: theme.palette.primary.main
