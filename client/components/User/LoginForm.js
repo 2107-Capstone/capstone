@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux";
+import { useDispatch, connect } from "react-redux";
 
 /////////// Material UI /////////////////
 import { Box, Avatar, TextField, Typography, Button, Link, Container, SvgIcon, } from '@mui/material';
@@ -10,7 +10,7 @@ import { authenticate } from "../../store";
 ///////////AIRPLANE LOGO //////////////
 import LogoIcon from '/public/tripIcon.svg'
 
-const LoginForm = () => {
+const LoginForm = ({error}) => {
     const dispatch = useDispatch()
     const [input, setinput] = useState({
         username: '',
@@ -87,6 +87,11 @@ const LoginForm = () => {
                     >
                         Sign In
                     </Button>
+                    {error && error.response && (
+                        <Typography align='center' sx={{color: 'red'}}>
+                        {error.response.data}
+                        </Typography>
+                    )}
                     <Typography align='center'>
                         <Link href="/signup" variant="body2">
                             {"Don't have an account? Sign Up"}
@@ -98,4 +103,10 @@ const LoginForm = () => {
     )
 }
 
-export default LoginForm
+const mapState = (state) => {
+    return {
+      error: state.auth.error,
+    }
+  }
+
+export default connect(mapState)(LoginForm)
