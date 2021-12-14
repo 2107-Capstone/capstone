@@ -42,7 +42,7 @@ export default function AllTripsMap() {
     const [update, setUpdate] = useState(0);
     
     const mapContainerStyle = {
-        height: "50vh",
+        height: "60vh",
     };
     
     const options = {
@@ -218,7 +218,7 @@ export default function AllTripsMap() {
                 </Button>
             </Box>
             <Grid container columnSpacing={2} rowSpacing={2} >
-                <Grid item xs={12} sx={{ maxHeight: 400, overflow: 'auto' }}>
+                <Grid item xs={12} sx={{ maxHeight: '40%', overflow: 'auto' }}>
                     <Box >
                     {
                         trips.map(trip => (
@@ -261,12 +261,12 @@ export default function AllTripsMap() {
                                                                 <Typography gutterBottom color='text.primary' variant="subtitle1">
                                                                     {event.name} - {event.location}
                                                                 </Typography>
+                                                                <Typography variant='subtitle2' color='text.primary' >
+                                                                    {event.description}
+                                                                </Typography>
+                                                                <Divider color='grey' fullWidth/>
                                                                 <Typography color='text.secondary' variant="caption" >
                                                                     {format(parseISO(event.startTime), 'Pp')}
-                                                                </Typography>
-                                                                <Divider color={trip.color} fullWidth/>
-                                                                <Typography variant='subtitle2' color='text.primary'  sx={{mt: 1, fontStyle: 'italic'}}>
-                                                                    {event.description}
                                                                 </Typography>
                                                             </Box>
                                                     </CardContent>
@@ -306,8 +306,8 @@ export default function AllTripsMap() {
                                         }}
                                     >
                                         <Box display='flex' flexDirection='column' alignItems='center' style={{ margin: '0 1rem .5rem 1rem' }}>
-                                            <Box border={`1px solid ${selected.color}`} padding={'2px 2px 2px 2px'} borderRadius={2}>
-                                                <Typography variant='subtitle1' color='text.dark.primary'>
+                                            <Box padding={'2px 2px 2px 2px'} borderRadius={2}>
+                                                <Typography variant='subtitle1' color='text.dark.primary' sx={{textDecoration: 'underline', textDecorationColor: selected.color, textDecorationThickness: 4}}>
                                                     {selected.trip}
                                                 </Typography>
                                             </Box>

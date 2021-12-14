@@ -7,16 +7,17 @@ const localizer = momentLocalizer(moment)
 
 import EventForm from '../Map/EventForm';
 import AddTripForm from '../Trips/Form/AddTripForm';
-import {TripTitle} from '../Trip/TripComponents';
+import { TripTitle } from '../Trip/TripComponents';
 ////////// MUI ///////////////
 import { Box, Button, Dialog, Typography } from '@mui/material'
+import { useTheme } from '@emotion/react'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import AddIcon from '@mui/icons-material/Add';
 ////////// Browser History ///////////////
 import history from '../../history'
 
 ////////// CSS Style for the calendar //////////
-import './TripCalendar.css'
+// import './TripCalendar.css'
 import CircularLoading from '../Loading/CircularLoading'
 
 const SingleTripCalendar = ({ match }) => {
@@ -26,12 +27,12 @@ const SingleTripCalendar = ({ match }) => {
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
     const [tripEvent, setTripEvent] = useState({});
-    
+
     const handleSelect = (event) => {
-        if (!event.isTrip && trip.trip.isOpen){ //event is actual event, not trip
+        if (!event.isTrip && trip.trip.isOpen) { //event is actual event, not trip
             setForm('event')
             setTripEvent(() => event);
-        } else if (trip.trip.isOpen){
+        } else if (trip.trip.isOpen) {
             setForm('trip')
         }
         setOpen(() => true);
@@ -41,21 +42,33 @@ const SingleTripCalendar = ({ match }) => {
         setForm('');
         setTripEvent({})
     }
-    
+
+    const theme = useTheme()
+    const eventStyles = (event) => {
+        const style = {
+            backgroundColor: theme.palette.primary.main
+        }
+
+        if (event.type === 'event') {
+            style.backgroundColor = theme.palette.secondary.main
+        }
+        return { style: style }
+    }
+
     if (!trip) {
         return (
             <CircularLoading />
-            )
-        }
-//TODO: edit trip from here
+        )
+    }
+    //TODO: edit trip from here
     ///////////// TRIP ////////////////
     // trip = trip.trip;
     // const calendarTrip = { isTrip: true, id: trip.id, tripId: trip.id, name: trip.name, description: trip.description, location: trip.location, title: `${trip.name} - ${trip.location}`, start: new Date(trip.startTime), end: new Date(trip.endTime) } 
-    const calendarTrip = { ...trip.trip, isTrip: true, id: trip.tripId, tripId: trip.tripId, title: `${trip.trip.name} - ${trip.trip.location}`, start: new Date(trip.trip.startTime), end: new Date(trip.trip.endTime) } 
-    
+    const calendarTrip = { ...trip.trip, isTrip: true, id: trip.tripId, tripId: trip.tripId, title: `${trip.trip.name} - ${trip.trip.location}`, start: new Date(trip.trip.startTime), end: new Date(trip.trip.endTime) }
+
     ////////// EVENTS ////////////////
-    const calendarEvents = events.map(event => { return { ...event, isTrip: false, title: `${event.name} - ${event.location}`, start: new Date(event.startTime), end: new Date(event.endTime) } })
-    
+    const calendarEvents = events.map(event => { return { ...event, type: 'event', isTrip: false, title: `${event.name} - ${event.location}`, start: new Date(event.startTime), end: new Date(event.endTime) } })
+
 
     // const handleSubmitToPassToForm = async (ev, inputs, trip, startTime, endTime) => {
     //     ev.preventDefault();
@@ -79,16 +92,16 @@ const SingleTripCalendar = ({ match }) => {
             <TripTitle trip={trip} />
             {
                 trip.trip.isOpen ?
-                <Box textAlign='center'>
-                    <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => {
-                        setOpen(true)
-                        setForm('event')
-                    }} 
-                    >
-                        Add Event
-                    </Button>
-                </Box>
-                : ''
+                    <Box textAlign='center'>
+                        <Button sx={{ mb: 1, mt: 1 }} variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />} onClick={() => {
+                            setOpen(true)
+                            setForm('event')
+                        }}
+                        >
+                            Add Event
+                        </Button>
+                    </Box>
+                    : ''
             }
             <Calendar
                 // popup
@@ -108,6 +121,7 @@ const SingleTripCalendar = ({ match }) => {
                 defaultDate={calendarTrip.startTime}
                 showMultiDayTimes
                 onSelectEvent={event => handleSelect(event)}
+                eventPropGetter={eventStyles}
             />
         </div>
     )

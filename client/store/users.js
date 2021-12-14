@@ -30,7 +30,7 @@ export const getUsers = () => {
     dispatch(_getUsers(users));
   };
 }
-export const updateUser = (user) => {
+export const updateUser = (user, type) => {
   const token = window.localStorage.getItem(TOKEN)
   
   return async (dispatch) => {
@@ -40,7 +40,9 @@ export const updateUser = (user) => {
      }
    });
     dispatch(_updateUser(updated));
-    setTimeout(() => history.push('/settings'), 2000)
+    if (type !== 'geolocation') {
+      setTimeout(() => history.push('/settings'), 2000)
+    }
     
   };
 }
