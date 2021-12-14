@@ -31,10 +31,12 @@ const User = db.define('user', {
   email: {
     type: STRING,
     unique: true,
+    validate: {
+      isEmail: {msg: 'Email address must be valid.'}
+    }
   },
   phoneNumber: {
     type: STRING,
-    unique: true
   },
   lat: {
     type: DECIMAL,
