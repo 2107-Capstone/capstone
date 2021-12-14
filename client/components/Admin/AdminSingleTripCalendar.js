@@ -10,37 +10,39 @@ import { updateUser, deleteEvent, editEvent } from '../../store';
 ////////// MUI ///////////////
 import { Box, Dialog, Typography } from '@mui/material'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
+import { useTheme } from '@emotion/react'
 
 ////////// Browser History ///////////////
 import history from '../../history'
 
 ////////// CSS Style for the calendar //////////
-import './TripCalendar.css'
+// import './TripCalendar.css'
 import CircularLoading from '../Loading/CircularLoading'
 
 const AdminSingleTripCalendar = ({ match }) => {
     let trip = useSelector(state => state.adminTrips.find(adminTrip => adminTrip.id === match.params.id))
-    
+
     ////////// DIALOG TO OPEN EVENT FORM ////////////////
     const [open, setOpen] = useState(false);
     const [tripEvent, setTripEvent] = useState({});
-    
+    const theme = useTheme()
+
     if (!trip) {
         return (
             <CircularLoading />
-            )
-        }
+        )
+    }
 
-    const calendarTrip = { ...trip, isTrip: true, id: trip.id, tripId: trip.id, title: `${trip.name} - ${trip.location}`, start: new Date(trip.startTime), end: new Date(trip.endTime) } 
+    const calendarTrip = { ...trip, isTrip: true, id: trip.id, tripId: trip.id, title: `${trip.name} - ${trip.location}`, start: new Date(trip.startTime), end: new Date(trip.endTime) }
 
     ////////// EVENTS ////////////////
-    const calendarEvents = trip.events.map(event => { return { ...event, isTrip: false, title: `${event.name} - ${event.location}`, start: new Date(event.startTime), end: new Date(event.endTime) } })
+    const calendarEvents = trip.events.map(event => { return { ...event, type: 'event', isTrip: false, title: `${event.name} - ${event.location}`, start: new Date(event.startTime), end: new Date(event.endTime) } })
 
-    
+
 
     const handleSelect = (event) => {
-        
-        if (!event.trip){ //event is actual event, not trip
+
+        if (!event.trip) { //event is actual event, not trip
             setTripEvent(() => event);
             setOpen(() => true);
         }
@@ -49,12 +51,23 @@ const AdminSingleTripCalendar = ({ match }) => {
         setOpen(false);
     }
 
+    const eventStyles = (event) => {
+        const style = {
+            backgroundColor: theme.palette.primary.main
+        }
+
+        if (event.type === 'event') {
+            style.backgroundColor = theme.palette.secondary.main
+        }
+        return { style: style }
+    }
+
     return (
         <div>
             <Dialog open={open} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} event={tripEvent} />
             </Dialog>
-            
+
             <Box className='linkToTrip' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                 <CardTravelIcon fontSize='medium' />
                 <Box sx={{ color: 'inherit' }} component={Link} to={`/admin/admintrips/${trip.id}`}>
@@ -77,6 +90,7 @@ const AdminSingleTripCalendar = ({ match }) => {
                 defaultDate={new Date()}
                 showMultiDayTimes
                 onSelectEvent={event => handleSelect(event)}
+                eventPropGetter={eventStyles}
             />
         </div>
     )

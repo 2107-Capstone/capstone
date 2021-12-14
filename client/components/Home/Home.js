@@ -14,6 +14,7 @@ import { overlappingCircles } from 'hero-patterns'
 /////// Check if element is in view //////////////////
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
+import { useTheme } from '@emotion/react'
 
 const Home = () => {
   const dataLen = data.length;
@@ -24,6 +25,8 @@ const Home = () => {
   )
 
   const user = useSelector(state => state.auth)
+
+  const theme = useTheme()
 
   useEffect(() => {
     window.onbeforeunload = function () {
@@ -36,6 +39,8 @@ const Home = () => {
   const handleScroll = () => {
     scroll.current.scrollIntoView({ behavior: "smooth" })
   }
+
+  // console.log(theme)
 
   return (
     <>
@@ -59,7 +64,7 @@ const Home = () => {
           Functionalities
         </Typography>
       </Divider>
-      <Grid container justifyContent='space-around' sx={{ background: overlappingCircles('#a2cf6e', .3), backgroundAttachment: 'fixed' }}>
+      <Grid container justifyContent='space-around' sx={{ background: overlappingCircles(theme.palette.success.main, .3), backgroundAttachment: 'fixed' }}>
         {
           data.map((info, idx) => (
             <Zoom in={references[idx][1]} timeout={1200} key={info.id}>
