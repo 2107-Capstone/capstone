@@ -92,18 +92,6 @@ const SingleTripCalendar = ({ match }) => {
             <TripTitle trip={trip} />
             {
                 trip.trip.isOpen ?
-<<<<<<< HEAD
-                <Box textAlign='center'>
-                    <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => {
-                        setOpen(true)
-                        setForm('event')
-                    }} 
-                    >
-                        Add Event
-                    </Button>
-                </Box>
-                : ''
-=======
                     <Box textAlign='center'>
                         <Button sx={{ mb: 1, mt: 1 }} variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />} onClick={() => {
                             setOpen(true)
@@ -114,7 +102,6 @@ const SingleTripCalendar = ({ match }) => {
                         </Button>
                     </Box>
                     : ''
->>>>>>> main
             }
             <Calendar
                 // popup
