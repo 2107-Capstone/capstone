@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
+import { addTrip, editTrip } from "../../../store/trips"
 ///////////// MATERIAL UI /////////////////////////
 import { DateTimePicker, LocalizationProvider } from "@mui/lab"
 import { Container, Box, TextField, Typography, Grid, Button } from "@mui/material"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
-import { addTrip } from "../../../store/trips"
-
+import CardTravelIcon from '@mui/icons-material/CardTravel';
+import CloseIcon from "@mui/icons-material/Close";
 /////// IMPORT LOGO IMAGE //////////////////
 const airplane = '/images/airplane.png'
 
-const AddTripFrom = () => {
+const AddTripForm = ({trip, handleClose}) => {
     const auth = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     const [input, setinput] = useState({
-        name: '',
-        description: '',
+        userTripId: trip?.id || '',
+        id: trip?.trip.id || '',
+        name: trip?.trip.name || '',
+        description: trip?.trip.description || '',
         imageUrl: airplane,
-        location: '',
-        startTime: new Date(),
-        endTime: new Date(),
-        lat: 40.7127753,
-        lng: -74.0059728,
-        userId: auth.id,
+        location: trip?.trip.location || '',
+        startTime: trip?.trip.startTime || new Date(),
+        endTime: trip?.trip.endTime || new Date(),
+        lat: trip?.trip.lat || 40.7127753,
+        lng: trip?.trip.lng || -74.0059728,
+        // userId: auth.id,
     })
         
     let googlePlace;
@@ -87,8 +90,14 @@ const AddTripFrom = () => {
 
     const handleSubmit = async () => {
         try {
-            dispatch(addTrip({...input}))
+            if (trip?.id){
+                dispatch(editTrip({...input}))
+            } else {
+                dispatch(addTrip({...input}))
+            }
             setinput({
+                userTripId: '',
+                id: '',
                 name: '',
                 imageUrl: '',
                 location: '',
@@ -106,11 +115,18 @@ const AddTripFrom = () => {
     }
 
     return (
+        <>
+        {
+            trip?.id ? <CloseIcon onClick={handleClose}/> : ''
+        }
         <Container>
             <Box>
-                <Typography variant='h5' align='center'>
-                    Add New Trip
+                <Typography sx={{mt: 1}} align='center' variant='h5' gutterBottom>
+                    <CardTravelIcon />&nbsp;{trip?.id ? 'Edit Trip' : 'Add New Trip'}
                 </Typography>
+                {/* <Typography variant='h5' align='center'>
+                    Add New Trip
+                </Typography> */}
                 <Box component="form" noValidate sx={{ mt: 3 }}>
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
@@ -176,12 +192,13 @@ const AddTripFrom = () => {
                         onClick={handleSubmit}
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Add New Trip
+                        {trip?.id ? 'Edit Trip' : 'Add New Trip'}
                     </Button>
                 </Box>
             </Box>
         </Container>
+        </>
     )
 }
 
-export default AddTripFrom
+export default AddTripForm

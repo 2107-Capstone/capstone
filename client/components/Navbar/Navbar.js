@@ -28,7 +28,7 @@ const Navbar = (props) => {
   const isLoggedIn = useSelector(state => !!state.auth.id)
 
   //////// MENU BAR /////////////
-  const { drawerWidth } = props;
+  const { drawerWidth, setMode } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
 
   ///////// Check screen size for mobile //////////////////

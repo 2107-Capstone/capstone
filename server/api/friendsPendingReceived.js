@@ -1,13 +1,9 @@
 const router = require('express').Router()
+const isLoggedIn = require('../middleware/isLoggedIn');
 const { models: { User, UserFriend }} = require('../db')
 module.exports = router
 
-router.get('/', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
-
+router.get('/', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
@@ -31,12 +27,8 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:receivedId', async (req, res, next) => {
-  if(req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
-  try {
+router.get('/:receivedId', isLoggedIn, async (req, res, next) => {
+  try{  
     const received = await UserFriend.findOne({
       where: {
         id: req.params.receivedId,

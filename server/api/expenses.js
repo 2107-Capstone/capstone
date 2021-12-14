@@ -1,13 +1,9 @@
 const router = require('express').Router()
 const { models: { User, Trip, UserTrip, Expense, Category } } = require('../db')
-
+const isLoggedIn = require('../middleware/isLoggedIn');
 module.exports = router
 
-router.get('/', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.get('/', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
@@ -54,11 +50,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:expenseId', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.get('/:expenseId', isLoggedIn, async (req, res, next) => {
   try {
     const expense = await Expense.findOne({
       where: {
@@ -76,11 +68,7 @@ router.get('/:expenseId', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.post('/', isLoggedIn, async (req, res, next) => {
   try {
     let expense = await Expense.create(req.body)
     expense = await Expense.findByPk(expense.id, {
@@ -106,11 +94,7 @@ router.post('/', async (req, res, next) => {
 })
 
 
-router.put('/:expenseId', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.put('/:expenseId', isLoggedIn, async (req, res, next) => {
   try {
     const { name, amount, datePaid, tripId, paidById, categoryId } = req.body
     let expense = await Expense.findByPk(req.params.expenseId)
@@ -126,11 +110,7 @@ router.put('/:expenseId', async (req, res, next) => {
   }
 })
 
-router.delete('/:expenseId', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.delete('/:expenseId', isLoggedIn, async (req, res, next) => {
   try {
     const expense = await Expense.findByPk(req.params.expenseId)
     await expense.destroy()

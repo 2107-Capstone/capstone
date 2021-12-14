@@ -12,21 +12,25 @@ import Grid from '@mui/material/Grid';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
+import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import MuiPhoneNumber from 'material-ui-phone-number';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import Badge from '@mui/material/Badge';
 import EditIcon from '@mui/icons-material/Edit';
 import { updateUser, me } from '../../store'
+import MuiPhoneNumber from 'material-ui-phone-number';
+
 
 const Settings = () => {
+  
     const dispatch = useDispatch()
     const auth = useSelector((state) => state.auth);
     
@@ -38,9 +42,8 @@ const Settings = () => {
         phoneNumber: '',
         disabled: false,
         error: '',
+        
     })
-
-  
 
     const userDebts = useSelector((state) => state.userDebts);
 
@@ -54,14 +57,10 @@ const Settings = () => {
       })
     }, [])
 
-    useEffect(() => {
-      if (input.phoneNumber.length === 17){
-        setinput({
-          ...input,
-          disabled: false
-        })
-      }
-    }, [input.phoneNumber])
+    
+    
+
+    
 
     const handleChange = (evt) => {
         if (!evt.target) {
@@ -96,13 +95,17 @@ const Settings = () => {
     const handleClose = () => {
       setOpenAlert(false);
     }
+    
+    
 
-    const userAvatar = <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={auth.avatar} >
-    {auth.firstName[0]+auth.lastName[0]}
-  </Avatar>
+    const userAvatar = 
+      <Avatar sx={{ height: 60, width: 60, m: 1, bgcolor: 'primary.main'}} src={auth.avatar} >
+        {auth.firstName[0]+auth.lastName[0]}
+      </Avatar>
 
     return (
         <Container component="main" maxWidth="xs">
+          
           <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
               <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
                   Profile Updated!

@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../../store';
 
 ///////////// MATERIAL UI ///////////////
-import { Button, Box, Divider, Drawer, Stack, Toolbar, IconButton, Typography, Badge, SvgIcon } from '@mui/material'
+import { Button, Box, Divider, Drawer, FormGroup, FormControlLabel, Switch, Stack, Toolbar, IconButton, Typography, Badge, SvgIcon } from '@mui/material'
 
 //////////// ICONS //////////////////
 import HomeIcon from '@mui/icons-material/Home';
@@ -23,7 +23,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { getUserTrips } from '../../store/usertrips';
 
 const MenuBar = (props) => {
-    const { mobileOpen, handleDrawerToggle, drawerWidth } = props
+    const { mobileOpen, handleDrawerToggle, drawerWidth, setMode } = props
     const dispatch = useDispatch()
 
     const handleLogout = async () => {
@@ -49,6 +49,7 @@ const MenuBar = (props) => {
     const tripInvitations = pendingInvites.length || 0
     const debtNotifications = userDebts.length || 0
     const countNotifications = friendNotifications + tripInvitations + debtNotifications
+
 
     const menuBarButtons = (
         <Box sx={{ px: 1 }}>

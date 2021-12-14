@@ -36,7 +36,7 @@ export const authenticate = (userInfo, method, type) => async dispatch => {
     console.log(userInfo.username)
     if (userInfo.username === 'Admin') {
       history.push('/admin/admintrips')
-    } else {
+    } else if (type !== 'passwordChange') {
       history.push('/trips')
     }
     // type === 'passwordChange' ? '' : history.push('/trips')

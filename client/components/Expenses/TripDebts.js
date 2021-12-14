@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PieChart from "./PieChart";
 import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
-// import SettleUp from './SettleUp';
+import { UserAvatar } from "../Trip/TripComponents";
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";
 
@@ -46,27 +46,13 @@ const TripDebts = ({tripDebts}) => {
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                     <TableCell align="center">
-                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.payor.avatar} >
-                                {row.payor.firstName[0] + row.payor.lastName[0]}
-                            </Avatar>
-                            <Typography variant='caption'>
-                                {row.payor.username}
-                            </Typography >
-                        </Box>
+                        <UserAvatar user={row.payor} />
                     </TableCell>
                     <TableCell>
                         ${(+row.amount).toFixed(2)}
                     </TableCell>
                     <TableCell align="center">
-                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={row.payee.avatar} >
-                                {row.payee.firstName[0] + row.payee.lastName[0]}
-                            </Avatar>
-                            <Typography variant='caption'>
-                                {row.payee.username}
-                            </Typography >
-                        </Box>
+                        <UserAvatar user={row.payee} />
                     </TableCell>
                     <TableCell >
                         <Checkbox checked={row.status !== 'pending'} disabled/>

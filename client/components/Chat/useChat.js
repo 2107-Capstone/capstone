@@ -32,7 +32,7 @@ const useChat = (roomId) => {
     socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
       content: messageBody,
       sentById: user.id,
-      senderName: user.username,
+      username: user.username,
       avatar: user.avatar,
       firstName: user.firstName,
       lastName: user.lastName

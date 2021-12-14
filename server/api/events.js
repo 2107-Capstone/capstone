@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const isLoggedIn = require('../middleware/isLoggedIn');
 const { models: { User, Trip, UserTrip, Event } } = require('../db')
 const axios = require('axios')
 require('dotenv').config()
@@ -7,11 +8,7 @@ const API_KEY = process.env.MAP_API
 
 module.exports = router
 
-router.get('/', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.get('/', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
@@ -49,11 +46,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.send([])
-  }
+router.post('/', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user) {
@@ -86,11 +79,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.put('/:eventId', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.put('/:eventId', isLoggedIn, async (req, res, next) => {
   try {
     const { name, description, location, startTime, endTime, trip } = req.body;
     const responsePlace = (await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json`, {
@@ -117,11 +106,7 @@ router.put('/:eventId', async (req, res, next) => {
     next(err)
   }
 })
-router.delete('/:eventId', async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
+router.delete('/:eventId', isLoggedIn, async (req, res, next) => {
   try {
     const event = await Event.findByPk(req.params.eventId)
     await event.destroy()

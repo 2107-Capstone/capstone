@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { addEvent, getTrips, editEvent } from '../../store'
 
 //////////////// STYLE FOR GOOGLE AUTOCOMPLETE ///////////////////
-import './style.css'
+// import './style.css'
 
 ////////////// MATERIAL UI ///////////////////////////////
 import { LocalizationProvider, DateTimePicker } from '@mui/lab';
@@ -79,13 +79,15 @@ const EventForm = (props) => {
         }
         return false;
     }
-    const handleSubmit = async () => {
+    const handleSubmit = async (evt) => {
+        evt.preventDefault();
         if (hasErrors()) {
             return
         }
         try {
             if (event.id) {
                 await dispatch(editEvent({ ...inputs, trip, startTime, endTime }))
+                await dispatch(getTrips())
             }
             else {
                 await dispatch(addEvent({ ...inputs, trip, startTime, endTime }))

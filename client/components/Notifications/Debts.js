@@ -2,14 +2,16 @@ import React, { Fragment, useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 
 /////////////// MATERIAL UI ///////////////////////
-import { Box, Checkbox, Avatar, Button, Tooltip, FormGroup, FormControlLabel, Divider, List, Typography, useMediaQuery } from '@mui/material'
+import { Box, Checkbox, Avatar, Button, Tooltip, FormGroup, IconButton, FormControlLabel, Divider, List, Snackbar, Typography, useMediaQuery } from '@mui/material'
 import { useTheme } from "@emotion/react";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 
 ////////////// STORE ////////////////
 import { getUserDebts, editUserDebt } from '../../store'
+
 import CircularLoading from "../Loading/CircularLoading";
+import TripDebts from "./TripDebts";
 
 const Debts = () => {
     ///////////// Media Query /////////////
@@ -51,11 +53,16 @@ const Debts = () => {
     const handleClick = async (userDebt) => {
         dispatch(editUserDebt(userDebt))
     }
+    const [checked, setChecked] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const handleClose = () => {
+        setOpenSnackbar(false)
+    }
 
     if (userDebts.length === 0) {
         return (
             <Typography align='center' variant='h6' sx={{ mt: 4, mb: 8 }}>
-                No unpaid debts
+                No money owed
             </Typography>
         )
     }
@@ -82,34 +89,7 @@ const Debts = () => {
                                         <List key={idx}>
                                             {
                                                 info.map((debt, idx) => (
-                                                    <Fragment key={idx}>
-                                                        <Box key={debt.id}
-                                                            sx={{ m: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                                                        >
-                                                            <Typography>
-                                                                {debt.payor.username === user.username ? 'You owe' : 
-                                                                `${debt.payor.username} owes`}  {debt.payee.username === user.username ? ' you' : debt.payee.username} ${(+debt.amount).toFixed(2)}
-                                                            </Typography>
-                                                            <Tooltip 
-                                                                title={debt.payee.username !== user.username ? `Only ${debt.payee.username} can mark this as paid.` : ''}
-                                                                enterTouchDelay={100}
-                                                                leaveTouchDelay={900}
-                                                            >
-                                                                <FormGroup>
-                                                                    <FormControlLabel
-                                                                        control={
-                                                                            <Checkbox
-                                                                                sx={{ ml: 1 }}
-                                                                                disabled={debt.payee.username !== user.username}
-                                                                                onChange={() => handleClick(debt)}
-                                                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                                                color="success"
-                                                                            />}
-                                                                        label="Paid" />
-                                                                </FormGroup>
-                                                            </Tooltip>
-                                                        </Box>
-                                                    </Fragment>
+                                                    <TripDebts key={idx} info={info} debt={debt} user={user} />
                                                 ))
                                             }
                                         </List>

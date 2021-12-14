@@ -1,19 +1,46 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 ///////////////////// UI ///////////////////////
-import { Box, Collapse, Fade, Zoom, Grid, Grow, IconButton, Slide, Typography, Divider, Button } from '@mui/material'
+import { Box, Grid, Grow, IconButton, Slide, Typography, Divider, Button, Zoom, Collapse, Fade } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 /////////////// Data ////////////
 import data from './data'
 import { Link } from 'react-router-dom';
 
-const Home = () => {
+///////////  Background Shapes ////////////
+import { overlappingCircles } from 'hero-patterns'
 
+/////// Check if element is in view //////////////////
+import { useInView } from 'react-intersection-observer';
+import { useSelector } from 'react-redux';
+import { useTheme } from '@emotion/react'
+
+const Home = () => {
+  const dataLen = data.length;
+  const references = new Array(dataLen + 1).fill('').map(_ => useInView({
+    triggerOnce: true,
+    // threshold: 1
+  })
+  )
+
+  const user = useSelector(state => state.auth)
+
+  const theme = useTheme()
+
+  useEffect(() => {
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    };
+  }, [])
+
+  /////// Reference for arrow down icon //////////////////
   const scroll = useRef(null)
   const handleScroll = () => {
     scroll.current.scrollIntoView({ behavior: "smooth" })
   }
+
+  // console.log(theme)
 
   return (
     <>
@@ -37,12 +64,12 @@ const Home = () => {
           Functionalities
         </Typography>
       </Divider>
-      <Grid container spacing={3}>
+      <Grid container justifyContent='space-around' sx={{ background: overlappingCircles(theme.palette.success.main, .3), backgroundAttachment: 'fixed' }}>
         {
-          data.map(info => (
-            <Slide in={true} direction="up" timeout={info.timeout} key={info.id}>
+          data.map((info, idx) => (
+            <Zoom in={references[idx][1]} timeout={1200} key={info.id}>
               <Grid item xs={12} md={6} >
-                <Box sx={{ height: '75', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', bgcolor: 'lightblue' }}>
+                <Box ref={references[idx][0]} sx={{ minHeight: 700, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
                   <Box>
                     <Typography variant='h5' align='center'>
                       {info.title}
@@ -52,74 +79,38 @@ const Home = () => {
                     </Typography>
                   </Box>
                   <Box>
-                    <img src={info.image} />
+                    <img src={info.image} height={530} />
                   </Box>
                 </Box>
               </Grid>
-            </Slide>
+            </Zoom>
           ))
         }
-        <Grid item xs={12} md={6}>
-          <Box sx={{
-            minHeight: 670, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', bgcolor: 'lightblue'
-          }}>
-            <Typography variant='h5' align='center'>
-              Sign Up
-            </Typography>
-            <Typography align='center'>
-              Are you ready to take your trip to the next level?
-            </Typography>
-            <Button variant='contained' component={Link} to='/signup'>
-              Sign Up
-            </Button>
-          </Box>
-        </Grid>
+        {!user.id && (
+          <Zoom in={references[dataLen][1]} timeout={1200}>
+            <Grid item xs={12} md={6} >
+              <Box ref={references[dataLen][0]} sx={{ minHeight: 700, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                <Box>
+                  <Typography variant='h5' align='center'>
+                    Sign Up
+                  </Typography>
+                  <Typography align='center' gutterBottom>
+                    Are you ready to take your trip to the next level?
+                  </Typography>
+                </Box>
+                <Box>
+                  <Button color='secondary' variant='contained' component={Link} to='/signup'>
+                    Sing Up
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+          </Zoom>
+        )
+        }
       </Grid >
     </>
   )
 }
 
 export default Home
-
-{/* <Grid item xs={12} md={6}>
-<Box sx={{ height: '75vh', bgcolor: 'orange' }}>
-  <Typography variant='h5' align='center'>
-    Add Events
-  </Typography>
-</Box>
-</Grid>
-<Grid item xs={12} md={6}>
-<Box sx={{ height: '50vh', bgcolor: 'yellow' }}>
-  <Typography variant='h5' align='center'>
-    Invite Friends
-  </Typography>
-</Box>
-</Grid>
-<Grid item xs={12} md={6}>
-<Box sx={{ height: '50vh', bgcolor: 'lightgreen' }}>
-  <Typography variant='h5' align='center'>
-    View Trip Map
-  </Typography>
-</Box>
-</Grid>
-<Grid item xs={12} md={6}>
-<Box sx={{ height: '50vh', bgcolor: 'green' }}>
-  <Typography variant='h5' align='center'>
-    Add Trip Expenses
-  </Typography>
-</Box>
-</Grid>
-<Grid item xs={12} md={6}>
-<Box sx={{ height: '50vh', bgcolor: 'silver' }}>
-  <Typography variant='h5' align='center'>
-    View Trip Calendar
-  </Typography>
-</Box>
-</Grid>
-<Grid item xs={12} md={6}>
-<Box sx={{ height: '50vh', bgcolor: 'green' }}>
-  <Typography variant='h5' align='center'>
-    Trip Chat Room
-  </Typography>
-</Box>
-</Grid> */}
