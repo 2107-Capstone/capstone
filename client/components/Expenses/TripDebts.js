@@ -45,16 +45,16 @@ const TripDebts = ({tripDebts}) => {
                     key={row.id + Math.random().toString(16)}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                    <TableCell align="center">
+                    <TableCell align="center"  sx={{color: 'text.secondary'}}>
                         <UserAvatar user={row.payor} />
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{color: 'text.secondary'}}>
                         ${(+row.amount).toFixed(2)}
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell align="center" sx={{color: 'text.secondary'}}>
                         <UserAvatar user={row.payee} />
                     </TableCell>
-                    <TableCell >
+                    <TableCell  sx={{color: 'text.secondary'}}>
                         <Checkbox checked={row.status !== 'pending'} disabled/>
                     </TableCell>
                 </TableRow>

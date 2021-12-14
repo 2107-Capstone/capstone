@@ -45,7 +45,8 @@ const User = db.define('user', {
     defaultValue: null
   },
   time: {
-    type: DATE
+    type: DATE,
+    defaultValue: new Date()
   },
   avatar: {
     type: TEXT

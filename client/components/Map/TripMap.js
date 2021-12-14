@@ -10,7 +10,7 @@ import EventForm from './EventForm'
 import CircularLoading from '../Loading/CircularLoading'
 import { findZoom, findCenter } from './mapFunctions';
 import mapStyles from './mapStyles';
-import theme from '../../theme';
+
 ////////////////// MATERIAL UI /////////////////
 import { Alert, Box, Button, IconButton, Typography, Dialog, Snackbar } from '@mui/material'
 import Avatar from '@mui/material/Avatar';

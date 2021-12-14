@@ -36,16 +36,16 @@ const MessagesTable = ({messages}) => {
                     key={row.id + Math.random().toString(16)}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                    <TableCell >
+                    <TableCell sx={{color: 'text.secondary'}}>
                         {format(parseISO(row.dateSent), 'P')}
                     </TableCell>
-                    <TableCell >
+                    <TableCell sx={{color: 'text.secondary'}}>
                         {format(parseISO(row.dateSent), 'p')}
                     </TableCell>
-                    <TableCell align='center' >
+                    <TableCell align='center' sx={{color: 'text.secondary'}}>
                         <UserAvatar user={row.sentBy} />
                     </TableCell>
-                    <TableCell >{row.content}</TableCell>
+                    <TableCell sx={{color: 'text.secondary'}}>{row.content}</TableCell>
                 </TableRow>
             ))}
             </TableBody>
