@@ -48,10 +48,11 @@ export const TripTitle = ({trip, type}) => {
                         component={Link} 
                         to={`/trips/${trip.tripId}`}
                         sx={{textDecoration: 'none'}}
+                        
                     >
                         <Box display='flex' flexDirection='column' alignItems='center'>
                             <Box display='flex' alignItems='center'>
-                                <Typography variant='h4' color='text.primary'>
+                                <Typography variant='h4' color='text.primary' sx={{ ':hover': { color: '#1868A2'} }}>
                                 &nbsp;{trip.trip.name}
                                 </Typography>
                                     {

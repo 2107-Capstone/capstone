@@ -113,9 +113,11 @@ const Expenses = ({match}) => {
             </Dialog>
             {
                 trip.trip.isOpen ? 
-                    <Button sx={{mb: 1, mt: 1}}  variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
+                <Box textAlign='center' sx={{mb: 2}}>
+                    <Button   variant='contained' color='primary' fontSize='large' startIcon={<AddIcon />}  onClick={() => setOpen(true)} >
                         Add Expense
                     </Button>
+                </Box>
                 : ''
 
             }
@@ -214,15 +216,15 @@ const Expenses = ({match}) => {
                             </TableRow>
                         )}
                         <TableRow>
-                            <TableCell align='right' sx={{fontWeight: 'bold'}}>Total:</TableCell>
-                            <TableCell align='center' sx={{fontWeight: 'bold'}}>${tripExpenses.reduce((total, expense) => (total + +expense.amount), 0).toFixed(2)}</TableCell>
+                            <TableCell align='right' sx={{fontWeight: 'bold', color: '#C70039'}}>Total:</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 'bold', color: '#C70039'}}>${tripExpenses.reduce((total, expense) => (total + +expense.amount), 0).toFixed(2)}</TableCell>
                             <TableCell/>
                             <TableCell/>
                             <TableCell/>
                         </TableRow>
                         <TableRow>
-                            <TableCell align='right' sx={{fontWeight: 'bold'}}>Each Person Owes:</TableCell>
-                            <TableCell align='center' sx={{fontWeight: 'bold'}}>${(tripExpenses.reduce((total, expense) => (total + +expense.amount), 0)/trip.trip.userTrips.length).toFixed(2)}</TableCell>
+                            <TableCell align='right' sx={{fontWeight: 'bold', color: '#C70039'}}>Each Person Owes:</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 'bold', color: '#C70039'}}>${(tripExpenses.reduce((total, expense) => (total + +expense.amount), 0)/trip.trip.userTrips.length).toFixed(2)}</TableCell>
                             <TableCell/>
                             <TableCell/>
                             <TableCell/>
