@@ -37,19 +37,19 @@ const Footer = () => {
                     </Typography>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant="body1">
-                            <IconButton size="small">
+                            <IconButton size="small" href="https://github.com/andygao1990" target="_blank">
                                 <AccountCircleIcon />
                             </IconButton>
                             Andy
                         </Typography>
                         <Typography variant="body1">
-                            <IconButton size="small">
+                            <IconButton size="small" href="https://github.com/nightsandwich" target="_blank">
                                 <AccountCircleIcon />
                             </IconButton>
                             Corinne
                         </Typography>
                         <Typography variant="body1">
-                            <IconButton size="small">
+                            <IconButton size="small" href="https://github.com/jmartin-code" target="_blank">
                                 <AccountCircleIcon />
                             </IconButton>
                             Jonathan
