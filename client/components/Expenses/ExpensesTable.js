@@ -45,16 +45,16 @@ const ExpensesTable = ({expenses}) => {
                     key={row.id + Math.random().toString(16)}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                    <TableCell>
+                    <TableCell sx={{color: 'text.secondary'}}>
                         {format(parseISO(row.datePaid), 'P')}
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{color: 'text.secondary'}}>
                         ${(+row.amount).toFixed(2)}
                     </TableCell>
-                    <TableCell >
+                    <TableCell sx={{color: 'text.secondary'}}>
                         {row.name}
                     </TableCell>
-                    <TableCell align='center'>
+                    <TableCell align='center' sx={{color: 'text.secondary'}}>
                         <UserAvatar user={row.paidBy} />
                     </TableCell>
                 </TableRow>

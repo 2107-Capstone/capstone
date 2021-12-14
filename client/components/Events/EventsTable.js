@@ -36,13 +36,13 @@ const EventsTable = ({events}) => {
                     key={row.id + Math.random().toString(16)}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                    <TableCell>
+                    <TableCell sx={{color: 'text.secondary'}}>
                         {format(parseISO(row.startTime), 'P')}
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{color: 'text.secondary'}}>
                         {format(parseISO(row.startTime), 'p')}
                     </TableCell>
-                    <TableCell >{row.name}</TableCell>
+                    <TableCell  sx={{color: 'text.secondary'}}>{row.name}</TableCell>
                 </TableRow>
             ))}
             </TableBody>
