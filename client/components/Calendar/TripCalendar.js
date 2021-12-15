@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { Calendar, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
+import moment, {isBefore} from 'moment'
 
 const localizer = momentLocalizer(moment)
 
@@ -53,7 +53,7 @@ const TripCalendar = () => {
     const handleSelect = (event) => {
         history.push(`/trips/${event.tripId}`)
     }
-
+    
     const eventStyles = (event) => {
         const style = {
             backgroundColor: theme.palette.primary.main
