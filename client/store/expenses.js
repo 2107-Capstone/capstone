@@ -40,6 +40,7 @@ export const addExpense = (expense) => {
        authorization: token
      }
    });
+   window.socket.send(JSON.stringify(_addExpense(added)))
     dispatch(_addExpense(added));
   };
 }

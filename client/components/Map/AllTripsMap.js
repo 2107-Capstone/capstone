@@ -23,7 +23,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CloseIcon from '@mui/icons-material/Close';
 
 import mapStyles from './mapStyles';
-
+import theme from '../../theme';
 
 export default function AllTripsMap() {
     const dispatch = useDispatch();

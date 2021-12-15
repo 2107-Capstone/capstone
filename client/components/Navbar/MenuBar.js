@@ -35,7 +35,7 @@ const MenuBar = (props) => {
     }
     const user = useSelector(state => state.auth)
     const pendingInvites = useSelector(state => state.usertrips).filter(usertrip => usertrip.tripInvite === 'pending' && usertrip.userId === user.id) || []
-    const userDebts = useSelector(state => state.userDebts).filter(userDebt => userDebt.status === 'pending');
+    const userDebts = useSelector(state => state.userDebts).filter(userDebt => userDebt.status === 'pending' && (userDebt.payeeId === user.id || userDebt.payorId === user.id));
 
     useEffect(async () => {
         try {
@@ -67,34 +67,34 @@ const MenuBar = (props) => {
             <Stack spacing={2}>
                 {
                     user.username === 'Admin' ?
-                    '':
-                    <Button component={Link} onClick={handleDrawerToggle} to='/home' variant='contained' sx={{ mt: 2 }} startIcon={<HomeIcon />}>
-                        Home
-                    </Button>
+                        '' :
+                        <Button component={Link} onClick={handleDrawerToggle} to='/home' variant='contained' sx={{ mt: 2 }} startIcon={<HomeIcon />}>
+                            Home
+                        </Button>
                 }
                 {
-                    user.username === 'Admin' ? 
+                    user.username === 'Admin' ?
                         <Button component={Link} onClick={handleDrawerToggle} to='/admin/admintrips' variant='contained' sx={{ mt: 2 }} startIcon={<CardTravelIcon />}>
                             Trips (Admin)
-                        </Button>:
+                        </Button> :
                         <Button component={Link} onClick={handleDrawerToggle} to='/trips' variant='contained' startIcon={<CardTravelIcon />}>
                             Trips
                         </Button>
                 }
                 {
-                    user.username === 'Admin' ? 
+                    user.username === 'Admin' ?
                         <Button component={Link} onClick={handleDrawerToggle} to='/admin/adminusers' variant='contained' startIcon={<PeopleIcon />}>
                             Users (Admin)
-                        </Button>:
+                        </Button> :
                         <Button component={Link} onClick={handleDrawerToggle} to='/friends' variant='contained' startIcon={<PeopleIcon />}>
                             Friends
                         </Button>
                 }
                 {
-                    user.username === 'Admin' ? 
+                    user.username === 'Admin' ?
                         <Button component={Link} onClick={handleDrawerToggle} to='/admin/map' variant='contained' startIcon={<LocationOnIcon />}>
                             Map (Admin)
-                        </Button>:
+                        </Button> :
                         <Button component={Link} onClick={handleDrawerToggle} to='/map' variant='contained' startIcon={<LocationOnIcon />}>
                             Map
                         </Button>
@@ -103,22 +103,22 @@ const MenuBar = (props) => {
                     user.username === 'Admin' ?
                         <Button component={Link} to='/admin/calendar' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
                             Calendar (Admin)
-                        </Button>:
+                        </Button> :
                         <Button component={Link} to='/calendar' onClick={handleDrawerToggle} variant='contained' startIcon={<EventIcon />}>
                             Calendar
                         </Button>
                 }
                 {
-                    user.username === 'Admin' ? 
-                        '':
+                    user.username === 'Admin' ?
+                        '' :
                         <Button component={Link} to='/notifications' onClick={handleDrawerToggle} variant='contained' startIcon={<Badge badgeContent={countNotifications} color="error" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><NotificationsIcon /></Badge>}>
                             Notifications
                         </Button>
                 }
                 <Divider />
                 {
-                    user.username === 'Admin' ? 
-                        '':
+                    user.username === 'Admin' ?
+                        '' :
                         <Button component={Link} to='/settings' onClick={handleDrawerToggle} variant='outlined' color='info' startIcon={<SettingsIcon />}>
                             Profile
                         </Button>

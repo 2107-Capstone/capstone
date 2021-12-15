@@ -44,7 +44,7 @@ const Navbar = (props) => {
 
   const user = useSelector(state => state.auth)
   const pendingInvites = useSelector(state => state.usertrips).filter(usertrip => usertrip.tripInvite === 'pending' && usertrip.userId === user.id)
-  const userDebts = useSelector(state => state.userDebts).filter(userDebt => userDebt.status === 'pending');
+  const userDebts = useSelector(state => state.userDebts).filter(userDebt => userDebt.status === 'pending' && (userDebt.payeeId === user.id || userDebt.payorId === user.id));
 
   const friendNotifications = useSelector(state => state.friendsPendingReceived).length || 0
   const tripInvitations = pendingInvites.length || 0
