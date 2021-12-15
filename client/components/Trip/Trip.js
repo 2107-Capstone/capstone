@@ -59,7 +59,7 @@ const Trip = (props) => {
     const users = useSelector(state => state.users.filter(user => {
         if(user.userTrips.find(userTrip => userTrip.tripId === id)) return true;
     }))
-    const tripDebts = useSelector(state => state.userDebts.filter(userDebt => userDebt.tripId === id))
+    // const tripDebts = useSelector(state => state.userDebts.filter(userDebt => userDebt.tripId === id))
 
     useEffect(async () => {
         await dispatch(getTrips())
@@ -88,7 +88,7 @@ const Trip = (props) => {
     }
     // console.log(users)
     // const users = trip.trip.userTrips;
-    // const tripDebts = trip.trip.userDebts;
+    const tripDebts = trip.trip.userDebts;
     
     const handleCloseTrip = async () => {
         try {
