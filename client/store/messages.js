@@ -27,7 +27,8 @@ export const getMessages = () => {
        authorization: token
      }
    });
-    dispatch(_getMessages(messages));
+   window.socket.send(JSON.stringify(_getMessages(messages)))
+   dispatch(_getMessages(messages));
   };
 }
 export const createMessage = (_message) => {
@@ -35,10 +36,11 @@ export const createMessage = (_message) => {
   
   return async (dispatch) => {
     const { data: message } = await axios.post(`/api/messages`, _message, {
-     headers: {
-       authorization: token
-     }
-   });
+      headers: {
+        authorization: token
+      }
+    });
+    window.socket.send(JSON.stringify(_createMessage(message)))
     dispatch(_createMessage(message));
   };
 }

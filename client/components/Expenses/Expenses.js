@@ -31,7 +31,10 @@ const Expenses = ({match}) => {
         paidby: expense.paidBy.username || '',
         datepaid: expense.datePaid || ''
     }))
-
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    })
     ///////////// SORTING AND PAGINATION STATES /////////////////
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('datepaid');
@@ -217,14 +220,14 @@ const Expenses = ({match}) => {
                         )}
                         <TableRow>
                             <TableCell align='right' sx={{fontWeight: 'bold'}}>Total:</TableCell>
-                            <TableCell align='center' sx={{fontWeight: 'bold', fontSize: '1.1rem', color: '#C70039'}}>${tripExpenses.reduce((total, expense) => (total + +expense.amount), 0).toFixed(2)}</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 'bold', fontSize: '1.1rem', color: '#C70039'}}>{formatter.format(tripExpenses.reduce((total, expense) => (total + +expense.amount), 0))}</TableCell>
                             <TableCell/>
                             <TableCell/>
                             <TableCell/>
                         </TableRow>
                         <TableRow>
                             <TableCell align='right' sx={{fontWeight: 'bold'}}>Each Person Owes:</TableCell>
-                            <TableCell align='center' sx={{fontWeight: 'bold', color: '#C70039', fontSize: '1.1rem'}}>${(tripExpenses.reduce((total, expense) => (total + +expense.amount), 0)/trip.trip.userTrips.length).toFixed(2)}</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 'bold', color: '#C70039', fontSize: '1.1rem'}}>{formatter.format(tripExpenses.reduce((total, expense) => (total + +expense.amount), 0)/trip.trip.userTrips.length)}</TableCell>
                             <TableCell/>
                             <TableCell/>
                             <TableCell/>

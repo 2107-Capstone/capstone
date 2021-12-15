@@ -219,12 +219,25 @@ export default function AllTripsMap() {
             <Grid container columnSpacing={2} rowSpacing={2} >
                 <Grid item xs={12} sx={{ maxHeight: '40%', overflow: 'auto' }}>
                     <Box >
-                        {
-                            trips.map(trip => (
-                                <Box display='flex' flexWrap='wrap' key={trip.id}>
-                                    <Accordion sx={{ margin: 1, minWidth: '100%' }}
-                                        expanded={expanded === trip.id}
-                                        onChange={handleAccordionChange(trip.id)}
+                    {
+                        trips.map(trip => (
+                            <Box display='flex' flexWrap='wrap' key={trip.id}>
+                                <Accordion sx={{ margin: 1, minWidth: '100%'}} 
+                                    expanded={expanded === trip.id}
+                                    onChange={handleAccordionChange(trip.id)}
+                                    disableGutters={true}
+                                >
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
+                                        id="trip-header"
+                                        onClick={() => {
+                                            if (selectedTrip.id === trip.trip.id){
+                                                setSelectedTrip({id: 0})
+                                            } else {
+                                                setSelectedTrip(trip)
+                                            }
+                                        }}
+                                        sx={{ borderRight: `4px solid ${trip.color}` }}
                                     >
                                         <AccordionSummary
                                             expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
@@ -257,13 +270,17 @@ export default function AllTripsMap() {
                                                         <CardContent sx={{ minWidth: '100%', mb: 0, paddingBottom: 0 }} onClick={() => handleClick(event.id)}>
 
                                                             <Box display='flex' flexDirection='column' >
-                                                                <Typography gutterBottom color='text.primary' variant="subtitle1">
-                                                                    {event.name} - {event.location}
+                                                                <Typography  color='text.primary' variant="subtitle1">
+                                                                    {event.name}
                                                                 </Typography>
                                                                 <Typography variant='subtitle2' color='text.primary' >
                                                                     {event.description}
                                                                 </Typography>
-                                                                <Divider color='grey' fullWidth />
+
+                                                                <Typography variant='subtitle2' color='text.secondary' >
+                                                                    {event.location}
+                                                                </Typography>
+                                                                <Divider color='grey' fullWidth/>
                                                                 <Typography color='text.secondary' variant="caption" >
                                                                     {format(parseISO(event.startTime), 'Pp')}
                                                                 </Typography>
@@ -296,7 +313,7 @@ export default function AllTripsMap() {
                         >
                             {displayMarkers()}
                             {
-                                selected ? (
+                                !!selected && (
                                     <InfoWindow
                                         open={open}
                                         position={{ lat: +selected.lat, lng: +selected.lng }}
@@ -319,7 +336,6 @@ export default function AllTripsMap() {
 
                                         </Box>
                                     </InfoWindow>)
-                                    : null
                             }
                         </GoogleMap>
                     </Box>
