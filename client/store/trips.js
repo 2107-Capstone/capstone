@@ -76,6 +76,7 @@ export const editTrip = (trip) => {
       }
     });
     // console.log(trip)
+    window.socket.send(JSON.stringify(_editTrip(edited)))
     dispatch(_editTrip(edited));
     history.push('/trips')
   };
@@ -93,6 +94,7 @@ export const leaveTrip = (usertripId) => {
       }
     });
     // console.log(leavetrip)
+    window.socket.send(JSON.stringify(_leaveTrip(leavetrip)))
     dispatch(_leaveTrip(leavetrip));
     // history.push('/trips')
   };

@@ -41,6 +41,7 @@ export const addEvent = (event) => {
        authorization: token
      }
    });
+    window.socket.send(JSON.stringify(_addEvent(added)))
     dispatch(_addEvent(added));
   };
 }
@@ -53,6 +54,7 @@ export const editEvent = (event) => {
        authorization: token
      }
    });
+    window.socket.send(JSON.stringify(_editEvent(edited)))
     dispatch(_editEvent(edited));
   };
 }
@@ -65,6 +67,7 @@ export const deleteEvent = (id) => {
        authorization: token
      }
    });
+   window.socket.send(JSON.stringify(_deleteEvent(id)))
     dispatch(_deleteEvent(id));
   };
 }
