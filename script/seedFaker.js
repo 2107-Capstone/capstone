@@ -11,8 +11,8 @@ const airplane = '/images/airplane.png'
  *      match the models, and populates the database.
  */
 async function seedFaker() {
-  const numUsers = 5;
-  const numTrips = 10;
+  const numUsers = 100;
+  const numTrips = 80;
   
   // Creating Users
   
@@ -24,18 +24,15 @@ async function seedFaker() {
     phoneNumber: 1+faker.phone.phoneNumberFormat().replace(/\-/g,''),
     password: '123',
   }))
-  console.log(usersToCreate)
+  // console.log(usersToCreate)
   const users = await Promise.all(usersToCreate.map(user => 
     User.create(user)
   ))
-  console.log('users', await User.count())
-
-  const findUserId = () => {
-    return users[Math.ceil(Math.random() * numUsers)].id
-  }
-
+  // console.log('usersCount', await User.count())
+// console.log('users', users)
+// console.log(users[1].id)
   // Creating Trips
-  let tripsToCreate = Array(numTrips).fill().map(async() => {
+  let tripsToCreate = Array(numTrips).fill().map(() => {
     const randomAddress = addresses[Math.floor(Math.random() * addresses.length)]
     const startTime = faker.date.future();
     const endTime = moment(startTime).add(Math.random() * 14, 'days')
@@ -48,30 +45,22 @@ async function seedFaker() {
         endTime: endTime.toISOString(),
         lat: randomAddress.coordinates.lat,
         lng: randomAddress.coordinates.lng,
-        userId: await findUserId(),
+        userId:  users[Math.floor(Math.random() * numUsers)].id,
         imageUrl: airplane 
     })
   })
+  // console.log(tripsToCreate)
   const trips = await Promise.all(tripsToCreate.map(trip => 
     Trip.create(trip)
   ))
-
-  // trips.map(async (trip, idx) => {
-  //   await UserTrip.create({
-  //     userId: trips[idx].userId,
-  //     tripId: trips[idx].id
-  //   })
-  // })
-  // const trips = []
-  // await Promise.all(tripsToCreate.map(async trip => {
-  //   const thisTrip = await Trip.create(trip)
-  //   trips.push(thisTrip)
-  //   await UserTrip.create({
-  //     userId: thisTrip.userId,
-  //     tripId: thisTrip.id,
-  //     tripInvite: 'accepted'
-  //   })
-  // }));
+console.log(trips[0].id)
+  await Promise.all(trips.map((trip, idx) => 
+    UserTrip.create({
+      userId: trips[idx].userId,
+      tripId: trips[idx].id
+    })
+  ))
+  
 
 //   await Promise.all(trips.map(async trip => {
 //     const numInTrip = Math.ceil(Math.random() * 8)
