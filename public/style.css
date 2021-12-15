@@ -15,6 +15,7 @@
 
 .linkToTrip:hover {
  transform: scale(1.05);
+ color: #1868A2;
 }
 
 @media screen and (max-width: 575px) {

@@ -53,14 +53,13 @@ async function seedFaker() {
   const trips = await Promise.all(tripsToCreate.map(trip => 
     Trip.create(trip)
   ))
-console.log(trips[0].id)
+// console.log(trips[0].id)
   await Promise.all(trips.map((trip, idx) => 
     UserTrip.create({
       userId: trips[idx].userId,
       tripId: trips[idx].id
     })
   ))
-  
 
 //   await Promise.all(trips.map(async trip => {
 //     const numInTrip = Math.ceil(Math.random() * 8)
