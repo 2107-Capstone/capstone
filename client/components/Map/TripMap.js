@@ -23,7 +23,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
-// import EventsAccordion from './EventsAccordion';
+import EventsAccordion from './EventsAccordion';
 
 export default function TripMap({ match }) {
     const dispatch = useDispatch();
@@ -84,12 +84,11 @@ export default function TripMap({ match }) {
         setEventToEdit({})
         setOpenAlert(false);
         setOpenNoLocationAlert(false);
-        setOpenSnackbar(false)
         setSelectedUser('')
         setSelected('')
     }
     
-    const handleFindMarker = (id) => {
+    const handleFindMarker = (id, setSelected) => {
         const marker = markers.find(marker => marker.id === id);
         setSelected(marker);
     }
@@ -209,9 +208,10 @@ export default function TripMap({ match }) {
 
     const lat = +center.lat;
     const lng = +center.lng;
-    
+    console.log('SeLECTED', selected)
     return (
         <>
+        
             <Snackbar
                 open={openAlert}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -345,8 +345,8 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
-                {/* <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} setEventToEdit={setEventToEdit} setOpen={setOpen} dispatch={dispatch} deleteEvent={deleteEvent} /> */}
-                <Box
+                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} setEventToEdit={setEventToEdit} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} />
+                {/* <Box
                     display='flex'
                     justifyContent='center'
                     marginBottom={.5}
@@ -454,7 +454,7 @@ export default function TripMap({ match }) {
                             </Box>
                         ))
                     }
-                </Box>
+                </Box> */}
                 <GoogleMap
                     id='map'
                     options={options}
