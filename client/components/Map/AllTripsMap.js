@@ -27,29 +27,29 @@ import theme from '../../theme';
 
 export default function AllTripsMap() {
     const dispatch = useDispatch();
-    
+
     ///////////  Trip View Selection //////////
     const [checked, setChecked] = useState(false);
     const handleChange = (event) => {
         setChecked(event.target.checked)
-        setSelectedTrip({id: 0})
+        setSelectedTrip({ id: 0 })
     };
     const trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen)) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen))
-    
+
     const [markers, setMarkers] = useState([]);
     const [selected, setSelected] = useState(null);
     const [update, setUpdate] = useState(0);
-    
+
     const mapContainerStyle = {
         height: "60vh",
     };
-    
+
     const options = {
         styles: mapStyles,
         disableDefaultUI: true,
         zoomControl: true,
     };
-    
+
     const tripZoom = 12;
 
     const mapRef = useRef();
@@ -61,15 +61,15 @@ export default function AllTripsMap() {
         mapRef.current.panTo({ lat, lng });
         mapRef.current.setZoom(tripZoom);
     }, []);
-    
+
     const defaultCoords = {
         lat: 34.456748,
         lng: -75.462405
     }
 
-    const [selectedTrip, setSelectedTrip] = useState({id: 0});
+    const [selectedTrip, setSelectedTrip] = useState({ id: 0 });
     const [zoom, setZoom] = useState(1);
-    const [center, setCenter] = useState({defaultCoords});
+    const [center, setCenter] = useState({ defaultCoords });
 
     const colors = {
         0: '#F70909',
@@ -89,7 +89,7 @@ export default function AllTripsMap() {
         setMarkers(() => []);
         trips.forEach((trip, idx) => {
             trip.color = idx > 10 ? colors[idx % 10] : colors[idx]
-            if (trip.trip.events.length > 0){
+            if (trip.trip.events.length > 0) {
                 trip.trip.events.map(event => {
                     setMarkers(prevMarkers => [...prevMarkers,
                     {
@@ -107,28 +107,28 @@ export default function AllTripsMap() {
                 })
             }
         });
-        
-        if (selectedTrip.id !== 0){
+
+        if (selectedTrip.id !== 0) {
             if (selectedTrip.trip.events.length === 0) {
                 setZoom(() => 8)
-                setCenter(() => ({lat: +selectedTrip.trip.lat, lng: +selectedTrip.trip.lng}))
+                setCenter(() => ({ lat: +selectedTrip.trip.lat, lng: +selectedTrip.trip.lng }))
             } else {
                 setCenter(() => findCenter(selectedTrip.trip.events))
                 setZoom(() => findZoom(selectedTrip.trip.events))
             }
-        } else if (selectedTrip.id === 0){
-            if (markers.length === 0){
+        } else if (selectedTrip.id === 0) {
+            if (markers.length === 0) {
                 setZoom(() => 3)
-                setCenter(() => ({lat: defaultCoords.lat, lng: defaultCoords.lng}))
+                setCenter(() => ({ lat: defaultCoords.lat, lng: defaultCoords.lng }))
             } else {
                 setCenter(() => findCenter(markers))
                 setZoom(() => findZoom(markers))
             }
         }
-      
+
     }, [update, checked, selectedTrip.id, markers.length])
 
-    
+
 
     const displayMarkers = () => {
         return markers.map((marker) => {
@@ -154,7 +154,7 @@ export default function AllTripsMap() {
     const [expanded, setExpanded] = useState(false);
 
     const handleAccordionChange = panel => (evt, isExpanded) => {
-        
+
         setExpanded(isExpanded ? panel : false)
     }
 
@@ -172,7 +172,7 @@ export default function AllTripsMap() {
 
     const lat = +center.lat;
     const lng = +center.lng;
-    
+
     return (
         <>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
@@ -239,24 +239,36 @@ export default function AllTripsMap() {
                                         }}
                                         sx={{ borderRight: `4px solid ${trip.color}` }}
                                     >
-                                        <Button 
-                                            component={Link}
-                                            to={`/trips/${trip.tripId}`}
-                                            variant='contained'
-                                            color='secondary'
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
+                                            id="trip-header"
+                                            onClick={() => {
+                                                if (selectedTrip.id === trip.trip.id) {
+                                                    setSelectedTrip({ id: 0 })
+                                                } else {
+                                                    setSelectedTrip(trip)
+                                                }
+                                            }}
+                                            sx={{ borderRight: `4px solid ${trip.color}` }}
                                         >
-                                        
-                                            {trip.trip.name}
-                                        </Button>
-                                    </AccordionSummary>
-                                    <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
-                                        {
-                                            trip.trip.events.sort((a,b) => isAfter(new Date(a.startTime),new Date(b.startTime)) ? 1 : -1).map(event => (
-                                                <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, pb: 0}}
+                                            <Button
+                                                component={Link}
+                                                to={`/trips/${trip.tripId}`}
+                                                variant='contained'
+                                                color='secondary'
+                                            >
 
-                                                >
-                                                    <CardContent sx={{ minWidth: '100%', mb: 0 , paddingBottom: 0}} onClick={() => handleClick(event.id)}>
-                                                        
+                                                {trip.trip.name}
+                                            </Button>
+                                        </AccordionSummary>
+                                        <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                            {
+                                                trip.trip.events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1).map(event => (
+                                                    <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, pb: 0 }}
+
+                                                    >
+                                                        <CardContent sx={{ minWidth: '100%', mb: 0, paddingBottom: 0 }} onClick={() => handleClick(event.id)}>
+
                                                             <Box display='flex' flexDirection='column' >
                                                                 <Typography  color='text.primary' variant="subtitle1">
                                                                     {event.name}
@@ -264,6 +276,7 @@ export default function AllTripsMap() {
                                                                 <Typography variant='subtitle2' color='text.primary' >
                                                                     {event.description}
                                                                 </Typography>
+
                                                                 <Typography variant='subtitle2' color='text.secondary' >
                                                                     {event.location}
                                                                 </Typography>
@@ -272,15 +285,15 @@ export default function AllTripsMap() {
                                                                     {format(parseISO(event.startTime), 'Pp')}
                                                                 </Typography>
                                                             </Box>
-                                                    </CardContent>
-                                                </Card>
-                                            ))
-                                        }
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Box>
-                        ))
-                    }
+                                                        </CardContent>
+                                                    </Card>
+                                                ))
+                                            }
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </Box>
+                            ))
+                        }
                     </Box>
                 </Grid>
                 {/* <Box style={{ margin: 1}}> */}
@@ -310,7 +323,7 @@ export default function AllTripsMap() {
                                     >
                                         <Box display='flex' flexDirection='column' alignItems='center' style={{ margin: '0 1rem .5rem 1rem' }}>
                                             <Box padding={'2px 2px 2px 2px'} borderRadius={2}>
-                                                <Typography variant='subtitle1' color='text.dark.primary' sx={{textDecoration: 'underline', textDecorationColor: selected.color, textDecorationThickness: 4}}>
+                                                <Typography variant='subtitle1' color='text.dark.primary' sx={{ textDecoration: 'underline', textDecorationColor: selected.color, textDecorationThickness: 4 }}>
                                                     {selected.trip}
                                                 </Typography>
                                             </Box>
@@ -320,7 +333,7 @@ export default function AllTripsMap() {
                                             <Typography variant='caption' color='text.dark.secondary'>
                                                 {selected.time}
                                             </Typography>
-                                            
+
                                         </Box>
                                     </InfoWindow>)
                             }
