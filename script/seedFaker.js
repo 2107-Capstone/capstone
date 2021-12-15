@@ -3,6 +3,10 @@ const faker = require('faker');
 const moment = require('moment')
 const addresses = require('./rrad.json').addresses;
 const { db, models: { User, Category, Event, Expense, Message, Trip, UserTrip, UserFriend, UserDebt } } = require('../server/db')
+const axios = require('axios')
+require('dotenv').config()
+
+const API_KEY = process.env.MAP_API
 
 /////// import image //////////////////
 const airplane = '/images/airplane.png'
@@ -32,7 +36,8 @@ async function seedFaker() {
 // console.log('users', users)
 // console.log(users[1].id)
   // Creating Trips
-  let tripsToCreate = Array(numTrips).fill().map(() => {
+
+  let tripsToCreate = Array(numTrips).fill().map( () => {
     const randomAddress = addresses[Math.floor(Math.random() * addresses.length)]
     const startTime = faker.date.future();
     const endTime = moment(startTime).add(Math.random() * 14, 'days')
@@ -46,7 +51,7 @@ async function seedFaker() {
         lat: randomAddress.coordinates.lat,
         lng: randomAddress.coordinates.lng,
         userId:  users[Math.floor(Math.random() * numUsers)].id,
-        imageUrl: airplane
+        imageUrl: `https://source.unsplash.com/1600x900/?${randomAddress.city}`,
     })
   })
   // console.log(tripsToCreate)
