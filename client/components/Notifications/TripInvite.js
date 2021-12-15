@@ -45,7 +45,7 @@ const TripInvite = () => {
     if (!pendingInvites || !friends) {
         return (<CircularLoading />)
     }
-
+console.log(pendingInvites)
     const invites = pendingInvites.map(invite => {
         const friendInvite = friends.find(f => f.friendId === invite.sentBy)
         if (friendInvite.friend) {

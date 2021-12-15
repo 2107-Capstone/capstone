@@ -110,6 +110,7 @@ async function seed() {
     UserTrip.create({ userId: prof.id, tripId: charlotte.id, tripInvite: 'accepted' }),
     UserTrip.create({ userId: moe.id, tripId: charlotte.id, tripInvite: 'accepted' }),
     UserTrip.create({ userId: jason.id, tripId: charlotte.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: prof.id, tripId: paris.id, sentBy: corinne.id }),
   ])
 
   const userFriends = await Promise.all([
@@ -134,6 +135,10 @@ async function seed() {
     UserFriend.create({ userId: stanley.id, friendId: jason.id, status: 'accepted' }),
     UserFriend.create({ userId: stanley.id, friendId: andy.id, status: 'accepted' }),
     UserFriend.create({ userId: prof.id, friendId: corinne.id, status: 'accepted' }),
+    UserFriend.create({ userId: prof.id, friendId: poe.id, status: 'accepted' }),
+    UserFriend.create({ userId: poe.id, friendId: prof.id, sentBy: poe.id }),
+    UserFriend.create({ userId: prof.id, friendId: moe.id, status: 'accepted' }),
+    UserFriend.create({ userId: moe.id, friendId: prof.id, sentBy: moe.id }),
     UserFriend.create({ userId: corinne.id, friendId: prof.id, status: 'accepted' }),
   ])
 

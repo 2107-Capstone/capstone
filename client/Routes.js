@@ -39,7 +39,7 @@ import { Avatar, Container } from '@mui/material';
 import { Box } from '@mui/system';
 import auth from './store/auth';
 
-window.socket = new WebSocket(window.location.origin.replace('http', 'ws'));
+// window.socket = new WebSocket(window.location.origin.replace('http', 'ws'));
 class Routes extends Component {
   constructor(props) {
     super()
