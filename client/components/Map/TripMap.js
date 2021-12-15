@@ -330,7 +330,7 @@ export default function TripMap({ match }) {
                                     sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
                                     src={user.avatar}
                                     onClick={() => {
-                                        trip.trip.isOpen ? handleFindTrackingMarker(user.id) : ''
+                                        trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username) : ''
                                     }}
                                     // onClick={() => {
                                     //     trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username, setSelectedUser, setOpenNoLocationAlert, trackingMarkers, setSelected) : ''
