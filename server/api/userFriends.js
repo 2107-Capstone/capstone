@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const isLoggedIn = require('../middleware/isLoggedIn');
-const { models: { User, UserFriend }} = require('../db')
+const { models: { User, UserFriend } } = require('../db')
 const { Op } = require("sequelize")
 module.exports = router
 
@@ -10,7 +10,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {
     if (user) {
       const userFriends = await UserFriend.findAll({
         where: {
-          [Op.or]: [{userId: user.id}, {friendId: user.id}]
+          [Op.or]: [{ userId: user.id }, { friendId: user.id }]
         },
         include: [
           {

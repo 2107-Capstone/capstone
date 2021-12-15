@@ -37,7 +37,7 @@ export const inviteFriend = (invite) => {
                 authorization: token
             }
         });
-        // window.socket.send(JSON.stringify(_inviteFriend(invited)))
+        window.socket.send(JSON.stringify(_inviteFriend(invited)))
         dispatch(_inviteFriend(invited));
     };
 }

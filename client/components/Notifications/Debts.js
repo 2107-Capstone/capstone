@@ -37,8 +37,10 @@ const Debts = () => {
         }
     }, [])
 
+    const auth = useSelector(state => state.auth)
+
     const debts = useSelector(state => state.userDebts)
-    const userDebts = debts.filter(debt => debt.status === 'pending')
+    const userDebts = debts.filter(debt => debt.status === 'pending' && (debt.payeeId === auth.id || debt.payorId === auth.id))
     const user = useSelector(state => state.auth)
 
     if (!user || !closedTrips || !userDebts) {
