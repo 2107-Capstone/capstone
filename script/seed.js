@@ -29,14 +29,14 @@ async function seed() {
     User.create({ username: 'Jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '15678901234', time: new Date(), avatar: jasonAvatar }),
     User.create({ username: 'Prof', password: '123', firstName: 'Prof', lastName: 'Katz', email: 'prof@123.com', phoneNumber: '11239012349', time: new Date(), avatar: profAvatar }),
     User.create({ username: 'Moe', password: '123', firstName: 'Moe', lastName: 'Moeman', email: 'moe@123.com', phoneNumber: '16789012341', time: new Date() }),
-    User.create({ username: 'Poe', password: '123', firstName: 'Poe', lastName: 'Poet', email: 'Poe@123.com', phoneNumber: '16789012342',  time: new Date() }),
+    User.create({ username: 'Poe', password: '123', firstName: 'Poe', lastName: 'Poeman', email: 'Poe@123.com', phoneNumber: '16789012342',  time: new Date() }),
     User.create({ username: 'Lucy', password: '123', firstName: 'Lucy', lastName: 'Luck', email: 'Lucy@123.com', phoneNumber: '16789012343',  time: new Date() }),
     User.create({ username: 'JJ', password: '123', firstName: 'JJ', lastName: 'Jay', email: 'jj@123.com', phoneNumber: '16789012340', time: new Date() }),
     User.create({ username: 'Marge', password: '123', firstName: 'Marge', lastName: 'Bouvier', email: 'marge@123.com', phoneNumber: '16789012349', time: new Date() }),
     User.create({ username: 'Admin', password: '123', firstName: 'Admin', lastName: 'Admin', email: 'admin@123.com', phoneNumber: '167890123498', time: new Date() }),
   ])
   
-  const [andy, corinne, jonathan, stanley, jason, prof] = users.map(user => user)
+  const [andy, corinne, jonathan, stanley, jason, prof, moe, poe] = users.map(user => user)
 
   const trips = await Promise.all([
     Trip.create({ name: 'Trip to NYC', location: 'New York, NY', description: 'A group trip to NYC!', imageUrl: 'https://lh3.googleusercontent.com/places/AAcXr8qW_5nGteBkgrTUQb2QxbtKdTuJd2HcCpZ9TRFSDsi1_iNFTzBRyz3pRY9cV0Lst6sHiF4tkAFDLNgIgKOeCKFIof7GebFJXJE=s1600-w4032', startTime: '2022-01-07T17:00:00.000Z', endTime: '2022-01-15T05:00:00.000Z', isOpen: true, lat: 40.712776, lng: -74.005974, userId: andy.id }),
@@ -79,6 +79,8 @@ async function seed() {
     Expense.create({ name: 'whitney', amount: 80, tripId: nyc.id, paidById: andy.id, categoryId: entertainment.id, datePaid: '2022-01-11' }),
     Expense.create({ name: 'Uber to Rocky Face Mountain', amount: 35, tripId: charlotte.id, paidById: jonathan.id, categoryId: transportation.id, datePaid: '2021-12-02' }),
     Expense.create({ name: 'drinks', amount: 150, tripId: charlotte.id, paidById: andy.id, categoryId: food_and_drink.id, datePaid: '2021-12-03' }),
+    Expense.create({ name: 'snacks and drinks', amount: 201, tripId: charlotte.id, paidById: jason.id, categoryId: food_and_drink.id, datePaid: '2021-12-05' }),
+    Expense.create({ name: 'tickets', amount: 600, tripId: charlotte.id, paidById: prof.id, categoryId: transportation.id, datePaid: '2021-11-20' }),
     Expense.create({ name: 'Museum tickets', amount: 80, tripId: miami.id, paidById: corinne.id, categoryId: entertainment.id, datePaid: '2021-12-13' }),
     Expense.create({ name: 'car', amount: 30, tripId: miami.id, paidById: andy.id, categoryId: transportation.id, datePaid: '2021-12-14' }),
     Expense.create({ name: 'museum gift shop', amount: 65, tripId: miami.id, paidById: jonathan.id, categoryId: other.id, datePaid: '2021-12-13' }),
@@ -105,6 +107,9 @@ async function seed() {
     UserTrip.create({ userId: stanley.id, tripId: nye.id, tripInvite: 'accepted' }),
     UserTrip.create({ userId: andy.id, tripId: nye.id, tripInvite: 'accepted' }),
     UserTrip.create({ userId: prof.id, tripId: friday.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: prof.id, tripId: charlotte.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: moe.id, tripId: charlotte.id, tripInvite: 'accepted' }),
+    UserTrip.create({ userId: jason.id, tripId: charlotte.id, tripInvite: 'accepted' }),
   ])
 
   const userFriends = await Promise.all([
@@ -135,7 +140,7 @@ async function seed() {
   const messages = await Promise.all([
     Message.create({ content: "Hi, how's it going?", tripId: nyc.id, sentById: andy.id, dateSent: '2021-11-12T05:40:34.000Z' }),
     Message.create({ content: "Great, see you soon!", tripId: nyc.id, sentById: corinne.id, dateSent: '2021-11-12T05:45:34.000Z' }),
-    Message.create({ content: "Where are we going to?", tripId: charlotte.id, sentById: jonathan.id, dateSent: '2021-09-23T12:40:34.000Z' }),
+    Message.create({ content: "Where are we going?", tripId: charlotte.id, sentById: jonathan.id, dateSent: '2021-09-23T12:40:34.000Z' }),
     Message.create({ content: "The coolest place in Charlotte!", tripId: charlotte.id, sentById: andy.id, dateSent: '2021-09-23T12:43:34.000Z' }),
     Message.create({ content: "Are you at the airbnb yet?", tripId: miami.id, sentById: jonathan.id, dateSent: '2021-11-12T10:40:34.000Z' }),
     Message.create({ content: "Five mins away", tripId: miami.id, sentById: andy.id, dateSent: '2021-11-12T10:41:34.000Z' }),
@@ -147,7 +152,13 @@ async function seed() {
     Message.create({ content: "Don't worry, we'll be reunited soon!", tripId: friday.id, sentById: prof.id, dateSent: '2021-12-03T11:25:34.000Z' }),
   ])
 
-  const userDebt = await UserDebt.create({ amount: 57.50, payorId: jonathan.id, payeeId: andy.id, tripId: charlotte.id})
+  const userDebts = await Promise.all([
+    UserDebt.create({ amount: 3.80, payorId: andy.id, payeeId: jason.id, tripId: charlotte.id}),
+    UserDebt.create({ amount: 43.40, payorId: andy.id, payeeId: prof.id, tripId: charlotte.id}),
+    UserDebt.create({ amount: 162.20, payorId: jonathan.id, payeeId: prof.id, tripId: charlotte.id}),
+    UserDebt.create({ amount: 197.20, payorId: moe.id, payeeId: prof.id, tripId: charlotte.id, status: 'paid'}),
+  ])
+  
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
@@ -178,7 +189,7 @@ async function seed() {
     },
     userTrips,
     userFriends,
-    userDebt
+    userDebts
   }
 }
 
