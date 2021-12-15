@@ -25,7 +25,7 @@ const TripSpeedDial = ({handleCloseMenu, setOpen, setForm}) => {
                 <SpeedDialAction
                     enterTouchDelay={200}
                     leaveTouchDelay={900}
-                    icon={<PersonAddIcon fontSize='large' color='secondary'/>}
+                    icon={<PersonAddIcon fontSize='large' color='secondary' sx={{backgroundColor:'white', borderRadius: '50%'}}/>}
                     tooltipTitle='Invite Friend'
                     // tooltipOpen
                     onClick={() => {
@@ -37,7 +37,7 @@ const TripSpeedDial = ({handleCloseMenu, setOpen, setForm}) => {
                 <SpeedDialAction
                     enterTouchDelay={200}
                     leaveTouchDelay={900}
-                    icon={<PaidIcon fontSize='large' color='secondary'/>}
+                    icon={<PaidIcon fontSize='large' color='secondary' sx={{backgroundColor:'white', borderRadius: '50%'}}/>}
                     tooltipTitle='Add Expense'
                     // tooltipOpen
                     // tooltipPlacement='right'
@@ -50,7 +50,7 @@ const TripSpeedDial = ({handleCloseMenu, setOpen, setForm}) => {
                 <SpeedDialAction
                     enterTouchDelay={200}
                     leaveTouchDelay={900}
-                    icon={<EventIcon fontSize='large' color='secondary'/>}
+                    icon={<EventIcon fontSize='large' color='secondary' sx={{backgroundColor:'white', borderRadius: '50%'}}/>}
                     tooltipTitle='Add Event'
                     TooltipClasses={{
                         enterTouchDelay: 300
