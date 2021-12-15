@@ -20,7 +20,7 @@ export const getUserDebts = () => {
                 authorization: token
             }
         });
-        window.socket.send(JSON.stringify(_getUserDebts(userDebts)))
+        // window.socket.send(JSON.stringify(_getUserDebts(userDebts)))
         dispatch(_getUserDebts(userDebts));
     };
 }

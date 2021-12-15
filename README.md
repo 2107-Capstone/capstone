@@ -9,4 +9,5 @@ Trip Out is an application that eliminates the inevitable stress that comes with
 * Material UI
 * Node.js
 * Postgres
+* WebSocket
 

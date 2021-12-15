@@ -25,7 +25,7 @@ export const getFriendsPendingReceived = () => {
        authorization: token
      }
    });
-   window.socket.send(JSON.stringify(_getFriendsPendingReceived(friendsPendingReceived)))
+  //  window.socket.send(JSON.stringify(_getFriendsPendingReceived(friendsPendingReceived)))
     dispatch(_getFriendsPendingReceived(friendsPendingReceived));
   };
 }
