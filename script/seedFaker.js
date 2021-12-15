@@ -62,7 +62,8 @@ async function seedFaker() {
   await Promise.all(trips.map((trip, idx) => 
     UserTrip.create({
       userId: trips[idx].userId,
-      tripId: trips[idx].id
+      tripId: trips[idx].id,
+      tripInvite: 'accepted'
     })
   ))
     
