@@ -7,12 +7,9 @@ import { useTheme } from "@emotion/react";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 
-/////////////// COMPONENTS ///////////////////
-
 ////////////// STORE ////////////////
 import { getUserTrips } from '../../store'
 import { acceptInvite, rejectInvite } from "../../store/usertrips";
-
 
 const TripInvite = () => {
     ///////////// Media Query /////////////
@@ -75,7 +72,6 @@ console.log(pendingInvites)
         return (
             <Typography align='center' variant='h6' sx={{ mt: 4, mb: 8 }}>
                 No pending trip invites
-                {/* You do not have any trip invites at this moment! */}
             </Typography>
         )
     }
@@ -96,7 +92,7 @@ console.log(pendingInvites)
                                     {invite.friend.firstName}
                                 </Typography>
                                 <Typography variant='body2'>
-                                    {`Invite to ${invite.trip.location}`}
+                                    {`Invite to ${invite.trip.name}`}
                                 </Typography>
                             </Box>
                         </Box>
