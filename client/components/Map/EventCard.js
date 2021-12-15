@@ -118,7 +118,7 @@ export default function EventsCard ({ event, handleFindMarker, setEventToEdit, s
                             <Typography variant='subtitle2' color='text.secondary'>
                                 {event.location}
                             </Typography>
-                            <Divider fullWidth/>
+                            <Divider />
                             <Typography color='text.secondary' variant="caption" >
                                 {format(parseISO(event.startTime), 'Pp')}
                             </Typography>

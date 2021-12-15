@@ -44,10 +44,9 @@ const TripCalendar = () => {
         filteredTrips = openTrips
     }
 
-
     ///////////// TRIPS ////////////////
     const calendarTrips = filteredTrips.map(trip => { return { id: trip.id, tripId: trip.id, title: trip.name, start: new Date(trip.startTime), end: new Date(trip.endTime) } })
-
+    
     ////////// EVENTS ////////////////
     const events = filteredTrips.map(trip => (trip.events)).flat()
     const calendarEvents = events.map(event => { return { type: 'event', id: event.id, tripId: event.tripId, title: event.name, start: new Date(event.startTime), end: new Date(event.endTime) } })

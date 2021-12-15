@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from "react-router-dom";
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 const localizer = momentLocalizer(moment)
 
+////////// Icons ///////////////
+import CardTravelIcon from '@mui/icons-material/CardTravel';
+import AddIcon from '@mui/icons-material/Add';
+
+////////// MUI //////////
+import { Button, Dialog, Typography } from '@mui/material'
+import { Box } from '@mui/system'
+////////// Components //////////
 import EventForm from '../Map/EventForm';
 import AddTripForm from '../Trips/Form/AddTripForm';
 import { TripTitle } from '../Trip/TripComponents';
-////////// MUI ///////////////
-import { Box, Button, Dialog, Typography } from '@mui/material'
-import { useTheme } from '@emotion/react'
-import CardTravelIcon from '@mui/icons-material/CardTravel';
-import AddIcon from '@mui/icons-material/Add';
-////////// Browser History ///////////////
-import history from '../../history'
-
-////////// CSS Style for the calendar //////////
-// import './TripCalendar.css'
 import CircularLoading from '../Loading/CircularLoading'
+
+import { useTheme } from '@emotion/react'
 
 const SingleTripCalendar = ({ match }) => {
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === match.params.id))
@@ -55,34 +54,19 @@ const SingleTripCalendar = ({ match }) => {
         return { style: style }
     }
 
-    if (!trip) {
+    if (!trip || !events) {
         return (
             <CircularLoading />
         )
     }
-    //TODO: edit trip from here
     ///////////// TRIP ////////////////
-    // trip = trip.trip;
-    // const calendarTrip = { isTrip: true, id: trip.id, tripId: trip.id, name: trip.name, description: trip.description, location: trip.location, title: `${trip.name} - ${trip.location}`, start: new Date(trip.startTime), end: new Date(trip.endTime) } 
-    const calendarTrip = { ...trip.trip, isTrip: true, id: trip.tripId, tripId: trip.tripId, title: `${trip.trip.name} - ${trip.trip.location}`, start: new Date(trip.trip.startTime), end: new Date(trip.trip.endTime) }
+    const calendarTrip = { ...trip.trip, title: `${trip.trip.name} - ${trip.trip.location}`, start: new Date(trip.trip.startTime), end: new Date(trip.trip.endTime), isTrip: true }
 
     ////////// EVENTS ////////////////
-    const calendarEvents = events.map(event => { return { ...event, type: 'event', isTrip: false, title: `${event.name} - ${event.location}`, start: new Date(event.startTime), end: new Date(event.endTime) } })
-
-
-    // const handleSubmitToPassToForm = async (ev, inputs, trip, startTime, endTime) => {
-    //     ev.preventDefault();
-    //     try {
-    //         await dispatch(editEvent({ ...inputs, trip, startTime, endTime }))
-    //         handleClose();
-    //     }
-    //     catch (err) {
-    //         console.log(err)
-    //     }
-    // }
+    const calendarEvents = events.map(event => { return { ...event, type: 'event', isTrip: false, title: `${event.name} - ${event.location}`, start: event.startTime, end: event.endTime } })
 
     return (
-        <div>
+        <Box>
             <Dialog open={open && form === 'event'} onClose={handleClose}>
                 <EventForm trip={trip} handleClose={handleClose} event={tripEvent} />
             </Dialog>
@@ -123,7 +107,7 @@ const SingleTripCalendar = ({ match }) => {
                 onSelectEvent={event => handleSelect(event)}
                 eventPropGetter={eventStyles}
             />
-        </div>
+        </Box>
     )
 }
 
