@@ -51,7 +51,7 @@ const AdminTripCalendar = () => {
     const calendarEvents = events.map(adminEvent => { return { type: 'event', id: adminEvent.id, tripId: adminEvent.tripId, title: adminEvent.name, start: new Date(adminEvent.startTime), end: new Date(adminEvent.endTime) } })
 
     const handleSelect = (event) => {
-        history.push(`/trips/${event.tripId}`)
+        history.push(`/admin/admintrips/${event.tripId}`)
     }
 
     const eventStyles = (event) => {
@@ -71,13 +71,6 @@ const AdminTripCalendar = () => {
                 <FormControlLabel control={<Switch checked={checked} onChange={handleCheked} />} label="Closed Trips" />
             </FormGroup>
             <Calendar
-                // popup
-                // views={{
-                //     month: true,
-                //     week: true,
-
-                // }}
-                // selectable
                 localizer={localizer}
                 events={[...calendarTrips, ...calendarEvents]}
                 step={60}

@@ -59,7 +59,6 @@ const AdminAllTrips = ({ match }) => {
     let adminTrips = checked ? trips.filter(adminTrip => !adminTrip.isOpen && adminTrip.userTrips[0].tripInvite === 'accepted') : trips.filter(adminTrip => adminTrip.isOpen && adminTrip.userTrips[0].tripInvite === 'accepted')
     adminTrips = adminTrips.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
 
-
     return (
         <>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
