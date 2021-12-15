@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 
 ///////////////////// UI ///////////////////////
-import { Box, Grid, Grow, IconButton, Slide, Typography, Divider, Button, Zoom, Collapse, Fade } from '@mui/material'
+import { Box, Grid, Grow, IconButton, Slide, Typography, Divider, Button, Zoom, Collapse, Fade, Container } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 /////////////// Data ////////////
@@ -20,7 +20,6 @@ const Home = () => {
   const dataLen = data.length;
   const references = new Array(dataLen + 1).fill('').map(_ => useInView({
     triggerOnce: true,
-    // threshold: 1
   })
   )
 
@@ -40,8 +39,6 @@ const Home = () => {
     scroll.current.scrollIntoView({ behavior: "smooth" })
   }
 
-  // console.log(theme)
-
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '95vh', backgroundImage: `url('/images/road.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -59,56 +56,57 @@ const Home = () => {
           </IconButton>
         </Slide>
       </Box>
-      <Divider ref={scroll} variant='middle' sx={{ my: 5 }}>
-        <Typography color='text.secondary' variant='h3' sx={{ fontSize: 80 }}>
-          Functionalities
-        </Typography>
-      </Divider>
-      <Grid container justifyContent='space-around' sx={{ background: overlappingCircles(theme.palette.success.main, .3), backgroundAttachment: 'fixed' }}>
-        {
-          data.map((info, idx) => (
-            <Zoom in={references[idx][1]} timeout={1200} key={info.id}>
-              <Grid item xs={12} md={6} >
-                <Box ref={references[idx][0]} sx={{ minHeight: 700, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
-                  <Box>
-                    <Typography variant='h5' align='center'>
-                      {info.title}
-                    </Typography>
-                    <Typography align='center' gutterBottom>
-                      {info.description}
-                    </Typography>
+      <Box ref={scroll} sx={{ background: overlappingCircles(theme.palette.success.main, .3), backgroundAttachment: 'fixed' }}>
+        <Container maxWidth='xl'>
+          <Grid container justifyContent='space-around'>
+            {
+              data.map((info, idx) => (
+                <Zoom in={references[idx][1]} timeout={1200} key={info.id}>
+                  <Grid item xs={12} md={6} >
+                    <Box ref={references[idx][0]} sx={{ minHeight: 700, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', py: 10 }}>
+                      <Box sx={{ maxWidth: 450, minHeight: 110 }}>
+                        <Typography variant='h4' align='center' sx={{ textDecoration: 'underline' }}>
+                          {info.title}
+                        </Typography>
+                        <Typography variant='h6' align='center'>
+                          {info.description}
+                        </Typography>
+                      </Box>
+                      <Box>
+                        <img src={info.image} />
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Zoom>
+              ))
+            }
+            {!user.id && (
+              <Zoom in={references[dataLen][1]} timeout={1200}>
+                <Grid item xs={12} md={6} >
+                  <Box ref={references[dataLen][0]} sx={{ minHeight: 700, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: `solid 5px ${theme.palette.success.main}`, p: '10%' }}>
+                      <Box>
+                        <Typography variant='h3' align='center'>
+                          Sign Up
+                        </Typography>
+                        <Typography variant='h5' align='center' gutterBottom>
+                          Are you ready to take your trip to the next level?
+                        </Typography>
+                      </Box>
+                      <Box>
+                        <Button color='secondary' variant='contained' component={Link} to='/signup'>
+                          Sign Up
+                        </Button>
+                      </Box>
+                    </Box>
                   </Box>
-                  <Box>
-                    <img src={info.image} height={530} />
-                  </Box>
-                </Box>
-              </Grid>
-            </Zoom>
-          ))
-        }
-        {!user.id && (
-          <Zoom in={references[dataLen][1]} timeout={1200}>
-            <Grid item xs={12} md={6} >
-              <Box ref={references[dataLen][0]} sx={{ minHeight: 700, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
-                <Box>
-                  <Typography variant='h5' align='center'>
-                    Sign Up
-                  </Typography>
-                  <Typography align='center' gutterBottom>
-                    Are you ready to take your trip to the next level?
-                  </Typography>
-                </Box>
-                <Box>
-                  <Button color='secondary' variant='contained' component={Link} to='/signup'>
-                    Sign Up
-                  </Button>
-                </Box>
-              </Box>
-            </Grid>
-          </Zoom>
-        )
-        }
-      </Grid >
+                </Grid>
+              </Zoom>
+            )
+            }
+          </Grid >
+        </Container>
+      </Box>
     </>
   )
 }

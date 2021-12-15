@@ -55,21 +55,6 @@ const data = [
         image: 'images/notifications.png',
         timeout: Math.floor(Math.random() * 1500)
     },
-    // {
-    //     id: 9,
-    //     title: 'Manage Friends',
-    //     description: 'Send friend requests or remove friends from your contact list.',
-    //     image: 'images/manageFriends.png',
-    //     timeout: Math.floor(Math.random() * 1500)
-    // },
-    // {
-    //     id: 10,
-    //     title: 'Sign Up',
-    //     description: 'Are you ready to take your trip to the next level?',
-    //     image: false,
-    //     buttonTitle: 'Sign Up',
-    //     timeout: Math.floor(Math.random() * 1500)
-    // },
 ]
 
 export default data;
