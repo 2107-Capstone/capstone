@@ -1,6 +1,5 @@
 import axios from 'axios'
-import history from '../history'
-import { _getFriends, getFriends } from './friends'
+
 const TOKEN = 'token'
 
 /**

@@ -20,7 +20,10 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 
 // const ExpensesTable = ({tripExpenses, trip}) => {
 const ExpensesTable = ({expenses}) => {
-
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    })
     ///////////////// LOADING ///////////////////
     if (!expenses) {
         return <CircularLoading />
@@ -49,7 +52,7 @@ const ExpensesTable = ({expenses}) => {
                         {format(parseISO(row.datePaid), 'P')}
                     </TableCell>
                     <TableCell sx={{color: 'text.secondary'}}>
-                        ${(+row.amount).toFixed(2)}
+                        {formatter.format(+row.amount)}
                     </TableCell>
                     <TableCell  sx={{color: 'text.secondary'}}>
                         {row.name}

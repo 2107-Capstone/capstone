@@ -11,7 +11,7 @@ const GET_FRIENDS = 'GET_FRIENDS'
 /**
  * ACTION CREATORS
  */
-export const _getFriends = friends => ({type: GET_FRIENDS, friends})
+const _getFriends = friends => ({type: GET_FRIENDS, friends})
 
 /**
  * THUNK CREATORS

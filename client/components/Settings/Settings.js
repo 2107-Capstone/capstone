@@ -42,6 +42,7 @@ const Settings = () => {
         phoneNumber: auth.phoneNumber || '',
         error: '',
         disabled: false,
+        repeatInfoError: '',
     })
 
     const userDebts = useSelector((state) => state.userDebts);
@@ -49,12 +50,12 @@ const Settings = () => {
     const handleChange = (evt) => {
         if (!evt.target) {
           const err = evt.length < 17 ? 'Phone number must have 10 digits.' : '';
-          setinput({ ...input, phoneNumber: evt, disabled: evt.length < 17 ? true : false, error: err })
+          setinput({ ...input, phoneNumber: evt, disabled: evt.length < 17 ? true : false, error: err, repeatInfoError: '' })
         } else {
           const name = evt.target.name
           const value = evt.target.value
 
-          setinput({ ...input, [name]: value, disabled: input.error ? true : false })
+          setinput({ ...input, [name]: value, disabled: input.error ? true : false, repeatInfoError: '' })
         }
     }
 
@@ -67,7 +68,9 @@ const Settings = () => {
            setOpenAlert(true)
         }
         catch (error) {
-          console.log(error)
+          // console.log(error)
+          setinput({ ...input, repeatInfoError: 'Username or Email already exists'})
+
         }
     }
     //////////// SNACKBAR ALERT //////////////////
@@ -179,13 +182,20 @@ const Settings = () => {
                           />  
                         </Grid>
                         {
-                          input.error ?
+                          input.error &&
                           <Grid item xs={12}>
                             <Typography variant='caption' sx={{color: 'red'}}>
                               {input.error}
                             </Typography>  
                           </Grid>
-                          : ''
+                        }
+                        {
+                          input.repeatInfoError &&
+                          <Grid item xs={12}>
+                            <Typography variant='caption' sx={{color: 'red'}}>
+                              {input.repeatInfoError}
+                            </Typography>  
+                          </Grid>
                         }
                         {/* <Grid item xs={12} >
                             <FormControl variant="outlined" fullWidth>

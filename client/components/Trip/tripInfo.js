@@ -46,6 +46,10 @@ export const Events = ({ tripId }) => {
     )
 }
 export const Expenses = ({ tripId }) => {
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    })
     const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === tripId).sort((a, b) => a.datePaid < b.datePaid ? -1 : 1));
     if (tripId) {
         if (expenses.length === 0) return "No expenses"
@@ -57,7 +61,7 @@ export const Expenses = ({ tripId }) => {
             {
                 expenses.map((expense, idx) => (
                     <li key={idx}>
-                        ({format(parseISO(expense.datePaid), 'P')}): {expense.name}: ${(+expense.amount).toFixed(2)}
+                        ({format(parseISO(expense.datePaid), 'P')}): {expense.name}: {formatter.format(+expense.amount)}
                         <br></br>
                         Paid By: {expense.paidBy.username}
                     </li>

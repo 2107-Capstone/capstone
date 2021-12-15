@@ -20,7 +20,10 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 
 // const ExpensesTable = ({tripExpenses, trip}) => {
 const TripDebts = ({tripDebts}) => {
-    
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    })
     ///////////////// LOADING ///////////////////
     if (!tripDebts) {
         return <CircularLoading />
@@ -49,7 +52,7 @@ const TripDebts = ({tripDebts}) => {
                         <UserAvatar user={row.payor} />
                     </TableCell>
                     <TableCell sx={{color: 'text.secondary'}}>
-                        ${(+row.amount).toFixed(2)}
+                        {formatter.format(+row.amount)}
                     </TableCell>
                     <TableCell align="center" sx={{color: 'text.secondary'}}>
                         <UserAvatar user={row.payee} />
