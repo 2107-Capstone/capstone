@@ -475,7 +475,7 @@ export default function TripMap({ match }) {
                             (
                                 <InfoWindow
                                     open={open}
-                                    position={{ lat: +selected.lat+.001, lng: +selected.lng }}
+                                    position={{ lat: +selected.lat+.0003, lng: +selected.lng }}
                                     onCloseClick={() => {
                                         setSelected(null);
                                     }}
