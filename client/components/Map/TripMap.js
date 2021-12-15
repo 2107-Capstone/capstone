@@ -23,6 +23,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
+// import EventsAccordion from './EventsAccordion';
 
 export default function TripMap({ match }) {
     const dispatch = useDispatch();
@@ -344,6 +345,7 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
+                {/* <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} setEventToEdit={setEventToEdit} setOpen={setOpen} dispatch={dispatch} deleteEvent={deleteEvent} /> */}
                 <Box
                     display='flex'
                     justifyContent='center'
