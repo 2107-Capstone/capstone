@@ -61,7 +61,7 @@ const SingleTripCalendar = ({ match }) => {
     }
     ///////////// TRIP ////////////////
     const calendarTrip = { ...trip.trip, title: `${trip.trip.name} - ${trip.trip.location}`, start: new Date(trip.trip.startTime), end: new Date(trip.trip.endTime), isTrip: true }
-
+    
     ////////// EVENTS ////////////////
     const calendarEvents = events.map(event => { return { ...event, type: 'event', isTrip: false, title: `${event.name} - ${event.location}`, start: event.startTime, end: event.endTime } })
 
@@ -102,7 +102,7 @@ const SingleTripCalendar = ({ match }) => {
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: 600 }}
-                defaultDate={calendarTrip.startTime}
+                defaultDate={calendarTrip.start}
                 showMultiDayTimes
                 onSelectEvent={event => handleSelect(event)}
                 eventPropGetter={eventStyles}
