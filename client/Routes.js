@@ -50,12 +50,12 @@ class Routes extends Component {
     if (this.props.isLoggedIn) {
       await this.props.loadAppData();
       
-      window.socket.addEventListener('message', ev => {
-        const message = ev.data;
-        const action = JSON.parse(message);
-        console.log('action', action)
-        this.props.dispatch(action)
-      })
+      // window.socket.addEventListener('message', ev => {
+      //   const message = ev.data;
+      //   const action = JSON.parse(message);
+      //   console.log('action', action)
+      //   this.props.dispatch(action)
+      // })
 
     }
   }
@@ -64,12 +64,12 @@ class Routes extends Component {
     if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
       await this.props.loadAppData()
 
-      window.socket.addEventListener('message', ev => {
-        const message = ev.data;
-        const action = JSON.parse(message);
-        console.log('action', action)
-        this.props.dispatch(action)
-      })
+      // window.socket.addEventListener('message', ev => {
+      //   const message = ev.data;
+      //   const action = JSON.parse(message);
+      //   console.log('action', action)
+      //   this.props.dispatch(action)
+      // })
     }
   }
 

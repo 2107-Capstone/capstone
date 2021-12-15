@@ -35,18 +35,18 @@ const init = async () => {
       });
     })
 
-    let sockets = [];
-    const socketServer = new ws.Server({ server });
-    socketServer.on('connection', socket => {
-      sockets.push(socket);
-      console.log('length, ', sockets.length)
-      socket.on('message', (message) => {
-        sockets.filter(s => s !== socket).forEach(s => s.send(message.toString()));
-      })
-      socket.on('close', () => {
-        sockets = sockets.filter(s => s !== socket)
-      })
-    })
+    // let sockets = [];
+    // const socketServer = new ws.Server({ server });
+    // socketServer.on('connection', socket => {
+    //   sockets.push(socket);
+    //   console.log('length, ', sockets.length)
+    //   socket.on('message', (message) => {
+    //     sockets.filter(s => s !== socket).forEach(s => s.send(message.toString()));
+    //   })
+    //   socket.on('close', () => {
+    //     sockets = sockets.filter(s => s !== socket)
+    //   })
+    // })
 
   } catch (ex) {
     console.log(ex)
