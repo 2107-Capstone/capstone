@@ -41,7 +41,7 @@ export default function EventsCard ({ event, handleFindMarker, setEventToEdit, s
         >
             <CardContent sx={{ minWidth: '100%', mb: 0 , paddingBottom: 0}} onClick={() => handleFindMarker(event.id, setSelected)}>
                     {/* <Box display='flex' justifyContent='space-between'> */}
-                        <Box display='flex' flexDirection='column' >
+                        <Box display='flex' flexDirection='column' sx={{mb: 0}}>
                             <Typography color='text.primary' variant="subtitle1">
                                 {event.name}
                             </Typography>
