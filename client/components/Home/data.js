@@ -1,7 +1,7 @@
 const data = [
     {
         id: 1,
-        title: 'Organize Trips',
+        title: 'Group Trips and Outings',
         description: 'Create and organize trips with friends and family',
         image: 'images/tripsPage.png',
         timeout: Math.floor(Math.random() * 1500)
