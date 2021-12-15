@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom";
 
 ////////////// MATERIAL UI ///////////
-import { Avatar, Box, Button, Chip, Container, Divider, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Tooltip, Typography } from "@mui/material";
+import { Avatar, Box, Button, Chip, Fragment, Snackbar, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Tooltip, Typography } from "@mui/material";
 import CardTravelIcon from '@mui/icons-material/CardTravel';
+import CloseIcon from '@mui/icons-material/Close'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AddIcon from '@mui/icons-material/Add';
 import CircularLoading from '../Loading/CircularLoading'
@@ -45,6 +46,14 @@ const AllTrips = ({ match }) => {
         }
 
     }
+    const [open, setOpen] = useState(false);
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
 
     if (!trips) {
         return (
@@ -150,11 +159,39 @@ const AllTrips = ({ match }) => {
                                 !trip.trip.isOpen ? ''
                                     :
                                 !trip.trip.expenses.length ?
-                                    <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                        <Chip onClick={() => handleLeaveTrip(trip.id)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
-                                            disabled={!trip.trip.expenses.length ? false : true}
+                                    <>
+                                        <Snackbar
+                                            sx={{ mt: 9 }}
+                                            open={open}
+                                            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                            autoHideDuration={6000}
+                                            onClose={handleClose}
+                                            message={'Are you sure you want to leave this trip?'}
+                                            action={
+                                                <>
+                                                    <Button color="secondary" size="small" onClick={() => handleLeaveTrip(trip.id)}>
+                                                        YES
+                                                    </Button>
+                                                    <Button color="secondary" size="small" onClick={handleClose}>
+                                                        NO
+                                                    </Button>
+                                                    <IconButton
+                                                        size="small"
+                                                        aria-label="close"
+                                                        color="inherit"
+                                                        onClick={handleClose}
+                                                    >
+                                                        <CloseIcon fontSize="small" />
+                                                    </IconButton>
+                                                </>
+                                            }
                                         />
-                                    </Box>
+                                        <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
+                                            <Chip onClick={() => setOpen(true)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
+                                                disabled={!trip.trip.expenses.length ? false : true}
+                                            />
+                                        </Box>
+                                    </>
                                     :
                                     <Tooltip 
                                         title="You can not leave a trip that already has expenses."
