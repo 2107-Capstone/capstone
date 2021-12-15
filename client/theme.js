@@ -15,22 +15,16 @@ const theme = createTheme({
             // main: '#006089'
         },
         secondary: {
-            // //splitwise red
-            // main: '#AD2134'
 
             //pink
             // main: '#f50057',
-            
-            //turquoise
-            // main: '#00bcd4',
 
             //light pink
             // main: '#FEAADD',
-
-            //dark park
-            // main: '#9F234C'
-            //lighter maroon
-            // main: 'rgb(156,84,112,.8)'
+            
+            //grey
+            // main: '#C2C2C2'
+            
             //darker light blue
             main: '#1868A2',
 

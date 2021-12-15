@@ -100,7 +100,7 @@ const Home = () => {
                 </Box>
                 <Box>
                   <Button color='secondary' variant='contained' component={Link} to='/signup'>
-                    Sing Up
+                    Sign Up
                   </Button>
                 </Box>
               </Box>

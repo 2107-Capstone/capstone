@@ -35,32 +35,16 @@ const Settings = () => {
     const auth = useSelector((state) => state.auth);
     
     const [input, setinput] = useState({
-        username: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        phoneNumber: '',
-        disabled: false,
+        username: auth.username || '', 
+        firstName: auth.firstName || '',
+        lastName: auth.lastName || '',
+        email: auth.email || '',
+        phoneNumber: auth.phoneNumber || '',
         error: '',
-        
+        disabled: false,
     })
 
     const userDebts = useSelector((state) => state.userDebts);
-
-    useEffect(() => {
-      setinput({
-        username: auth.username,
-        firstName: auth.firstName,
-        lastName: auth.lastName,
-        email: auth.email,
-        phoneNumber: auth.phoneNumber,
-      })
-    }, [])
-
-    
-    
-
-    
 
     const handleChange = (evt) => {
         if (!evt.target) {

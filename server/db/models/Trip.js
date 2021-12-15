@@ -2,6 +2,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 const { STRING, TEXT, DATE, BOOLEAN, INTEGER, DECIMAL, UUID, UUIDV4 } = Sequelize
+const airplane = '/images/airplane.png'
 
 const Trip = db.define('trip', {
   id: {
@@ -22,7 +23,8 @@ const Trip = db.define('trip', {
     type: TEXT
   },
   imageUrl: {
-    type: TEXT
+    type: TEXT,
+    default: airplane
   },
   startTime: {
     type: DATE,

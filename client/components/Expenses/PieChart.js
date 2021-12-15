@@ -22,16 +22,16 @@ const PieChart = ({expenses, users, categories}) => {
 const datasets2 = [
     {
         data: usersData,
-        borderColor: 'black',
+        borderColor: 'white',
         borderWidth: 1,
-        backgroundColor: usersLabels.map((_,idx) => `rgb(8, 0, 255, ${idx * .1 + .1})`)
+        backgroundColor: usersLabels.map((_,idx) => `rgb(0, 174, 255, ${idx * .1 + .1})`)
     }
 ]
     const datasets = [
         {
             data: categoriesData,
             backgroundColor: categories.map((_,idx) => `rgb(255, 0, 0, ${idx * .2 + .1})`),
-            borderColor: 'black',
+            borderColor: 'white',
             borderWidth: 1
         }
     ]
@@ -53,10 +53,19 @@ const datasets2 = [
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Expenses by Category'
+                                text: 'Expenses by Category',
+                                color: 'white'
+                            },
+                            labels: {
+                                color: 'white'
+                            },
+                            border: {
+                                color: 'white'
                             }
                         },
                         responsive: true,
+                        color: 'white',
+                        aspectRatio: 1
                     }}
                     data={{
                         labels: categoriesLabels,
@@ -72,10 +81,19 @@ const datasets2 = [
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Expenses by Friend'
+                                text: 'Expenses by Friend',
+                                color: 'white'
+                            },
+                            labels: {
+                                color: 'white'
+                            },
+                            border: {
+                                color: 'white'
                             }
                         },
                         responsive: true,
+                        color: 'white',
+                        aspectRatio: 1
                     }}
                     data={{
                         labels: usersLabels,

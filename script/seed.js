@@ -1,5 +1,5 @@
 'use strict'
-const formatISO = require('date-fns/formatISO')
+const seedFaker = require('./seedFaker')
 const { db, models: { User, Category, Event, Expense, Message, Trip, UserTrip, UserFriend, UserDebt } } = require('../server/db')
 
 /////// import image //////////////////
@@ -22,20 +22,20 @@ async function seed() {
   // Creating Users
   const users = await Promise.all([
 
-    User.create({ username: 'Andy', password: '123', firstName: 'Andy', lastName: 'Gao', email: 'andy@123.com', phoneNumber: '1234567890', lat: 40.721786, lng: -74.009445, time: new Date(), avatar: andyAvatar }),
-    User.create({ username: 'Corinne', password: '123', firstName: 'Corinne', lastName: 'Tinacci', email: 'corinne@123.com', phoneNumber: '2345678901', lat: 40.717989, lng: -73.951693, time: new Date(), avatar: corinneAvatar }),
-    User.create({ username: 'Jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '3456789012', lat: 35.131821, lng: -80.950150, time: new Date(), avatar: jonathanAvatar }),
-    User.create({ username: 'Stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '4567890123', time: new Date(), avatar: stanleyAvatar }),
-    User.create({ username: 'Jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '5678901234', time: new Date(), avatar: jasonAvatar }),
-    User.create({ username: 'Prof', password: '123', firstName: 'Prof', lastName: 'Katz', email: 'prof@123.com', phoneNumber: '1239012349', time: new Date(), avatar: profAvatar }),
-    User.create({ username: 'Moe', password: '123', firstName: 'Moe', lastName: 'Moeman', email: 'moe@123.com', phoneNumber: '6789012341', time: new Date() }),
-    User.create({ username: 'Poe', password: '123', firstName: 'Poe', lastName: 'Poet', email: 'Poe@123.com', phoneNumber: '6789012342',  time: new Date() }),
-    User.create({ username: 'Lucy', password: '123', firstName: 'Lucy', lastName: 'Luck', email: 'Lucy@123.com', phoneNumber: '6789012343',  time: new Date() }),
-    User.create({ username: 'JJ', password: '123', firstName: 'JJ', lastName: 'Jay', email: 'jj@123.com', phoneNumber: '6789012340', time: new Date() }),
-    User.create({ username: 'Marge', password: '123', firstName: 'Marge', lastName: 'Bouvier', email: 'marge@123.com', phoneNumber: '6789012349', time: new Date() }),
-    User.create({ username: 'Admin', password: '123', firstName: 'Admin', lastName: 'Admin', email: 'admin@123.com', phoneNumber: '67890123498', time: new Date() }),
+    User.create({ username: 'Andy', password: '123', firstName: 'Andy', lastName: 'Gao', email: 'andy@123.com', phoneNumber: '11234567890', lat: 40.721786, lng: -74.009445, time: new Date(), avatar: andyAvatar }),
+    User.create({ username: 'Corinne', password: '123', firstName: 'Corinne', lastName: 'Tinacci', email: 'corinne@123.com', phoneNumber: '12345678901', lat: 40.717989, lng: -73.951693, time: new Date(), avatar: corinneAvatar }),
+    User.create({ username: 'Jonathan', password: '123', firstName: 'Jonathan', lastName: 'Martinez', email: 'jonathan@123.com', phoneNumber: '13456789012', lat: 35.131821, lng: -80.950150, time: new Date(), avatar: jonathanAvatar }),
+    User.create({ username: 'Stanley', password: '123', firstName: 'Stanley', lastName: 'Lim', email: 'stanley@123.com', phoneNumber: '14567890123', time: new Date(), avatar: stanleyAvatar }),
+    User.create({ username: 'Jason', password: '123', firstName: 'Jason', lastName: 'Williams', email: 'jason@123.com', phoneNumber: '15678901234', time: new Date(), avatar: jasonAvatar }),
+    User.create({ username: 'Prof', password: '123', firstName: 'Prof', lastName: 'Katz', email: 'prof@123.com', phoneNumber: '11239012349', time: new Date(), avatar: profAvatar }),
+    User.create({ username: 'Moe', password: '123', firstName: 'Moe', lastName: 'Moeman', email: 'moe@123.com', phoneNumber: '16789012341', time: new Date() }),
+    User.create({ username: 'Poe', password: '123', firstName: 'Poe', lastName: 'Poet', email: 'Poe@123.com', phoneNumber: '16789012342',  time: new Date() }),
+    User.create({ username: 'Lucy', password: '123', firstName: 'Lucy', lastName: 'Luck', email: 'Lucy@123.com', phoneNumber: '16789012343',  time: new Date() }),
+    User.create({ username: 'JJ', password: '123', firstName: 'JJ', lastName: 'Jay', email: 'jj@123.com', phoneNumber: '16789012340', time: new Date() }),
+    User.create({ username: 'Marge', password: '123', firstName: 'Marge', lastName: 'Bouvier', email: 'marge@123.com', phoneNumber: '16789012349', time: new Date() }),
+    User.create({ username: 'Admin', password: '123', firstName: 'Admin', lastName: 'Admin', email: 'admin@123.com', phoneNumber: '167890123498', time: new Date() }),
   ])
-
+  
   const [andy, corinne, jonathan, stanley, jason, prof] = users.map(user => user)
 
   const trips = await Promise.all([
@@ -191,6 +191,7 @@ async function runSeed() {
   console.log('seeding...')
   try {
     await seed()
+    await seedFaker()
   } catch (err) {
     console.error(err)
     process.exitCode = 1
