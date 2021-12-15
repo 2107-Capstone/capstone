@@ -7,7 +7,7 @@ const ws = require('ws')
 
 const init = async () => {
   try {
-    if(process.env.SEED === 'true'){
+    if (process.env.SEED === 'true') {
       await seed();
     }
     else {
@@ -17,9 +17,9 @@ const init = async () => {
     const server = app.listen(PORT, () => console.log(`Mixing it up on port ${PORT}`));
     const io = socket(server);
     const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
-    
-    io.on('connection', function(socket){
-      
+
+    io.on('connection', function (socket) {
+
       // Join a chat
       const { roomId } = socket.handshake.query;
       socket.join(roomId);
@@ -35,18 +35,18 @@ const init = async () => {
       });
     })
 
-    // let sockets = [];
-    // const socketServer = new ws.Server({ server });
-    // socketServer.on('connection', socket => {
-    //   sockets.push(socket);
-    //   console.log('length, ', sockets.length)
-    //   socket.on('message', (message) => {
-    //     sockets.filter(s => s !== socket).forEach(s => s.send(message.toString()));
-    //   })
-    //   socket.on('close', () => {
-    //     sockets = sockets.filter(s => s !== socket)
-    //   })
-    // })
+    let sockets = [];
+    const socketServer = new ws.Server({ server: server, path: '/ws' });
+    socketServer.on('connection', socket => {
+      sockets.push(socket);
+      console.log('length, ', sockets.length)
+      socket.on('message', (message) => {
+        sockets.filter(s => s !== socket).forEach(s => s.send(message.toString()));
+      })
+      socket.on('close', () => {
+        sockets = sockets.filter(s => s !== socket)
+      })
+    })
 
   } catch (ex) {
     console.log(ex)

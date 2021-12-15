@@ -37,7 +37,7 @@ export const inviteFriend = (invite) => {
                 authorization: token
             }
         });
-        // window.socket.send(JSON.stringify(_inviteFriend(invited)))
+        window.socket.send(JSON.stringify(_inviteFriend(invited)))
         dispatch(_inviteFriend(invited));
     };
 }
@@ -50,7 +50,7 @@ export const acceptInvite = (invite) => {
                 authorization: token
             }
         });
-        // window.socket.send(JSON.stringify(_acceptInvite(acceptedinvite)))
+        window.socket.send(JSON.stringify(_acceptInvite(acceptedinvite)))
         dispatch(_acceptInvite(acceptedinvite));
     };
 }
@@ -64,7 +64,7 @@ export const rejectInvite = (inviteId) => {
             }
         });
         // console.log(rejectedinvite)
-        // window.socket.send(JSON.stringify(_rejectInvite(rejectedinvite)))
+        window.socket.send(JSON.stringify(_rejectInvite(rejectedinvite)))
         dispatch(_rejectInvite(rejectedinvite));
     };
 }
