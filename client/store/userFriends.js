@@ -20,9 +20,7 @@ const _deleteUserFriend = id => ({ type: DELETE_USERFRIEND, id })
 const _approveUserFriend = userFriend => ({ type: APPROVE_USERFRIEND, userFriend })
 
 
-/**
- * THUNK CREATORS
- */
+ //////////// THUNK CREATORS ////////////
 export const getUserFriends = () => {
   const token = window.localStorage.getItem(TOKEN)
 
