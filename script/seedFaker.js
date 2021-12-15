@@ -20,14 +20,18 @@ async function seedFaker() {
   const chance = () => (Math.random() > .5)
   // Creating Users
   
-  const usersToCreate = Array(numUsers).fill().map((user) => ({
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    username: `${faker.company.catchPhraseNoun()}${faker.commerce.color()}${Math.ceil(Math.random() * 100)}`,
-    email: faker.internet.email(),
-    phoneNumber: 1+faker.phone.phoneNumberFormat().replace(/\-/g,''),
-    password: '123',
-  }))
+  const usersToCreate = Array(numUsers).fill().map((user) => {
+    const firstName = faker.name.firstName();
+    return (
+    {
+      firstName: firstName,
+      lastName: faker.name.lastName(),
+      username: `${firstName}${faker.commerce.color()}${Math.ceil(Math.random() * 100)}`,
+      email: faker.internet.email(),
+      phoneNumber: 1+faker.phone.phoneNumberFormat().replace(/\-/g,''),
+      password: '123',
+    })
+  })
   // console.log(usersToCreate)
   const users = await Promise.all(usersToCreate.map(user => 
     User.create(user)
