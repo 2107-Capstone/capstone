@@ -46,7 +46,7 @@ async function seedFaker() {
         lat: randomAddress.coordinates.lat,
         lng: randomAddress.coordinates.lng,
         userId:  users[Math.floor(Math.random() * numUsers)].id,
-        imageUrl: airplane 
+        imageUrl: airplane
     })
   })
   // console.log(tripsToCreate)
