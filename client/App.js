@@ -1,5 +1,6 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux"
 
 //////////// MATERIAL UI ////////////////
 import { CssBaseline } from '@mui/material'
@@ -9,20 +10,32 @@ import { Box } from '@mui/system'
 import Navbar from './components/Navbar/Navbar'
 import Routes from './Routes'
 import Footer from './components/Footer/Footer'
-import { useSelector } from 'react-redux'
 
+///////////// WS ////////////////////
+window.socket = new WebSocket(window.location.origin.replace('http', 'ws') + '/ws');
 
 const App = () => {
+  const dispatch = useDispatch()
 
-  const isLoggedIn = useSelector(state => state.auth.id)
+  const isLoggedIn = useSelector(state => !!state.auth.id)
+
   let menuBarWidth;
 
-  if (!!isLoggedIn) {
+  if (isLoggedIn) {
     menuBarWidth = 250
   }
   else {
     menuBarWidth = 0
   }
+
+  useEffect(() => {
+    window.socket.addEventListener('message', ev => {
+      const message = ev.data;
+      const action = JSON.parse(message);
+      console.log('action', action)
+      dispatch(action)
+    })
+  }, [])
 
   return (
     <Box sx={{
