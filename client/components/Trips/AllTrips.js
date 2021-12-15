@@ -136,7 +136,7 @@ const AllTrips = ({ match }) => {
                                             Trip Creator:
                                         </Typography>
                                         <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0 }} src={trip.trip.user.avatar} >
+                                            <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0, bgcolor: 'primary.main' }} src={trip.trip.user.avatar} >
                                                 {trip.trip.user.firstName[0] + trip.trip.user.lastName[0]}
                                             </Avatar>
                                             <Typography variant='caption'>

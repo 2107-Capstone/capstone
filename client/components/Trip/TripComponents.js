@@ -82,7 +82,7 @@ export const UserAvatar = ({user}) => {
             alignItems='center'
         >
             <Avatar 
-                sx={{ height: 35, width: 35, m: 1, mb: 0 }}
+                sx={{ height: 35, width: 35, m: 1, mb: 0, bgcolor: 'primary.main' }}
                 src={user.avatar} 
             >
                 {user.firstName[0] + user.lastName[0]}
