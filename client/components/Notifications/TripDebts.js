@@ -27,6 +27,10 @@ const TripDebts = ({info, user, debt}) => {
     const handleClose = () => {
         setOpenSnackbar(false)
     }
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    })
 
     return (        
         <Fragment>
@@ -35,7 +39,7 @@ const TripDebts = ({info, user, debt}) => {
             >
                 <Typography>
                     {debt.payor.username === user.username ? 'You owe' : 
-                    `${debt.payor.username} owes`}  {debt.payee.username === user.username ? ' you' : debt.payee.username} ${(+debt.amount).toFixed(2)}
+                    `${debt.payor.username} owes`}  {debt.payee.username === user.username ? ' you' : debt.payee.username} {formatter.format(+debt.amount)}
                 </Typography>
                 <Snackbar
                     sx={{ mt: 9 }}

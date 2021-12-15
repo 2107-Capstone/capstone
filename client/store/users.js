@@ -42,7 +42,7 @@ export const updateUser = (user, type) => {
   //  window.socket.send(JSON.stringify(_updateUser(updated)))
     dispatch(_updateUser(updated));
     if (type !== 'geolocation') {
-      setTimeout(() => history.push('/settings'), 2000)
+      setTimeout(() => history.push('/settings'), 500)
     }
     
   };

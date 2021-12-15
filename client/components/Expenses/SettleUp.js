@@ -33,7 +33,7 @@ export const settleUp = (expenses, users) => {
         sortedPaid[i] += diff;
         sortedPaid[j] -= diff;
         
-        returnDebts.push([sortedPayors[i], sortedPayors[j], diff.toFixed(2)])
+        returnDebts.push([sortedPayors[i], sortedPayors[j], diff])
 
         sortedPaid[i] === 0 ? i++ : '';
         sortedPaid[j] === 0 ? j-- : '';

@@ -105,7 +105,10 @@ const Trip = (props) => {
             console.log(error)
         }
     }
-
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    })
     const totalExpenses = expenses.reduce((total, expense) => {
         return total + +expense.amount
     }, 0);
@@ -376,10 +379,10 @@ const Trip = (props) => {
                                     <Box sx={{ display: 'flex', flexDirection: 'column', mx: 1, mb: 2 }}>
                                         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, mb: 2, textAlign: 'center' }}>
                                             <Typography variant='subtitle2'>
-                                                Total Expenses: ${totalExpenses.toFixed(2)}
+                                                Total Expenses: {formatter.format(totalExpenses)}
                                             </Typography>
                                             <Typography variant='subtitle2'>
-                                                Each Person Owes: ${eachPersonOwes.toFixed(2)}
+                                                Each Person Owes: {formatter.format(eachPersonOwes)}
                                             </Typography>
                                         </Box>
                                         <ExpensesTable expenses={recentExpenses} />

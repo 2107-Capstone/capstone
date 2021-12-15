@@ -225,6 +225,7 @@ export default function AllTripsMap() {
                                 <Accordion sx={{ margin: 1, minWidth: '100%'}} 
                                     expanded={expanded === trip.id}
                                     onChange={handleAccordionChange(trip.id)}
+                                    disableGutters={true}
                                 >
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
@@ -257,11 +258,14 @@ export default function AllTripsMap() {
                                                     <CardContent sx={{ minWidth: '100%', mb: 0 , paddingBottom: 0}} onClick={() => handleClick(event.id)}>
                                                         
                                                             <Box display='flex' flexDirection='column' >
-                                                                <Typography gutterBottom color='text.primary' variant="subtitle1">
-                                                                    {event.name} - {event.location}
+                                                                <Typography  color='text.primary' variant="subtitle1">
+                                                                    {event.name}
                                                                 </Typography>
                                                                 <Typography variant='subtitle2' color='text.primary' >
                                                                     {event.description}
+                                                                </Typography>
+                                                                <Typography variant='subtitle2' color='text.secondary' >
+                                                                    {event.location}
                                                                 </Typography>
                                                                 <Divider color='grey' fullWidth/>
                                                                 <Typography color='text.secondary' variant="caption" >
@@ -296,7 +300,7 @@ export default function AllTripsMap() {
                         >
                             {displayMarkers()}
                             {
-                                selected ? (
+                                !!selected && (
                                     <InfoWindow
                                         open={open}
                                         position={{ lat: +selected.lat, lng: +selected.lng }}
@@ -319,7 +323,6 @@ export default function AllTripsMap() {
                                             
                                         </Box>
                                     </InfoWindow>)
-                                    : null
                             }
                         </GoogleMap>
                     </Box>
