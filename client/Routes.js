@@ -39,7 +39,7 @@ import { Avatar, Container } from '@mui/material';
 import { Box } from '@mui/system';
 import auth from './store/auth';
 
-window.socket = new WebSocket(window.location.origin.replace('http', 'ws'));
+window.socket = new WebSocket(window.location.origin.replace('http', 'ws') + '/ws');
 class Routes extends Component {
   constructor(props) {
     super()
@@ -49,13 +49,13 @@ class Routes extends Component {
     await this.props.loadInitialData();
     if (this.props.isLoggedIn) {
       await this.props.loadAppData();
-      
-      // window.socket.addEventListener('message', ev => {
-      //   const message = ev.data;
-      //   const action = JSON.parse(message);
-      //   console.log('action', action)
-      //   this.props.dispatch(action)
-      // })
+
+      window.socket.addEventListener('message', ev => {
+        const message = ev.data;
+        const action = JSON.parse(message);
+        console.log('action', action)
+        this.props.dispatch(action)
+      })
 
     }
   }
@@ -64,12 +64,12 @@ class Routes extends Component {
     if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
       await this.props.loadAppData()
 
-      // window.socket.addEventListener('message', ev => {
-      //   const message = ev.data;
-      //   const action = JSON.parse(message);
-      //   console.log('action', action)
-      //   this.props.dispatch(action)
-      // })
+      window.socket.addEventListener('message', ev => {
+        const message = ev.data;
+        const action = JSON.parse(message);
+        console.log('action', action)
+        this.props.dispatch(action)
+      })
     }
   }
 
@@ -100,7 +100,7 @@ class Routes extends Component {
                 <Route exact path="/settings" component={Settings} />
                 <Route exact path="/settings/password" render={(props) => (
                   <Password {...props} history={history} />
-                )}/>
+                )} />
                 <Route exact path="/settings/authavatar" component={AuthAvatar} />
                 <Route exact path="/admin/admintrips" component={AdminAllTrips} />
                 <Route exact path="/admin/admintrips/:id" component={AdminTrip} />
