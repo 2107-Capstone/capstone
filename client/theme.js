@@ -7,7 +7,7 @@ const theme = createTheme({
         primary: {
             //purple-blue
             // main: '#3f51b5',
-            
+
             //splitwise green
             main: '#00897b'
 
@@ -21,10 +21,10 @@ const theme = createTheme({
 
             //light pink
             // main: '#FEAADD',
-            
+
             //grey
             // main: '#C2C2C2'
-            
+
             //darker light blue
             main: '#1868A2',
 
@@ -46,9 +46,9 @@ const theme = createTheme({
             fontFamily: 'Lobster',
         },
         h3: {
-            fontFamily: 'Tangerine',
+            // fontFamily: 'Tangerine',
         },
-        
+
     },
 })
 
