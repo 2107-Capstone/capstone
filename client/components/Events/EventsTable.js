@@ -6,14 +6,17 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Box, Divider, Grid, Button, Paper, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import { Paper } from '@mui/material'
 import CircularLoading from '../Loading/CircularLoading';
 import { format, formatISO, parseISO, isAfter } from "date-fns";
 
 const EventsTable = ({events}) => {
     if (!events) return <CircularLoading />
     
-    const rows = events
+    let recentEvents = events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
+    recentEvents.length > 5 ? recentEvents.length = 5 : ''
+
+    const rows = recentEvents
     return (
     <TableContainer component={Paper}>
         {/* <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="events table"> */}

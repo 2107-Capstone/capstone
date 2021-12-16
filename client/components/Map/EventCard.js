@@ -4,14 +4,11 @@ import { parseISO, format, isAfter } from 'date-fns';
 
 import { updateUser, deleteEvent, getTrips } from '../../store';
 ////////////////// COMPONENTS /////////////////
-
+import SnackbarForDelete from '../MuiComponents/SnackbarForDelete';
 import CircularLoading from '../Loading/CircularLoading'
 
 ////////////////// MATERIAL UI /////////////////
 import { Accordion, AccordionActions, Alert, Box, Button, IconButton, Typography, Dialog, Snackbar } from '@mui/material'
-import Avatar from '@mui/material/Avatar';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
@@ -20,18 +17,18 @@ import Divider from '@mui/material/Divider';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
 
-export default function EventsCard ({ event, handleFindMarker, setEventToEdit, setOpen, tripOpen, setSelected }) {
+export default function EventsCard ({ event, handleFindMarker, setOpen, tripOpen, setSelected, handleClickYes, setEventToEdit }) {
     
     const dispatch = useDispatch();
-    
+
     const [openSnackbar, setOpenSnackbar] = useState(false)
+    
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false);
     }
+
     if (!event) {
         return <CircularLoading />
     }
@@ -68,39 +65,12 @@ export default function EventsCard ({ event, handleFindMarker, setEventToEdit, s
                                                     Edit
                                                 </Button>
                                             </Box>
-                                            <Snackbar
-                                                sx={{ mt: 9 }}
+                                            <SnackbarForDelete 
                                                 open={openSnackbar}
-                                                // anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                                                autoHideDuration={6000}
                                                 onClose={handleCloseSnackbar}
+                                                onClickYes={() => handleClickYes(event.id)}
+                                                onClick={handleCloseSnackbar}
                                                 message={'Are you sure you want to delete this event?'}
-                                                action={
-                                                    <>
-                                                        <Button color="secondary" size="small" 
-                                                            onClick={async () => {
-                                                                try {
-                                                                    await dispatch(deleteEvent(event.id))
-                                                                } catch (err) {
-                                                                    console.log(err)
-                                                                }
-                                                            }}
-                                                        >
-                                                            YES
-                                                        </Button>
-                                                        <Button color="secondary" size="small" onClick={handleCloseSnackbar}>
-                                                            NO
-                                                        </Button>
-                                                        <IconButton
-                                                            size="small"
-                                                            aria-label="close"
-                                                            color="inherit"
-                                                            onClick={handleCloseSnackbar}
-                                                        >
-                                                            <CloseIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </>
-                                                }
                                             />
                                             <Box sx={{mr: 1}}>
                                                 <Button

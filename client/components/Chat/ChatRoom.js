@@ -4,7 +4,8 @@ import { format, formatISO, parseISO, isAfter } from "date-fns";
 import { Link } from "react-router-dom";
 
 import { createMessage } from "../../store";
-import {TripTitle, UserAvatar} from '../Trip/TripComponents';
+import TripTitle from "../Trip/Components/TripTitle";
+import UserAvatar from "../Trip/Components/UserAvatar";
 // import { Participants } from "../Trip/tripInfo";
 import useChat from "./useChat";
 import CircularLoading from '../Loading/CircularLoading'

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 
 /////////////// STORE /////////////////
 import { editTrip, getTrips, addUserDebt } from '../../store'
@@ -16,35 +15,32 @@ import InviteToTrip from './Form/InviteToTrip'
 import TripDebts from '../Expenses/TripDebts'
 import TripSpeedDial from './TripSpeedDial'
 import AddTripForm from '../Trips/Form/AddTripForm'
-import {TripTitle, UserAvatar, Users} from './TripComponents';
+import TripTitle from './Components/TripTitle'
+import UserAvatar from './Components/UserAvatar'
 import SnackbarForDelete from '../MuiComponents/SnackbarForDelete'
+import TripButton from './Components/TripButton'
+
 /////////////// MUI /////////////////
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Dialog from '@mui/material/Dialog';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import Snackbar from '@mui/material/Snackbar';
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 
 /////////////// ICONS /////////////////
 import ChatIcon from '@mui/icons-material/Chat';
-import CloseIcon from '@mui/icons-material/Close';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import MapIcon from '@mui/icons-material/Map';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PaidIcon from '@mui/icons-material/Paid';
 import PeopleIcon from '@mui/icons-material/People'
 import WorkOffOutlinedIcon from '@mui/icons-material/WorkOffOutlined';
 
-import { isAfter, isBefore } from "date-fns";
 import theme from '../../theme'
 
 import { settleUp } from '../Expenses/SettleUp'
+import Summary from './Components/Summary'
 
 const Trip = (props) => {
     const id = props.match.params.id
@@ -60,7 +56,6 @@ const Trip = (props) => {
     const users = useSelector(state => state.users.filter(user => {
         if(user.userTrips.find(userTrip => userTrip.tripId === id)) return true;
     }))
-    // const tripDebts = useSelector(state => state.userDebts.filter(userDebt => userDebt.tripId === id))
 
     useEffect(async () => {
         await dispatch(getTrips())
@@ -77,9 +72,9 @@ const Trip = (props) => {
     
     const [anchorEl, setAnchorEl] = useState(null);
     const openMenu = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+    // const handleClick = (event) => {
+    //     setAnchorEl(event.currentTarget);
+    // };
     const handleCloseMenu = () => {
         setAnchorEl(null);
     };
@@ -87,16 +82,11 @@ const Trip = (props) => {
     if (!trip || !events || !messages || !expenses) {
         return <CircularLoading />
     }
-    // console.log(users)
-    // const users = trip.trip.userTrips;
-    const tripDebts = trip.trip.userDebts;
     
     const handleCloseTrip = async () => {
         try {
             await dispatch(editTrip({ ...trip}))
-            
             const debts = settleUp(expenses, users)
-            console.log('debts', debts)
             if (debts) {
                 debts.forEach(async(debt) => {
                     await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[1], payorId: debt[0], amount: +debt[2], status: 'pending'}))
@@ -110,20 +100,6 @@ const Trip = (props) => {
         style: 'currency',
         currency: 'USD'
     })
-    const totalExpenses = expenses.reduce((total, expense) => {
-        return total + +expense.amount
-    }, 0);
-    const eachPersonOwes = totalExpenses / users.length;
-    let recentExpenses = expenses.sort((a, b) => isBefore(new Date(a.datePaid), new Date(b.datePaid)) ? 1 : -1);
-    recentExpenses.length > 5 ? recentExpenses.length = 5 : ''
-    recentExpenses = recentExpenses.sort((a,b) => isAfter(new Date(a.datePaid), new Date(b.datePaid)) ? 1 : -1);
-
-    let recentEvents = events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1);
-    recentEvents.length > 5 ? recentEvents.length = 5 : ''
-
-    let recentMessages = messages.sort((a, b) => isBefore(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
-    recentMessages.length > 5 ? recentMessages.length = 5 : ''
-    recentMessages = recentMessages.sort((a, b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
 
     return (
         <div>
@@ -140,38 +116,12 @@ const Trip = (props) => {
                 <AddTripForm trip={trip} handleClose={handleClose} />
             </Dialog>
 
-            <SnackbarForDelete open={openSnackbar} onClose={handleClose} onClickYes={handleCloseTrip} onClick={handleClose} />
-                {/* sx={{ mt: 9 }}
-                open={openSnackbar}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                autoHideDuration={6000}
-                onClose={handleClose}
-                message={'Are you sure you want to close this trip?'}
-                action={
-                    <>
-                        <Button color="secondary" size="small" onClick={handleCloseTrip}>
-                            YES
-                        </Button>
-                        <Button color="secondary" size="small" onClick={handleClose}>
-                            NO
-                        </Button>
-                        <IconButton
-                            size="small"
-                            aria-label="close"
-                            color="inherit"
-                            onClick={handleClose}
-                        >
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </>
-                }
-            /> */}
+            <SnackbarForDelete open={openSnackbar} onClose={handleClose} onClickYes={handleCloseTrip} onClick={handleClose} message={'Are you sure you want to close this trip?'} />
             {
-                trip.trip.isOpen ? 
+                trip.trip.isOpen && 
                     <Box sx={{marginBottom: -10, position: 'sticky', top: 5, right: 5, zIndex: 1}}>
                         <TripSpeedDial handleCloseMenu={handleCloseMenu} setOpen={setOpen} setForm={setForm}/>
                     </Box>
-                : ''
             }
             <Grid container rowSpacing={2} columnSpacing={2} >
                 <Grid item xs={12}>
@@ -184,8 +134,8 @@ const Trip = (props) => {
                             <UserAvatar user={trip.trip.user} />
                             <Box>
                                 {
-                                    trip.trip.isOpen ? 
-                                        <>
+                                    trip.trip.isOpen && 
+                                    <>
                                         <Tooltip 
                                             title={trip.trip.user.id !== auth.id ? `Only ${trip.trip.user.username} can close this trip` : ''}
                                             placement='top'
@@ -225,8 +175,7 @@ const Trip = (props) => {
                                                 />
                                             </Box>
                                         </Tooltip>
-                                        </>
-                                    : ''
+                                    </>
                                 }
                             </Box>
                         </Box>
@@ -234,168 +183,44 @@ const Trip = (props) => {
                 </Grid>
             </Grid>
             <Box display='flex' justifyContent='space-evenly' flexWrap='wrap' sx={{mb: 2, mt: 2}}>
-                <Button
-                    component={Link} to={`${trip.tripId}/chat`}
-                    startIcon={<ChatIcon />}
-                    size='medium'
-                    color='secondary'
-                    variant='contained'
-                >
-                    CHAT
-                </Button>
-                <Button
-                    component={Link} to={`${trip.tripId}/calendar`}
-                    startIcon={<DateRangeIcon />}
-                    size='medium'
-                    color='secondary'
-                    variant='contained'
-                >
-                    CALENDAR
-                </Button>
-                <Button
-                    component={Link} to={`${trip.tripId}/map`}
-                    startIcon={<MapIcon />}
-                    size='medium'
-                    color='secondary'
-                    variant='contained'
-                >
-                    MAP
-                </Button>
+                <TripButton id={trip.tripId} name={'chat'} icon={<ChatIcon />}/>
+                <TripButton id={trip.tripId} name={'calendar'} icon={<DateRangeIcon />}/>
+                <TripButton id={trip.tripId} name={'map'} icon={<MapIcon />}/>
             </Box>
-
             <Grid container spacing={2}>
                 {
-                    !trip.trip.isOpen ?
-                        <Grid item xs={12} sm={12} md={12} lg={12}>
-                            <Box style={styles.debtHeadingIcon} sx={{ display: 'flex'}}>
-                                <Box style={styles.debtHeadingIcon}>
-                                    <PaidIcon fontSize='medium' />
-                                    <Typography variant='h6'>
-                                        &nbsp;Debt Summary
-                                    </Typography>
-                                </Box>
-                            </Box>
-                            {
-                                tripDebts.length !== 0 ?
-                                    <Box>
-                                        <TripDebts tripDebts={tripDebts}/>
-                                    </Box>
-                                    :
-                                    <Typography>
-                                        No one in this trip owes money.
-                                    </Typography>
-                            }
-                        </Grid>
-                    : ''
+                    !trip.trip.isOpen &&
+                    <Summary
+                        trip={trip}
+                        type={'Debt Summary'}
+                        summaryTable={<TripDebts trip={trip} />}
+                        icon={<PaidIcon fontSize='medium' />}
+                    />
                 }
-                <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.heading} sx={{ display: 'flex' }}>
-                        <Box >
-                            <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }}  component={Link} to={`${trip.tripId}/chat`} startIcon={<OpenInNewIcon />} >
-                                Details
-                            </Button>
-                        </Box>
-                        <Box style={styles.headingIcon}>
-                            <ChatIcon fontSize='medium' />
-                            <Typography variant='h6'>
-                                &nbsp;Messages Snapshot
-                            </Typography>
-                        </Box>
-                    </Box>
-                    {
-                        messages.length !== 0 ?
-                            <Tooltip 
-                                title='Last five messages' 
-                                placement='top'
-                                enterNextDelay={100}
-                                enterTouchDelay={300}
-                                leaveTouchDelay={500}
-                            >
-                                <Box>
-                                    <MessagesTable messages={recentMessages} />
-                                </Box>
-                            </Tooltip>
-                            :
-                            <Typography>
-                                No messages yet.
-                            </Typography>
-                    }
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.heading} sx={{ display: 'flex' }}>
-                        <Box >
-                            <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={`${trip.tripId}/calendar`} startIcon={<OpenInNewIcon />} >
-                                Details
-                            </Button>
-                        </Box>
-                        <Box style={styles.headingIcon}>
-                            <DateRangeIcon fontSize='medium' />
-                            <Typography variant='h6'>
-                                &nbsp;Events Snapshot
-                            </Typography>
-                        </Box>
-                    </Box>
-                    {
-                        events.length !== 0 ?
-                        <Tooltip 
-                            title='Next five events' 
-                            placement='top'
-                            enterNextDelay={100}
-                            enterTouchDelay={300}
-                            leaveTouchDelay={500}
-                        >
-                                <Box>
-                                    <EventsTable events={recentEvents} />
-                                </Box>
-                            </Tooltip>
-                            :
-                            <Typography>
-                                No events yet.
-                            </Typography>
-                    }
-                </Grid>
-                
-                <Grid item xs={12} sm={12} md={6} lg={6} >
-                    <Box style={styles.heading} sx={{ display: 'flex' }}>
-                        <Box >
-                            <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }}  component={Link} to={`${trip.tripId}/expenses`} startIcon={<OpenInNewIcon />} >
-                                Details
-                            </Button>
-                        </Box>
-                        <Box style={styles.headingIcon}>
-                            <PaidIcon fontSize='medium' />
-                            <Typography variant='h6'>
-                                &nbsp;Expenses Snapshot
-                            </Typography>
-                        </Box>
-                    </Box>
-                            {
-                                expenses.length !== 0 ?
-                                <Tooltip 
-                                    title='Last five paid expenses' 
-                                    placement='top'
-                                    enterNextDelay={100}
-                                    enterTouchDelay={300}
-                                    leaveTouchDelay={500}
-                                >
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', mx: 1, mb: 2 }}>
-                                        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, mb: 2, textAlign: 'center' }}>
-                                            <Typography variant='subtitle2'>
-                                                Total Expenses: {formatter.format(totalExpenses)}
-                                            </Typography>
-                                            <Typography variant='subtitle2'>
-                                                Each Person Owes: {formatter.format(eachPersonOwes)}
-                                            </Typography>
-                                        </Box>
-                                        <ExpensesTable expenses={recentExpenses} />
-                                    </Box>
-                                </Tooltip>
-                                    :
-                                    <Typography>
-                                        No expenses yet.
-                                    </Typography>
-                            }
-                </Grid>
+                <Summary
+                    trip={trip}
+                    type={'Messages'}
+                    link={`${trip.tripId}/chat`}
+                    summaryTable={<MessagesTable messages={messages} />}
+                    tooltipMessage={'Last five messages'}
+                    icon={<ChatIcon fontSize='medium' />}
+                />
+                <Summary
+                    trip={trip}
+                    type={'Events'}
+                    link={`${trip.tripId}/calendar`}
+                    summaryTable={<EventsTable events={events} />}
+                    tooltipMessage={'Next five events'}
+                    icon={<DateRangeIcon fontSize='medium' />}
+                />
+                <Summary
+                    trip={trip}
+                    type={'expenses'}
+                    link={`${trip.tripId}/expenses`}
+                    tooltipMessage={'Last five paid expenses'}
+                    icon={<PaidIcon fontSize='medium' />}
+                    summaryTable={<ExpensesTable expenses={expenses} numUsers={users.length} />}
+                />
                 <Grid item xs={12} sm={12} md={6} lg={6} >
                     <Box style={styles.heading} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <PeopleIcon fontSize='medium' />
@@ -403,26 +228,13 @@ const Trip = (props) => {
                             &nbsp;Trip Friends
                         </Typography>
                     </Box>
-                    <Users users={users} />
-                    {/* <Box display='flex' justifyContent='center' flexWrap='wrap'>
+                    <Box display='flex' justifyContent='center' flexWrap='wrap'>
                         {
-                            users.map(user => (
-                                <Box key={user.id} marginRight={1} display='flex' flexDirection='column' flexWrap='wrap' justifyContent='center' alignItems='center'
-                                    sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}
-                                >
-                                    <Avatar
-                                        sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main' }}
-                                        src={user.avatar}
-                                    >
-                                        {user.firstName[0] + user.lastName[0]}
-                                    </Avatar>
-                                    <Typography variant='caption'>
-                                        {user.username}
-                                    </Typography>
-                                </Box>
-                            ))
+                            users.map(user => 
+                                <UserAvatar key={user.id} user={user} />
+                            )
                         }
-                    </Box> */}
+                    </Box>
                 </Grid>
             </Grid>
         </div>
