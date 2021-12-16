@@ -113,9 +113,9 @@ const AllTrips = ({ match }) => {
                         </Box>
                 }
             </Box>
-            <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid container alignItems='stretch' spacing={2} sx={{ mt: 1 }}>
                 {trips.map(trip => (
-                    <Grid item xs={12} sm={6} key={trip.id} >
+                    <Grid component={Card} item  xs={12} sm={6} key={trip.id} >
                         <Paper sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
                             <Box sx={{ color: 'inherit', textDecoration: 'none' }} component={Link} to={`/trips/${trip.tripId}`} >
                                 <img src={trip.trip.imageUrl} width='100%' height='240rem' />
@@ -145,7 +145,7 @@ const AllTrips = ({ match }) => {
                                         <Typography >
                                             Trip Creator:
                                         </Typography>
-                                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center' >
                                             <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0, bgcolor: 'primary.main' }} src={trip.trip.user.avatar} >
                                                 {trip.trip.user.firstName[0] + trip.trip.user.lastName[0]}
                                             </Avatar>
