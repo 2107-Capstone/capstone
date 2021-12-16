@@ -135,7 +135,7 @@ export default function AllTripsMap() {
         if (!!selected) {
             setCenter(() => ({lat: selected.lat, lng: selected.lng}))
             // setCenter(() => selected.getPosition())
-            setZoom(() => 11)
+            setZoom(() => 13)
         }
     }, [selected])
 
