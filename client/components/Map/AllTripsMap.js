@@ -111,8 +111,8 @@ export default function AllTripsMap() {
         if (selectedTrip.id !== 0) {
             if (selectedTrip.trip.events.length === 0) {
                 setZoom(() => 8)
-                // setCenter(() => ({ lat: parseFloat(+selectedTrip.trip.lat), lng: parseFloat(+selectedTrip.trip.lng) }))
-                setCenter(() => selectedTrip.getPosition())
+                setCenter(() => ({ lat: parseFloat(+selectedTrip.trip.lat), lng: parseFloat(+selectedTrip.trip.lng) }))
+                // setCenter(() => selectedTrip.getPosition())
             } else {
                 setCenter(() => findCenter(selectedTrip.trip.events))
                 setZoom(() => findZoom(selectedTrip.trip.events))
@@ -132,8 +132,8 @@ export default function AllTripsMap() {
 
     useEffect(() => {
         if (!!selected) {
-            // setCenter(() => ({lat: selected.lat, lng: selected.lng}))
-            setCenter(() => selected.getPosition())
+            setCenter(() => ({lat: selected.lat, lng: selected.lng}))
+            // setCenter(() => selected.getPosition())
             setZoom(() => 11)
         }
     }, [selected])

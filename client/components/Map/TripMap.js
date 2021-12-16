@@ -99,7 +99,6 @@ export default function TripMap({ match }) {
     }
 
     const DisplayMarkers = () => {
-        console.log('markers', markers)
         return markers.map((marker) => {
             return (
                 <Marker
@@ -114,7 +113,6 @@ export default function TripMap({ match }) {
         })
     }
     const DisplayTrackingMarkers = () => {
-        console.log('trackingmarkers', trackingMarkers)
         return trackingMarkers.map((marker) => {
             return (
                 <Marker
