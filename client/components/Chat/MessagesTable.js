@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,12 +6,24 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Avatar, Box, Divider, Grid, Button, Paper, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import Paper from '@mui/material/Paper'
+
+import { format, formatISO, parseISO, isAfter, isBefore } from "date-fns";
+
 import CircularLoading from '../Loading/CircularLoading';
-import { format, formatISO, parseISO, isAfter } from "date-fns";
-import { UserAvatar } from '../Trip/TripComponents';
+import UserAvatar from '../Trip/Components/UserAvatar';
+
 const MessagesTable = ({messages}) => {
-    const rows = messages
+
+    if (!messages){
+        <CircularLoading />
+    }
+    let recentMessages = messages.sort((a, b) => isBefore(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+    recentMessages.length > 5 ? recentMessages.length = 5 : ''
+    recentMessages = recentMessages.sort((a, b) => isAfter(new Date(a.dateSent), new Date(b.dateSent)) ? 1 : -1);
+
+    const rows = recentMessages
+
     return (
     <TableContainer component={Paper}>
         {/* <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="events table"> */}

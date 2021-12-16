@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PieChart from "./PieChart";
 import CircularLoading from '../Loading/CircularLoading'
 import AddExpense from "./AddExpense";
-import {TripTitle} from '../Trip/TripComponents';
+import TripTitle from "../Trip/Components/TripTitle";
 // import SettleUp from './SettleUp';
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO } from "date-fns";

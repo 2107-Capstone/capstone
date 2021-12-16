@@ -14,7 +14,7 @@ import { Box } from '@mui/system'
 ////////// Components //////////
 import EventForm from '../Map/EventForm';
 import AddTripForm from '../Trips/Form/AddTripForm';
-import { TripTitle } from '../Trip/TripComponents';
+import TripTitle from '../Trip/Components/TripTitle'
 import CircularLoading from '../Loading/CircularLoading'
 
 import { useTheme } from '@emotion/react'

@@ -1,34 +1,21 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import PieChart from "./PieChart";
+import React from "react";
+
 import CircularLoading from '../Loading/CircularLoading'
-import AddExpense from "./AddExpense";
-import { UserAvatar } from "../Trip/TripComponents";
-/////////////// DATE FORMATTER  ////////////////
-import { format, parseISO } from "date-fns";
+import UserAvatar from "../Trip/Components/UserAvatar";
 
 ////////////////// MATERIAL UI /////////////////
-import { Avatar, Box, Button, Container, Checkbox, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Typography, Tooltip } from "@mui/material";
+import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
-import { FaFileInvoiceDollar } from 'react-icons/fa'
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import LocalAtmIcon from '@mui/icons-material/LocalAtm';
-import AddIcon from '@mui/icons-material/Add';
-import CardTravelIcon from '@mui/icons-material/CardTravel';
-
-
-// const ExpensesTable = ({tripExpenses, trip}) => {
-const TripDebts = ({tripDebts}) => {
+const TripDebts = ({trip}) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD'
     })
     ///////////////// LOADING ///////////////////
-    if (!tripDebts) {
+    if (!trip) {
         return <CircularLoading />
     } 
-    const rows = tripDebts
+    const rows = trip.trip.userDebts
     return (
     <TableContainer component={Paper}>
         {/* <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="debt table"> */}

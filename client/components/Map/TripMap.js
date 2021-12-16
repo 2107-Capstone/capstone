@@ -5,11 +5,12 @@ import { parseISO, format, isAfter } from 'date-fns';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 
 ////////////////// COMPONENTS /////////////////
-import {TripTitle} from '../Trip/TripComponents';
+import TripTitle from '../Trip/Components/TripTitle';
 import EventForm from './EventForm'
 import CircularLoading from '../Loading/CircularLoading'
 import { findZoom, findCenter } from './mapFunctions';
 import mapStyles from './mapStyles';
+import SnackbarForDelete from '../MuiComponents/SnackbarForDelete';
 
 ////////////////// MATERIAL UI /////////////////
 import { Alert, Box, Button, IconButton, Typography, Dialog, Snackbar } from '@mui/material'
@@ -345,7 +346,7 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
-                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} setEventToEdit={setEventToEdit} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} />
+                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} />
                 {/* <Box
                     display='flex'
                     justifyContent='center'

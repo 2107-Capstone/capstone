@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AddIcon from '@mui/icons-material/Add';
 import CircularLoading from '../Loading/CircularLoading'
-
+import SnackbarForDelete from "../MuiComponents/SnackbarForDelete";
 //////////////////////// STORE ///////////////////
 import { getUserTrips, leaveTrip } from "../../store";
 import { getTrips } from "../../store";
@@ -160,31 +160,12 @@ const AllTrips = ({ match }) => {
                                     :
                                 !trip.trip.expenses.length ?
                                     <>
-                                        <Snackbar
-                                            sx={{ mt: 9 }}
+                                        <SnackbarForDelete
                                             open={open}
-                                            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                                            autoHideDuration={6000}
                                             onClose={handleClose}
-                                            message={'Are you sure you want to leave this trip?'}
-                                            action={
-                                                <>
-                                                    <Button color="secondary" size="small" onClick={() => handleLeaveTrip(trip.id)}>
-                                                        YES
-                                                    </Button>
-                                                    <Button color="secondary" size="small" onClick={handleClose}>
-                                                        NO
-                                                    </Button>
-                                                    <IconButton
-                                                        size="small"
-                                                        aria-label="close"
-                                                        color="inherit"
-                                                        onClick={handleClose}
-                                                    >
-                                                        <CloseIcon fontSize="small" />
-                                                    </IconButton>
-                                                </>
-                                            }
+                                            onClickYes={() => handleLeaveTrip(trip.id)}
+                                            onClick={handleClose}
+                                            message={'Are you sure you want to close this trip?'}
                                         />
                                         <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
                                             <Chip onClick={() => setOpen(true)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
