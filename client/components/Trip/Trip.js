@@ -17,6 +17,7 @@ import TripDebts from '../Expenses/TripDebts'
 import TripSpeedDial from './TripSpeedDial'
 import AddTripForm from '../Trips/Form/AddTripForm'
 import {TripTitle, UserAvatar, Users} from './TripComponents';
+import SnackbarForDelete from '../MuiComponents/SnackbarForDelete'
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -138,8 +139,9 @@ const Trip = (props) => {
             <Dialog open={form === 'trip' && open} onClose={handleClose}>
                 <AddTripForm trip={trip} handleClose={handleClose} />
             </Dialog>
-            <Snackbar
-                sx={{ mt: 9 }}
+
+            <SnackbarForDelete open={openSnackbar} onClose={handleClose} onClickYes={handleCloseTrip} onClick={handleClose} />
+                {/* sx={{ mt: 9 }}
                 open={openSnackbar}
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 autoHideDuration={6000}
@@ -163,7 +165,7 @@ const Trip = (props) => {
                         </IconButton>
                     </>
                 }
-            />
+            /> */}
             {
                 trip.trip.isOpen ? 
                     <Box sx={{marginBottom: -10, position: 'sticky', top: 5, right: 5, zIndex: 1}}>

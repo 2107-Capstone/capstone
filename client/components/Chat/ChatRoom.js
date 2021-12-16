@@ -14,7 +14,7 @@ import { Avatar, Box, Grid, Button, TextField, Tooltip, Typography, Dialog } fro
 //   const { id } = props.match.params;
 // const ChatRoom = ({trip, match}) => {
 import theme from '../../theme'
-import userDebts from "../../store/userDebts";
+
 const ChatRoom = ({match}) => {
   
   // const id = trip ? trip.tripId : match.params.id;
@@ -44,6 +44,8 @@ const ChatRoom = ({match}) => {
   useEffect(scrollToBottom, [messages])
 
   let storeMessages = useSelector(state => state.messages.filter(message => message.tripId === id).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1));
+  console.log('storeMessages', storeMessages)
+  
   storeMessages.forEach(message => message.ownedByCurrentUser = (message.sentById === auth.id));
 
   const DisplayStoreMessages = () => {
