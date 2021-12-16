@@ -12,6 +12,7 @@ const UserAvatar = ({user}) => {
             flexDirection='column' 
             justifyContent='center' 
             alignItems='center'
+            sx={{textOverflow: "ellipsis", overflow: "hidden" }}
         >
             <Avatar 
                 sx={{ height: 35, width: 35, m: 1, mb: 0, bgcolor: 'primary.main' }}
