@@ -69,7 +69,8 @@ export default function AllTripsMap() {
 
     const [selectedTrip, setSelectedTrip] = useState({ id: 0 });
     const [zoom, setZoom] = useState(1);
-    const [center, setCenter] = useState({ defaultCoords });
+    const [center, setCenter] = useState({ lat: 34.456748,
+        lng: -75.462405 });
 
     const colors = {
         0: '#F70909',
