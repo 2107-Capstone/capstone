@@ -12,36 +12,37 @@ const AdminChatRoom = ({trip, match}) => {
   
   const id = trip ? trip.id : match.params.id;
 
-  const auth = useSelector(state => state.auth);
+  // const auth = useSelector(state => state.auth);
   const thisTrip = trip ? trip : useSelector(state => state.adminTrips.find(adminTrip => adminTrip.id === id))
 
-  const { messages } = useChat(id);
+  // const { messages } = useChat(id);
   
 
   const [timeOpened, setTimeOpened] = useState(formatISO(Date.now()));
 
-  useEffect(() => {
-    setTimeOpened((formatISO(Date.now())));
-  }, [auth.id])
+  // useEffect(() => {
+  //   setTimeOpened((formatISO(Date.now())));
+  // }, [auth.id])
 
-  const messagesEndRef = useRef();
+  // const messagesEndRef = useRef();
 
   const scrollToBottom = () => {
     if (!messagesEndRef.current) return;
     messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
   }
 
-  useEffect(scrollToBottom, [messages])
+  // useEffect(scrollToBottom, [messages])
 
   let storeMessages = useSelector(state => state.adminMessages.filter(adminMessage => adminMessage.tripId === id).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1));
-  storeMessages.forEach(message => message.ownedByCurrentUser = (message.sentById === auth.id));
-
+  // storeMessages.forEach(message => message.ownedByCurrentUser = (message.sentById === auth.id));
+// console.log(storeMessages)
   const DisplayStoreMessages = () => {
     
-    return storeMessages.filter(message => isAfter(parseISO(timeOpened), parseISO(message.dateSent))).map((message) => (
+    // return storeMessages.filter(message => isAfter(parseISO(timeOpened), parseISO(message.dateSent))).map((message) => (
+    return storeMessages.map((message) => (
       <li
-        key={message.id + Math.random().toString(16)}
-        style={message.ownedByCurrentUser ? styles.messageItemMyMessageOld : styles.messageItemReceivedMessageOld}
+        key={message.id}
+        style={styles.messageItemReceivedMessageOld}
       >
         <Box display='flex' flexDirection='column'>
             <Typography variant='caption'>
@@ -65,28 +66,28 @@ const AdminChatRoom = ({trip, match}) => {
     ))
   }
 
-  const DisplayNewMessages = () => {
-    return messages.map((message) => (
-      <li
-        key={message.id + Math.random().toString(16)}
-        style={message.ownedByCurrentUser ? styles.messageItemMyMessage : styles.messageItemReceivedMessage}
-      >
-        <Box display='flex' flexDirection='column'>
-            <Typography variant='caption'>
-              ({format(Date.now(), 'Pp')})
-            </Typography>
-          <Box display='flex' alignItems='center'>
-            <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.avatar} >
-                {message.firstName[0]+message.lastName[0]}
-            </Avatar>
-            <Typography>
-              {message.content}
-            </Typography> 
-          </Box>
-        </Box>
-      </li>
-    ))
-  }
+  // const DisplayNewMessages = () => {
+  //   return messages.map((message) => (
+  //     <li
+  //       key={message.id + Math.random().toString(16)}
+  //       style={message.ownedByCurrentUser ? styles.messageItemMyMessage : styles.messageItemReceivedMessage}
+  //     >
+  //       <Box display='flex' flexDirection='column'>
+  //           <Typography variant='caption'>
+  //             ({format(Date.now(), 'Pp')})
+  //           </Typography>
+  //         <Box display='flex' alignItems='center'>
+  //           <Avatar sx={{ height: 35, width: 35, m: 1, bgcolor: 'primary.main'}} src={message.avatar} >
+  //               {message.firstName[0]+message.lastName[0]}
+  //           </Avatar>
+  //           <Typography>
+  //             {message.content}
+  //           </Typography> 
+  //         </Box>
+  //       </Box>
+  //     </li>
+  //   ))
+  // }
 
   if (!thisTrip) return <CircularLoading />
 
@@ -108,11 +109,11 @@ const AdminChatRoom = ({trip, match}) => {
         : ''
       }
       <div style={styles.messagesContainer} >
-        <ol key={Math.random().toString(16)} style={styles.messagesList}>
+        <Box key={Math.random().toString(16)} style={styles.messagesList} sx={{maxHeight: 500, overflow: 'auto'}}>
           <DisplayStoreMessages />
-          <DisplayNewMessages />
-          <div ref={messagesEndRef} />
-        </ol>
+          {/* <DisplayNewMessages /> */}
+          {/* <div ref={messagesEndRef} /> */}
+        </Box>
       </div>
     </div>
   );

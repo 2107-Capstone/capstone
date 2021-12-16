@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { parseISO, format } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 import CircularLoading from '../Loading/CircularLoading'
 
@@ -130,7 +131,12 @@ export default function AdminAllTripsMap() {
         // ev.stopPropagation()
         setSelected(marker);
     }
+    const [expanded, setExpanded] = useState(false);
 
+    const handleAccordionChange = panel => (evt, isExpanded) => {
+
+        setExpanded(isExpanded ? panel : false)
+    }
     const [selectedTrip, setSelectedTrip] = useState({ id: 0, lat: 34.456748, lng: -75.462405 });
 
     // if (loadError) return "Error";
@@ -171,34 +177,61 @@ export default function AdminAllTripsMap() {
             </Box>
             <Grid container columnSpacing={2} rowSpacing={2} >
                 <Grid item xs={12} >
-                    {/* <Box style={{margin: 1}}> */}
+                    <Box sx={{maxHeight: 300, overflow: 'auto'}}>
+                        
                     {
                         trips.map(trip => (
                             <Box display='flex' flexWrap='wrap' key={trip.id}>
-                                <Accordion sx={{ margin: 1, minWidth: '100%' }} >
+                                <Accordion sx={{ margin: 1, minWidth: '100%'}} 
+                                    expanded={expanded === trip.id}
+                                    onChange={handleAccordionChange(trip.id)}
+                                    disableGutters={true}
+                                >
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
                                         id="trip-header"
-                                        onClick={() => setSelectedTrip(trip)}
+                                        onClick={() => {
+                                            if (selectedTrip.id === trip.trip.id) {
+                                                setSelectedTrip({ id: 0 })
+                                            } else {
+                                                setSelectedTrip(trip)
+                                            }
+                                        }}
                                         sx={{ borderRight: `4px solid ${trip.color}` }}
                                     >
-                                        <Typography>
+                                        <Button
+                                            component={Link}
+                                            to={`/admin/admintrips/${trip.id}`}
+                                            variant='contained'
+                                            color='secondary'
+                                        >
+
                                             {trip.name}
-                                        </Typography>
+                                        </Button>
                                     </AccordionSummary>
-                                    <AccordionDetails sx={{ maxHeight: 500, overflow: 'auto' }}>
+                                    <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
                                         {
                                             trip.events.map(event => (
-                                                <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, }}
+                                                <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1}}
 
                                                 >
                                                     <CardContent sx={{ mb: 0 }} onClick={() => handleClick(event.id)}>
-                                                        <Typography gutterBottom>
-                                                            {event.name} - {event.location}
-                                                        </Typography>
-                                                        <Typography color="text.secondary" variant="subtitle2">
-                                                            {format(parseISO(event.startTime), 'Pp')}
-                                                        </Typography>
+                                                        <Box display='flex' flexDirection='column' >
+                                                            <Typography  color='text.primary' variant="subtitle1">
+                                                                {event.name}
+                                                            </Typography>
+                                                            <Typography variant='subtitle2' color='text.primary' >
+                                                                {event.description}
+                                                            </Typography>
+
+                                                            <Typography variant='subtitle2' color='text.secondary' >
+                                                                {event.location}
+                                                            </Typography>
+                                                            <Divider color='grey' fullWidth/>
+                                                            <Typography color='text.secondary' variant="caption" >
+                                                                {format(parseISO(event.startTime), 'Pp')}
+                                                            </Typography>
+                                                        </Box>
                                                     </CardContent>
                                                 </Card>
                                             ))
@@ -208,6 +241,7 @@ export default function AdminAllTripsMap() {
                             </Box>
                         ))
                     }
+                </Box> 
                 </Grid>
                 {/* <Box style={{ margin: 1}}> */}
                 <Grid item xs={12} >

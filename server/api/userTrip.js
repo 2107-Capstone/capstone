@@ -13,7 +13,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {
                 },
                 {
                     model: User,
-                    attributes: ['id', 'username', 'lat', 'lng', 'time']
+                    attributes: ['id', 'username', 'lat', 'lng', 'time', 'avatar', 'firstName', 'lastName']
                 }
             ]
         })
@@ -38,7 +38,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                     },
                     {
                         model: User,
-                        attributes: ['id', 'username', 'lat', 'lng', 'time']
+                        attributes: ['id', 'username', 'lat', 'lng', 'time', 'avatar', 'firstName', 'lastName']
                     }
                 ]
 
@@ -66,7 +66,7 @@ router.put('/', isLoggedIn, async (req, res, next) => {
                     },
                     {
                         model: User,
-                        attributes: ['id', 'username', 'lat', 'lng', 'time']
+                        attributes: ['id', 'username', 'lat', 'lng', 'time', 'avatar', 'firstName', 'lastName']
                     }
                 ]
 
