@@ -25,7 +25,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 
-export default function EventsAccordion ({ events, handleFindMarker,  tripOpen, trip, setSelected, deleteEvent, dispatch }) {
+export default function EventsAccordion ({ events, handleFindMarker,  tripOpen, trip, setSelected, deleteEvent, dispatch, setUpdate }) {
     
     const [eventToEdit, setEventToEdit] = useState({});
     const [open, setOpen] = useState(false)
@@ -36,6 +36,7 @@ export default function EventsAccordion ({ events, handleFindMarker,  tripOpen, 
     const handleClickYes = async (id) => {
         try {
             await dispatch(deleteEvent(id))
+            setUpdate(prevUpdate => prevUpdate + Math.random())
         } catch (err) {
             console.log(err)
         }
@@ -46,7 +47,9 @@ export default function EventsAccordion ({ events, handleFindMarker,  tripOpen, 
     }
 
     return (
-        <Box display='flex' flexDirection='column'>
+        <Box display='flex' flexDirection='column' 
+            sx={{ maxHeight: 300, overflow: 'auto'}}
+        >
             <Dialog
                 open={open}
                 onClose={handleCloseForm}
@@ -63,7 +66,7 @@ export default function EventsAccordion ({ events, handleFindMarker,  tripOpen, 
                 >
                     EVENTS ({events.length})
                 </AccordionSummary>
-                <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
+                <AccordionDetails >
                 {
                     events.map(event => (
                         <EventCard key={event.id} handleFindMarker={handleFindMarker} setEventToEdit={setEventToEdit} setOpen={setOpen} tripOpen={tripOpen} event={event} setSelected={setSelected} handleClickYes={handleClickYes} />

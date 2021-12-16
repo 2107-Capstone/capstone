@@ -128,7 +128,12 @@ export default function AllTripsMap() {
 
     }, [update, checked, selectedTrip.id, markers.length])
 
-
+    useEffect(() => {
+        if (!!selected) {
+            setCenter(() => ({lat: selected.lat, lng: selected.lng}))
+            setZoom(() => 11)
+        }
+    }, [selected])
 
     const displayMarkers = () => {
         return markers.map((marker) => {
@@ -217,28 +222,29 @@ export default function AllTripsMap() {
                 </Button>
             </Box>
             <Grid container columnSpacing={2} rowSpacing={2} >
-                <Grid item xs={12} sx={{ maxHeight: '40%', overflow: 'auto' }}>
-                    <Box >
-                        {
-                            trips.map(trip => (
-                                <Box display='flex' flexWrap='wrap' key={trip.id}>
-                                    <Accordion sx={{ margin: 1, minWidth: '100%' }}
-                                        expanded={expanded === trip.id}
-                                        onChange={handleAccordionChange(trip.id)}
-                                        disableGutters={true}
+                <Grid item xs={12} >
+                    <Box sx={{maxHeight: 300, overflow: 'auto'}}>
+                    {
+                        trips.map(trip => (
+                            <Box display='flex' flexWrap='wrap' key={trip.id}>
+                                <Accordion sx={{ margin: 1, minWidth: '100%'}} 
+                                    expanded={expanded === trip.id}
+                                    onChange={handleAccordionChange(trip.id)}
+                                    disableGutters={true}
+                                >
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
+                                        id="trip-header"
+                                        onClick={() => {
+                                            if (selectedTrip.id === trip.trip.id) {
+                                                setSelectedTrip({ id: 0 })
+                                            } else {
+                                                setSelectedTrip(trip)
+                                            }
+                                        }}
+                                        sx={{ borderRight: `4px solid ${trip.color}` }}
                                     >
-                                        <AccordionSummary
-                                            expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
-                                            id="trip-header"
-                                            onClick={() => {
-                                                if (selectedTrip.id === trip.trip.id) {
-                                                    setSelectedTrip({ id: 0 })
-                                                } else {
-                                                    setSelectedTrip(trip)
-                                                }
-                                            }}
-                                            sx={{ borderRight: `4px solid ${trip.color}` }}
-                                        >
+                                        <Box display='flex' alignItems={'center'}>
                                             <Button
                                                 component={Link}
                                                 to={`/trips/${trip.tripId}`}
@@ -246,40 +252,44 @@ export default function AllTripsMap() {
                                                 color='secondary'
                                             >
 
-                                                {trip.trip.name}
+                                                {trip.trip.name} 
                                             </Button>
-                                        </AccordionSummary>
-                                        <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
-                                            {
-                                                trip.trip.events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1).map(event => (
-                                                    <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, pb: 0 }}
+                                            <Typography variant='caption' sx={{ml: 2}}>
+                                                ({trip.trip.events.length} EVENTS)
+                                            </Typography>
+                                        </Box>
+                                    </AccordionSummary>
+                                    <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                        {
+                                            trip.trip.events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1).map(event => (
+                                                <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, pb: 0 }}
 
-                                                    >
-                                                        <CardContent sx={{ minWidth: '100%', mb: 0, paddingBottom: 0 }} onClick={() => handleClick(event.id)}>
+                                                >
+                                                    <CardContent sx={{ minWidth: '100%', mb: 0, paddingBottom: 0 }} onClick={() => handleClick(event.id)}>
 
-                                                            <Box display='flex' flexDirection='column' >
-                                                                <Typography color='text.primary' variant="subtitle1">
-                                                                    {event.name}
-                                                                </Typography>
-                                                                <Typography variant='subtitle2' color='text.primary' >
-                                                                    {event.description}
-                                                                </Typography>
+                                                        <Box display='flex' flexDirection='column' >
+                                                            <Typography  color='text.primary' variant="subtitle1">
+                                                                {event.name}
+                                                            </Typography>
+                                                            <Typography variant='subtitle2' color='text.primary' >
+                                                                {event.description}
+                                                            </Typography>
 
-                                                                <Typography variant='subtitle2' color='text.secondary' >
-                                                                    {event.location}
-                                                                </Typography>
-                                                                <Divider color='grey' />
-                                                                <Typography color='text.secondary' variant="caption" >
-                                                                    {format(parseISO(event.startTime), 'Pp')}
-                                                                </Typography>
-                                                            </Box>
-                                                        </CardContent>
-                                                    </Card>
-                                                ))
-                                            }
-                                        </AccordionDetails>
-                                    </Accordion>
-                                </Box>
+                                                            <Typography variant='subtitle2' color='text.secondary' >
+                                                                {event.location}
+                                                            </Typography>
+                                                            <Divider color='grey' fullWidth/>
+                                                            <Typography color='text.secondary' variant="caption" >
+                                                                {format(parseISO(event.startTime), 'Pp')}
+                                                            </Typography>
+                                                        </Box>
+                                                    </CardContent>
+                                                </Card>
+                                            ))
+                                        }
+                                    </AccordionDetails>
+                                </Accordion>
+                            </Box>
                             ))
                         }
                     </Box>
