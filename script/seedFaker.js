@@ -26,7 +26,7 @@ async function seedFaker() {
     {
       firstName: firstName,
       lastName: faker.name.lastName(),
-      username: `${firstName}${faker.commerce.color()}${Math.ceil(Math.random() * 100)}`,
+      username: `${firstName}${faker.commerce.color()}${Math.ceil(Math.random() * 500)}`,
       email: faker.internet.email(),
       phoneNumber: 1+faker.phone.phoneNumberFormat().replace(/\-/g,''),
       password: '123',
