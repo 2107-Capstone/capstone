@@ -24,10 +24,10 @@ export function findZoom (markers){
     if (maxDiff >= 0) return 17
 }
 export function findCenter (markers){
-    const defaultCoords = {
-        lat: 34.456748,
-        lng: -75.462405
-    }
+    // const defaultCoords = {
+    //     lat: 34.456748,
+    //     lng: -75.462405
+    // }
     const lat = (markers.reduce((accum, marker) => {
                 accum += +marker.lat
                 return accum
