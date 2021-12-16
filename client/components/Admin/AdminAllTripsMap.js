@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
-import { parseISO, format } from 'date-fns';
+import { parseISO, format, isAfter } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 import CircularLoading from '../Loading/CircularLoading'
@@ -82,7 +82,7 @@ export default function AdminAllTripsMap() {
                     id: event.id,
                     lat: +event.lat,
                     lng: +event.lng,
-                    name: `${event.name} - ${event.location}`,
+                    name: event.name,
                     trip: trip.name,
                     location: event.location,
                     // url: idx > 9 ? `http://labs.google.com/ridefinder/images/mm_20_${urls[idx % 9]}.png` : `http://labs.google.com/ridefinder/images/mm_20_${urls[idx]}.png` 
@@ -190,7 +190,7 @@ export default function AdminAllTripsMap() {
                                         expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
                                         id="trip-header"
                                         onClick={() => {
-                                            if (selectedTrip.id === trip.trip.id) {
+                                            if (selectedTrip.id === trip.id) {
                                                 setSelectedTrip({ id: 0 })
                                             } else {
                                                 setSelectedTrip(trip)
@@ -207,10 +207,13 @@ export default function AdminAllTripsMap() {
 
                                             {trip.name}
                                         </Button>
+                                        <Typography variant='caption' sx={{ml: 2}}>
+                                                ({trip.events.length} EVENTS)
+                                            </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
                                         {
-                                            trip.events.map(event => (
+                                            trip.events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1).map(event => (
                                                 <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1}}
 
                                                 >
@@ -226,7 +229,7 @@ export default function AdminAllTripsMap() {
                                                             <Typography variant='subtitle2' color='text.secondary' >
                                                                 {event.location}
                                                             </Typography>
-                                                            <Divider color='grey' fullWidth/>
+                                                            <Divider color='grey'/>
                                                             <Typography color='text.secondary' variant="caption" >
                                                                 {format(parseISO(event.startTime), 'Pp')}
                                                             </Typography>
@@ -265,18 +268,19 @@ export default function AdminAllTripsMap() {
                                             setSelected(null);
                                         }}
                                     >
-                                        <div style={{ margin: '0 1rem .5rem 1rem' }}>
-                                            <Typography variant={'subtitle1'}>
-                                                {selected.trip}
-                                            </Typography>
-                                            <Divider />
-                                            <Typography variant={'subtitle2'}>
+                                        <Box display='flex' flexDirection='column' alignItems='center' style={{ margin: '0 1rem .5rem 1rem' }}>
+                                            <Box padding={'2px 2px 2px 2px'} borderRadius={2}>
+                                                <Typography variant='subtitle1' color='text.dark.primary' sx={{ textDecoration: 'underline', textDecorationColor: selected.color, textDecorationThickness: 4 }}>
+                                                    {selected.trip}
+                                                </Typography>
+                                            </Box>
+                                            <Typography variant='subtitle2' color='text.dark.primary'>
                                                 {selected.name}
                                             </Typography>
-                                            <Typography variant={'caption'}>
+                                            <Typography variant='caption' color='text.dark.secondary'>
                                                 {selected.time}
                                             </Typography>
-                                        </div>
+                                        </Box>
                                     </InfoWindow>)
                                     : null
                             }

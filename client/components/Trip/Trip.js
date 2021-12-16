@@ -218,8 +218,8 @@ const Trip = (props) => {
                     </Box>
                     <Box display='flex' justifyContent='center' flexWrap='wrap'>
                         {
-                            users.map(user =>
-                                <Box mr={1}>
+                            users.map(user => 
+                                <Box mr={1} key={user.id}>
                                     <UserAvatar key={user.id} user={user} />
                                 </Box>
                             )
