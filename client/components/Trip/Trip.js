@@ -53,9 +53,12 @@ const Trip = (props) => {
     const events = useSelector(state => state.events.filter(event => event.tripId === id));
     const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
     const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
-    const users = useSelector(state => state.users.filter(user => {
-        if(user.userTrips.find(userTrip => userTrip.tripId === id)) return true;
-    }))
+    // const users = useSelector(state => state.users.filter(user => {
+    //     if(user.userTrips.find(userTrip => userTrip.tripId === id)) return true;
+    // }))
+    const userTrips = useSelector(state => state.usertrips.filter(userTrip => (
+        userTrip.tripId === id && userTrip.tripInvite === 'accepted'
+    )))
 
     useEffect(async () => {
         await dispatch(getTrips())
@@ -71,18 +74,17 @@ const Trip = (props) => {
     }
     
     const [anchorEl, setAnchorEl] = useState(null);
-    const openMenu = Boolean(anchorEl);
-    // const handleClick = (event) => {
-    //     setAnchorEl(event.currentTarget);
-    // };
+    
     const handleCloseMenu = () => {
         setAnchorEl(null);
     };
     
-    if (!trip || !events || !messages || !expenses) {
+    if (!trip || !events || !messages || !expenses || !userTrips) {
         return <CircularLoading />
     }
     
+    const users = userTrips.map(userTrip => userTrip.user)
+
     const handleCloseTrip = async () => {
         try {
             await dispatch(editTrip({ ...trip}))
@@ -96,10 +98,6 @@ const Trip = (props) => {
             console.log(error)
         }
     }
-    const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    })
 
     return (
         <div>
