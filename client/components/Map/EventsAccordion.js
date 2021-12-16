@@ -61,7 +61,7 @@ export default function EventsAccordion ({ events, handleFindMarker,  tripOpen, 
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                 >
-                    EVENTS
+                    EVENTS ({events.length})
                 </AccordionSummary>
                 <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
                 {
