@@ -45,7 +45,7 @@ const MessagesTable = ({messages}) => {
             <TableBody>
             {rows.map((row) => (
                 <TableRow
-                    key={row.id + Math.random().toString(16)}
+                    key={row.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                     <TableCell sx={{color: 'text.secondary'}}>
