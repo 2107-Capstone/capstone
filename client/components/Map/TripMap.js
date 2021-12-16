@@ -178,7 +178,7 @@ export default function TripMap({ match }) {
         events.map( (event) => {
                 setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: event.name, location: event.location, url: `/pin-10.svg` }])
         });
-        if (trip?.trip.isOpen){
+        if (trip.trip.isOpen){
             users.map( (user) => {
                 if (user.lat) {
                         setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/person.svg', firstName: user.firstName, lastName: user.lastName }])
@@ -343,7 +343,7 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
-                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} setUpdate={setUpdate} />
+                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} setUpdate={setUpdate} />  
                 
                 <GoogleMap
                     id='map'

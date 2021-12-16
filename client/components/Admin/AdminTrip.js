@@ -13,6 +13,7 @@ import MessagesTable from '../Chat/MessagesTable'
 import TripDebts from '../Expenses/TripDebts'
 import ExpensesTable from '../Expenses/ExpensesTable'
 import Summary from '../Trip/Components/Summary'
+import AdminTripTitle from './AdminTripTitle'
 /////////////// MUI /////////////////
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -65,16 +66,7 @@ const AdminTrip = (props) => {
             <Grid container rowSpacing={2} columnSpacing={2} >
                 <Grid item xs={12}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
-                        <Box sx={{ display: 'flex', alignSelf: 'center', margin: 2, marginBottom: 0 }}>
-                            <CardTravelIcon fontSize='medium' />
-                            <Typography variant='h5'>
-                                &nbsp;{trip.name}
-                                {
-                                    trip.isOpen ? "" :
-                                        " (Closed)"
-                                }
-                            </Typography>
-                        </Box>
+                        <AdminTripTitle trip={trip} type={'main'} />
                         <Box display='flex' justifyContent='center' alignItems='center'>
                             <Typography >
                                 Trip Creator:

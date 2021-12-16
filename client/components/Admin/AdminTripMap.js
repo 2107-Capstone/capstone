@@ -20,7 +20,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
-
+import AdminTripTitle from './AdminTripTitle';
+import EventsAccordion from '../Map/EventsAccordion';
 
 import mapStyles from './mapStyles';
 
@@ -124,7 +125,6 @@ export default function TripMap({ match }) {
         })
     }
     const DisplayTrackingMarkers = () => {
-        console.log('trackingmarkers', trackingMarkers)
         return trackingMarkers.map((marker) => {
             return (
                 <Marker
@@ -142,44 +142,9 @@ export default function TripMap({ match }) {
         })
     }
 
-
-    const handleLocate = async () => {
-        await navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
-                userLocation.current = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                }
-                // await setTrackingMarkers(trackingMarkers.filter(marker => marker.id !== auth.id), { key: auth.id + Math.random().toString(16), id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, name: auth.username, time: format(new Date(), 'Pp') });
-                let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-
-                usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
-                const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
-
-                await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
-                panTo({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                });
-            },
-            () => null
-        );
-        setStatus('watching');
-        navigator.geolocation.watchPosition(async position => {
-            userLocation.current = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            }
-            await dispatch(updateUser({ id: auth.id, lat: position.coords.latitude, lng: position.coords.longitude, time: new Date() }));
-            let usersMarker = trackingMarkers.find(m => m.id === auth.id);
-
-            usersMarker = { ...usersMarker, key: usersMarker.key + 1, lat: position.coords.latitude, lng: position.coords.longitude, time: format(new Date(), 'Pp') };
-            const otherUsersMarkers = trackingMarkers.filter(m => m.id !== auth.id);
-
-            await setTrackingMarkers([...otherUsersMarkers, usersMarker]);
-        })
-        setOpenAlert(true);
+    const handleFindMarker = (id, setSelected) => {
+        const marker = markers.find(marker => marker.id === id);
+        setSelected(marker);
     }
 
     console.log(trip)
@@ -189,7 +154,7 @@ export default function TripMap({ match }) {
         setTrackingMarkers(prevTrackingMarkers => []);
 
         events.forEach(event => {
-            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: `${event.name} - ${event.location}`, location: event.location, url: `/pin-10.svg` }])
+            setMarkers(prevMarkers => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: event.name, location: event.location, url: `/pin-10.svg` }])
         });
 
         users.forEach(user => {
@@ -240,44 +205,22 @@ export default function TripMap({ match }) {
                     handleClose={handleClose}
                 />
             </Dialog>
-            {/* <Tooltip title='Add Event'> */}
-            <Box
-                className='linkToTrip'
-                display='flex'
-                justifyContent='center'
-                alignItems='center'
-                marginTop={1}
-            >
-                <CardTravelIcon fontSize='medium' />
-                <Box
-                    sx={{ color: 'inherit' }}
-                    component={Link}
-                    to={`/admin/admintrips/${trip.id}`}
-                >
-                    <Typography variant='h5'>
-                        &nbsp;{trip.name}
-                        {
-                            trip.isOpen ? "" :
-                                " (Closed)"
-                        }
-                    </Typography>
-                </Box>
-            </Box>
+            <AdminTripTitle trip={trip} />
             <Box
                 display='flex'
                 justifyContent='center'
             >
-                <Box >
-                    {/* </Tooltip> */}
-                    <Tooltip title='Refresh Markers'>
+                <Box textAlign='center'>
                         <Button
                             startIcon={<RefreshIcon />}
-                            variant='contained'
+                            variant='outlined'
                             color='primary'
                             size='small'
                             onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
-                        />
-                    </Tooltip>
+                        >
+                            Refresh Event Markers
+                        </Button>
+                        
                 </Box>
             </Box>
 
@@ -316,60 +259,19 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
-                <Box
-                    display='flex'
-                    justifyContent='center'
-                    marginBottom={.5}
-                    flexWrap='wrap'
-                >
-                    {
-                        events.map(event => (
-                            <Box
-                                display='flex'
-                                flexDirection='column'
-                                marginRight={1}
-                                padding={.25}
-                                border='1px solid lightgrey'
-                                borderRadius='7%'
-                                key={event.id}
-                                onClick={() => handleClick(event.id)}
-                                justifyContent='center'
-                                alignItems='center'
-                                marginRight={1}
-                                padding={.5}
-                                sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}
-                            >
-                                <Box>
-                                    <Typography
-                                        sx={{ m: 0 }}
-                                        variant='subtitle2'
-                                    >
-                                        {event.name}
-                                    </Typography>
-                                    <Typography
-                                        color="text.secondary" variant="caption"
-                                        sx={{ m: 0 }}
-                                    >
-                                        {format(parseISO(event.startTime), 'Pp')}
-                                    </Typography>
-                                </Box>
-                            </Box>
-                        ))
-                    }
-                </Box>
+                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.isOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} setUpdate={setUpdate} />  
+
                 <GoogleMap
                     id='map'
                     options={options}
                     onLoad={onMapLoad}
                     zoom={tripZoom}
-                    // zoom={tripId ? 8 : 3}
                     mapContainerStyle={mapContainerStyle}
                     style={mapStyles}
-                    // center={{ lat: +trip.trip.lat, lng: +trip.trip.lng }}
                     center={{ lat: avgLat, lng: avgLng }}
                 >
                     {
-                        trip.events.length ? <DisplayMarkers /> : ''
+                        trip.events.length ? <DisplayMarkers markers={markers} setSelected={setSelected}/> : ''
                     }
                     <DisplayTrackingMarkers />
                     {
@@ -377,7 +279,7 @@ export default function TripMap({ match }) {
                             (
                                 <InfoWindow
                                     open={open}
-                                    position={{ lat: +selected.lat, lng: +selected.lng }}
+                                    position={{ lat: +selected.lat+.0003, lng: +selected.lng }}
                                     onCloseClick={() => {
                                         setSelected(null);
                                     }}
@@ -387,11 +289,29 @@ export default function TripMap({ match }) {
                                         marginRight={1}
                                         marginBottom={.5}
                                         marginLeft={.5}
+                                        textAlign='center'
                                     >
-                                        <Typography variant={'subtitle2'}>
+                                        <Typography variant='subtitle2'
+                                        color='text.dark.primary'
+                                        >
                                             {selected.name}
                                         </Typography>
-                                        <Typography variant={'caption'}>
+                                        <Box textAlign='center'>
+                                        {
+                                            selected.url ?
+                                            <Typography variant='caption'
+                                            color='text.dark.primary'
+                                            >
+                                                    {selected.location}
+                                                </Typography>
+                                            : 
+                                            <Typography variant='caption' color='text.dark.secondary'>
+                                                        pinned at
+                                            </Typography>
+                                        }
+                                        </Box>
+                                        <br></br>
+                                        <Typography variant='caption' color='text.dark.secondary'>
                                             {selected.time}
                                         </Typography>
                                     </Box>
