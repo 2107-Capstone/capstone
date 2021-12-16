@@ -20,6 +20,7 @@ Trip Out is an application that eliminates the inevitable stress that comes with
     * Only the person who is owed money may mark the owed money as being paid.
 
 ## Tech Stack
+* JavaScript
 * Socket.io
 * Google Maps API
 * React.js
@@ -39,9 +40,9 @@ Trip Out is an application that eliminates the inevitable stress that comes with
 
 - [API](<API Link> "API") -->
 
-## Screenshots
+<!-- ## Screenshots
 
-![Home Page](/screenshots/1.png "Home Page")
+![Home Page](/public/readme/homepage/.png "Home Page")
 
 ![](/screenshots/2.png)
 
@@ -81,7 +82,7 @@ For running the server file on you can use this command.
 - NPM
 - Webpack
 - HTML
-- CSS
+- CSS -->
 
 ## Future Updates
 
@@ -117,6 +118,8 @@ For running the server file on you can use this command.
 Contributions, issues, and feature requests are welcome!
 
 Give a ⭐️  if you like this project!
+
+
 
 **Template from Rohit Jain**
 
