@@ -21,21 +21,10 @@ import SnackbarForDelete from '../MuiComponents/SnackbarForDelete'
 import TripButton from './Components/TripButton'
 
 /////////////// MUI /////////////////
-import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import Dialog from '@mui/material/Dialog';
-import Grid from '@mui/material/Grid';
-import Tooltip from '@mui/material/Tooltip'
-import Typography from '@mui/material/Typography'
+import { Box, Chip, Dialog, Grid, Tooltip, Typography } from '@mui/material';
 
 /////////////// ICONS /////////////////
-import ChatIcon from '@mui/icons-material/Chat';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import MapIcon from '@mui/icons-material/Map';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import PaidIcon from '@mui/icons-material/Paid';
-import PeopleIcon from '@mui/icons-material/People'
-import WorkOffOutlinedIcon from '@mui/icons-material/WorkOffOutlined';
+import { Chat as ChatIcon, DateRange as DateRangeIcon, Map as MapIcon, ModeEdit as ModeEditIcon, Paid as PaidIcon, People as PeopleIcon, WorkOffOutlined as WorkOffOutlinedIcon } from '@mui/icons-material';
 
 import theme from '../../theme'
 
@@ -46,14 +35,14 @@ const Trip = (props) => {
     const id = props.match.params.id
 
     const dispatch = useDispatch();
-    
+
     const { auth, categories } = useSelector(state => state);
 
     const trip = useSelector(state => state.trips.find(trip => trip.tripId === id));
     const events = useSelector(state => state.events.filter(event => event.tripId === id));
     const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
     const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
-    
+
     const userTrips = useSelector(state => state.usertrips.filter(userTrip => (
         userTrip.tripId === id && userTrip.tripInvite === 'accepted'
     )))
@@ -61,7 +50,7 @@ const Trip = (props) => {
     useEffect(async () => {
         await dispatch(getTrips())
     }, [])
-    
+
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState('');
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -70,26 +59,26 @@ const Trip = (props) => {
         setForm('')
         setOpenSnackbar(false)
     }
-    
+
     const [anchorEl, setAnchorEl] = useState(null);
-    
+
     const handleCloseMenu = () => {
         setAnchorEl(null);
     };
-    
+
     if (!trip || !events || !messages || !expenses || !userTrips) {
         return <CircularLoading />
     }
-    
+
     const users = userTrips.map(userTrip => userTrip.user)
 
     const handleCloseTrip = async () => {
         try {
-            await dispatch(editTrip({ ...trip}))
+            await dispatch(editTrip({ ...trip }))
             const debts = settleUp(expenses, users)
             if (debts) {
-                debts.forEach(async(debt) => {
-                    await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[1], payorId: debt[0], amount: +debt[2], status: 'pending'}))
+                debts.forEach(async (debt) => {
+                    await dispatch(addUserDebt({ tripId: trip.tripId, payeeId: debt[1], payorId: debt[0], amount: +debt[2], status: 'pending' }))
                 })
             }
         } catch (error) {
@@ -114,10 +103,10 @@ const Trip = (props) => {
 
             <SnackbarForDelete open={openSnackbar} onClose={handleClose} onClickYes={handleCloseTrip} onClick={handleClose} message={'Are you sure you want to close this trip?'} />
             {
-                trip.trip.isOpen && 
-                    <Box sx={{marginBottom: -10, position: 'sticky', top: 5, right: 5, zIndex: 1}}>
-                        <TripSpeedDial handleCloseMenu={handleCloseMenu} setOpen={setOpen} setForm={setForm}/>
-                    </Box>
+                trip.trip.isOpen &&
+                <Box sx={{ marginBottom: -10, position: 'sticky', top: 5, right: 5, zIndex: 1 }}>
+                    <TripSpeedDial handleCloseMenu={handleCloseMenu} setOpen={setOpen} setForm={setForm} />
+                </Box>
             }
             <Grid container rowSpacing={2} columnSpacing={2} >
                 <Grid item xs={12}>
@@ -130,43 +119,43 @@ const Trip = (props) => {
                             <UserAvatar user={trip.trip.user} />
                             <Box>
                                 {
-                                    trip.trip.isOpen && 
+                                    trip.trip.isOpen &&
                                     <>
-                                        <Tooltip 
+                                        <Tooltip
                                             title={trip.trip.user.id !== auth.id ? `Only ${trip.trip.user.username} can close this trip` : ''}
                                             placement='top'
                                             enterNextDelay={100}
                                             enterTouchDelay={300}
                                             leaveTouchDelay={1000}
                                         >
-                                            <Box sx={{ml: 2, mb: 1}}>
-                                                <Chip 
-                                                    size='small' 
-                                                    icon={<WorkOffOutlinedIcon fontSize='small' />} variant='outlined' 
-                                                    label='Close trip' 
-                                                    color='warning' 
-                                                    onClick={() => setOpenSnackbar(true)} 
+                                            <Box sx={{ ml: 2, mb: 1 }}>
+                                                <Chip
+                                                    size='small'
+                                                    icon={<WorkOffOutlinedIcon fontSize='small' />} variant='outlined'
+                                                    label='Close trip'
+                                                    color='warning'
+                                                    onClick={() => setOpenSnackbar(true)}
                                                     disabled={trip.trip.user.id !== auth.id}
                                                 />
                                             </Box>
                                         </Tooltip>
-                                        <Tooltip 
+                                        <Tooltip
                                             title={trip.trip.user.id !== auth.id ? `Only ${trip.trip.user.username} can edit this trip` : ''}
                                             placement='top'
                                             enterNextDelay={100}
                                             enterTouchDelay={300}
                                             leaveTouchDelay={1000}
                                         >
-                                            <Box sx={{ml: 2}}>
-                                                <Chip 
-                                                    size='small' 
-                                                    icon={<ModeEditIcon fontSize='small'/>} color='warning' 
-                                                    label="Edit trip" 
-                                                    variant='outlined' 
+                                            <Box sx={{ ml: 2 }}>
+                                                <Chip
+                                                    size='small'
+                                                    icon={<ModeEditIcon fontSize='small' />} color='warning'
+                                                    label="Edit trip"
+                                                    variant='outlined'
                                                     onClick={() => {
                                                         setForm('trip');
                                                         setOpen(true)
-                                                    }} 
+                                                    }}
                                                     disabled={trip.trip.user.id !== auth.id}
                                                 />
                                             </Box>
@@ -178,10 +167,10 @@ const Trip = (props) => {
                     </Box>
                 </Grid>
             </Grid>
-            <Box display='flex' justifyContent='space-evenly' flexWrap='wrap' sx={{mb: 2, mt: 2}}>
-                <TripButton id={trip.tripId} name={'chat'} icon={<ChatIcon />}/>
-                <TripButton id={trip.tripId} name={'calendar'} icon={<DateRangeIcon />}/>
-                <TripButton id={trip.tripId} name={'map'} icon={<MapIcon />}/>
+            <Box display='flex' justifyContent='space-evenly' flexWrap='wrap' sx={{ mb: 2, mt: 2 }}>
+                <TripButton id={trip.tripId} name={'chat'} icon={<ChatIcon />} />
+                <TripButton id={trip.tripId} name={'calendar'} icon={<DateRangeIcon />} />
+                <TripButton id={trip.tripId} name={'map'} icon={<MapIcon />} />
             </Box>
             <Grid container spacing={2}>
                 {

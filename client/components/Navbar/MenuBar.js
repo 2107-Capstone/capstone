@@ -12,14 +12,9 @@ import { logout } from '../../store';
 import { Button, Box, Divider, Drawer, Stack, Toolbar, IconButton, Typography, Badge } from '@mui/material'
 
 //////////// ICONS //////////////////
-import HomeIcon from '@mui/icons-material/Home';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import CardTravelIcon from '@mui/icons-material/CardTravel';
-import EventIcon from '@mui/icons-material/Event';
-import PeopleIcon from '@mui/icons-material/People';
-import SettingsIcon from '@mui/icons-material/Settings';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-// import LogoIcon from '/public/tripIcon.svg'
+import { Home as HomeIcon, LocationOn as LocationOnIcon, CardTravel as CardTravelIcon, Event as EventIcon, People as PeopleIcon, Settings as SettingsIcon, Notifications as NotificationsIcon } from '@mui/icons-material';
+
+//////////////// REDUX //////////////////////
 import { getUserTrips } from '../../store/usertrips';
 
 const MenuBar = (props) => {

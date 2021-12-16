@@ -1,31 +1,27 @@
 import React from 'react'
 
 /////////////// MUI /////////////////
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import Tooltip from '@mui/material/Tooltip'
-import Typography from '@mui/material/Typography'
+import { SpeedDialIcon, SpeedDial, SpeedDialAction } from '@mui/material';
 
 /////////////// ICONS /////////////////
-import EventIcon from '@mui/icons-material/Event';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import PaidIcon from '@mui/icons-material/Paid';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import { Event as EventIcon, PersonAdd as PersonAddIcon, Paid as PaidIcon } from '@mui/icons-material';
 
-const TripSpeedDial = ({handleCloseMenu, setOpen, setForm}) => {
+const TripSpeedDial = ({ handleCloseMenu, setOpen, setForm }) => {
     return (
         <div>
             <SpeedDial
                 ariaLabel='Trip SpeedDial'
                 direction='left'
-                FabProps={{variant: 'extended',
-                color: 'primary'}}
+                FabProps={{
+                    variant: 'extended',
+                    color: 'primary'
+                }}
                 icon={<SpeedDialIcon />}
             >
                 <SpeedDialAction
                     enterTouchDelay={200}
                     leaveTouchDelay={900}
-                    icon={<PersonAddIcon fontSize='large' color='secondary' sx={{backgroundColor:'white', borderRadius: '50%'}}/>}
+                    icon={<PersonAddIcon fontSize='large' color='secondary' sx={{ backgroundColor: 'white', borderRadius: '50%' }} />}
                     tooltipTitle='Invite Friend'
                     // tooltipOpen
                     onClick={() => {
@@ -37,7 +33,7 @@ const TripSpeedDial = ({handleCloseMenu, setOpen, setForm}) => {
                 <SpeedDialAction
                     enterTouchDelay={200}
                     leaveTouchDelay={900}
-                    icon={<PaidIcon fontSize='large' color='secondary' sx={{backgroundColor:'white', borderRadius: '50%'}}/>}
+                    icon={<PaidIcon fontSize='large' color='secondary' sx={{ backgroundColor: 'white', borderRadius: '50%' }} />}
                     tooltipTitle='Add Expense'
                     // tooltipOpen
                     // tooltipPlacement='right'
@@ -50,7 +46,7 @@ const TripSpeedDial = ({handleCloseMenu, setOpen, setForm}) => {
                 <SpeedDialAction
                     enterTouchDelay={200}
                     leaveTouchDelay={900}
-                    icon={<EventIcon fontSize='large' color='secondary' sx={{backgroundColor:'white', borderRadius: '50%'}}/>}
+                    icon={<EventIcon fontSize='large' color='secondary' sx={{ backgroundColor: 'white', borderRadius: '50%' }} />}
                     tooltipTitle='Add Event'
                     TooltipClasses={{
                         enterTouchDelay: 300

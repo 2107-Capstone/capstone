@@ -2,18 +2,10 @@ import React, { Component } from "react";
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
 import { updateUser, me } from '../../store'
+
 //////////// MUI //////////////////
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import FormControl from '@mui/material/FormControl';
-import Snackbar from '@mui/material/Snackbar';
-import SettingsIcon from '@mui/icons-material/Settings';
-import Alert from '@mui/material/Alert';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Typography } from "@mui/material";
+import { Alert, Typography, Avatar, Box, Button, Container, Grid, FormControl, Snackbar } from '@mui/material';
+import { Settings as SettingsIcon, ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 
 class AuthAvatar extends Component {
   constructor(props) {

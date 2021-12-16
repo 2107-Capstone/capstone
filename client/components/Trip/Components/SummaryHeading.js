@@ -2,24 +2,23 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 /////////////// MUI /////////////////
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography'
+import { Box, Typography, Button } from '@mui/material';
 
 /////////////// ICONS /////////////////
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+
 import theme from '../../../theme';
 
-export const SummaryHeading = ({name, icon, link}) => {
-    
+export const SummaryHeading = ({ name, icon, link }) => {
+
     return (
         <Box style={name === 'Debt Summary' ? styles.debtHeadingIcon : styles.heading} sx={{ display: 'flex' }}>
             <Box >
                 {
                     name !== 'Debt Summary' &&
-                        <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }}  component={Link} to={link} startIcon={<OpenInNewIcon />} >
-                            Details
-                        </Button>
+                    <Button sx={{ ':hover': { backgroundColor: 'secondary.main', color: 'text.primary', boxShadow: (theme) => theme.shadows[5] } }} component={Link} to={link} startIcon={<OpenInNewIcon />} >
+                        Details
+                    </Button>
                 }
             </Box>
             <Box style={styles.headingIcon}>

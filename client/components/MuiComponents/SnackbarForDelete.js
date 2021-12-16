@@ -1,11 +1,10 @@
 import React from "react"
-import Snackbar from '@mui/material/Snackbar';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+
+import { Snackbar, Button, IconButton, } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-const SnackbarForDelete = ({open, onClose, onClickYes, onClick, message}) => {
-    
+const SnackbarForDelete = ({ open, onClose, onClickYes, onClick, message }) => {
+
     return (
         <Snackbar
             sx={{ mt: 9 }}

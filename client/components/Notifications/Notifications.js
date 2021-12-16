@@ -1,12 +1,15 @@
-import { Divider, Typography } from '@mui/material'
 import React from 'react'
 import { connect } from 'react-redux'
+
+/////////// Material UI //////////////////
+import { Divider, Typography } from '@mui/material'
+import { Luggage as LuggageIcon, PersonAdd as PersonAddIcon, Paid as PaidIcon } from '@mui/icons-material';
+
+///////////////// COMPONENTS /////////////////////
 import PendingFriendRequestReceived from '../Friendship/PendingFriendRequestReceived'
 import TripInvite from './TripInvite'
-import LuggageIcon from '@mui/icons-material/Luggage';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import PaidIcon from '@mui/icons-material/Paid';
 import Debts from './Debts'
+
 
 export const Notifications = () => {
   return (
@@ -22,7 +25,7 @@ export const Notifications = () => {
         <PaidIcon />&nbsp;Money Owed from Closed Trips
       </Typography>
       <Debts />
-      
+
     </>
   )
 }

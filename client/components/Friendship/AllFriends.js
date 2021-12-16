@@ -6,10 +6,8 @@ import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPend
 
 ////////////// MATERIAL UI ///////////
 import { Box, Button, Grid, Paper, Typography, Snackbar, IconButton, Alert, Avatar, Divider } from "@mui/material"
-import PeopleIcon from '@mui/icons-material/People'
-import DeleteIcon from '@mui/icons-material/Delete'
+import { People as PeopleIcon, Delete as DeleteIcon, Close as CloseIcon } from '@mui/icons-material'
 import CircularLoading from '../Loading/CircularLoading'
-import CloseIcon from '@mui/icons-material/Close'
 
 
 export const AllFriends = ({ friends, userFriends, deleteUserFriend, loadFriendshipData }) => {

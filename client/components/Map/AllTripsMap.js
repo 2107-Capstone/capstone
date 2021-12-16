@@ -6,17 +6,9 @@ import { parseISO, format, isAfter } from 'date-fns';
 import CircularLoading from '../Loading/CircularLoading'
 import { findZoom, findCenter } from './mapFunctions'
 import EventForm from './EventForm';
-import { Box, FormGroup, FormControlLabel, Dialog, Switch, Grid, Button, Divider, } from '@mui/material'
+import { Box, Typography, Card, CardContent, Accordion, AccordionSummary, AccordionDetails, FormGroup, FormControlLabel, Dialog, Switch, Grid, Button, Divider, } from '@mui/material'
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import CardTravelIcon from '@mui/icons-material/CardTravel';
+import { ExpandMore as ExpandMoreIcon, Refresh as RefreshIcon, CardTravel as CardTravelIcon } from '@mui/icons-material';
 
 import mapStyles from './mapStyles';
 
@@ -64,8 +56,10 @@ export default function AllTripsMap() {
 
     const [selectedTrip, setSelectedTrip] = useState({ id: 0 });
     const [zoom, setZoom] = useState(1);
-    const [center, setCenter] = useState({ lat: 34.456748,
-        lng: -75.462405 });
+    const [center, setCenter] = useState({
+        lat: 34.456748,
+        lng: -75.462405
+    });
 
     const colors = {
         0: '#F70909',
@@ -126,7 +120,7 @@ export default function AllTripsMap() {
 
     useEffect(() => {
         if (!!selected) {
-            setCenter(() => ({lat: selected.lat, lng: selected.lng}))
+            setCenter(() => ({ lat: selected.lat, lng: selected.lng }))
             setZoom(() => 13)
         }
     }, [selected])
@@ -140,7 +134,7 @@ export default function AllTripsMap() {
                     position={{ lat: marker.lat, lng: marker.lng }}
                     name={marker.name}
                     icon={{ url: marker.url }}
-                    onClick={() => { 
+                    onClick={() => {
                         setSelected(marker);
                     }}
                 />
@@ -220,73 +214,73 @@ export default function AllTripsMap() {
             </Box>
             <Grid container columnSpacing={2} rowSpacing={2} >
                 <Grid item xs={12} >
-                    <Box sx={{maxHeight: 300, overflow: 'auto'}}>
-                    {
-                        trips.map(trip => (
-                            <Box display='flex' flexWrap='wrap' key={trip.id}>
-                                <Accordion sx={{ margin: 1, minWidth: '100%'}} 
-                                    expanded={expanded === trip.id}
-                                    onChange={handleAccordionChange(trip.id)}
-                                    disableGutters={true}
-                                >
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
-                                        id="trip-header"
-                                        onClick={() => {
-                                            if (selectedTrip.id === trip.trip.id) {
-                                                setSelectedTrip({ id: 0 })
-                                            } else {
-                                                setSelectedTrip(trip)
-                                            }
-                                        }}
-                                        sx={{ borderRight: `4px solid ${trip.color}` }}
+                    <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
+                        {
+                            trips.map(trip => (
+                                <Box display='flex' flexWrap='wrap' key={trip.id}>
+                                    <Accordion sx={{ margin: 1, minWidth: '100%' }}
+                                        expanded={expanded === trip.id}
+                                        onChange={handleAccordionChange(trip.id)}
+                                        disableGutters={true}
                                     >
-                                        <Box display='flex' alignItems={'center'}>
-                                            <Button
-                                                component={Link}
-                                                to={`/trips/${trip.tripId}`}
-                                                variant='contained'
-                                                color='secondary'
-                                            >
-
-                                                {trip.trip.name} 
-                                            </Button>
-                                            <Typography variant='caption' sx={{ml: 2}}>
-                                                ({trip.trip.events.length} EVENTS)
-                                            </Typography>
-                                        </Box>
-                                    </AccordionSummary>
-                                    <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
-                                        {
-                                            trip.trip.events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1).map(event => (
-                                                <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, pb: 0 }}
-
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon sx={{ color: trip.color }} />}
+                                            id="trip-header"
+                                            onClick={() => {
+                                                if (selectedTrip.id === trip.trip.id) {
+                                                    setSelectedTrip({ id: 0 })
+                                                } else {
+                                                    setSelectedTrip(trip)
+                                                }
+                                            }}
+                                            sx={{ borderRight: `4px solid ${trip.color}` }}
+                                        >
+                                            <Box display='flex' alignItems={'center'}>
+                                                <Button
+                                                    component={Link}
+                                                    to={`/trips/${trip.tripId}`}
+                                                    variant='contained'
+                                                    color='secondary'
                                                 >
-                                                    <CardContent sx={{ minWidth: '100%', mb: 0, paddingBottom: 0 }} onClick={() => handleClick(event.id)}>
 
-                                                        <Box display='flex' flexDirection='column' >
-                                                            <Typography  color='text.primary' variant="subtitle1">
-                                                                {event.name}
-                                                            </Typography>
-                                                            <Typography variant='subtitle2' color='text.primary' >
-                                                                {event.description}
-                                                            </Typography>
+                                                    {trip.trip.name}
+                                                </Button>
+                                                <Typography variant='caption' sx={{ ml: 2 }}>
+                                                    ({trip.trip.events.length} EVENTS)
+                                                </Typography>
+                                            </Box>
+                                        </AccordionSummary>
+                                        <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                            {
+                                                trip.trip.events.sort((a, b) => isAfter(new Date(a.startTime), new Date(b.startTime)) ? 1 : -1).map(event => (
+                                                    <Card className='card' key={event.id} sx={{ minWidth: '100%', mb: 1, mt: 1, pb: 0 }}
 
-                                                            <Typography variant='subtitle2' color='text.secondary' >
-                                                                {event.location}
-                                                            </Typography>
-                                                            <Divider color='grey'/>
-                                                            <Typography color='text.secondary' variant="caption" >
-                                                                {format(parseISO(event.startTime), 'Pp')}
-                                                            </Typography>
-                                                        </Box>
-                                                    </CardContent>
-                                                </Card>
-                                            ))
-                                        }
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Box>
+                                                    >
+                                                        <CardContent sx={{ minWidth: '100%', mb: 0, paddingBottom: 0 }} onClick={() => handleClick(event.id)}>
+
+                                                            <Box display='flex' flexDirection='column' >
+                                                                <Typography color='text.primary' variant="subtitle1">
+                                                                    {event.name}
+                                                                </Typography>
+                                                                <Typography variant='subtitle2' color='text.primary' >
+                                                                    {event.description}
+                                                                </Typography>
+
+                                                                <Typography variant='subtitle2' color='text.secondary' >
+                                                                    {event.location}
+                                                                </Typography>
+                                                                <Divider color='grey' />
+                                                                <Typography color='text.secondary' variant="caption" >
+                                                                    {format(parseISO(event.startTime), 'Pp')}
+                                                                </Typography>
+                                                            </Box>
+                                                        </CardContent>
+                                                    </Card>
+                                                ))
+                                            }
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </Box>
                             ))
                         }
                     </Box>

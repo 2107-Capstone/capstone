@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
+/////////////// REDUX /////////////////////
 import { addTrip, editTrip } from "../../../store/trips"
+
 ///////////// MATERIAL UI /////////////////////////
 import { DateTimePicker, LocalizationProvider } from "@mui/lab"
 import { Container, Box, TextField, Typography, Grid, Button } from "@mui/material"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import CloseIcon from "@mui/icons-material/Close";
+
 /////// IMPORT LOGO IMAGE //////////////////
 const airplane = '/images/airplane.png'
 

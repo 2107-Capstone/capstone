@@ -5,12 +5,11 @@ import moment from 'moment'
 const localizer = momentLocalizer(moment)
 
 ////////// Icons ///////////////
-import CardTravelIcon from '@mui/icons-material/CardTravel';
-import AddIcon from '@mui/icons-material/Add';
+import { Add as AddIcon, CardTravel as CardTravelIcon } from '@mui/icons-material';
 
 ////////// MUI //////////
-import { Button, Dialog, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+import { Button, Dialog, Typography, Box } from '@mui/material'
+
 ////////// Components //////////
 import EventForm from '../Map/EventForm';
 import AddTripForm from '../Trips/Form/AddTripForm';
@@ -61,7 +60,7 @@ const SingleTripCalendar = ({ match }) => {
     }
     ///////////// TRIP ////////////////
     const calendarTrip = { ...trip.trip, title: `${trip.trip.name} - ${trip.trip.location}`, start: new Date(trip.trip.startTime), end: new Date(trip.trip.endTime), isTrip: true }
-    
+
     ////////// EVENTS ////////////////
     const calendarEvents = events.map(event => { return { ...event, type: 'event', isTrip: false, title: `${event.name} - ${event.location}`, start: event.startTime, end: event.endTime } })
 
