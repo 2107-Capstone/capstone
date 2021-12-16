@@ -128,7 +128,12 @@ export default function AllTripsMap() {
 
     }, [update, checked, selectedTrip.id, markers.length])
 
-
+    useEffect(() => {
+        if (!!selected) {
+            setCenter(() => ({lat: selected.lat, lng: selected.lng}))
+            setZoom(() => 11)
+        }
+    }, [selected])
 
     const displayMarkers = () => {
         return markers.map((marker) => {

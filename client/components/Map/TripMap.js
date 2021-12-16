@@ -195,7 +195,7 @@ export default function TripMap({ match }) {
     useEffect(() => {
         if (!!selected) {
             setCenter(() => ({lat: selected.lat, lng: selected.lng}))
-            setZoom(() => 13)
+            setZoom(() => 11)
         }
     }, [selected])
 
