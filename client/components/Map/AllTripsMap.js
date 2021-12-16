@@ -111,7 +111,8 @@ export default function AllTripsMap() {
         if (selectedTrip.id !== 0) {
             if (selectedTrip.trip.events.length === 0) {
                 setZoom(() => 8)
-                setCenter(() => ({ lat: +selectedTrip.trip.lat, lng: +selectedTrip.trip.lng }))
+                // setCenter(() => ({ lat: parseFloat(+selectedTrip.trip.lat), lng: parseFloat(+selectedTrip.trip.lng) }))
+                setCenter(() => selectedTrip.getPosition())
             } else {
                 setCenter(() => findCenter(selectedTrip.trip.events))
                 setZoom(() => findZoom(selectedTrip.trip.events))
@@ -120,6 +121,7 @@ export default function AllTripsMap() {
             if (markers.length === 0) {
                 setZoom(() => 3)
                 setCenter(() => ({ lat: defaultCoords.lat, lng: defaultCoords.lng }))
+                // setCenter(() => defaultCoords.getPosition())
             } else {
                 setCenter(() => findCenter(markers))
                 setZoom(() => findZoom(markers))
@@ -130,7 +132,8 @@ export default function AllTripsMap() {
 
     useEffect(() => {
         if (!!selected) {
-            setCenter(() => ({lat: selected.lat, lng: selected.lng}))
+            // setCenter(() => ({lat: selected.lat, lng: selected.lng}))
+            setCenter(() => selected.getPosition())
             setZoom(() => 11)
         }
     }, [selected])
@@ -278,7 +281,7 @@ export default function AllTripsMap() {
                                                             <Typography variant='subtitle2' color='text.secondary' >
                                                                 {event.location}
                                                             </Typography>
-                                                            <Divider color='grey' fullWidth/>
+                                                            <Divider color='grey'/>
                                                             <Typography color='text.secondary' variant="caption" >
                                                                 {format(parseISO(event.startTime), 'Pp')}
                                                             </Typography>
