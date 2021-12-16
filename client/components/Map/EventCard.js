@@ -19,7 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
-export default function EventsCard ({ event, handleFindMarker, setOpen, tripOpen, setSelected, handleClickYes, setEventToEdit }) {
+export default function EventsCard ({ event, handleFindMarker, setOpen, tripOpen, setSelected, handleClickYes, setEventToEdit, setOpenInfo }) {
     
     const dispatch = useDispatch();
 
@@ -77,7 +77,10 @@ export default function EventsCard ({ event, handleFindMarker, setOpen, tripOpen
                                                     startIcon={<DeleteForeverIcon />} color='error'
                                                     size='small'
                                                     variant='outlined'
-                                                    onClick={() => setOpenSnackbar(true)}
+                                                    onClick={() => {
+                                                        setOpenSnackbar(true)
+                                                        setOpenInfo(false)
+                                                    }}
                                                 >
                                                     Delete
                                                 </Button>

@@ -6,8 +6,7 @@ import { parseISO, format, isAfter } from 'date-fns';
 import CircularLoading from '../Loading/CircularLoading'
 import { findZoom, findCenter } from './mapFunctions'
 import EventForm from './EventForm';
-import { Box, FormGroup, FormControlLabel, Dialog, Switch, IconButton, Grid, Button, Tooltip, Divider, Snackbar, } from '@mui/material'
-import { deleteEvent, getTrips } from '../../store';
+import { Box, FormGroup, FormControlLabel, Dialog, Switch, Grid, Button, Divider, } from '@mui/material'
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -18,12 +17,8 @@ import CardContent from '@mui/material/CardContent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import CloseIcon from '@mui/icons-material/Close';
 
 import mapStyles from './mapStyles';
-import theme from '../../theme';
 
 export default function AllTripsMap() {
     const dispatch = useDispatch();
@@ -112,7 +107,6 @@ export default function AllTripsMap() {
             if (selectedTrip.trip.events.length === 0) {
                 setZoom(() => 8)
                 setCenter(() => ({ lat: parseFloat(+selectedTrip.trip.lat), lng: parseFloat(+selectedTrip.trip.lng) }))
-                // setCenter(() => selectedTrip.getPosition())
             } else {
                 setCenter(() => findCenter(selectedTrip.trip.events))
                 setZoom(() => findZoom(selectedTrip.trip.events))
@@ -121,7 +115,6 @@ export default function AllTripsMap() {
             if (markers.length === 0) {
                 setZoom(() => 3)
                 setCenter(() => ({ lat: defaultCoords.lat, lng: defaultCoords.lng }))
-                // setCenter(() => defaultCoords.getPosition())
             } else {
                 setCenter(() => findCenter(markers))
                 setZoom(() => findZoom(markers))
@@ -133,7 +126,6 @@ export default function AllTripsMap() {
     useEffect(() => {
         if (!!selected) {
             setCenter(() => ({lat: selected.lat, lng: selected.lng}))
-            // setCenter(() => selected.getPosition())
             setZoom(() => 11)
         }
     }, [selected])
@@ -298,19 +290,16 @@ export default function AllTripsMap() {
                         }
                     </Box>
                 </Grid>
-                {/* <Box style={{ margin: 1}}> */}
                 <Grid item xs={12} >
                     <Box style={{ marginRight: 2 }}>
                         <GoogleMap
                             id='map'
                             options={options}
                             onLoad={onMapLoad}
-                            // zoom={selectedTrip.id === 0 ? findZoom(markers) : tripZoom}
                             zoom={zoom}
                             // zoom={tripId ? 8 : 3}
                             mapContainerStyle={mapContainerStyle}
                             style={mapStyles}
-                            // center={{ lat: +selectedTrip.lat, lng: +selectedTrip.lng}}
                             center={{ lat, lng }}
                         >
                             {displayMarkers()}

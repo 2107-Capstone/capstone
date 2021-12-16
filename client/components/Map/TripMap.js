@@ -196,6 +196,13 @@ export default function TripMap({ match }) {
             setZoom(() => 11)
         }
     }, [selected])
+    useEffect(() => {
+        setUpdate(() => Math.random())
+        if (markers.length !== 0) {
+            setZoom(() => findZoom(events))
+            setCenter(() => findCenter(events))
+        } 
+    }, [events.length])
 
     if (!trip || !events || !users) {
         return <CircularLoading />
@@ -205,7 +212,7 @@ export default function TripMap({ match }) {
 
     const lat = +center.lat;
     const lng = +center.lng;
-    console.log('SeLECTED', selected)
+
     return (
         <>
         
@@ -243,11 +250,9 @@ export default function TripMap({ match }) {
                 <EventForm
                     trip={trip}
                     event={eventToEdit}
-                    setUpdate={setUpdate}
                     handleClose={handleClose}
                 />
             </Dialog>
-            {/* <Tooltip title='Add Event'> */}
             <TripTitle trip={trip} />
             {
                 trip.trip.isOpen ? 
@@ -257,7 +262,6 @@ export default function TripMap({ match }) {
                         flexWrap='wrap'
                     >
                         <Box marginRight={3}>
-                            {/* <Locate panTo={panTo} /> */}
                             <Locate  />
                         </Box>
                         <Box marginBottom={.5} marginRight={3} >
@@ -272,7 +276,6 @@ export default function TripMap({ match }) {
                             </Button>
                         </Box>
                         <Box >
-                            {/* <Tooltip title='Refresh Event Markers'> */}
                                 <Button
                                     startIcon={<RefreshIcon />}
                                     variant='outlined'
@@ -282,12 +285,10 @@ export default function TripMap({ match }) {
                                 >
                                     Refresh Event Markers
                                 </Button>
-                            {/* </Tooltip> */}
                         </Box>
                     </Box>
                     :
                     <Box textAlign='center'>
-                        {/* <Tooltip title='Refresh Markers'> */}
                             <Button
                                 startIcon={<RefreshIcon />}
                                 variant='outlined'
@@ -297,7 +298,6 @@ export default function TripMap({ match }) {
                             >
                                 Refresh Event Markers
                             </Button>
-                        {/* </Tooltip> */}
                     </Box>
             }
 
@@ -330,9 +330,6 @@ export default function TripMap({ match }) {
                                     onClick={() => {
                                         trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username) : ''
                                     }}
-                                    // onClick={() => {
-                                    //     trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username, setSelectedUser, setOpenNoLocationAlert, trackingMarkers, setSelected) : ''
-                                    // }}
                                 >
                                     {user.firstName[0] + user.lastName[0]}
                                 </Avatar>
@@ -343,7 +340,7 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
-                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} setUpdate={setUpdate} />
+                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} setOpenInfo={setOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} setUpdate={setUpdate} />
                 
                 <GoogleMap
                     id='map'
