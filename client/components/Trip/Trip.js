@@ -53,9 +53,7 @@ const Trip = (props) => {
     const events = useSelector(state => state.events.filter(event => event.tripId === id));
     const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
     const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
-    // const users = useSelector(state => state.users.filter(user => {
-    //     if(user.userTrips.find(userTrip => userTrip.tripId === id)) return true;
-    // }))
+    
     const userTrips = useSelector(state => state.usertrips.filter(userTrip => (
         userTrip.tripId === id && userTrip.tripInvite === 'accepted'
     )))
