@@ -41,12 +41,12 @@ export const AdminAllUsers = ({ adminUsers, loadAdminUsers }) => {
             <Grid container spacing={2} sx={{ my: 4 }}>
                 {adminUsers.map(adminUser => (
                     <Grid item xs={12} sm={4} md={3} key={adminUser.id}>
-                        <Paper elevation={1}>
-                            <Box sx={{ minHeight: 250, py: 1, color: 'inherit', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                                <Avatar sx={{ bgcolor: 'primary.main' }} src={adminUser.avatar}>
+                        <Paper elevation={1} style={{ textOverflow: "ellipsis", overflow: "hidden" }}>
+                            <Box sx={{ minHeight: 250, py: 1, pl: 1, color: 'inherit', display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
+                                <Avatar sx={{ bgcolor: 'primary.main', alignSelf: 'center' }} src={adminUser.avatar}>
                                     {adminUser.firstName[0] + adminUser.lastName[0]}
                                 </Avatar>
-                                <Typography variant='h6'>
+                                <Typography variant='h6' sx={{alignSelf: 'center'}}>
                                     {adminUser.username}
                                 </Typography>
                                 <Typography >
@@ -61,15 +61,15 @@ export const AdminAllUsers = ({ adminUsers, loadAdminUsers }) => {
                                 <Typography >
                                     Phone Number: {adminUser.phoneNumber}
                                 </Typography>
-                                <Box>
-                                    <Typography >
+                                <Box sx={{alignSelf: 'center', textAlign: 'center'}}>
+                                    <Typography>
                                         Friends:
                                     </Typography>
                                     {adminUser.userFriends.length === 0 ? 
                                     (<Typography >
                                         No friends
                                     </Typography>):
-                                    (<AvatarGroup max={4}>
+                                    (<AvatarGroup max={4} >
                                         {adminUser.userFriends.map(userFriend => (
                                             <Avatar sx={{ bgcolor: 'primary.main' }} src={userFriend.friend.avatar} key={userFriend.id}>
                                                 {userFriend.friend.firstName[0] + userFriend.friend.lastName[0]}
