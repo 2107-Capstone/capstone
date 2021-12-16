@@ -68,7 +68,7 @@ export default function EventsAccordion ({ events, handleFindMarker,  tripOpen, 
                 <AccordionDetails >
                 {
                     events.map(event => (
-                        <EventCard key={event.id} handleFindMarker={handleFindMarker} setEventToEdit={setEventToEdit} setOpen={setOpen} tripOpen={tripOpen} event={event} setSelected={setSelected} handleClickYes={handleClickYes} />
+                        <EventCard key={event.id} handleFindMarker={handleFindMarker} setEventToEdit={setEventToEdit} setOpen={setOpen} tripOpen={tripOpen} event={event} setSelected={setSelected} handleClickYes={handleClickYes}/>
                     ))
                 }
                 </AccordionDetails>

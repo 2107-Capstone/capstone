@@ -199,7 +199,7 @@ export default function TripMap({ match }) {
     }, [selected])
 
     useEffect(() => {
-        setOpenInfo(false)
+        setOpenInfo(() => false)
         setUpdate(() => Math.random())
         if (markers.length !== 0) {
             setZoom(() => findZoom(events))
@@ -253,6 +253,7 @@ export default function TripMap({ match }) {
                     trip={trip}
                     event={eventToEdit}
                     handleClose={handleClose}
+                    setOpenInfo={setOpenInfo}
                 />
             </Dialog>
             <TripTitle trip={trip} />
