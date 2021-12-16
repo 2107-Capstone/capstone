@@ -6,7 +6,7 @@ const theme = createTheme({
         mode: 'dark',
         primary: {
             //purple-blue
-            // main: '#3f51b5',
+            // main: '#3f51b5', 
             //splitwise green
             main: '#00897b'
 
