@@ -23,7 +23,6 @@ export const getAdminTrips = () => {
   };
 }
 
-
 ///////////// REDUCER ////////////////
 export default function (state = [], action) {
   switch (action.type) {

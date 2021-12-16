@@ -3,21 +3,15 @@ import history from '../history'
 
 const TOKEN = 'token'
 
-/**
- * ACTION TYPES
- */
+////////////////// ACTION TYPES //////////////////
 const GET_USERS = 'GET_USERS'
 const UPDATE_USER = 'UPDATE_USER'
 
-/**
- * ACTION CREATORS
- */
+////////////////////// ACTION CREATORS //////////////////////
 const _getUsers = users => ({type: GET_USERS, users})
 const _updateUser = user => ({type: UPDATE_USER, user})
 
-/**
- * THUNK CREATORS
- */
+////////////////////// THUNK CREATORS ////////////////////
 export const getUsers = () => {
   const token = window.localStorage.getItem(TOKEN)
   
@@ -47,9 +41,7 @@ export const updateUser = (user, type) => {
     
   };
 }
-/**
- * REDUCER
- */
+////////////////////////  REDUCER /////////////////////
  export default function(state = [], action) {
   switch (action.type) {
     case GET_USERS:

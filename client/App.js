@@ -32,7 +32,6 @@ const App = () => {
     window.socket.addEventListener('message', ev => {
       const message = ev.data;
       const action = JSON.parse(message);
-      console.log('action', action)
       dispatch(action)
     })
   }, [])

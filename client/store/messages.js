@@ -3,37 +3,31 @@ import history from '../history'
 
 const TOKEN = 'token'
 
-/**
- * ACTION TYPES
- */
+//////////////////////// ACTION TYPES ////////////////////////
 const GET_MESSAGES = 'GET_MESSAGES'
 const CREATE_MESSAGE = 'CREATE_MESSAGE'
 
-/**
- * ACTION CREATORS
- */
-const _getMessages = messages => ({type: GET_MESSAGES, messages})
-const _createMessage = message => ({type: CREATE_MESSAGE, message})
+//////////////////////// ACTION CREATORS ////////////////////////
+const _getMessages = messages => ({ type: GET_MESSAGES, messages })
+const _createMessage = message => ({ type: CREATE_MESSAGE, message })
 
-/**
- * THUNK CREATORS
- */
+//////////////////////// THUNK CREATORS ////////////////////////
 export const getMessages = () => {
   const token = window.localStorage.getItem(TOKEN)
-  
+
   return async (dispatch) => {
     const { data: messages } = await axios.get(`/api/messages`, {
-     headers: {
-       authorization: token
-     }
-   });
-   window.socket.send(JSON.stringify(_getMessages(messages)))
-   dispatch(_getMessages(messages));
+      headers: {
+        authorization: token
+      }
+    });
+    window.socket.send(JSON.stringify(_getMessages(messages)))
+    dispatch(_getMessages(messages));
   };
 }
 export const createMessage = (_message) => {
   const token = window.localStorage.getItem(TOKEN)
-  
+
   return async (dispatch) => {
     const { data: message } = await axios.post(`/api/messages`, _message, {
       headers: {
@@ -45,10 +39,8 @@ export const createMessage = (_message) => {
   };
 }
 
-/**
- * REDUCER
- */
-export default function(state = [], action) {
+//////////////////////// REDUCER ////////////////////////
+export default function (state = [], action) {
   switch (action.type) {
     case GET_MESSAGES:
       return action.messages

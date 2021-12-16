@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../../store';
 
 ///////////// MATERIAL UI ///////////////
-import { Button, Box, Divider, Drawer, FormGroup, FormControlLabel, Switch, Stack, Toolbar, IconButton, Typography, Badge, SvgIcon } from '@mui/material'
+import { Button, Box, Divider, Drawer, Stack, Toolbar, IconButton, Typography, Badge } from '@mui/material'
 
 //////////// ICONS //////////////////
 import HomeIcon from '@mui/icons-material/Home';
@@ -54,11 +54,6 @@ const MenuBar = (props) => {
     const menuBarButtons = (
         <Box sx={{ px: 1 }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'center' }}>
-                {/* <IconButton component={Link} to='/home' color='primary' onClick={handleDrawerToggle}>
-                    <SvgIcon sx={{ fontSize: '3rem', width: 'auto', my: .5 }} viewBox="0 0 272 264">
-                        <LogoIcon />
-                    </SvgIcon>
-                </IconButton> */}
                 <Typography variant='h6' sx={{ my: 2.5, fontWeight: 'bold' }}>
                     Hello, {user.firstName}
                 </Typography>

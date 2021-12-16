@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
@@ -8,6 +8,7 @@ import App from './App'
 
 ///// MATERIAL UI ///////////
 import theme from './theme'
+
 import { ThemeProvider } from '@emotion/react'
 
 ReactDOM.render(
