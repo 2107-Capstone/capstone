@@ -10,7 +10,7 @@ import { authenticate } from "../../store";
 ///////////AIRPLANE LOGO //////////////
 import LogoIcon from '/public/tripIcon.svg'
 
-const LoginForm = ({error}) => {
+const LoginForm = ({ error }) => {
     const dispatch = useDispatch()
     const [input, setinput] = useState({
         username: '',
@@ -88,8 +88,8 @@ const LoginForm = ({error}) => {
                         Sign In
                     </Button>
                     {error && error.response && (
-                        <Typography align='center' sx={{color: 'red'}}>
-                        {error.response.data}
+                        <Typography align='center' sx={{ color: 'red' }}>
+                            {error.response.data}
                         </Typography>
                     )}
                     <Typography align='center'>
@@ -105,8 +105,8 @@ const LoginForm = ({error}) => {
 
 const mapState = (state) => {
     return {
-      error: state.auth.error,
+        error: state.auth.error,
     }
-  }
+}
 
 export default connect(mapState)(LoginForm)

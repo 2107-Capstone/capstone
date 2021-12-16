@@ -33,7 +33,6 @@ export const getTrips = () => {
 }
 export const addTrip = (tripToAdd) => {
   const token = window.localStorage.getItem(TOKEN)
-  // console.log(tripToAdd)
 
   return async (dispatch) => {
     const { data: trip } = await axios.post(`/api/trips`, tripToAdd, {
@@ -41,7 +40,6 @@ export const addTrip = (tripToAdd) => {
         authorization: token
       }
     });
-    // console.log(trip)
     dispatch(_addTrip(trip));
     history.push('/trips')
   };
@@ -75,7 +73,6 @@ export const editTrip = (trip) => {
         authorization: token
       }
     });
-    // console.log(trip)
     window.socket.send(JSON.stringify(_editTrip(edited)))
     dispatch(_editTrip(edited));
     history.push('/trips')
@@ -84,8 +81,6 @@ export const editTrip = (trip) => {
 
 export const leaveTrip = (usertripId) => {
   const token = window.localStorage.getItem(TOKEN)
-
-  // console.log(usertripId)
   return async (dispatch) => {
 
     const { data: leavetrip } = await axios.delete(`/api/trips/${usertripId}`, {
@@ -93,10 +88,8 @@ export const leaveTrip = (usertripId) => {
         authorization: token
       }
     });
-    // console.log(leavetrip)
     window.socket.send(JSON.stringify(_leaveTrip(leavetrip)))
     dispatch(_leaveTrip(leavetrip));
-    // history.push('/trips')
   };
 }
 

@@ -2,24 +2,20 @@ import axios from 'axios'
 
 const TOKEN = 'token'
 
-/**
- * ACTION TYPES
- */
+///////////////////////// ACTION TYPES /////////////////////////
 const GET_USERFRIENDS = 'GET_USERFRIENDS'
 const CREATE_USERFRIEND = 'CREATE_USERFRIEND'
 const DELETE_USERFRIEND = 'DELETE_USERFRIEND'
 const APPROVE_USERFRIEND = 'APPROVE_USERFRIEND'
 
-/**
- * ACTION CREATORS
- */
+///////////////////////// ACTION CREATORS /////////////////////////
 const _getUserFriends = userFriends => ({ type: GET_USERFRIENDS, userFriends })
 const _createUserFriend = userFriend => ({ type: CREATE_USERFRIEND, userFriend })
 const _deleteUserFriend = id => ({ type: DELETE_USERFRIEND, id })
 const _approveUserFriend = userFriend => ({ type: APPROVE_USERFRIEND, userFriend })
 
 
- //////////// THUNK CREATORS ////////////
+//////////// THUNK CREATORS ////////////
 export const getUserFriends = () => {
   const token = window.localStorage.getItem(TOKEN)
 
@@ -75,9 +71,7 @@ export const approveUserFriend = (userFriend) => {
   }
 }
 
-/**
- * REDUCER
- */
+///////////////////////// REDUCER /////////////////////////
 export default function (state = [], action) {
   switch (action.type) {
     case GET_USERFRIENDS:

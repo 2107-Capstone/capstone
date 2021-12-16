@@ -3,19 +3,13 @@ import history from '../history'
 
 const TOKEN = 'token'
 
-/**
- * ACTION TYPES
- */
+//////////////////////// ACTION TYPES ////////////////////////
 const SET_AUTH = 'SET_AUTH'
 
-/**
- * ACTION CREATORS
- */
+//////////////////////// ACTION CREATORS ////////////////////////
 const setAuth = auth => ({ type: SET_AUTH, auth })
 
-/**
- * THUNK CREATORS
- */
+//////////////////////// THUNK CREATORS ////////////////////////
 export const me = () => async dispatch => {
   const token = window.localStorage.getItem(TOKEN)
   if (token) {
@@ -33,7 +27,6 @@ export const authenticate = (userInfo, method, type) => async dispatch => {
     const res = await axios.post(`/auth/${method}`, userInfo)
     window.localStorage.setItem(TOKEN, res.data.token)
     dispatch(me())
-    console.log(userInfo.username)
     if (userInfo.username === 'Admin') {
       history.push('/admin/admintrips')
     } else if (type !== 'passwordChange') {
@@ -54,9 +47,7 @@ export const logout = () => {
   }
 }
 
-/**
- * REDUCER
- */
+//////////////////////// REDUCER ////////////////////////
 export default function (state = {}, action) {
   switch (action.type) {
     case SET_AUTH:

@@ -7,10 +7,12 @@ const TOKEN = 'token'
 const GET_USERDEBTS = 'GET_USERDEBTS'
 const ADD_USERDEBT = 'ADD_USERDEBT'
 const EDIT_USERDEBT = 'EDIT_USERDEBT'
+
 //////////// ACTION CREATORS ////////////
 const _getUserDebts = userDebts => ({ type: GET_USERDEBTS, userDebts })
 const _addUserDebt = userDebt => ({ type: ADD_USERDEBT, userDebt })
 const _editUserDebt = userDebt => ({ type: EDIT_USERDEBT, userDebt })
+
 //////////////////// THUNK CREATORS  //////////////
 export const getUserDebts = () => {
     const token = window.localStorage.getItem(TOKEN)
