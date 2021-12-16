@@ -43,19 +43,17 @@ const TripCalendar = () => {
         const openTrips = userTrips.filter(trip => trip.isOpen)
         filteredTrips = openTrips
     }
-
-
+    
     ///////////// TRIPS ////////////////
     const calendarTrips = filteredTrips.map(trip => { return { id: trip.id, tripId: trip.id, title: trip.name, start: new Date(trip.startTime), end: new Date(trip.endTime) } })
-
+    
     ////////// EVENTS ////////////////
     const events = filteredTrips.map(trip => (trip.events)).flat()
     const calendarEvents = events.map(event => { return { type: 'event', id: event.id, tripId: event.tripId, title: event.name, start: new Date(event.startTime), end: new Date(event.endTime) } })
-
     const handleSelect = (event) => {
         history.push(`/trips/${event.tripId}`)
     }
-
+    
     const eventStyles = (event) => {
         const style = {
             backgroundColor: theme.palette.primary.main

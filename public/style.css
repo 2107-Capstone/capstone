@@ -128,7 +128,8 @@ button.rbc-input::-moz-focus-inner {
       display: none; }
 
 .rbc-today {
-  background-color: #eaf6ff; }
+  /* background-color: #eaf6ff; } */
+  background-color: #9ebbb4; }
 
 .rbc-toolbar {
   display: flex;
