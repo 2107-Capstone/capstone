@@ -147,7 +147,9 @@ export default function AllTripsMap() {
                     position={{ lat: marker.lat, lng: marker.lng }}
                     name={marker.name}
                     icon={{ url: marker.url }}
-                    onClick={() => { setSelected(marker) }}
+                    onClick={() => { 
+                        setSelected(marker);
+                    }}
                 />
             )
         })
@@ -162,7 +164,6 @@ export default function AllTripsMap() {
     const [expanded, setExpanded] = useState(false);
 
     const handleAccordionChange = panel => (evt, isExpanded) => {
-
         setExpanded(isExpanded ? panel : false)
     }
 
@@ -320,6 +321,7 @@ export default function AllTripsMap() {
                                         position={{ lat: +selected.lat, lng: +selected.lng }}
                                         onCloseClick={() => {
                                             setSelected(null);
+                                            setExpanded(false);
                                         }}
                                     >
                                         <Box display='flex' flexDirection='column' alignItems='center' style={{ margin: '0 1rem .5rem 1rem' }}>
