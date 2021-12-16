@@ -217,8 +217,8 @@ export default function AllTripsMap() {
                 </Button>
             </Box>
             <Grid container columnSpacing={2} rowSpacing={2} >
-                <Grid item xs={12} sx={{ maxHeight: '40%', overflow: 'auto' }}>
-                    <Box >
+                <Grid item xs={12} >
+                    <Box sx={{maxHeight: 300, overflow: 'auto'}}>
                     {
                         trips.map(trip => (
                             <Box display='flex' flexWrap='wrap' key={trip.id}>
@@ -239,15 +239,20 @@ export default function AllTripsMap() {
                                         }}
                                         sx={{ borderRight: `4px solid ${trip.color}` }}
                                     >
-                                        <Button
-                                            component={Link}
-                                            to={`/trips/${trip.tripId}`}
-                                            variant='contained'
-                                            color='secondary'
-                                        >
+                                        <Box display='flex' alignItems={'center'}>
+                                            <Button
+                                                component={Link}
+                                                to={`/trips/${trip.tripId}`}
+                                                variant='contained'
+                                                color='secondary'
+                                            >
 
-                                            {trip.trip.name}
-                                        </Button>
+                                                {trip.trip.name} 
+                                            </Button>
+                                            <Typography variant='caption' sx={{ml: 2}}>
+                                                ({trip.trip.events.length} EVENTS)
+                                            </Typography>
+                                        </Box>
                                     </AccordionSummary>
                                     <AccordionDetails sx={{ maxHeight: 300, overflow: 'auto' }}>
                                         {

@@ -20,7 +20,7 @@ import { format, parseISO, isAfter } from "date-fns";
 import CircularLoading from '../Loading/CircularLoading'
 
 const EventForm = (props) => {
-    const { trip, handleClose } = props
+    const { trip, handleClose, setUpdate } = props
     const event = props.event || {}
     const dispatch = useDispatch()
 
@@ -88,9 +88,11 @@ const EventForm = (props) => {
             if (event.id) {
                 await dispatch(editEvent({ ...inputs, trip, startTime, endTime }))
                 await dispatch(getTrips())
+                setUpdate(prevUpdate => prevUpdate + Math.random())
             }
             else {
                 await dispatch(addEvent({ ...inputs, trip, startTime, endTime }))
+                setUpdate(prevUpdate => prevUpdate + Math.random())
             }
             handleClose();
         }

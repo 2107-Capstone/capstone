@@ -73,11 +73,6 @@ export default function TripMap({ match }) {
     const onMapLoad = useCallback((map) => {
         mapRef.current = map;
     }, []);
-
-    // const panTo = useCallback(({ lat, lng }) => {
-    //     mapRef.current.panTo({ lat, lng });
-    //     mapRef.current.setZoom(zoom);
-    // }, []);
     
     
     const handleClose = () => {
@@ -149,10 +144,6 @@ export default function TripMap({ match }) {
                     lng: position.coords.longitude
                 }
                 await setUpdate(prevUpdate => prevUpdate + Math.random())
-                // panTo({
-                //     lat: position.coords.latitude,
-                //     lng: position.coords.longitude,
-                // });
             },
             () => null
         );
@@ -201,6 +192,13 @@ export default function TripMap({ match }) {
         } 
     }, [tripId, update, markers.length])
 
+    useEffect(() => {
+        if (!!selected) {
+            setCenter(() => ({lat: selected.lat, lng: selected.lng}))
+            setZoom(() => 13)
+        }
+    }, [selected])
+
     if (!trip || !events || !users) {
         return <CircularLoading />
     }
@@ -247,6 +245,7 @@ export default function TripMap({ match }) {
                 <EventForm
                     trip={trip}
                     event={eventToEdit}
+                    setUpdate={setUpdate}
                     handleClose={handleClose}
                 />
             </Dialog>
@@ -346,116 +345,8 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
-                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} />
-                {/* <Box
-                    display='flex'
-                    justifyContent='center'
-                    marginBottom={.5}
-                    flexWrap='wrap'
-                    sx={{ maxHeight: 200, overflow: 'auto' }}
-                >
-                    {
-                        events.map(event => (
-                            <Box
-                                display='flex'
-                                flexDirection='column'
-                                marginRight={1}
-                                padding={.25}
-                                border='1px solid lightgrey'
-                                borderRadius='7%'
-                                key={event.id}
-                                onClick={() => handleFindMarker(event.id)}
-                                justifyContent='center'
-                                alignItems='center'
-                                marginRight={1}
-                                padding={.5}
-                                sx={{ ':hover': { boxShadow: (theme) => theme.shadows[5] } }}
-                            >
-                                
-                                    <Typography
-                                        sx={{ m: 0 }}
-                                        variant='subtitle2'
-                                        color='text.light.primary'
-                                    >
-                                        {event.name}
-                                    </Typography>
-                                    <Typography
-                                        color='text.light.secondary' variant="caption"
-                                        sx={{ m: 0 }}
-                                    >
-                                        {event.description}
-                                    </Typography>
-                                    <Typography
-                                        color='text.light.secondary' variant="caption"
-                                        sx={{ m: 0 }}
-                                    >
-                                        {format(parseISO(event.startTime), 'P')}
-                                    </Typography>
-                                
-                                {
-                                    trip.trip.isOpen ? 
-                                        <Box
-                                            display='flex'
-                                            justifyContent='space-evenly'
-                                        >
-                                            <Button
-                                                startIcon={<ModeEditIcon />} color='info'
-                                                size='small'
-                                                onClick={() => {
-                                                    setEventToEdit(event);
-                                                    setOpen(true);
-                                                }}
-                                            >
-                                                Edit
-                                            </Button>
-                                            <Snackbar
-                                                sx={{ mt: 9 }}
-                                                open={openSnackbar}
-                                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                                                autoHideDuration={6000}
-                                                onClose={handleClose}
-                                                message={'Are you sure you want to delete this event?'}
-                                                action={
-                                                    <>
-                                                        <Button color="secondary" size="small" 
-                                                            onClick={async () => {
-                                                                try {
-                                                                    await dispatch(deleteEvent(event.id))
-                                                                } catch (err) {
-                                                                    console.log(err)
-                                                                }
-                                                            }}
-                                                        >
-                                                            YES
-                                                        </Button>
-                                                        <Button color="secondary" size="small" onClick={handleClose}>
-                                                            NO
-                                                        </Button>
-                                                        <IconButton
-                                                            size="small"
-                                                            aria-label="close"
-                                                            color="inherit"
-                                                            onClick={handleClose}
-                                                        >
-                                                            <CloseIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </>
-                                                }
-                                            />
-                                            <Button
-                                                startIcon={<DeleteForeverIcon />} color='error'
-                                                size='small'
-                                                onClick={() => setOpenSnackbar(true)}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </Box>
-                                    : ''
-                                }
-                            </Box>
-                        ))
-                    }
-                </Box> */}
+                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} setUpdate={setUpdate} />
+                
                 <GoogleMap
                     id='map'
                     options={options}
