@@ -57,7 +57,7 @@ const AdminSingleTripCalendar = ({ match }) => {
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: 600 }}
-                defaultDate={new Date()}
+                defaultDate={calendarTrip.start}
                 showMultiDayTimes
             />
         </div>

@@ -15,8 +15,8 @@ const airplane = '/images/airplane.png'
  *      match the models, and populates the database.
  */
 async function seedFaker() {
-  const numUsers = 10;
-  const numTrips = 5;
+  const numUsers = 100;
+  const numTrips = 75;
   const chance = () => (Math.random() > .5)
   // Creating Users
   
