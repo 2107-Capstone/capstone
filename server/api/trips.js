@@ -1,5 +1,4 @@
 const router = require('express').Router()
-
 const isLoggedIn = require('../middleware/isLoggedIn')
 const { models: { User, Trip, UserTrip, Message, Event, Expense, UserDebt } } = require('../db')
 
@@ -8,72 +7,64 @@ module.exports = router
 router.get('/', isLoggedIn, async (req, res, next) => {
   try {
     //should be able to simply this given now there is a store for trips
-    const user = await User.findByToken(req.headers.authorization)
-    if (user) {
-      const trips = await UserTrip.findAll({
-        where: {
-          userId: user.id
-        },
-        include: [
-          {
-            model: Trip,
-            include: [
-              {
+    const user = req.user
+    const trips = await UserTrip.findAll({
+      where: {
+        userId: user.id
+      },
+      include: [
+        {
+          model: Trip,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'username', 'avatar', 'firstName', 'lastName']
+            },
+            {
+              model: Message,
+              include: {
                 model: User,
-                attributes: ['id', 'username', 'avatar', 'firstName', 'lastName']
-              },
-              {
-                model: Message,
-                include: {
-                  model: User,
-                  as: 'sentBy',
-                  attributes: ['id', 'username']
-                }
-              },
-              //included this to possibly simplify finding participants in a trip
-              {
-                model: UserTrip,
-                include: {
-                  model: User,
-                  attributes: ['id', 'username', 'lat', 'lng', 'time', 'firstName', 'lastName', 'avatar']
-                }
-              },
-              {
-                model: Event
-              },
-              {
-                model: Expense
-              },
-              {
-                model: UserDebt,
-                include: [
-                  {
-                    model: User, as: 'payor', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
-                  },
-                  {
-                    model: User, as: 'payee', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
-                  }
-                ]
+                as: 'sentBy',
+                attributes: ['id', 'username']
               }
-            ]
-          }
-        ]
-      })
-
-      res.json(trips)
-    } else {
-      res.send('No current user found via token')
-    }
-  } catch (err) {
+            },
+            //included this to possibly simplify finding participants in a trip
+            {
+              model: UserTrip,
+              include: {
+                model: User,
+                attributes: ['id', 'username', 'lat', 'lng', 'time', 'firstName', 'lastName', 'avatar']
+              }
+            },
+            {
+              model: Event
+            },
+            {
+              model: Expense
+            },
+            {
+              model: UserDebt,
+              include: [
+                {
+                  model: User, as: 'payor', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
+                },
+                {
+                  model: User, as: 'payee', attributes: ['id', 'username', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    })
+    res.json(trips)
+  }
+  catch (err) {
     next(err)
   }
 })
 
 router.get('/:tripId', isLoggedIn, async (req, res, next) => {
-  if (req.headers.authorization === 'null') {
-    console.log('YOU SHALL NOT PASS!')
-    return res.json([])
-  }
   try {
     const trip = await Trip.findOne({
       where: {
@@ -88,10 +79,9 @@ router.get('/:tripId', isLoggedIn, async (req, res, next) => {
 
 router.post('/', isLoggedIn, async (req, res, next) => {
   try {
-    const user = await User.findByToken(req.headers.authorization)
-    
-    const {description, endTime, imageUrl, lat, lng, location, name, startTime} = req.body;
-    const trip = await Trip.create({description, endTime, imageUrl, lat, lng, location, name, startTime, userId: user.id})
+    const user = req.user
+    const { description, endTime, imageUrl, lat, lng, location, name, startTime } = req.body;
+    const trip = await Trip.create({ description, endTime, imageUrl, lat, lng, location, name, startTime, userId: user.id })
 
     const adduserTrip = await UserTrip.create({ userId: user.id, tripId: trip.id, tripInvite: "accepted" })
 
@@ -186,14 +176,14 @@ router.put('/:tripId', isLoggedIn, async (req, res, next) => {
   try {
     let userTrip = await UserTrip.findByPk(req.params.tripId)
     const trip = await Trip.findByPk(userTrip.tripId);
-    
+
     if (req.body.userTripId) {
-      const { id, name, location, startTime, endTime, description  } = req.body
+      const { id, name, location, startTime, endTime, description } = req.body
       await trip.update({ ...trip, id, name, location, startTime, endTime, description })
     } else {
-      await trip.update({ ...trip, isOpen: false})
+      await trip.update({ ...trip, isOpen: false })
     }
-    
+
     userTrip = await UserTrip.findByPk(userTrip.id, {
       include: [
         {

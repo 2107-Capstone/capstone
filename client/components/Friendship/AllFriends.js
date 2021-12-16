@@ -13,9 +13,6 @@ import CloseIcon from '@mui/icons-material/Close'
 
 
 export const AllFriends = ({ friends, userFriends, deleteUserFriend, loadFriendshipData }) => {
-
-
-
     const clickDeleteFriend = async (friend) => {
         const _userFriend = userFriends.find(userFriend => userFriend.userId === friend.friendId)
         await deleteUserFriend(friend.id)

@@ -20,10 +20,6 @@ import theme from '../../theme'
 /////////// SVG //////////////////
 import Logo from '/public/tripoutlogo.svg'
 
-// import { AppBar, Box, Button, Container, Divider, Toolbar, Paper, Typography, useMediaQuery } from '@mui/material';
-// import MenuBar from './MenuBar';
-// import theme from '../../theme'
-
 const Navbar = (props) => {
   const isLoggedIn = useSelector(state => !!state.auth.id)
 

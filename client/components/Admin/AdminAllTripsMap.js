@@ -109,7 +109,6 @@ export default function AdminAllTripsMap() {
     }
 
     const displayMarkers = () => {
-        console.log('markers', markers)
         return markers.map((marker) => {
             return (
                 <Marker

@@ -63,7 +63,6 @@ export const rejectInvite = (inviteId) => {
                 authorization: token
             }
         });
-        // console.log(rejectedinvite)
         window.socket.send(JSON.stringify(_rejectInvite(rejectedinvite)))
         dispatch(_rejectInvite(rejectedinvite));
     };

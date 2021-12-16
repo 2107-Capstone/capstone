@@ -110,7 +110,6 @@ export default function TripMap({ match }) {
     const [eventToEdit, setEventToEdit] = useState({});
 
     const DisplayMarkers = () => {
-        console.log('markers', markers)
         return markers.map((marker) => {
             return (
                 <Marker

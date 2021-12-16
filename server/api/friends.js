@@ -5,24 +5,21 @@ module.exports = router
 
 router.get('/', isLoggedIn, async (req, res, next) => {
   try {
-    const user = await User.findByToken(req.headers.authorization)
-    if (user) {
-      const friends = await UserFriend.findAll({
-        where: {
-          userId: user.id,
-          status: 'accepted'
-        },
-        include: [
-          {
-            model: User, as: 'friend', attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
-          }
-        ]
-      })
-      res.json(friends)
-    } else {
-      res.send('No current user found via token')
-    }
-  } catch (err) {
+    const user = req.user
+    const friends = await UserFriend.findAll({
+      where: {
+        userId: user.id,
+        status: 'accepted'
+      },
+      include: [
+        {
+          model: User, as: 'friend', attributes: ['id', 'username', 'lat', 'lng', 'time', 'email', 'phoneNumber', 'firstName', 'lastName', 'avatar']
+        }
+      ]
+    })
+    res.json(friends)
+  }
+  catch (err) {
     next(err)
   }
 })
@@ -45,4 +42,3 @@ router.get('/:friendId', isLoggedIn, async (req, res, next) => {
     next(err)
   }
 })
-
