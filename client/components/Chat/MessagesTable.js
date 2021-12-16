@@ -26,14 +26,7 @@ const MessagesTable = ({messages}) => {
 
     return (
     <TableContainer component={Paper}>
-        {/* <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="events table"> */}
         <Table size='small' aria-label="messages table">
-            {/* <colgroup>
-                <col style={{width: '5%'}} />
-                <col style={{width: '5%'}} />
-                <col style={{width: '10%'}} />
-                <col style={{width: '80%'}} />
-            </colgroup> */}
             <TableHead>
                 <TableRow>
                     <TableCell sx={{fontWeight: 'bold', fontSize: 15}}>Date</TableCell>
@@ -45,7 +38,7 @@ const MessagesTable = ({messages}) => {
             <TableBody>
             {rows.map((row) => (
                 <TableRow
-                    key={row.id + Math.random().toString(16)}
+                    key={row.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                     <TableCell sx={{color: 'text.secondary'}}>

@@ -1,24 +1,12 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import PieChart from "./PieChart";
+import React from "react";
 import CircularLoading from '../Loading/CircularLoading'
-import AddExpense from "./AddExpense";
 import UserAvatar from "../Trip/Components/UserAvatar";
 /////////////// DATE FORMATTER  ////////////////
 import { format, parseISO, isBefore, isAfter } from "date-fns";
 
 ////////////////// MATERIAL UI /////////////////
-import { Avatar, Box, Button, Container, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Typography } from "@mui/material";
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
-import { FaFileInvoiceDollar } from 'react-icons/fa'
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import LocalAtmIcon from '@mui/icons-material/LocalAtm';
-import AddIcon from '@mui/icons-material/Add';
-import CardTravelIcon from '@mui/icons-material/CardTravel';
-
-
-// const ExpensesTable = ({tripExpenses, trip}) => {
 const ExpensesTable = ({expenses, numUsers}) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -51,7 +39,6 @@ const ExpensesTable = ({expenses, numUsers}) => {
                 </Typography>
             </Box>
             <TableContainer component={Paper}>
-                {/* <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="expenses table"> */}
                 <Table size='small' aria-label="expenses table">
                     <TableHead>
                         <TableRow >

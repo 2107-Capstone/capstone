@@ -63,6 +63,7 @@ export default function TripMap({ match }) {
     const [update, setUpdate] = useState(0);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [open, setOpen] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
     const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
@@ -197,6 +198,15 @@ export default function TripMap({ match }) {
         }
     }, [selected])
 
+    useEffect(() => {
+        setOpenInfo(false)
+        setUpdate(() => Math.random())
+        if (markers.length !== 0) {
+            setZoom(() => findZoom(events))
+            setCenter(() => findCenter(events))
+        } 
+    }, [events.length])
+
     if (!trip || !events || !users) {
         return <CircularLoading />
     }
@@ -205,7 +215,6 @@ export default function TripMap({ match }) {
 
     const lat = +center.lat;
     const lng = +center.lng;
-    
     return (
         <>
         
@@ -243,11 +252,9 @@ export default function TripMap({ match }) {
                 <EventForm
                     trip={trip}
                     event={eventToEdit}
-                    setUpdate={setUpdate}
                     handleClose={handleClose}
                 />
             </Dialog>
-            {/* <Tooltip title='Add Event'> */}
             <TripTitle trip={trip} />
             {
                 trip.trip.isOpen ? 
@@ -257,7 +264,6 @@ export default function TripMap({ match }) {
                         flexWrap='wrap'
                     >
                         <Box marginRight={3}>
-                            {/* <Locate panTo={panTo} /> */}
                             <Locate  />
                         </Box>
                         <Box marginBottom={.5} marginRight={3} >
@@ -272,7 +278,6 @@ export default function TripMap({ match }) {
                             </Button>
                         </Box>
                         <Box >
-                            {/* <Tooltip title='Refresh Event Markers'> */}
                                 <Button
                                     startIcon={<RefreshIcon />}
                                     variant='outlined'
@@ -282,12 +287,10 @@ export default function TripMap({ match }) {
                                 >
                                     Refresh Event Markers
                                 </Button>
-                            {/* </Tooltip> */}
                         </Box>
                     </Box>
                     :
                     <Box textAlign='center'>
-                        {/* <Tooltip title='Refresh Markers'> */}
                             <Button
                                 startIcon={<RefreshIcon />}
                                 variant='outlined'
@@ -297,7 +300,6 @@ export default function TripMap({ match }) {
                             >
                                 Refresh Event Markers
                             </Button>
-                        {/* </Tooltip> */}
                     </Box>
             }
 
@@ -330,9 +332,6 @@ export default function TripMap({ match }) {
                                     onClick={() => {
                                         trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username) : ''
                                     }}
-                                    // onClick={() => {
-                                    //     trip.trip.isOpen ? handleFindTrackingMarker(user.id, user.username, setSelectedUser, setOpenNoLocationAlert, trackingMarkers, setSelected) : ''
-                                    // }}
                                 >
                                     {user.firstName[0] + user.lastName[0]}
                                 </Avatar>
@@ -364,7 +363,7 @@ export default function TripMap({ match }) {
                         selected ?
                             (
                                 <InfoWindow
-                                    open={open}
+                                    open={openInfo}
                                     position={{ lat: +selected.lat+.0003, lng: +selected.lng }}
                                     onCloseClick={() => {
                                         setSelected(null);

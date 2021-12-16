@@ -77,7 +77,9 @@ export default function EventsCard ({ event, handleFindMarker, setOpen, tripOpen
                                                     startIcon={<DeleteForeverIcon />} color='error'
                                                     size='small'
                                                     variant='outlined'
-                                                    onClick={() => setOpenSnackbar(true)}
+                                                    onClick={() => {
+                                                        setOpenSnackbar(true)
+                                                    }}
                                                 >
                                                     Delete
                                                 </Button>

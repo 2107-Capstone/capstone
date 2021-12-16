@@ -45,13 +45,13 @@ const ChatRoom = ({match}) => {
   useEffect(scrollToBottom, [messages])
 
   let storeMessages = useSelector(state => state.messages.filter(message => message.tripId === id).sort((a, b) => a.dateSent < b.dateSent ? -1 : 1));
-  console.log('storeMessages', storeMessages)
   
   storeMessages.forEach(message => message.ownedByCurrentUser = (message.sentById === auth.id));
 
   const DisplayStoreMessages = () => {
     
-    return storeMessages.filter(message => isAfter(parseISO(timeOpened), parseISO(message.dateSent))).map((message) => (
+    // return storeMessages.filter(message => isAfter(parseISO(timeOpened), parseISO(message.dateSent))).map((message) => (
+    return storeMessages.filter(message => isAfter(parseISO(timeOpened), parseISO(message.createdAt))).map((message) => (
       <li
         key={message.id + Math.random().toString(16)}
         style={message.ownedByCurrentUser ? styles.messageItemMyMessageOld : styles.messageItemReceivedMessageOld}
@@ -62,14 +62,6 @@ const ChatRoom = ({match}) => {
             </Typography>
           <Box display='flex' alignItems='center'>
             <UserAvatar user={message.sentBy} />
-            {/* <Box display='flex' flexDirection='column' alignItems='center'>
-              <Avatar sx={{ height: 35, width: 35, m: 1, mb: 0}} src={message.sentBy.avatar} >
-                  {message.sentBy.firstName[0]+message.sentBy.lastName[0]}
-              </Avatar>
-              <Typography variant='caption'>
-                {message.sentBy.username}
-              </Typography> 
-            </Box> */}
             <Typography marginLeft={1}>
               {message.content}
             </Typography> 
@@ -96,7 +88,6 @@ const ChatRoom = ({match}) => {
             </Typography> 
           </Box>
         </Box>
-        {/* ({format(Date.now(), 'Pp')}) {message.senderName}:   {message.content} */}
       </li>
     ))
   }

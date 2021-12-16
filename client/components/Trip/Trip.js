@@ -53,9 +53,7 @@ const Trip = (props) => {
     const events = useSelector(state => state.events.filter(event => event.tripId === id));
     const messages = useSelector(state => state.messages.filter(message => message.tripId === id));
     const expenses = useSelector(state => state.expenses.filter(expense => expense.tripId === id));
-    // const users = useSelector(state => state.users.filter(user => {
-    //     if(user.userTrips.find(userTrip => userTrip.tripId === id)) return true;
-    // }))
+    
     const userTrips = useSelector(state => state.usertrips.filter(userTrip => (
         userTrip.tripId === id && userTrip.tripInvite === 'accepted'
     )))
@@ -197,16 +195,18 @@ const Trip = (props) => {
                 }
                 <Summary
                     trip={trip}
-                    type={'Messages'}
+                    type={'messages'}
                     link={`${trip.tripId}/chat`}
+                    length={messages.length}
                     summaryTable={<MessagesTable messages={messages} />}
                     tooltipMessage={'Last five messages'}
                     icon={<ChatIcon fontSize='medium' />}
                 />
                 <Summary
                     trip={trip}
-                    type={'Events'}
+                    type={'events'}
                     link={`${trip.tripId}/calendar`}
+                    length={events.length}
                     summaryTable={<EventsTable events={events} />}
                     tooltipMessage={'Next five events'}
                     icon={<DateRangeIcon fontSize='medium' />}
@@ -215,6 +215,7 @@ const Trip = (props) => {
                     trip={trip}
                     type={'expenses'}
                     link={`${trip.tripId}/expenses`}
+                    length={expenses.length}
                     tooltipMessage={'Last five paid expenses'}
                     icon={<PaidIcon fontSize='medium' />}
                     summaryTable={<ExpensesTable expenses={expenses} numUsers={users.length} />}
@@ -229,7 +230,9 @@ const Trip = (props) => {
                     <Box display='flex' justifyContent='center' flexWrap='wrap'>
                         {
                             users.map(user => 
-                                <UserAvatar key={user.id} user={user} />
+                                <Box mr={1}>
+                                    <UserAvatar key={user.id} user={user} />
+                                </Box>
                             )
                         }
                     </Box>

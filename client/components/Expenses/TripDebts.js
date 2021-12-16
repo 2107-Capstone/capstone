@@ -4,9 +4,9 @@ import CircularLoading from '../Loading/CircularLoading'
 import UserAvatar from "../Trip/Components/UserAvatar";
 
 ////////////////// MATERIAL UI /////////////////
-import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
-const TripDebts = ({trip}) => {
+const TripDebts = ({trip, type}) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD'
@@ -14,8 +14,17 @@ const TripDebts = ({trip}) => {
     ///////////////// LOADING ///////////////////
     if (!trip) {
         return <CircularLoading />
-    } 
-    const rows = trip.trip.userDebts
+    }
+
+    const rows = type === 'admin' ? trip.userDebts : trip.trip.userDebts
+
+    if (rows.length === 0){
+        return (
+            <Typography ml={1}>
+                No one owes any money.
+            </Typography>
+        )
+    }
     return (
     <TableContainer component={Paper}>
         {/* <Table sx={{ minWidth: 650, ml: 1, mr: 1 }} size='small' aria-label="debt table"> */}

@@ -16,7 +16,7 @@ const airplane = '/images/airplane.png'
  */
 async function seedFaker() {
   const numUsers = 100;
-  const numTrips = 80;
+  const numTrips = 75;
   const chance = () => (Math.random() > .5)
   // Creating Users
   

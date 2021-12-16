@@ -20,7 +20,7 @@ import { format, parseISO, isAfter } from "date-fns";
 import CircularLoading from '../Loading/CircularLoading'
 
 const EventForm = (props) => {
-    const { trip, handleClose, setUpdate } = props
+    const { trip, handleClose } = props
     const event = props.event || {}
     const dispatch = useDispatch()
 
@@ -36,8 +36,7 @@ const EventForm = (props) => {
     const [endTime, setEndTime] = useState(event.endTime || new Date(trip.trip.endTime));
 
     let googlePlace;
-//TODO: Add trip location with search??
-    // let googlePlace = inputs.location + trip.trip.location;
+
     useEffect(async () => {
         const autocomplete = await new google.maps.places.Autocomplete(googlePlace)
         googlePlace.value = inputs.location
@@ -62,7 +61,6 @@ const EventForm = (props) => {
     }
 
     const handleChange = (ev) => {
-        console.log("testing")
         const name = ev.target.name;
         const value = ev.target.value
 
@@ -88,11 +86,9 @@ const EventForm = (props) => {
             if (event.id) {
                 await dispatch(editEvent({ ...inputs, trip, startTime, endTime }))
                 await dispatch(getTrips())
-                setUpdate(prevUpdate => prevUpdate + Math.random())
             }
             else {
                 await dispatch(addEvent({ ...inputs, trip, startTime, endTime }))
-                setUpdate(prevUpdate => prevUpdate + Math.random())
             }
             handleClose();
         }

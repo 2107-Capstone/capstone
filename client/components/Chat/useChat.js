@@ -9,7 +9,7 @@ const useChat = (roomId) => {
   const [messages, setMessages] = useState([]);
   const socketRef = useRef();
   const user = useSelector(state => state.auth);
-  
+  console.log(socketIOClient)
   useEffect(() => {
     socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
       query: { roomId },

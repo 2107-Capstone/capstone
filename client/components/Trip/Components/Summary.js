@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography'
 
 import SummaryHeading from './SummaryHeading';
 
-export const Summary = ({trip, type, link, summaryTable, tooltipMessage, icon}) => {
+export const Summary = ({trip, type, link, summaryTable, tooltipMessage, icon, length}) => {
     
     return (
         <Grid item xs={12} sm={12} md={type === 'Debt Summary' ? 12 : 6} lg={type === 'Debt Summary' ? 12 : 6} >
@@ -22,7 +22,7 @@ export const Summary = ({trip, type, link, summaryTable, tooltipMessage, icon}) 
                                 {summaryTable}
                             </Box>
                         : 
-                        {type}.length !== 0 ?
+                        length ?
                         <Tooltip 
                             title={tooltipMessage}
                             placement='top'
@@ -34,10 +34,10 @@ export const Summary = ({trip, type, link, summaryTable, tooltipMessage, icon}) 
                                 {summaryTable}
                             </Box>
                         </Tooltip>
-                            :
-                            <Typography>
-                                {`No ${type} yet.`}
-                            </Typography>
+                        :
+                        <Typography ml={1}>
+                            {`No ${type}`}
+                        </Typography>
                     }
         </Grid>
     )
