@@ -63,6 +63,7 @@ export default function TripMap({ match }) {
     const [update, setUpdate] = useState(0);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [open, setOpen] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
     const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
@@ -196,7 +197,9 @@ export default function TripMap({ match }) {
             setZoom(() => 13)
         }
     }, [selected])
+
     useEffect(() => {
+        setOpenInfo(false)
         setUpdate(() => Math.random())
         if (markers.length !== 0) {
             setZoom(() => findZoom(events))
@@ -339,7 +342,7 @@ export default function TripMap({ match }) {
                         ))
                     }
                 </Box>
-                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} setOpenInfo={setOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} setUpdate={setUpdate} />
+                <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} setUpdate={setUpdate} />
                 
                 <GoogleMap
                     id='map'
@@ -360,7 +363,7 @@ export default function TripMap({ match }) {
                         selected ?
                             (
                                 <InfoWindow
-                                    open={open}
+                                    open={openInfo}
                                     position={{ lat: +selected.lat+.0003, lng: +selected.lng }}
                                     onCloseClick={() => {
                                         setSelected(null);

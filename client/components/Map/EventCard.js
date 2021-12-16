@@ -19,7 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
-export default function EventsCard ({ event, handleFindMarker, setOpen, tripOpen, setSelected, handleClickYes, setEventToEdit, setOpenInfo }) {
+export default function EventsCard ({ event, handleFindMarker, setOpen, tripOpen, setSelected, handleClickYes, setEventToEdit }) {
     
     const dispatch = useDispatch();
 
@@ -79,7 +79,6 @@ export default function EventsCard ({ event, handleFindMarker, setOpen, tripOpen
                                                     variant='outlined'
                                                     onClick={() => {
                                                         setOpenSnackbar(true)
-                                                        setOpenInfo(false)
                                                     }}
                                                 >
                                                     Delete
