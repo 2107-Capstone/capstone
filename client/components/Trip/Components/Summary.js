@@ -1,29 +1,28 @@
 import React from 'react'
-/////////////// MUI /////////////////
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Tooltip from '@mui/material/Tooltip'
-import Typography from '@mui/material/Typography'
 
+/////////////// MUI /////////////////
+import { Box, Grid, Tooltip, Typography } from '@mui/material';
+
+//////////////// COMPONENT /////////////////
 import SummaryHeading from './SummaryHeading';
 
-export const Summary = ({trip, type, link, summaryTable, tooltipMessage, icon, length}) => {
-    
+export const Summary = ({ trip, type, link, summaryTable, tooltipMessage, icon, length }) => {
+
     return (
         <Grid item xs={12} sm={12} md={type === 'Debt Summary' ? 12 : 6} lg={type === 'Debt Summary' ? 12 : 6} >
-            <SummaryHeading 
-                name={type[0].toUpperCase()+type.slice(1)}
+            <SummaryHeading
+                name={type[0].toUpperCase() + type.slice(1)}
                 icon={icon}
                 link={link}
             />
-                    {
-                        type === 'Debt Summary' ? 
-                            <Box>
-                                {summaryTable}
-                            </Box>
-                        : 
-                        length ?
-                        <Tooltip 
+            {
+                type === 'Debt Summary' ?
+                    <Box>
+                        {summaryTable}
+                    </Box>
+                    :
+                    length ?
+                        <Tooltip
                             title={tooltipMessage}
                             placement='top'
                             enterNextDelay={100}
@@ -38,7 +37,7 @@ export const Summary = ({trip, type, link, summaryTable, tooltipMessage, icon, l
                         <Typography ml={1}>
                             {`No ${type}`}
                         </Typography>
-                    }
+            }
         </Grid>
     )
 }

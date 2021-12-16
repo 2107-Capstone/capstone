@@ -10,7 +10,8 @@ import UserAvatar from "../Trip/Components/UserAvatar";
 import useChat from "./useChat";
 import CircularLoading from '../Loading/CircularLoading'
 import CardTravelIcon from '@mui/icons-material/CardTravel';
-import { Avatar, Box, Grid, Button, TextField, Tooltip, Typography, Dialog } from '@mui/material'
+import { Box, Button, Tooltip, Typography, Dialog } from '@mui/material'
+
 // const ChatRoom = (props) => {
 //   const { id } = props.match.params;
 // const ChatRoom = ({trip, match}) => {

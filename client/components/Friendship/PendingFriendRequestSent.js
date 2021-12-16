@@ -5,8 +5,7 @@ import { deleteUserFriend, getFriends, getFriendsPendingSent } from '../../store
 
 ////////////// MATERIAL UI ///////////
 import { Box, Button, Grid, Paper, Typography, Snackbar, Alert, Avatar } from "@mui/material"
-import CloseIcon from '@mui/icons-material/Close'
-import PendingIcon from '@mui/icons-material/Pending';
+import {Close as CloseIcon, Pending as PendingIcon} from '@mui/icons-material'
 
 export const PendingFriendRequestSent = ({ friendsPendingSent, deleteUserFriend, loadFriendshipData }) => {
     const clickRejectRequest = async (userFriend) => {

@@ -9,17 +9,13 @@ import CircularLoading from '../../Loading/CircularLoading';
 import { getUserTrips, inviteFriend } from '../../../store';
 
 /////////// MATERIAL UI /////////////////
-import { Avatar, Button, Container, Divider, IconButton, InputBase, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material'
-import PersonIcon from '@mui/icons-material/Person';
-import { Box } from '@mui/system';
-import CloseIcon from '@mui/icons-material/Close';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import SearchIcon from '@mui/icons-material/Search';
+import { Box, Avatar, Button, Divider, IconButton, InputBase, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material'
+import { Search as SearchIcon, Close as CloseIcon, PersonAdd as PersonAddIcon } from '@mui/icons-material';
 
 const InviteToTrip = (props) => {
     const { handleClose } = props
     const dispatch = useDispatch()
-    
+
     /////// Get the trip id from the Browser //////
     const path = history.location.pathname
     const tripId = path.slice(path.lastIndexOf('/') + 1)
@@ -38,8 +34,6 @@ const InviteToTrip = (props) => {
     }, [])
 
     const [search, setsearch] = useState('')
-
-
     const invitefriends = friends.map(friend => {
         const invited = usertrips.find(user => user.userId === friend.friendId)
 
@@ -105,7 +99,7 @@ const InviteToTrip = (props) => {
                         >
                             <ListItemAvatar>
                                 <Avatar sx={{ bgcolor: 'primary.main' }} src={friend.friend.avatar}>
-                                    {friend.friend.firstName[0]+friend.friend.lastName[0]}
+                                    {friend.friend.firstName[0] + friend.friend.lastName[0]}
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText

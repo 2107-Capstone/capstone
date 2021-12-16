@@ -4,17 +4,11 @@ import { useDispatch } from 'react-redux'
 //////////////// REDUX STORE ///////////////////////
 import { addEvent, getTrips, editEvent } from '../../store'
 
-//////////////// STYLE FOR GOOGLE AUTOCOMPLETE ///////////////////
-// import './style.css'
-
 ////////////// MATERIAL UI ///////////////////////////////
 import { LocalizationProvider, DateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Box, Grid, Button, TextField, Typography, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close';
-import EventIcon from '@mui/icons-material/Event';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import PaidIcon from '@mui/icons-material/Paid';
+import { Close as CloseIcon, Event as EventIcon } from '@mui/icons-material';
 import { format, parseISO, isAfter } from "date-fns";
 
 import CircularLoading from '../Loading/CircularLoading'
@@ -68,11 +62,11 @@ const EventForm = (props) => {
     }
 
     const hasErrors = () => {
-        if (isAfter(new Date(trip.trip.startTime), new Date(startTime)) || isAfter(new Date(endTime), new Date(trip.trip.endTime))){
-            setInputs({ ...inputs, error: 'Event must be within the trip period.'})
+        if (isAfter(new Date(trip.trip.startTime), new Date(startTime)) || isAfter(new Date(endTime), new Date(trip.trip.endTime))) {
+            setInputs({ ...inputs, error: 'Event must be within the trip period.' })
             return true;
-        } else if (isAfter(new Date(startTime), new Date(endTime))){
-            setInputs({ ...inputs, error: 'End time must be after start time.'})
+        } else if (isAfter(new Date(startTime), new Date(endTime))) {
+            setInputs({ ...inputs, error: 'End time must be after start time.' })
             return true;
         }
         return false;
@@ -171,8 +165,8 @@ const EventForm = (props) => {
                             />
                         </Grid>
                     </LocalizationProvider>
-                    <Box fullWidth sx={{ml: 1, mt: 1, textAlign: 'center'}}>
-                        <Typography variant='caption' sx={{color: 'red'}}>
+                    <Box fullWidth sx={{ ml: 1, mt: 1, textAlign: 'center' }}>
+                        <Typography variant='caption' sx={{ color: 'red' }}>
                             {inputs.error}
                         </Typography>
                     </Box>
@@ -180,7 +174,7 @@ const EventForm = (props) => {
                         fullWidth
                         type='submit'
                         variant="contained"
-                        sx={{ mt: 3, mb: 2 }}                        
+                        sx={{ mt: 3, mb: 2 }}
                     >
                         {!event.id ? ("Add Event") : ("Edit Event")}
                     </Button>

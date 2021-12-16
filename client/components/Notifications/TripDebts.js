@@ -4,14 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 /////////////// MATERIAL UI ///////////////////////
 import { Box, Checkbox, Avatar, Button, Tooltip, FormGroup, IconButton, FormControlLabel, Divider, List, Snackbar, Typography, useMediaQuery } from '@mui/material'
 import { useTheme } from "@emotion/react";
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
+import { Check as CheckIcon, Close as CloseIcon } from '@mui/icons-material';
 
 ////////////// STORE ////////////////
 import { getUserDebts, editUserDebt } from '../../store'
 import CircularLoading from "../Loading/CircularLoading";
 
-const TripDebts = ({info, user, debt}) => {
+const TripDebts = ({ info, user, debt }) => {
     const dispatch = useDispatch()
     if (!info) {
         return (<CircularLoading />)
@@ -32,14 +31,14 @@ const TripDebts = ({info, user, debt}) => {
         currency: 'USD'
     })
 
-    return (        
+    return (
         <Fragment>
             <Box key={debt.id}
                 sx={{ m: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
             >
                 <Typography>
-                    {debt.payor.username === user.username ? 'You owe' : 
-                    `${debt.payor.username} owes`}  {debt.payee.username === user.username ? ' you' : debt.payee.username} {formatter.format(+debt.amount)}
+                    {debt.payor.username === user.username ? 'You owe' :
+                        `${debt.payor.username} owes`}  {debt.payee.username === user.username ? ' you' : debt.payee.username} {formatter.format(+debt.amount)}
                 </Typography>
                 <Snackbar
                     sx={{ mt: 9 }}
@@ -56,7 +55,7 @@ const TripDebts = ({info, user, debt}) => {
                             <Button color="secondary" size="small" onClick={() => {
                                 setChecked(!checked)
                                 handleClose()
-                                }}
+                            }}
                             >
                                 NO
                             </Button>
@@ -74,7 +73,7 @@ const TripDebts = ({info, user, debt}) => {
                         </>
                     }
                 />
-                <Tooltip 
+                <Tooltip
                     title={debt.payee.username !== user.username ? `Only ${debt.payee.username} can mark this as paid.` : ''}
                     enterTouchDelay={100}
                     leaveTouchDelay={900}
@@ -98,7 +97,7 @@ const TripDebts = ({info, user, debt}) => {
                 </Tooltip>
             </Box>
         </Fragment>
-            
+
     )
 }
 

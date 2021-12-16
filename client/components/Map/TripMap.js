@@ -13,27 +13,21 @@ import mapStyles from './mapStyles';
 import SnackbarForDelete from '../MuiComponents/SnackbarForDelete';
 
 ////////////////// MATERIAL UI /////////////////
-import { Alert, Box, Button, IconButton, Typography, Dialog, Snackbar } from '@mui/material'
-import Avatar from '@mui/material/Avatar';
+import { Alert, Avatar, Box, Button, Typography, Dialog, Snackbar } from '@mui/material'
 
 ////////////////// MATERIAL ICONS /////////////////
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import { Add as AddIcon, Close as CloseIcon, Refresh as RefreshIcon, MyLocation as MyLocationIcon } from '@mui/icons-material';
 
 import EventsAccordion from './EventsAccordion';
 
 export default function TripMap({ match }) {
     const dispatch = useDispatch();
     const tripId = match.params.id;
-    
+
     const auth = useSelector(state => state.auth);
-    
+
     useEffect(() => {
-        async function loadTrips(){
+        async function loadTrips() {
             await dispatch(getTrips())
         }
         loadTrips();
@@ -43,14 +37,14 @@ export default function TripMap({ match }) {
     let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
     let users = useSelector(state => state.users.filter(
         user => {
-             if (user.userTrips.filter(userTrip => (userTrip.tripId === tripId)).length > 0) return true;
+            if (user.userTrips.filter(userTrip => (userTrip.tripId === tripId)).length > 0) return true;
         }
     ));
-    
+
     const mapContainerStyle = {
         height: "50vh",
     };
-    
+
     const options = {
         styles: mapStyles,
         disableDefaultUI: true,
@@ -68,14 +62,14 @@ export default function TripMap({ match }) {
     const [selectedUser, setSelectedUser] = useState('');
     const [openNoLocationAlert, setOpenNoLocationAlert] = useState(false);
     const [eventToEdit, setEventToEdit] = useState({});
-    
+
     const mapRef = useRef();
-    
+
     const onMapLoad = useCallback((map) => {
         mapRef.current = map;
     }, []);
-    
-    
+
+
     const handleClose = () => {
         setOpen(false);
         setEventToEdit({})
@@ -84,7 +78,7 @@ export default function TripMap({ match }) {
         setSelectedUser('')
         setSelected('')
     }
-    
+
     const handleFindMarker = (id, setSelected) => {
         const marker = markers.find(marker => marker.id === id);
         setSelected(marker);
@@ -175,25 +169,25 @@ export default function TripMap({ match }) {
     useEffect(() => {
         setMarkers(() => []);
         setTrackingMarkers(() => []);
-        events.map( (event) => {
-                setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: event.name, location: event.location, url: `/pin-10.svg` }])
+        events.map((event) => {
+            setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: event.name, location: event.location, url: `/pin-10.svg` }])
         });
-        if (trip?.trip.isOpen){
-            users.map( (user) => {
+        if (trip?.trip.isOpen) {
+            users.map((user) => {
                 if (user.lat) {
-                        setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/person.svg', firstName: user.firstName, lastName: user.lastName }])
+                    setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/person.svg', firstName: user.firstName, lastName: user.lastName }])
                 }
             })
-        } 
+        }
         if (markers.length !== 0 && !selected && !selectedUser) {
             setZoom(() => findZoom(events))
             setCenter(() => findCenter(events))
-        } 
+        }
     }, [tripId, update, markers.length])
 
     useEffect(() => {
         if (!!selected) {
-            setCenter(() => ({lat: selected.lat, lng: selected.lng}))
+            setCenter(() => ({ lat: selected.lat, lng: selected.lng }))
             setZoom(() => 13)
         }
     }, [selected])
@@ -204,20 +198,20 @@ export default function TripMap({ match }) {
         if (markers.length !== 0) {
             setZoom(() => findZoom(events))
             setCenter(() => findCenter(events))
-        } 
+        }
     }, [events.length])
 
     if (!trip || !events || !users) {
         return <CircularLoading />
     }
 
-    events = events.sort((a,b) => isAfter(parseISO(a.startTime), parseISO(b.startTime)) ? 1 : -1)
+    events = events.sort((a, b) => isAfter(parseISO(a.startTime), parseISO(b.startTime)) ? 1 : -1)
 
     const lat = +center.lat;
     const lng = +center.lng;
     return (
         <>
-        
+
             <Snackbar
                 open={openAlert}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -258,14 +252,14 @@ export default function TripMap({ match }) {
             </Dialog>
             <TripTitle trip={trip} />
             {
-                trip.trip.isOpen ? 
+                trip.trip.isOpen ?
                     <Box
                         display='flex'
                         justifyContent='center'
                         flexWrap='wrap'
                     >
                         <Box marginRight={3}>
-                            <Locate  />
+                            <Locate />
                         </Box>
                         <Box marginBottom={.5} marginRight={3} >
                             <Button
@@ -279,19 +273,6 @@ export default function TripMap({ match }) {
                             </Button>
                         </Box>
                         <Box >
-                                <Button
-                                    startIcon={<RefreshIcon />}
-                                    variant='outlined'
-                                    color='primary'
-                                    size='small'
-                                    onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
-                                >
-                                    Refresh Event Markers
-                                </Button>
-                        </Box>
-                    </Box>
-                    :
-                    <Box textAlign='center'>
                             <Button
                                 startIcon={<RefreshIcon />}
                                 variant='outlined'
@@ -301,6 +282,19 @@ export default function TripMap({ match }) {
                             >
                                 Refresh Event Markers
                             </Button>
+                        </Box>
+                    </Box>
+                    :
+                    <Box textAlign='center'>
+                        <Button
+                            startIcon={<RefreshIcon />}
+                            variant='outlined'
+                            color='primary'
+                            size='small'
+                            onClick={() => setUpdate(prevUpdate => prevUpdate + Math.random())}
+                        >
+                            Refresh Event Markers
+                        </Button>
                     </Box>
             }
 
@@ -344,7 +338,7 @@ export default function TripMap({ match }) {
                     }
                 </Box>
                 <EventsAccordion trip={trip} events={events} handleFindMarker={handleFindMarker} tripOpen={trip.trip.isOpen} dispatch={dispatch} deleteEvent={deleteEvent} setSelected={setSelected} setUpdate={setUpdate} />
-                
+
                 <GoogleMap
                     id='map'
                     options={options}
@@ -352,20 +346,20 @@ export default function TripMap({ match }) {
                     zoom={zoom}
                     mapContainerStyle={mapContainerStyle}
                     style={mapStyles}
-                    center={{lat, lng}}
+                    center={{ lat, lng }}
                 >
                     {
-                        trip.trip.events.length ? <DisplayMarkers markers={markers} setSelected={setSelected}/> : ''
+                        trip.trip.events.length ? <DisplayMarkers markers={markers} setSelected={setSelected} /> : ''
                     }
                     {
-                        trip.trip.isOpen ? <DisplayTrackingMarkers trackingMarkers={trackingMarkers}/> : ''
+                        trip.trip.isOpen ? <DisplayTrackingMarkers trackingMarkers={trackingMarkers} /> : ''
                     }
                     {
                         selected ?
                             (
                                 <InfoWindow
                                     open={openInfo}
-                                    position={{ lat: +selected.lat+.0003, lng: +selected.lng }}
+                                    position={{ lat: +selected.lat + .0003, lng: +selected.lng }}
                                     onCloseClick={() => {
                                         setSelected(null);
                                     }}
@@ -378,23 +372,23 @@ export default function TripMap({ match }) {
                                         textAlign='center'
                                     >
                                         <Typography variant='subtitle2'
-                                        color='text.dark.primary'
+                                            color='text.dark.primary'
                                         >
                                             {selected.name}
                                         </Typography>
                                         <Box textAlign='center'>
-                                        {
-                                            selected.url ?
-                                            <Typography variant='caption'
-                                            color='text.dark.primary'
-                                            >
-                                                    {selected.location}
-                                                </Typography>
-                                            : 
-                                            <Typography variant='caption' color='text.dark.secondary'>
+                                            {
+                                                selected.url ?
+                                                    <Typography variant='caption'
+                                                        color='text.dark.primary'
+                                                    >
+                                                        {selected.location}
+                                                    </Typography>
+                                                    :
+                                                    <Typography variant='caption' color='text.dark.secondary'>
                                                         pinned at
-                                            </Typography>
-                                        }
+                                                    </Typography>
+                                            }
                                         </Box>
                                         <br></br>
                                         <Typography variant='caption' color='text.dark.secondary'>

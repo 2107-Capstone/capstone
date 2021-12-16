@@ -2,8 +2,7 @@ import React from 'react'
 
 ////////////////// MATERIAL UI ////////////////
 import { Box, Grid, IconButton, Typography, Link } from '@mui/material';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { GitHub as GitHubIcon, AccountCircle as AccountCircleIcon } from '@mui/icons-material';
 
 const Footer = () => {
     const Copyright = () => {

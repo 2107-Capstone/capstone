@@ -4,9 +4,7 @@ import { deleteUserFriend, approveUserFriend, createUserFriend, getFriends, getF
 
 ////////////// MATERIAL UI ///////////
 import { Box, Button, ButtonGroup, Grid, Paper, Typography, Snackbar, Alert, Avatar, Stack } from "@mui/material"
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import CancelIcon from '@mui/icons-material/Cancel'
-import PendingIcon from '@mui/icons-material/Pending';
+import { CheckCircle as CheckCircleIcon, Cancel as CancelIcon, Pending as PendingIcon } from '@mui/icons-material'
 
 export const PendingFriendRequestReceived = ({ friendsPendingReceived, deleteUserFriend, approveUserFriend, createUserFriend, loadFriendshipData }) => {
     const clickApproveRequest = async (userFriend) => {

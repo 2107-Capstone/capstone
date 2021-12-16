@@ -10,6 +10,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AddIcon from '@mui/icons-material/Add';
 import CircularLoading from '../Loading/CircularLoading'
 import SnackbarForDelete from "../MuiComponents/SnackbarForDelete";
+
 //////////////////////// STORE ///////////////////
 import { getUserTrips, leaveTrip } from "../../store";
 import { getTrips } from "../../store";

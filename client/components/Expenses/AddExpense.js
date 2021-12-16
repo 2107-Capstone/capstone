@@ -3,18 +3,19 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { addExpense } from '../../store';
 import CircularLoading from '../Loading/CircularLoading'
+
 ////////////////// MATERIAL UI /////////////////
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import DatePicker from '@mui/lab/DatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Box, Grid, Button, TextField, FormControl, InputLabel, Select, Menu, Typography, MenuItem } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close';
-import PaidIcon from '@mui/icons-material/Paid';
-const AddExpense = ({trip, handleClose}) => {      
+import { Close as CloseIcon, Paid as PaidIcon } from '@mui/icons-material';
+
+const AddExpense = ({ trip, handleClose }) => {
     const dispatch = useDispatch()
     const categories = useSelector(state => state.categories)
-    
+
     const [inputs, setInputs] = useState({
         description: '',
         amount: '',
@@ -22,22 +23,22 @@ const AddExpense = ({trip, handleClose}) => {
         paidById: '',
         error: ''
     })
-    const { description, amount, categoryId, paidById, error  } = inputs;
-    
+    const { description, amount, categoryId, paidById, error } = inputs;
+
     const [datePaid, setDatePaid] = useState(new Date());
-    
+
     const handleDateChange = (newVal) => {
         setDatePaid(newVal)
     }
-    
+
     const handleChange = (ev) => {
         const change = {};
         change[ev.target.name] = ev.target.value;
-        setInputs({description, amount, categoryId, paidById, ...change })
+        setInputs({ description, amount, categoryId, paidById, ...change })
     }
     const hasErrors = () => {
-        if (!(+amount + 1)){
-            setInputs({...inputs, error: 'Please enter a number (without a $).'})
+        if (!(+amount + 1)) {
+            setInputs({ ...inputs, error: 'Please enter a number (without a $).' })
             return true
         }
         return false
@@ -48,12 +49,12 @@ const AddExpense = ({trip, handleClose}) => {
             return
         }
         try {
-            await dispatch(addExpense({name: description, amount, datePaid, paidById, categoryId, tripId: trip.tripId }));
-            setInputs({ description: '', amount: '', paidById: '', categoryId: '', error: ''});
+            await dispatch(addExpense({ name: description, amount, datePaid, paidById, categoryId, tripId: trip.tripId }));
+            setInputs({ description: '', amount: '', paidById: '', categoryId: '', error: '' });
             setDatePaid(new Date());
             handleClose();
         }
-        catch(err){
+        catch (err) {
             console.log(err)
         }
     }
@@ -63,10 +64,10 @@ const AddExpense = ({trip, handleClose}) => {
             <CircularLoading />
         )
     }
-    
+
     return (
         <>
-            <CloseIcon onClick={handleClose}/>
+            <CloseIcon onClick={handleClose} />
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                 <PaidIcon fontSize='medium' />
                 <Typography variant='h5'>
@@ -136,20 +137,20 @@ const AddExpense = ({trip, handleClose}) => {
                         </FormControl>
                     </Grid>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <Grid item xs={12} sm={6} sx={{mt: 2, mb: 2}}>
+                        <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
                             <DatePicker
                                 label="Date Paid"
                                 name='datePaid'
                                 value={datePaid}
                                 onChange={handleDateChange}
-                                
+
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </Grid>
                     </LocalizationProvider>
                     <Grid item xs={12}>
-                        <Box sx={{ml: 1, textAlign: 'left'}}>
-                            <Typography variant='caption' sx={{color: 'red'}}>
+                        <Box sx={{ ml: 1, textAlign: 'left' }}>
+                            <Typography variant='caption' sx={{ color: 'red' }}>
                                 {error}
                             </Typography>
                         </Box>

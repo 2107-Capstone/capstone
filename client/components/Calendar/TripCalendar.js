@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 
@@ -9,19 +8,17 @@ const localizer = momentLocalizer(moment)
 import history from '../../history'
 
 ////////// CSS Style for the calendar //////////
-// import './TripCalendar.css'
 import { useSelector } from 'react-redux'
 import CircularLoading from '../Loading/CircularLoading'
 import { useTheme } from '@emotion/react'
-import { Box } from '@mui/system'
-import { FormControlLabel, FormGroup, Switch } from '@mui/material'
+import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material'
 
 
 const TripCalendar = () => {
     const theme = useTheme()
     const [checked, setchecked] = useState(false)
     const { trips } = useSelector(state => state)
-    
+
     const handleCheked = (evt) => {
         setchecked(evt.target.checked)
     }
@@ -43,17 +40,17 @@ const TripCalendar = () => {
         const openTrips = userTrips.filter(trip => trip.isOpen)
         filteredTrips = openTrips
     }
-    
+
     ///////////// TRIPS ////////////////
     const calendarTrips = filteredTrips.map(trip => { return { id: trip.id, tripId: trip.id, title: trip.name, start: new Date(trip.startTime), end: new Date(trip.endTime) } })
-    
+
     ////////// EVENTS ////////////////
     const events = filteredTrips.map(trip => (trip.events)).flat()
     const calendarEvents = events.map(event => { return { type: 'event', id: event.id, tripId: event.tripId, title: event.name, start: new Date(event.startTime), end: new Date(event.endTime) } })
     const handleSelect = (event) => {
         history.push(`/trips/${event.tripId}`)
     }
-    
+
     const eventStyles = (event) => {
         const style = {
             backgroundColor: theme.palette.primary.main

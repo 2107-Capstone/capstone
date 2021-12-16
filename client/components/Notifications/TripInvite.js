@@ -1,11 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
+import { useTheme } from "@emotion/react";
 
 /////////////// MATERIAL UI ///////////////////////
 import { Box, Avatar, Button, Divider, List, Typography, useMediaQuery } from '@mui/material'
-import { useTheme } from "@emotion/react";
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
+import { Check as CheckIcon, Close as CloseIcon } from '@mui/icons-material';
 
 ////////////// STORE ////////////////
 import { getUserTrips } from '../../store'
@@ -42,7 +41,7 @@ const TripInvite = () => {
     if (!pendingInvites || !friends) {
         return (<CircularLoading />)
     }
-console.log(pendingInvites)
+    console.log(pendingInvites)
     const invites = pendingInvites.map(invite => {
         const friendInvite = friends.find(f => f.friendId === invite.sentBy)
         if (friendInvite.friend) {

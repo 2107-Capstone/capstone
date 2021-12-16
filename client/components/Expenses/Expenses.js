@@ -17,6 +17,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import AddIcon from '@mui/icons-material/Add';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
+
 // const Expenses = ({ tripId, trip }) => {
 const Expenses = ({match}) => {
     const tripId = match.params.id;
