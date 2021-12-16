@@ -2,7 +2,7 @@
 
 Trip Out is an application that eliminates the inevitable stress that comes with planning and keeping track of a group outing. Whether it's a night on the town or a trek around the globe, Trip Out provides your group with a single source to plan, chat, map, and split expenses with just a few taps. Use this app and your next group trip out won't make you trip out! :smile:
 
-## Features
+<!-- ## Features
 ##would like to reorganize this to better match the homepage etc
 * Users can invite other users to become friends. 
     * (The friend request can be canceled by the sender or rejected by the receiver.)
@@ -17,7 +17,7 @@ Trip Out is an application that eliminates the inevitable stress that comes with
 * The Group Chat is accessible to all Friends in a Trip and the entire group chat history is viewable by all Friends in the Trip.
     * The Group Chat will still be accessible after a Trip is closed if there are any unpaid debts remaining.
 * After a Trip is closed, the expenses are divided evenly between the Friends, and a table displays the minimum number of transactions for each person to pay their friends back.
-    * Only the person who is owed money may mark the owed money as being paid.
+    * Only the person who is owed money may mark the owed money as being paid. -->
 
 ## Tech Stack
 * JavaScript
@@ -101,7 +101,7 @@ For running the server file on you can use this command.
 - [ ] Be able to opt out of a particular expense if it does not apply to you
 - [ ] International accessibility
 
-
+<!-- 
 ## Developers
 **Andy Gao**
 - [Profile](https://github.com/rohit19060 "Rohit jain")
@@ -118,13 +118,19 @@ For running the server file on you can use this command.
 Contributions, issues, and feature requests are welcome!
 
 Give a ⭐️  if you like this project!
-
-
-
+ -->
+\
+\
+\
+\
+\
+\
+\
+\
+\
 **Template from Rohit Jain**
-
 - [Profile](https://github.com/rohit19060 "Rohit jain")
 - [Email](mailto:rohitjain19060@gmail.com?subject=Hi "Hi!")
 - [Website](https://kingtechnologies.in "Welcome")
 
-![](readme.gif)
+<!-- ![](readme.gif) -->
