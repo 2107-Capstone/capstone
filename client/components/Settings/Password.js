@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 
 //////////// MUI //////////////////
-import { Avatar, Box, Button, Container, IconButton, Grid, OutlinedInput, InputLabel, InputAdornment, FormControl, TextField, Typography, Alert, Snackbar } from '@mui/material';
+import { Avatar, Box, Button, Container, IconButton, Grid, OutlinedInput, InputLabel, InputAdornment, FormControl, TextField, Typography, Alert as MuiAlert, Snackbar } from '@mui/material';
 import { Visibility, VisibilityOff, FlightTakeoff as FlightTakeoffIcon, VpnKey as VpnKeyIcon, Settings as SettingsIcon, ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import MuiPhoneNumber from 'material-ui-phone-number';
 
