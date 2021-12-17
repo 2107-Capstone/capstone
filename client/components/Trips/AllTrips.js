@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom";
 
 ////////////// MATERIAL UI ///////////
-import { Avatar, Box, Button, Chip, Fragment, Snackbar, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Tooltip, Typography } from "@mui/material";
+import { Avatar, Box, Button, Card, Chip, Fragment, Snackbar, FormControlLabel, FormGroup, Switch, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Tooltip, Typography } from "@mui/material";
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import CloseIcon from '@mui/icons-material/Close'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
