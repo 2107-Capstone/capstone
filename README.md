@@ -113,12 +113,10 @@ For running the server file on you can use this command.
 - [Profile](https://github.com/rohit19060 "Rohit jain")
 
 
-## 🤝 Support
+
 
 Contributions, issues, and feature requests are welcome!
 
-Give a ⭐️  if you like this project!
- -->
 \
 \
 \
@@ -127,10 +125,6 @@ Give a ⭐️  if you like this project!
 \
 \
 \
-\
-**Template from Rohit Jain**
-- [Profile](https://github.com/rohit19060 "Rohit jain")
-- [Email](mailto:rohitjain19060@gmail.com?subject=Hi "Hi!")
-- [Website](https://kingtechnologies.in "Welcome")
+
 
 <!-- ![](readme.gif) -->
