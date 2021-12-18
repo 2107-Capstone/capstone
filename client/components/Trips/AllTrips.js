@@ -34,7 +34,7 @@ const AllTrips = ({ match }) => {
     };
     // const { trips } = useSelector(state => state)
     let trips = checked ? useSelector(state => state.trips.filter(trip => !trip.trip.isOpen && trip.tripInvite === 'accepted')) : useSelector(state => state.trips.filter(trip => trip.trip.isOpen && trip.tripInvite === 'accepted'))
-    trips = trips.sort((a, b) => isAfter(new Date(a.trip.startTime), new Date(b.trip.startTime)) ? 1 : -1);
+    
 
     const user = useSelector(state => state.auth)
 
@@ -76,7 +76,7 @@ const AllTrips = ({ match }) => {
             </Box>
         )
     }
-
+    trips = trips.sort((a, b) => isAfter(new Date(a.trip.startTime), new Date(b.trip.startTime)) ? 1 : -1);
     return (
         <>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 1 }}>
@@ -139,7 +139,7 @@ const AllTrips = ({ match }) => {
                                         End Date: {format(parseISO(trip.trip.endTime), 'P')}
                                     </Typography>
                                     <Typography>
-                                        Friends: {trip.trip.userTrips.length}
+                                        Friends: {trip.trip.userTrips.filter(userTrip => userTrip.tripInvite === 'accepted').length}
                                     </Typography>
                                     <Box display='flex' justifyContent='center' alignItems='center'>
                                         <Typography >
