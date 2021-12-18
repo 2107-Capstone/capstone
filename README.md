@@ -28,6 +28,7 @@ Trip Out is an application that eliminates the inevitable stress that comes with
 * Node.js
 * Express
 * PostgreSQL
+* Sequelize
 * Redux
 * WebSocket
 
