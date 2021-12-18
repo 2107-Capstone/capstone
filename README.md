@@ -26,6 +26,7 @@ Trip Out is an application that eliminates the inevitable stress that comes with
 * React.js
 * Material UI
 * Node.js
+* Express
 * PostgreSQL
 * Redux
 * WebSocket
