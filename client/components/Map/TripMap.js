@@ -35,11 +35,15 @@ export default function TripMap({ match }) {
 
     let trip = useSelector(state => state.trips.find(trip => trip.tripId === tripId));
     let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
-    let users = useSelector(state => state.users.filter(
-        user => {
-            if (user.userTrips.filter(userTrip => (userTrip.tripId === tripId)).length > 0) return true;
-        }
-    ));
+    // let users = useSelector(state => state.users.filter(
+    //     user => {
+    //         if (user.userTrips.filter(userTrip => (userTrip.tripId === tripId && userTrip.tripInvite === 'accepted')).length > 0) return true;
+    //     }
+    // ));
+    
+    const userTrips = useSelector(state => state.usertrips.filter(userTrip => (
+        userTrip.tripId === tripId && userTrip.tripInvite === 'accepted'
+    )))
 
     const mapContainerStyle = {
         height: "50vh",
@@ -173,7 +177,7 @@ export default function TripMap({ match }) {
             setMarkers((prevMarkers) => [...prevMarkers, { time: format(parseISO(event.startTime), 'Pp'), key: event.id, id: event.id, lat: +event.lat, lng: +event.lng, name: event.name, location: event.location, url: `/pin-10.svg` }])
         });
 
-        if (trip.trip.isOpen){
+        if (trip?.trip.isOpen){
             users.map( (user) => {
                 if (user.lat) {
                     setTrackingMarkers((prevTrackingMarkers) => [...prevTrackingMarkers, { name: user.username, time: format(parseISO(user.time), 'Pp'), key: user.id, id: user.id, lat: +user.lat, lng: +user.lng, avatar: '/person.svg', firstName: user.firstName, lastName: user.lastName }])
@@ -202,10 +206,11 @@ export default function TripMap({ match }) {
         }
     }, [events.length])
 
-    if (!trip || !events || !users) {
+    if (!trip || !events || !userTrips) {
         return <CircularLoading />
     }
 
+    const users = userTrips.map(userTrip => userTrip.user)
     events = events.sort((a, b) => isAfter(parseISO(a.startTime), parseISO(b.startTime)) ? 1 : -1)
 
     const lat = +center.lat;
