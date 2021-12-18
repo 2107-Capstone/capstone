@@ -37,7 +37,7 @@ export default function TripMap({ match }) {
     let events = useSelector(state => state.events.filter(event => event.tripId === tripId));
     let users = useSelector(state => state.users.filter(
         user => {
-            if (user.userTrips.filter(userTrip => (userTrip.tripId === tripId)).length > 0) return true;
+            if (user.userTrips.filter(userTrip => (userTrip.tripId === tripId && userTrip.tripInvite === 'accepted')).length > 0) return true;
         }
     ));
 
