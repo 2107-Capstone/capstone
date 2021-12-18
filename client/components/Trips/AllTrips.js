@@ -115,7 +115,7 @@ const AllTrips = ({ match }) => {
             </Box>
             <Grid container alignItems='stretch' spacing={2} sx={{ mt: 1 }}>
                 {trips.map(trip => (
-                    <Grid component={Card} item  xs={12} sm={6} key={trip.id} >
+                    <Grid item xs={12} sm={6} key={trip.id} >
                         <Paper sx={{ ':hover': { cursor: 'pointer', boxShadow: (theme) => theme.shadows[5] } }}>
                             <Box sx={{ color: 'inherit', textDecoration: 'none' }} component={Link} to={`/trips/${trip.tripId}`} >
                                 <img src={trip.trip.imageUrl} width='100%' height='240rem' />
@@ -159,34 +159,34 @@ const AllTrips = ({ match }) => {
                             {
                                 !trip.trip.isOpen ? ''
                                     :
-                                !trip.trip.expenses.length ?
-                                    <>
-                                        <SnackbarForDelete
-                                            open={open}
-                                            onClose={handleClose}
-                                            onClickYes={() => handleLeaveTrip(trip.id)}
-                                            onClick={handleClose}
-                                            message={'Are you sure you want to close this trip?'}
-                                        />
-                                        <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                            <Chip onClick={() => setOpen(true)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
-                                                disabled={!trip.trip.expenses.length ? false : true}
+                                    !trip.trip.expenses.length ?
+                                        <>
+                                            <SnackbarForDelete
+                                                open={open}
+                                                onClose={handleClose}
+                                                onClickYes={() => handleLeaveTrip(trip.id)}
+                                                onClick={handleClose}
+                                                message={'Are you sure you want to close this trip?'}
                                             />
-                                        </Box>
-                                    </>
-                                    :
-                                    <Tooltip 
-                                        title="You can not leave a trip that already has expenses."
-                                        placement='top'
-                                        enterTouchDelay={100}
-                                        leaveTouchDelay={1000}
-                                    >
-                                        <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
-                                            <Chip label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
-                                                disabled={!trip.trip.expenses.length ? false : true}
-                                            />
-                                        </Box>
-                                    </Tooltip>
+                                            <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
+                                                <Chip onClick={() => setOpen(true)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
+                                                    disabled={!trip.trip.expenses.length ? false : true}
+                                                />
+                                            </Box>
+                                        </>
+                                        :
+                                        <Tooltip
+                                            title="You can not leave a trip that already has expenses."
+                                            placement='top'
+                                            enterTouchDelay={100}
+                                            leaveTouchDelay={1000}
+                                        >
+                                            <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
+                                                <Chip label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
+                                                    disabled={!trip.trip.expenses.length ? false : true}
+                                                />
+                                            </Box>
+                                        </Tooltip>
                             }
                         </Paper>
                     </Grid>
