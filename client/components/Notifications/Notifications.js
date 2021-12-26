@@ -21,6 +21,7 @@ export const Notifications = () => {
       </Typography>
       <TripInvite />
       <Divider />
+      
       <Typography sx={{ mt: 4 }} align='center' variant='h5' gutterBottom>
         <PaidIcon />&nbsp;Money Owed from Closed Trips
       </Typography>
@@ -29,7 +30,6 @@ export const Notifications = () => {
     </>
   )
 }
-
 const mapState = state => {
   return {
     auth: state.auth,

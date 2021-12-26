@@ -76,7 +76,7 @@ const TripInvite = ({type}) => {
                 No pending trip invites
             </Typography>
         )
-    } else if (pendingInvitesSent.length === 0) {
+    } else if (pendingInvitesSent.length === 0 && type === 'sent') {
         return (
             <Typography align='center' variant='h6' sx={{ mt: 4, mb: 8 }}>
                 No pending trip invites sent
@@ -116,6 +116,14 @@ const TripInvite = ({type}) => {
                                 </Button>
                                 <Button onClick={() => handleRejectInvite(invite.id)} startIcon={<CloseIcon />} size="small" variant='outlined' color='error'>
                                     reject
+                                </Button>
+                            </Box>
+                        }
+                        {
+                            type === 'sent' &&
+                            <Box sx={{ '& button': { m: .5 }, alignSelf: 'center' }}>
+                                <Button onClick={() => handleRejectInvite(invite.id)} startIcon={<CloseIcon />} size="small" variant='outlined' color='error'>
+                                    cancel invite
                                 </Button>
                             </Box>
                         }
