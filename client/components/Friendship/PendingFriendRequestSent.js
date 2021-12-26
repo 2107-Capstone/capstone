@@ -66,6 +66,7 @@ export const PendingFriendRequestSent = ({ friendsPendingSent, deleteUserFriend,
                     Friend request has been cancelled!
                 </Alert>
             </Snackbar>
+            <Divider/>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
                 <PendingIcon fontSize='medium' />
                 <Typography variant='h5'>

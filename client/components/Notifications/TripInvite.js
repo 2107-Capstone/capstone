@@ -128,7 +128,7 @@ const TripInvite = ({type}) => {
                             </Box>
                         }
                     </Box>
-                    <Divider />
+                    
                 </Fragment>
             ))
             }
