@@ -40,6 +40,8 @@ const TripInvite = ({type}) => {
     
     const pendingInvitesSent = useSelector(state => state.usertrips).filter(usertrip => usertrip.tripInvite === 'pending' && usertrip.sentBy === user.id) || []
 
+    const [disabled, setDisabled] = useState(false)
+
     if (!pendingInvites || !friends || !pendingInvitesSent) {
         return (<CircularLoading />)
     }
@@ -56,6 +58,7 @@ const TripInvite = ({type}) => {
         try {
             const invite = { id: inviteId, tripInvite: 'accepted' }
             await dispatch(acceptInvite(invite))
+            setDisabled(false)
         } catch (error) {
             console.log(error)
         }
@@ -111,7 +114,7 @@ const TripInvite = ({type}) => {
                         {
                             type !== 'sent' && 
                             <Box sx={{ '& button': { m: .5 }, alignSelf: 'center' }}>
-                                <Button onClick={() => handleAcceptInvite(invite.id)} startIcon={<CheckIcon />} size="small" variant='outlined' color='success'>
+                                <Button disabled={disabled} onClick={() => {setDisabled(true); handleAcceptInvite(invite.id)}} startIcon={<CheckIcon />} size="small" variant='outlined' color='success'>
                                     accept
                                 </Button>
                                 <Button onClick={() => handleRejectInvite(invite.id)} startIcon={<CloseIcon />} size="small" variant='outlined' color='error'>

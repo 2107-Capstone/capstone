@@ -10,6 +10,7 @@ import { CheckCircle as CheckCircleIcon, Pending as PendingIcon, AddCircle as Ad
 
 export const AddFriend = ({ auth, users, friends, createUserFriend, friendsPendingSent, friendsPendingReceived, loadFriendshipData }) => {
     const [query, setQuery] = useState('')
+    const [disabled, setDisabled] = useState(false)
     const clickAddFriend = async (friendId) => {
         await createUserFriend({
             userId: auth.id,
@@ -17,8 +18,9 @@ export const AddFriend = ({ auth, users, friends, createUserFriend, friendsPendi
         })
         handleClick()
         await loadFriendshipData()
+        setDisabled(false)
     }
-
+    
     const [open, setOpen] = useState(false);
 
     const handleClick = () => {
@@ -69,7 +71,7 @@ export const AddFriend = ({ auth, users, friends, createUserFriend, friendsPendi
                         <Fragment key={idx} >
                             <ListItem
                                 secondaryAction={
-                                    friendIds.has(user.id) ? <Button disabled startIcon={<CheckCircleIcon />} size="small" variant='contained' >Already Friend</Button> : (friendPendingSentIds.has(user.id) || friendPendingReceivedIds.has(user.id) ? <Button disabled startIcon={<PendingIcon />} size="small" variant='contained' >Request Pending</Button> : <Button startIcon={<AddCircleIcon />} size="small" variant='contained' onClick={() => clickAddFriend(user.id)}>Add Friend</Button>)
+                                    friendIds.has(user.id) ? <Button disabled startIcon={<CheckCircleIcon />} size="small" variant='contained' >Already Friend</Button> : (friendPendingSentIds.has(user.id) || friendPendingReceivedIds.has(user.id) ? <Button disabled startIcon={<PendingIcon />} size="small" variant='contained' >Request Pending</Button> : <Button startIcon={<AddCircleIcon />} size="small" variant='contained' onClick={() => {clickAddFriend(user.id); setDisabled(true)}} disabled={disabled}>Add Friend</Button>)
                                 }
                             >
                                 <ListItemAvatar>

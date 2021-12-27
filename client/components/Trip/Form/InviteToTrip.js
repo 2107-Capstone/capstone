@@ -15,7 +15,7 @@ import { Search as SearchIcon, Close as CloseIcon, PersonAdd as PersonAddIcon } 
 const InviteToTrip = (props) => {
     const { handleClose } = props
     const dispatch = useDispatch()
-
+    const [disabled, setDisabled] = useState(false)
     /////// Get the trip id from the Browser //////
     const path = history.location.pathname
     const tripId = path.slice(path.lastIndexOf('/') + 1)
@@ -53,6 +53,7 @@ const InviteToTrip = (props) => {
         try {
             const invite = { tripId, userId: friendId, sentBy: user.id }
             await dispatch(inviteFriend(invite))
+            setDisabled(false)
         } catch (error) {
             console.log(error)
         }
@@ -92,7 +93,7 @@ const InviteToTrip = (props) => {
                                     accepted
                                 </Button>) : (<Button disabled size="small">
                                     ...pending
-                                </Button>)) : (<Button variant='outlined' onClick={() => handleInvite(friend.friendId)} size="small">
+                                </Button>)) : (<Button variant='outlined' disabled={disabled} onClick={() => {setDisabled(true); handleInvite(friend.friendId)}} size="small">
                                     Invite
                                 </Button>)
                             }
