@@ -2,10 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { useState } from 'react'
 import { deleteUserFriend, getFriends, getFriendsPendingSent } from '../../store'
-
+import TripInvite from '../Notifications/TripInvite'
 ////////////// MATERIAL UI ///////////
-import { Box, Button, Grid, Paper, Typography, Snackbar, Alert, Avatar } from "@mui/material"
-import {Close as CloseIcon, Pending as PendingIcon} from '@mui/icons-material'
+import { Box, Button, Grid, Paper, Typography, Snackbar, Divider, Alert, Avatar } from "@mui/material"
+import {Luggage as LuggageIcon, Close as CloseIcon, Pending as PendingIcon} from '@mui/icons-material'
 
 export const PendingFriendRequestSent = ({ friendsPendingSent, deleteUserFriend, loadFriendshipData }) => {
     const clickRejectRequest = async (userFriend) => {
@@ -59,12 +59,21 @@ export const PendingFriendRequestSent = ({ friendsPendingSent, deleteUserFriend,
                         </Paper>
                     </Grid>
                 ))}
+                <Divider/>
             </Grid>
             <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
                     Friend request has been cancelled!
                 </Alert>
             </Snackbar>
+            <Divider/>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
+                <PendingIcon fontSize='medium' />
+                <Typography variant='h5'>
+                    &nbsp;Pending Trip Invites to Friends
+                </Typography>
+            </Box>
+            <TripInvite type={'sent'} />
         </>
     )
 }

@@ -10,7 +10,7 @@ import { Check as CheckIcon, Close as CloseIcon } from '@mui/icons-material';
 import { getUserTrips } from '../../store'
 import { acceptInvite, rejectInvite } from "../../store/usertrips";
 
-const TripInvite = () => {
+const TripInvite = ({type}) => {
     ///////////// Media Query /////////////
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('md'));
@@ -37,17 +37,20 @@ const TripInvite = () => {
     const friends = useSelector(state => state.friends)
 
     const pendingInvites = useSelector(state => state.usertrips).filter(usertrip => usertrip.tripInvite === 'pending' && usertrip.userId === user.id) || []
+    
+    const pendingInvitesSent = useSelector(state => state.usertrips).filter(usertrip => usertrip.tripInvite === 'pending' && usertrip.sentBy === user.id) || []
 
-    if (!pendingInvites || !friends) {
+    if (!pendingInvites || !friends || !pendingInvitesSent) {
         return (<CircularLoading />)
     }
-    console.log(pendingInvites)
-    const invites = pendingInvites.map(invite => {
+
+    let invites = pendingInvites.map(invite => {
         const friendInvite = friends.find(f => f.friendId === invite.sentBy)
         if (friendInvite.friend) {
             return { ...invite, friend: friendInvite.friend }
         }
     })
+    
 
     const handleAcceptInvite = async (inviteId) => {
         try {
@@ -66,15 +69,25 @@ const TripInvite = () => {
             console.log(error)
         }
     }
-
-    if (invites.length === 0) {
+    
+    if (invites.length === 0 && type !== 'sent') {
         return (
             <Typography align='center' variant='h6' sx={{ mt: 4, mb: 8 }}>
                 No pending trip invites
             </Typography>
         )
+    } else if (pendingInvitesSent.length === 0 && type === 'sent') {
+        return (
+            <Typography align='center' variant='h6' sx={{ mt: 4, mb: 8 }}>
+                No pending trip invites sent
+            </Typography>
+        )
     }
-
+   
+    if (type === 'sent') {
+        invites = pendingInvitesSent
+    }
+    
     return (
         <List sx={{ mt: 4, mb: 4 }}>
             {invites.map((invite, idx) => (
@@ -83,29 +96,39 @@ const TripInvite = () => {
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: `${flexdirection}`
                     }}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Avatar src={invite.friend.avatar} >
-                                {invite.friend.firstName[0] + invite.friend.lastName[0]}
+                            <Avatar src={type === 'sent' ? invite.user.avatar : invite.friend.avatar} >
+                                {type === 'sent' ? invite.user.firstName[0] + invite.user.lastName[0] : invite.friend.firstName[0] + invite.friend.lastName[0]}
                             </Avatar>
                             <Box sx={{ m: 1 }}>
                                 <Typography>
-                                    {invite.friend.firstName}
+                                    {type === 'sent' ? invite.user.firstName : invite.friend.firstName}
                                 </Typography>
                                 <Typography variant='body2'>
                                     {`Invite to ${invite.trip.name}`}
                                 </Typography>
                             </Box>
                         </Box>
-                        <Box sx={{ '& button': { m: .5 }, alignSelf: 'center' }}>
-                            <Button onClick={() => handleAcceptInvite(invite.id)} startIcon={<CheckIcon />} size="small" variant='outlined' color='success'>
-                                accept
-                            </Button>
-                            <Button onClick={() => handleRejectInvite(invite.id)} startIcon={<CloseIcon />} size="small" variant='outlined' color='error'>
-                                reject
-                            </Button>
-                        </Box>
+                        {
+                            type !== 'sent' && 
+                            <Box sx={{ '& button': { m: .5 }, alignSelf: 'center' }}>
+                                <Button onClick={() => handleAcceptInvite(invite.id)} startIcon={<CheckIcon />} size="small" variant='outlined' color='success'>
+                                    accept
+                                </Button>
+                                <Button onClick={() => handleRejectInvite(invite.id)} startIcon={<CloseIcon />} size="small" variant='outlined' color='error'>
+                                    reject
+                                </Button>
+                            </Box>
+                        }
+                        {
+                            type === 'sent' &&
+                            <Box sx={{ '& button': { m: .5 }, alignSelf: 'center' }}>
+                                <Button onClick={() => handleRejectInvite(invite.id)} startIcon={<CloseIcon />} size="small" variant='outlined' color='error'>
+                                    cancel invite
+                                </Button>
+                            </Box>
+                        }
                     </Box>
-
-                    <Divider />
+                    
                 </Fragment>
             ))
             }

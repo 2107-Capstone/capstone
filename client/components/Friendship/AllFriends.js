@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react'
 import { connect } from 'react-redux'
 import AddFriend from './AddFriend'
 import PendingFriendRequestSent from './PendingFriendRequestSent'
+
 import { deleteUserFriend, getFriends, getFriendsPendingReceived, getFriendsPendingSent } from '../../store'
 
 ////////////// MATERIAL UI ///////////
