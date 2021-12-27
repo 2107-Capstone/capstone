@@ -70,7 +70,7 @@ export const PendingFriendRequestSent = ({ friendsPendingSent, deleteUserFriend,
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
                 <PendingIcon fontSize='medium' />
                 <Typography variant='h5'>
-                    &nbsp;Pending Trip Requests You Sent
+                    &nbsp;Pending Trip Invites to Friends
                 </Typography>
             </Box>
             <TripInvite type={'sent'} />
