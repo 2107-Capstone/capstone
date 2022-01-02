@@ -166,7 +166,7 @@ const AllTrips = ({ match }) => {
                                                 onClose={handleClose}
                                                 onClickYes={() => handleLeaveTrip(trip.id)}
                                                 onClick={handleClose}
-                                                message={'Are you sure you want to close this trip?'}
+                                                message={'Are you sure you want to leave this trip?'}
                                             />
                                             <Box sx={{ pb: 2, display: 'flex', justifyContent: 'center' }}>
                                                 <Chip onClick={() => setOpen(true)} label="leave this trip" variant="outlined" color="warning" icon={<ExitToAppIcon />}
